@@ -1,0 +1,114 @@
+C:\dev\rla-feature>amplify add hosting
+? Select the plugin module to execute Hosting with Amplify Console (Managed hosting with custom domains, Continuous depl
+oyment)
+-
+? Choose a type Manual deployment
+
+You can now publish your app using the following command:
+
+Command: amplify publish
+
+C:\dev\rla-feature>amplify publish
+√ Successfully pulled backend environment dev from the cloud.
+
+Current Environment: dev
+
+| Category | Resource name  | Operation | Provider plugin   |
+| -------- | -------------- | --------- | ----------------- |
+| Hosting  | amplifyhosting | Create    | awscloudformation |
+| Api      | rlafeature     | No Change | awscloudformation |
+? Are you sure you want to continue? Yes
+/ Updating resources in the cloud. This may take a few minutes...
+
+UPDATE_IN_PROGRESS amplify-rlafeature-dev-102443 AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:02 GMT-0700 (Pacific Daylight Time) User Initiated
+/ Updating resources in the cloud. This may take a few minutes...
+
+CREATE_IN_PROGRESS hostingamplifyhosting AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:09 GMT-0700 (Pacific Daylight Time)
+UPDATE_IN_PROGRESS apirlafeature         AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:09 GMT-0700 (Pacific Daylight Time)
+/ Updating resources in the cloud. This may take a few minutes...
+
+UPDATE_IN_PROGRESS amplify-rlafeature-dev-102443-apirlafeature-YO7UR8QH3F59 AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:09 GMT-0700 (Pacific Daylight Time) User Initiated
+\ Updating resources in the cloud. This may take a few minutes...
+
+CREATE_IN_PROGRESS hostingamplifyhosting AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:10 GMT-0700 (Pacific Daylight Time) Resource creation Initiated
+\ Updating resources in the cloud. This may take a few minutes...
+
+CREATE_IN_PROGRESS amplify-rlafeature-dev-102443-hostingamplifyhosting-1FSOAGFJBK1J3 AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:09 GMT-0700 (Pacific Daylight Time) User Initiated
+| Updating resources in the cloud. This may take a few minutes...
+
+CREATE_IN_PROGRESS AmplifyBranch AWS::Amplify::Branch Tue Jul 13 2021 12:32:14 GMT-0700 (Pacific Daylight Time)
+\ Updating resources in the cloud. This may take a few minutes...
+
+CREATE_IN_PROGRESS AmplifyBranch                                                     AWS::Amplify::Branch       Tue Jul 13 2021 12:32:17 GMT-0700 (Pacific Daylight Time) Resource creation Initiated
+CREATE_COMPLETE    AmplifyBranch                                                     AWS::Amplify::Branch       Tue Jul 13 2021 12:32:18 GMT-0700 (Pacific Daylight Time)
+CREATE_COMPLETE    amplify-rlafeature-dev-102443-hostingamplifyhosting-1FSOAGFJBK1J3 AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:19 GMT-0700 (Pacific Daylight Time)
+- Updating resources in the cloud. This may take a few minutes...
+
+UPDATE_IN_PROGRESS ChatMessage AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:16 GMT-0700 (Pacific Daylight Time)
+UPDATE_IN_PROGRESS Training    AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:16 GMT-0700 (Pacific Daylight Time)
+UPDATE_IN_PROGRESS Attendee    AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:16 GMT-0700 (Pacific Daylight Time)
+UPDATE_COMPLETE    ChatMessage AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:17 GMT-0700 (Pacific Daylight Time)
+UPDATE_COMPLETE    Training    AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:17 GMT-0700 (Pacific Daylight Time)
+UPDATE_COMPLETE    Attendee    AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:17 GMT-0700 (Pacific Daylight Time)
+| Updating resources in the cloud. This may take a few minutes...
+
+UPDATE_IN_PROGRESS ConnectionStack AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:20 GMT-0700 (Pacific Daylight Time)
+\ Updating resources in the cloud. This may take a few minutes...
+
+CREATE_COMPLETE hostingamplifyhosting AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:20 GMT-0700 (Pacific Daylight Time)
+- Updating resources in the cloud. This may take a few minutes...
+
+UPDATE_COMPLETE    ConnectionStack     AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:21 GMT-0700 (Pacific Daylight Time)
+UPDATE_IN_PROGRESS CustomResourcesjson AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:23 GMT-0700 (Pacific Daylight Time)
+- Updating resources in the cloud. This may take a few minutes...
+
+UPDATE_COMPLETE CustomResourcesjson AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:24 GMT-0700 (Pacific Daylight Time)
+| Updating resources in the cloud. This may take a few minutes...
+
+UPDATE_COMPLETE_CLEANUP_IN_PROGRESS amplify-rlafeature-dev-102443-apirlafeature-YO7UR8QH3F59 AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:27 GMT-0700 (Pacific Daylight Time)
+\ Updating resources in the cloud. This may take a few minutes...
+
+UPDATE_COMPLETE apirlafeature AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:31 GMT-0700 (Pacific Daylight Time)
+| Updating resources in the cloud. This may take a few minutes...
+
+UPDATE_COMPLETE_CLEANUP_IN_PROGRESS amplify-rlafeature-dev-102443 AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:34 GMT-0700 (Pacific Daylight Time)
+- Updating resources in the cloud. This may take a few minutes...
+
+UPDATE_COMPLETE apirlafeature                 AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:46 GMT-0700 (Pacific Daylight Time)
+UPDATE_COMPLETE amplify-rlafeature-dev-102443 AWS::CloudFormation::Stack Tue Jul 13 2021 12:32:46 GMT-0700 (Pacific Daylight Time)
+√ All resources are updated in the cloud
+
+
+Publish started for amplifyhosting
+
+> rlp-feature@0.1.0 build C:\dev\rla-feature
+> react-scripts build
+
+Creating an optimized production build...
+Compiled successfully.
+
+File sizes after gzip:
+
+  481.17 KB (+262 B)  build\static\js\2.3dd8b85a.chunk.js
+  6 KB (+476 B)       build\static\js\main.564e793f.chunk.js
+  2.88 KB             build\static\css\2.4bd8e119.chunk.css
+  1.63 KB             build\static\js\3.f3e99138.chunk.js
+  1.17 KB (-1 B)      build\static\js\runtime-main.aa0fc9a9.js
+  851 B               build\static\css\main.15d0a3e0.chunk.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  yarn global add serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+√ Zipping artifacts completed.
+√ Deployment complete!
+https://dev.d27tpvs97ajlbl.amplifyapp.com
