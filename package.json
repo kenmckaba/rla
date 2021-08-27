@@ -14,7 +14,7 @@
     "aws-appsync": "^4.0.4",
     "aws-appsync-auth-link": "^3.0.4",
     "aws-appsync-subscription-link": "^3.0.6",
-    "bluejeans-webrtc-embed-sdk": "^1.2.0",
+    "bluejeans-webrtc-sdk": "../package",
     "framer-motion": "^4.1.17",
     "graphql": "^15.5.1",
     "prettier-eslint": "^12.0.0",
@@ -28,7 +28,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set HTTPS=true&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
