@@ -1,0 +1,29 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-chrome",
+      "request": "launch",
+      "name": "Trainer",
+      "url": "http://localhost:3000/",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "pwa-chrome",
+      "request": "launch",
+      "name": "Attendee",
+      "url": "http://localhost:3000/attendee/ba2c9ed9-fabf-4d13-816a-25f5ea76be32",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "pwa-chrome",
+      "request": "launch",
+      "name": "Trainer in session",
+      "url": "http://localhost:3000/trainerInSession/537033c0-af1c-4cce-a2a1-767e8822d706",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}
