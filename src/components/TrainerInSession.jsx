@@ -5,7 +5,6 @@ import {
   Box,
   HStack,
   VStack,
-  StackDivider,
   Button,
   Modal,
   ModalOverlay,
@@ -21,7 +20,6 @@ import {
   AccordionIcon,
 } from '@chakra-ui/react'
 import { updateTraining } from '../graphql/mutations'
-import BJNEmbedSDK from 'bluejeans-webrtc-embed-sdk'
 import { useState } from 'react'
 import {
   onCreateAttendee,
@@ -34,22 +32,12 @@ import {
 import { buildSubscription } from 'aws-appsync'
 import { TrainerPoll } from './TrainerPoll'
 import { PollModal } from './PollModal'
-import { AddIcon } from '@chakra-ui/icons'
+import { useBlueJeans } from '../bluejeans/useBlueJeans'
 import { ClassRoster } from './ClassRoster'
-
-const bluejeans = function (meetingId, passcode, name, id) {
-  BJNEmbedSDK.joinMeeting({
-    meetingInfo: {
-      meetingId: meetingId,
-      passcode: passcode,
-      name: name,
-    },
-    iFrameProps: {
-      selectorId: id,
-    },
-    uiProps: {},
-  })
-}
+import { AddIcon } from '@chakra-ui/icons'
+import { MicCamControls } from './MicCamControls'
+import { BjnMedia } from './BjnMedia'
+import { CamInUseModal } from './CamInUseModal'
 
 export const TrainerInSession = ({
   match: {
@@ -62,8 +50,10 @@ export const TrainerInSession = ({
   const [polls, setPolls] = useState([])
   const [startedPoll, setStartedPoll] = useState()
   const [startTimeUpdated, setStartTimeUpdated] = useState(false)
-
   const joined = useRef(false)
+  const localVideoRef = useRef(null)
+  const gotVideosRef = useRef(false)
+  const { bjnApi, bjnIsInitialized, bjnCamInUseError } = useBlueJeans()
   const {
     data: trainingData,
     error,
@@ -167,31 +157,28 @@ export const TrainerInSession = ({
   }, [training, updateCurrentTraining, startTimeUpdated])
 
   useEffect(() => {
-    if (training && !joined.current) {
-      bluejeans(
-        training.meetingId,
-        training.moderatorPasscode,
-        training.trainerName,
-        '#bluejeansdiv',
-      )
-      joined.current = true
+    const joinMeeting = async () => {
+      if (training && bjnIsInitialized && !joined.current) {
+        joined.current = true
+        try {
+          await bjnApi.join(training.meetingId, training.moderatorPasscode, training.trainerName)
+        } catch (e) {
+          console.error('rla-log: error joining', e)
+        }
+      }
     }
-  }, [training])
+    joinMeeting()
+  }, [training, bjnApi, bjnIsInitialized])
 
   useEffect(() => {
-    BJNEmbedSDK.observe('isSDKInitComplete', () => {
-      if (BJNEmbedSDK.isSDKInitComplete) {
-        console.log('rla-log: bj isSDKInitComplete', BJNEmbedSDK.isSDKInitComplete)
-      }
-    })
-
-    BJNEmbedSDK.observe('connectionState', () => {
-      console.log('rla-log: bj connectionState', BJNEmbedSDK.connectionState)
-    })
-  }, [])
+    if (localVideoRef.current && !gotVideosRef.current) {
+      bjnApi.attachLocalVideo(localVideoRef.current)
+      gotVideosRef.current = true
+    }
+  })
 
   const endTraining = () => {
-    BJNEmbedSDK.leaveAndEndForAll()
+    bjnApi.leave(true)
     onEndModalOpen()
     updateCurrentTraining({
       variables: {
@@ -214,29 +201,15 @@ export const TrainerInSession = ({
   return (
     <>
       <HStack align="left">
-        <VStack align="left" minWidth="200px" position="relative">
+        <VStack align="left" width="250px" minWidth="250px">
           <Box background="white" borderRadius="16px" padding="8px">
             <Box fontWeight="bold">Training: {training.title}</Box>
             <Box>Description: {training.description}</Box>
           </Box>
-          <Box
-            align="start"
-            divider={<StackDivider borderColor="gray.200" />}
-            background="white"
-            borderRadius="16px"
-            padding="8px"
-            fontWeight="600"
-          >
+          <Box align="start" background="white" borderRadius="16px" padding="8px" fontWeight="600">
             <ClassRoster attendees={attendees} />
           </Box>
-          <Box
-            align="start"
-            divider={<StackDivider borderColor="gray.200" />}
-            background="white"
-            borderRadius="16px"
-            padding="8px"
-            fontWeight="600"
-          >
+          <Box align="start" background="white" borderRadius="16px" padding="8px" fontWeight="600">
             <Accordion allowMultiple width="100%" allowToggle>
               <AccordionItem border="none">
                 <AccordionButton padding="0px">
@@ -263,21 +236,12 @@ export const TrainerInSession = ({
               </AccordionItem>
             </Accordion>
           </Box>
-          <Button onClick={endTraining} position="absolute" bottom="0" width="100%">
+          <MicCamControls localVideoRef={localVideoRef} isModerator={true} />
+          <Button onClick={endTraining} width="100%">
             End Training
           </Button>
         </VStack>
-        <Box
-          borderRadius="10px"
-          background="lightblue"
-          id="bluejeansdiv"
-          height="83vh"
-          width="83vw"
-          display="block"
-          alignItems="center"
-          margin-right="auto"
-          justifyContent="center"
-        />
+        <BjnMedia />
       </HStack>
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />
@@ -297,6 +261,7 @@ export const TrainerInSession = ({
         onClose={onPollModalClose}
         poll={pollToEdit}
       />
+      <CamInUseModal code={bjnCamInUseError} />
     </>
   )
 }

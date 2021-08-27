@@ -7,6 +7,7 @@ export default function Background({ children }) {
       <Flex
         alignItems="center"
         h="3rem"
+        minHeight="3rem"
         bg="brand.500"
         color="white"
         paddingLeft="1rem"
@@ -14,7 +15,7 @@ export default function Background({ children }) {
       >
         <Box>Verizon Remote Learing Platform - POC</Box>
       </Flex>
-      <Box height="100%" padding="10px" bgGradient="linear(to-br, brand.100, brand.500)">
+      <Box height="100vh" padding="10px" bgGradient="linear(to-br, brand.100, brand.500)">
         {children}
       </Box>
     </Flex>

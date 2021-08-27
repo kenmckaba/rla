@@ -14,10 +14,9 @@ import {
   useDisclosure,
   Link,
   Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionIcon,
-  AccordionPanel,
+  IconButton,
+  Tooltip,
+  useClipboard,
 } from '@chakra-ui/react'
 import { getTraining } from '../graphql/queries'
 import { useMutation, gql, useQuery } from '@apollo/client'
@@ -25,7 +24,7 @@ import { deleteTraining, updateTraining } from '../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
 import { AttendeeForm } from './AttendeeForm'
 import DatePicker from './DatePicker'
-import { ExternalLinkIcon } from '@chakra-ui/icons'
+import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons'
 import { buildSubscription } from 'aws-appsync'
 import {
   onCreateAttendee,
@@ -36,9 +35,10 @@ import {
   onUpdatePoll,
 } from '../graphql/subscriptions'
 import { Polls } from './Polls'
+import { AccordionItemCustom } from './AccordionItemCustom'
+import { useRef } from 'react'
 
 export const TrainingForm = ({ onClose, trainingId }) => {
-  const [gotTraining, setGotTraining] = useState(false)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [trainerName, setTrainerName] = useState('')
@@ -56,24 +56,23 @@ export const TrainingForm = ({ onClose, trainingId }) => {
     variables: { id: trainingId },
   })
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
+  const regLink = useRef(`${window.location.href}registration/${trainingId}`)
+  const { onCopy } = useClipboard(regLink.current)
 
   useEffect(() => {
     if (data) {
       const training = data.getTraining
-      if (!gotTraining) {
-        setGotTraining(true)
-        setTitle(training.title === '<temp>' ? '' : training.title)
-        setDescription((prev) => training.description || prev)
-        setTrainerName(training.trainerName || '')
-        setScheduledTime(new Date(Number(training.scheduledTime)))
-        setMeetingId((prev) => training.meetingId || prev)
-        setModeratorPasscode((prev) => training.moderatorPasscode || prev)
-        setParticipantPasscode((prev) => training.participantPasscode || prev)
-      }
+      setTitle(training.title === '<temp>' ? '' : training.title)
+      setDescription((prev) => training.description || prev)
+      setTrainerName(training.trainerName || '')
+      setScheduledTime(new Date(Number(training.scheduledTime)))
+      setMeetingId((prev) => training.meetingId || prev)
+      setModeratorPasscode((prev) => training.moderatorPasscode || prev)
+      setParticipantPasscode((prev) => training.participantPasscode || prev)
       setAttendees(training.attendees.items)
       setPolls(training.polls.items)
     }
-  }, [data, gotTraining])
+  }, [data])
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -145,14 +144,12 @@ export const TrainingForm = ({ onClose, trainingId }) => {
   }
 
   const handleSubmit = async () => {
-    const result = await updateCurrentTraining(mutationVars())
-    onClose(result.data.updateTraining)
+    await updateCurrentTraining(mutationVars())
+    onClose()
   }
 
   const handleCancel = () => {
-    if (!trainingId) {
-      handleDelete()
-    }
+    // if it was never saved this should delete this record and any attendee, poll, etc.
     onClose()
   }
 
@@ -178,12 +175,16 @@ export const TrainingForm = ({ onClose, trainingId }) => {
 
   const handleDelete = async () => {
     await deleteCurrentTraining({ variables: { input: { id: trainingId } } })
-    onClose({ id: trainingId, DELETEME: true })
+    onClose()
   }
 
   const openRegPage = (e) => {
     updateCurrentTraining(mutationVars()) // save in case they try to join
     window.open(`/trainerInSession/${trainingId}`)
+  }
+
+  const missingFields = () => {
+    return !title || !trainerName || !meetingId || !participantPasscode || !moderatorPasscode
   }
 
   return (
@@ -218,96 +219,73 @@ export const TrainingForm = ({ onClose, trainingId }) => {
           />
         </FormControl>
         <Accordion width="100%" mt={2} allowToggle>
-          <AccordionItem border="none">
-            <AccordionButton
-              height="26px"
-              borderWidth="1px"
-              borderRadius="4px"
-              borderColor="rgb(226, 232, 240)"
-            >
-              <Box flex="1" fontSize="12px" fontWeight="500" textAlign="left">
-                BlueJeans meeting
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel padding="0" pb={4}>
-              <HStack mt="3">
-                <FormControl isRequired>
-                  <FormLabel>BlueJeans meeting ID</FormLabel>
-                  <Input fontSize="12" value={meetingId} onChange={onChangeMeetingId} h="24px" />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Moderator passcode</FormLabel>
-                  <Input
-                    fontSize="12"
-                    value={moderatorPasscode}
-                    onChange={onChangeModeratorPasscode}
-                    h="24px"
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Participant passcode</FormLabel>
-                  <Input
-                    fontSize="12"
-                    value={participantPasscode}
-                    onChange={onChangeParticipantPasscode}
-                    h="24px"
-                  />
-                </FormControl>
-              </HStack>
-            </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem border="none">
-            <AccordionButton
-              height="26px"
-              borderWidth="1px"
-              borderRadius="4px"
-              borderColor="rgb(226, 232, 240)"
-              marginTop="2px"
-            >
+          <AccordionItemCustom
+            title={
               <Box flex="1" fontSize="12px" fontWeight="500" textAlign="left">
                 Attendees
               </Box>
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel padding="0" pb={4}>
-              <FormControl padding="0" mt="10px" mb="2px">
-                <FormLabel>Attendee registration page</FormLabel>
-                <Box
-                  borderRadius="6px"
-                  pl="16px"
-                  fontSize="12"
-                  border="1px solid #e2e8f0"
-                  whiteSpace="nowrap"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                >
-                  <Link href={`${window.location.href}registration/${trainingId}`} isExternal>
-                    {window.location.href}registration/{trainingId}
-                    <ExternalLinkIcon m="2px" />
-                  </Link>
-                </Box>
-              </FormControl>
-              <AttendeeList attendees={attendees} updateAttendee={handleOpenAttendee} />
-            </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem border="none">
-            <AccordionButton
-              height="26px"
-              borderWidth="1px"
-              borderRadius="4px"
-              borderColor="rgb(226, 232, 240)"
-              marginTop="2px"
-            >
-              <Box flex="1" fontSize="12px" fontWeight="500" textAlign="left">
-                Polls
+            }
+          >
+            <FormControl padding="0" mt="10px" mb="2px">
+              <FormLabel>
+                Attendee registration page
+                <Tooltip hasArrow placement="right" label="Copy to clipboard">
+                  <IconButton
+                    size="xs"
+                    marginLeft="8px"
+                    variant="ghost"
+                    icon={<CopyIcon />}
+                    color="black"
+                    onClick={onCopy}
+                  ></IconButton>
+                </Tooltip>
+              </FormLabel>
+              <Box
+                borderRadius="6px"
+                pl="16px"
+                fontSize="12"
+                border="1px solid #e2e8f0"
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
+              >
+                <Link href={regLink.current} isExternal>
+                  {window.location.href}registration/{trainingId}
+                  <ExternalLinkIcon m="2px" />
+                </Link>
               </Box>
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel padding="0" pb={4}>
-              <Polls trainingId={trainingId} polls={polls} />
-            </AccordionPanel>
-          </AccordionItem>
+            </FormControl>
+            <AttendeeList attendees={attendees} updateAttendee={handleOpenAttendee} />
+          </AccordionItemCustom>
+          <AccordionItemCustom title="Polls">
+            <Polls trainingId={trainingId} polls={polls} />
+          </AccordionItemCustom>
+          <AccordionItemCustom title="BlueJeans meeting">
+            <HStack mt="3">
+              <FormControl isRequired>
+                <FormLabel>BlueJeans meeting ID</FormLabel>
+                <Input fontSize="12" value={meetingId} onChange={onChangeMeetingId} h="24px" />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Moderator passcode</FormLabel>
+                <Input
+                  fontSize="12"
+                  value={moderatorPasscode}
+                  onChange={onChangeModeratorPasscode}
+                  h="24px"
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Participant passcode</FormLabel>
+                <Input
+                  fontSize="12"
+                  value={participantPasscode}
+                  onChange={onChangeParticipantPasscode}
+                  h="24px"
+                />
+              </FormControl>
+            </HStack>
+          </AccordionItemCustom>
         </Accordion>
       </Box>
       <Button
@@ -317,6 +295,7 @@ export const TrainingForm = ({ onClose, trainingId }) => {
         as="a"
         variant="outline"
         onClick={openRegPage}
+        isDisabled={missingFields()}
       >
         Start
       </Button>
@@ -332,7 +311,7 @@ export const TrainingForm = ({ onClose, trainingId }) => {
       </Button>
 
       <HStack float="right" mt="3" mb="3">
-        <Button size="md" onClick={handleSubmit}>
+        <Button size="md" onClick={handleSubmit} isDisabled={missingFields()}>
           Save
         </Button>
         <Button size="md" variant="outline" onClick={handleCancel}>

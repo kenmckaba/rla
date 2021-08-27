@@ -16,25 +16,14 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { createPollResponse, updateAttendee } from '../graphql/mutations'
-import BJNEmbedSDK from 'bluejeans-webrtc-embed-sdk'
 import { buildSubscription } from 'aws-appsync'
 import { onUpdateAttendee, onUpdateTraining } from '../graphql/subscriptions'
 import { PollChoices } from './PollChoices'
 import { prettyTime } from '../pretty-time'
-
-const bluejeans = function (meetingId, passcode, name, id) {
-  BJNEmbedSDK.joinMeeting({
-    meetingInfo: {
-      meetingId: meetingId,
-      passcode: passcode,
-      name: name,
-    },
-    iFrameProps: {
-      selectorId: id,
-    },
-    uiProps: {},
-  })
-}
+import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { MicCamControls } from './MicCamControls'
+import { BjnMedia } from './BjnMedia'
+import { CamInUseModal } from './CamInUseModal'
 
 export const AttendeeLanding = ({
   match: {
@@ -50,12 +39,14 @@ export const AttendeeLanding = ({
     variables: { id: attendeeId },
   })
   const [getCurrentTraining, { data: trainingData }] = useLazyQuery(gql(getTraining))
+  const { bjnApi, bjnIsInitialized, bjnConnectionState, bjnCamInUseError } = useBlueJeans()
+
   const [attendee, setAttendee] = useState()
+  const joined = useRef(false)
   const updatingJoinedTime = useRef(false)
   const updatedJoinedTime = useRef(false)
-  const joined = useRef(false)
   const [left, setLeft] = useState(false)
-  const { isOpen: isModalOpen, onOpen: onModalOpen } = useDisclosure()
+  const { isOpen: isEndedModalOpen, onOpen: onEndedModalOpen } = useDisclosure()
   const [currentPoll, setCurrentPoll] = useState()
   const [pollMode, setPollMode] = useState('NONE')
   const [handRaised, setHandRaised] = useState(false)
@@ -63,6 +54,9 @@ export const AttendeeLanding = ({
   const [participantName, setParticipantName] = useState()
   const [updateCurrentAttendee] = useMutation(gql(updateAttendee))
   const [createCurrentPollResponse] = useMutation(gql(createPollResponse))
+
+  const localVideoRef = useRef(null)
+  const gotVideosRef = useRef(false)
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -89,6 +83,20 @@ export const AttendeeLanding = ({
       getCurrentTraining({ variables: { id: tr.id } })
     }
   }, [attendeeData, attendeeId, attendee, getCurrentTraining])
+
+  useEffect(() => {
+    if (bjnConnectionState === 'DISCONNECTED') {
+      onEndedModalOpen()
+      updateCurrentAttendee({
+        variables: {
+          input: {
+            id: attendeeId,
+            leftTime: Date.now(),
+          },
+        },
+      })
+    }
+  }, [bjnConnectionState, attendeeId, onEndedModalOpen, updateCurrentAttendee])
 
   useEffect(() => {
     if (trainingData) {
@@ -122,27 +130,18 @@ export const AttendeeLanding = ({
   }, [attendee, updateCurrentAttendee])
 
   useEffect(() => {
-    if (training && !joined.current) {
+    if (training && bjnIsInitialized && !joined.current) {
       joined.current = true
-      bluejeans(training.meetingId, training.participantPasscode, participantName, '#bluejeansdiv')
+      bjnApi.join(training.meetingId, training.participantPasscode, participantName)
     }
-  }, [training, participantName])
+  }, [training, participantName, bjnIsInitialized, bjnApi])
 
   useEffect(() => {
-    BJNEmbedSDK.observe('connectionState', () => {
-      if (BJNEmbedSDK.connectionState === 'Disconnected') {
-        onModalOpen()
-        updateCurrentAttendee({
-          variables: {
-            input: {
-              id: attendeeId,
-              leftTime: Date.now(),
-            },
-          },
-        })
-      }
-    })
-  }, [attendeeId, updateCurrentAttendee, onModalOpen])
+    if (localVideoRef.current && !gotVideosRef.current) {
+      bjnApi.attachLocalVideo(localVideoRef.current)
+      gotVideosRef.current = true
+    }
+  })
 
   if (error) {
     return <p>An error occured</p>
@@ -170,11 +169,11 @@ export const AttendeeLanding = ({
   }
 
   const updateName = () => {
-    BJNEmbedSDK.setName(participantName)
+    bjnApi.setName(participantName)
   }
 
   const leaveTraining = () => {
-    BJNEmbedSDK.leave()
+    bjnApi.leave(false)
     updateCurrentAttendee({
       variables: {
         input: {
@@ -201,15 +200,21 @@ export const AttendeeLanding = ({
   return (
     <>
       <HStack height="100%" alignItems="flex-start">
-        <VStack>
+        <VStack alignItems="normal" width="250px" minWidth="250px">
           <VStack alignItems="flex-start" background="white" borderRadius="20px" padding="8px">
             <Box fontWeight="bold">Welcome to the training!</Box>
             <Box>Title: {training.title}</Box>
             {training.description && <Box>{training.description}</Box>}
             <Box>Start time: {prettyTime(new Date(Number(training.scheduledTime)))}</Box>
             <HStack alignContent="center">
-              <Box width="80px">Join as:</Box>
-              <Input type="text" value={participantName} onChange={onChangeParticipantName} />
+              <Box width="55px">Join as:</Box>
+              <Input
+                width="100px"
+                height="20px"
+                type="text"
+                value={participantName}
+                onChange={onChangeParticipantName}
+              />
               <Button size="xs" variant="outline" onClick={updateName}>
                 Update
               </Button>
@@ -239,24 +244,14 @@ export const AttendeeLanding = ({
               </Box>
             </VStack>
           )}
+          <MicCamControls localVideoRef={localVideoRef} isModerator={false} />
           <Button size="sm" onClick={leaveTraining}>
             Leave training
           </Button>
         </VStack>
-
-        <Flex
-          borderRadius="6px"
-          background="lightblue"
-          id="bluejeansdiv"
-          height="83vh"
-          width="83vw"
-          display="block"
-          alignItems="center"
-          margin-right="auto"
-          justifyContent="center"
-        ></Flex>
+        <BjnMedia />
       </HStack>
-      <Modal isOpen={isModalOpen} scrollBehavior="inside">
+      <Modal isOpen={isEndedModalOpen} scrollBehavior="inside">
         <ModalOverlay />
         <ModalContent height="300px">
           <ModalHeader>
@@ -269,6 +264,7 @@ export const AttendeeLanding = ({
           </ModalBody>
         </ModalContent>
       </Modal>
+      <CamInUseModal code={bjnCamInUseError} />
     </>
   )
 }
