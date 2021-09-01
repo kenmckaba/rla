@@ -2,13 +2,16 @@ import { extendTheme } from '@chakra-ui/react'
 
 // 37, 57, 94   25, 39, 5e
 const config = {
-  initialColorMode: 'light',
-  useSystemColorMode: true,
+  initialColorMode: 'dark',
+  useSystemColorMode: false,
+  fonts: {
+    heading: 'Proxima Nova',
+    body: 'Proxima Nova',
+  },
   styles: {
     global: {
       body: {
         bgGradient: 'linear(to-b, #284A83, #396AA1)',
-        color: 'white',
       },
     },
   },

@@ -3,6 +3,7 @@ import Background from './components/Background'
 import { TrainingList } from './components/TrainingList'
 import { AttendeeLanding } from './components/AttendeeLanding'
 import theme from './theme'
+import Fonts from './fonts'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { TrainerInSession } from './components/TrainerInSession'
 import { Registration } from './components/Registration'
@@ -12,6 +13,7 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+      <Fonts />
       <Background>
         <BrowserRouter>
           <Switch>
