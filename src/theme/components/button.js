@@ -3,14 +3,28 @@ const Button = {
     textTransform: 'uppercase',
     color: '#ffffff',
     height: '32px',
-    fontSize: '14pt',
+    fontSize: '10pt',
     fontWeight: 'bold',
+    paddingInline: '26px',
+    minW: '120px',
     borderRadius: 'full',
     _focus: {
       boxShadow: 'none',
     },
   },
   variants: {
+    'primary-transparent': {
+      bg: 'rgba(255, 255, 255, 0.1)',
+      _hover: {
+        bg: 'rgba(255, 255, 255, 0.2)',
+      },
+      _active: {
+        bg: 'rgba(255, 255, 255, 0.3)',
+      },
+      _focus: {
+        bg: 'rgba(255, 255, 255, 0.3)',
+      },
+    },
     'primary-trueblue': {
       bg: 'blue.600',
       _hover: {
