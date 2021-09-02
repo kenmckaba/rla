@@ -21,6 +21,8 @@ import {
   ModalContent,
   ModalBody,
   useDisclosure,
+  Flex,
+  Spacer,
 } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
@@ -52,9 +54,9 @@ export const TrainingList = () => {
         subscribeToMore(buildSubscription(gql(onUpdateTraining), gql(listTrainings))),
         subscribeToMore(buildSubscription(gql(onDeleteTraining), gql(listTrainings))),
       ]
-      return () => {
+      /*       return () => {
         cleanupFuncs.forEach((func) => func())
-      }
+      } */
     }
   }, [subscribeToMore])
 
@@ -122,8 +124,10 @@ export const TrainingList = () => {
       <Table size="sm">
         <Thead>
           <Tr>
-            <Th w="210px">Scheduled</Th>
-            <Th>Title</Th>
+            <Th color="white" w="210px">
+              Scheduled
+            </Th>
+            <Th color="white">Title</Th>
           </Tr>
         </Thead>
         <Tbody>{children}</Tbody>
@@ -133,15 +137,57 @@ export const TrainingList = () => {
 
   return (
     <Box height="100%" padding="3px" bg="brand.50" borderRadius="20px">
-      <Button size="sm" rightIcon={<AddIcon />} margin="3" onClick={onNewTraining}>
-        Add a training
-      </Button>
-      <Tabs variant="enclosed-colored" background="white">
-        <TabList>
-          <Tab>Upcoming trainings</Tab>
-          <Tab>Completed trainings</Tab>
-        </TabList>
-        <TabPanels>
+      <Tabs variant="solid-rounded">
+        <Flex>
+          <TabList>
+            <Tab
+              textTransform="uppercase"
+              color="#ffffff"
+              height="32px"
+              fontSize="10pt"
+              paddingInline="26px"
+              minW="120px"
+              fontWeight="bold"
+              borderRadius="full"
+              bg="rgba(255, 255, 255, 0.1);"
+              mr="16px"
+              _focus={{
+                boxShadow: 'none',
+              }}
+              _selected={{
+                color: 'darkKnight.700',
+                bg: 'ghost.50',
+              }}
+            >
+              Upcoming training
+            </Tab>
+            <Tab
+              textTransform="uppercase"
+              color="#ffffff"
+              height="32px"
+              fontSize="10pt"
+              paddingInline="26px"
+              minW="120px"
+              fontWeight="bold"
+              borderRadius="full"
+              bg="rgba(255, 255, 255, 0.1);"
+              _focus={{
+                boxShadow: 'none',
+              }}
+              _selected={{
+                color: 'darkKnight.700',
+                bg: 'ghost.50',
+              }}
+            >
+              Completed training
+            </Tab>
+          </TabList>
+          <Spacer />
+          <Button variant="primary-ghost" size="sm" leftIcon={<AddIcon />} onClick={onNewTraining}>
+            New training
+          </Button>
+        </Flex>
+        <TabPanels color="white" bg="rgba(255, 255, 255, 0.1)" mt="2">
           <TabPanel>
             <ListTable>{Trainings({ past: false })}</ListTable>
           </TabPanel>
