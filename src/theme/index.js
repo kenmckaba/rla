@@ -1,5 +1,5 @@
 import { extendTheme } from '@chakra-ui/react'
-
+import Button from './components/button'
 // 37, 57, 94   25, 39, 5e
 const config = {
   initialColorMode: 'dark',
@@ -11,6 +11,7 @@ const config = {
   styles: {
     global: {
       body: {
+        color: 'darkKnight.700',
         bgGradient: 'linear(to-b, #284A83, #396AA1)',
       },
     },
@@ -22,8 +23,8 @@ const config = {
       200: '#bbddf9',
       300: '#8dbcef',
       400: '#5f96e3',
-      500: '#1b6cd1',
-      600: '#3c56c5',
+      500: '#4972d7',
+      600: '#0d62c5',
       700: '#3040a3',
       800: '#212b76',
       900: '#131b4b',
@@ -182,11 +183,7 @@ const config = {
         mt: '1',
       },
     },
-    Button: {
-      defaultProps: {
-        colorScheme: 'blue',
-      },
-    },
+    Button,
   },
 }
 
