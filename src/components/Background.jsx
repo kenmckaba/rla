@@ -1,21 +1,21 @@
 import React from 'react'
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, Spacer, Avatar, Text } from '@chakra-ui/react'
 
 export default function Background({ children }) {
   return (
-    <Flex height="100vh" direction="column">
-      <Flex
-        alignItems="center"
-        h="3rem"
-        minHeight="3rem"
-        bg="brand.500"
-        color="white"
-        paddingLeft="1rem"
-        justifyContent="space-between"
-      >
-        <Box>Verizon Remote Learing Platform - POC</Box>
-      </Flex>
-      <Box height="100vh" padding="10px" bgGradient="linear(to-br, brand.100, brand.500)">
+    <Flex height="100%" minHeight="100vh" direction="column">
+      <Box padding="2em">
+        <Flex mb="8" alignItems="center" justifyContent="space-between">
+          <Box>
+            <Text fontSize="32pt" fontWeight="medium" color="white">
+              Remote Learning Platform
+            </Text>
+          </Box>
+          <Spacer />
+          <Box>
+            <Avatar name="A" bg="rgba(255, 255, 255, 0.1)" />
+          </Box>
+        </Flex>
         {children}
       </Box>
     </Flex>

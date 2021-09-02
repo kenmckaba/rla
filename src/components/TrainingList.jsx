@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { listTrainings } from '../graphql/queries'
 import {
+  Avatar,
+  HStack,
   TabList,
   Tab,
   TabPanel,
@@ -24,7 +26,7 @@ import {
   Flex,
   Spacer,
 } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, CalendarIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
 import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
@@ -54,9 +56,9 @@ export const TrainingList = () => {
         subscribeToMore(buildSubscription(gql(onUpdateTraining), gql(listTrainings))),
         subscribeToMore(buildSubscription(gql(onDeleteTraining), gql(listTrainings))),
       ]
-      /*       return () => {
+      return () => {
         cleanupFuncs.forEach((func) => func())
-      } */
+      }
     }
   }, [subscribeToMore])
 
@@ -113,21 +115,35 @@ export const TrainingList = () => {
 
     return selected.map((training) => (
       <Tr key={training.id} onClick={() => handleTrainingClick(training)} cursor="pointer">
-        <Td>{prettyTime(new Date(Number(training.scheduledTime)))}</Td>
         <Td>{training.title}</Td>
+        <Td>
+          <HStack>
+            <Avatar name="A" bg="rgba(255, 255, 255, 0.1)" />
+            <Avatar name="B" bg="rgba(255, 255, 255, 0.1)" />
+            <Avatar name="C" bg="rgba(255, 255, 255, 0.1)" />
+          </HStack>
+        </Td>
+        <Td></Td>
+        <Td>{prettyTime(new Date(Number(training.scheduledTime)))}</Td>
       </Tr>
     ))
   }
 
   const ListTable = ({ children }) => {
     return (
-      <Table size="sm">
-        <Thead>
+      <Table variant="unstyled">
+        <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
           <Tr>
-            <Th color="white" w="210px">
-              Scheduled
+            <Th width="20%" color="white">
+              Title
             </Th>
-            <Th color="white">Title</Th>
+            <Th width="20%" color="white">
+              Attendee
+            </Th>
+            <Th width="40%" />
+            <Th width="20%" color="white">
+              <CalendarIcon boxSize="1.5em" />
+            </Th>
           </Tr>
         </Thead>
         <Tbody>{children}</Tbody>
@@ -136,7 +152,7 @@ export const TrainingList = () => {
   }
 
   return (
-    <Box height="100%" padding="3px" bg="brand.50" borderRadius="20px">
+    <Box height="100%" padding="3px" borderRadius="20px">
       <Tabs variant="solid-rounded">
         <Flex>
           <TabList>
@@ -183,15 +199,23 @@ export const TrainingList = () => {
             </Tab>
           </TabList>
           <Spacer />
-          <Button variant="primary-ghost" size="sm" leftIcon={<AddIcon />} onClick={onNewTraining}>
+          <Button
+            variant="primary-transparent"
+            size="sm"
+            leftIcon={<AddIcon />}
+            onClick={onNewTraining}
+            fontSize="10pt"
+            fontWeight="bold"
+            minW="170px"
+          >
             New training
           </Button>
         </Flex>
-        <TabPanels color="white" bg="rgba(255, 255, 255, 0.1)" mt="2">
-          <TabPanel>
+        <TabPanels color="white" bg="rgba(255, 255, 255, 0.1)" mt="4">
+          <TabPanel p={0} m={0}>
             <ListTable>{Trainings({ past: false })}</ListTable>
           </TabPanel>
-          <TabPanel>
+          <TabPanel p={0} m={0}>
             <ListTable>{Trainings({ past: true })}</ListTable>
           </TabPanel>
         </TabPanels>
