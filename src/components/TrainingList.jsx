@@ -59,9 +59,9 @@ export const TrainingList = () => {
         subscribeToMore(buildSubscription(gql(onUpdateTraining), gql(listTrainings))),
         subscribeToMore(buildSubscription(gql(onDeleteTraining), gql(listTrainings))),
       ]
-      return () => {
+      /*       return () => {
         cleanupFuncs.forEach((func) => func())
-      }
+      } */
     }
   }, [subscribeToMore])
 
@@ -117,7 +117,14 @@ export const TrainingList = () => {
     }
 
     return selected.map((training) => (
-      <Tr key={training.id} onClick={() => handleTrainingClick(training)} cursor="pointer">
+      <Tr
+        key={training.id}
+        _hover={{
+          bg: 'rgba(255, 255, 255, 0.1)',
+        }}
+        onClick={() => handleTrainingClick(training)}
+        cursor="pointer"
+      >
         <Td>
           <Stat>
             <StatLabel fontWeight="semibold" textTransform="capitalize">
