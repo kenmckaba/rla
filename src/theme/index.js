@@ -11,7 +11,7 @@ const config = {
   styles: {
     global: {
       body: {
-        color: 'darkKnight.700',
+        color: 'white',
         bgGradient: 'linear(to-b, #284A83, #396AA1)',
       },
     },
