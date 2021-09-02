@@ -126,11 +126,9 @@ export const TrainingList = () => {
         }}
         onClick={() => handleTrainingClick(training)}
         onMouseEnter={() => {
-          console.log(trainingHovered)
           setTrainingHovered(training.id)
         }}
         onMouseLeave={() => {
-          console.log(trainingHovered)
           setTrainingHovered(-1)
         }}
         cursor="pointer"
