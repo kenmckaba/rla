@@ -223,7 +223,7 @@ export const TrainingList = () => {
             New training
           </Button>
         </Flex>
-        <TabPanels color="white" bg="rgba(255, 255, 255, 0.1)" mt="4">
+        <TabPanels color="white" borderRadius="5px" bg="rgba(255, 255, 255, 0.1)" mt="4">
           <TabPanel p={0} m={0}>
             <ListTable>{Trainings({ past: false })}</ListTable>
           </TabPanel>
