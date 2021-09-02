@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Spacer, Avatar, Text } from '@chakra-ui/react'
+import { Box, Flex, Spacer, Avatar, Heading } from '@chakra-ui/react'
 
 export default function Background({ children }) {
   return (
@@ -7,9 +7,9 @@ export default function Background({ children }) {
       <Box padding="2em">
         <Flex mb="8" alignItems="center" justifyContent="space-between">
           <Box>
-            <Text fontSize="32pt" fontWeight="medium" color="white">
+            <Heading fontSize="32pt" fontWeight="medium" color="white">
               Remote Learning Platform
-            </Text>
+            </Heading>
           </Box>
           <Spacer />
           <Box>
