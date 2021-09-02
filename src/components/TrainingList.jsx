@@ -36,6 +36,7 @@ import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql
 import { buildSubscription } from 'aws-appsync'
 import { createTraining } from '../graphql/mutations'
 import { prettyTime } from '../pretty-time'
+import { TrainingToolbar } from './Trainings/TrainingToolbar'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -44,6 +45,7 @@ export const TrainingList = () => {
   const { loading, error, data, subscribeToMore } = useQuery(gql(listTrainings))
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const [addTraining] = useMutation(gql(createTraining))
+  const [trainingHovered, setTrainingHovered] = useState(-1)
 
   useEffect(() => {
     if (data) {
@@ -123,6 +125,14 @@ export const TrainingList = () => {
           bg: 'rgba(255, 255, 255, 0.1)',
         }}
         onClick={() => handleTrainingClick(training)}
+        onMouseEnter={() => {
+          console.log(trainingHovered)
+          setTrainingHovered(training.id)
+        }}
+        onMouseLeave={() => {
+          console.log(trainingHovered)
+          setTrainingHovered(-1)
+        }}
         cursor="pointer"
       >
         <Td>
@@ -143,7 +153,13 @@ export const TrainingList = () => {
           </HStack>
         </Td>
         <Td></Td>
-        <Td>{prettyTime(new Date(Number(training.scheduledTime)))}</Td>
+        <Td>
+          {trainingHovered === training.id ? (
+            <TrainingToolbar />
+          ) : (
+            prettyTime(new Date(Number(training.scheduledTime)))
+          )}
+        </Td>
       </Tr>
     ))
   }
