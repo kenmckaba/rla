@@ -75,7 +75,7 @@ const Button = {
         bg: 'martinGrey.300',
       },
     },
-    'secondary-outline': {
+    'secondary-blue-outline': {
       bg: 'transparent',
       color: 'blue.600',
       border: '2px',
@@ -93,6 +93,26 @@ const Button = {
         bg: 'blue.700',
         color: '#ffffff',
         borderColor: 'blue.700',
+      },
+    },
+    'secondary-ghost-outline': {
+      bg: 'transparent',
+      color: 'ghost.100',
+      border: '2px',
+      borderColor: 'ghost.100',
+      _hover: {
+        bg: 'ghost.100',
+        color: 'darkKnight.700',
+      },
+      _active: {
+        bg: 'ghost.100',
+        color: 'darkKnight.700',
+        borderColor: 'ghost.100',
+      },
+      _focus: {
+        bg: 'ghost.100',
+        color: 'darkKnight.700',
+        borderColor: 'ghost.100',
       },
     },
     'tertiary-ghost': {
