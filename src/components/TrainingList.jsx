@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { listTrainings } from '../graphql/queries'
 import {
+  Avatar,
+  HStack,
   TabList,
   Tab,
   TabPanel,
@@ -21,8 +23,13 @@ import {
   ModalContent,
   ModalBody,
   useDisclosure,
+  Flex,
+  Spacer,
+  Stat,
+  StatLabel,
+  StatHelpText,
 } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, CalendarIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
 import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
@@ -111,19 +118,44 @@ export const TrainingList = () => {
 
     return selected.map((training) => (
       <Tr key={training.id} onClick={() => handleTrainingClick(training)} cursor="pointer">
+        <Td>
+          <Stat>
+            <StatLabel fontWeight="semibold" textTransform="capitalize">
+              {training.title}
+            </StatLabel>
+            <StatHelpText fontSize="8pt" textTransform="uppercase">
+              trainer: name
+            </StatHelpText>
+          </Stat>
+        </Td>
+        <Td>
+          <HStack>
+            <Avatar name="A" bg="rgba(255, 255, 255, 0.1)" />
+            <Avatar name="B" bg="rgba(255, 255, 255, 0.1)" />
+            <Avatar name="C" bg="rgba(255, 255, 255, 0.1)" />
+          </HStack>
+        </Td>
+        <Td></Td>
         <Td>{prettyTime(new Date(Number(training.scheduledTime)))}</Td>
-        <Td>{training.title}</Td>
       </Tr>
     ))
   }
 
   const ListTable = ({ children }) => {
     return (
-      <Table size="sm">
-        <Thead>
+      <Table variant="unstyled">
+        <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
           <Tr>
-            <Th w="210px">Scheduled</Th>
-            <Th>Title</Th>
+            <Th width="25%" color="white">
+              Title
+            </Th>
+            <Th width="25%" color="white">
+              Attendee
+            </Th>
+            <Th width="35%" />
+            <Th width="15%" color="white">
+              <CalendarIcon boxSize="1.5em" />
+            </Th>
           </Tr>
         </Thead>
         <Tbody>{children}</Tbody>
@@ -132,20 +164,70 @@ export const TrainingList = () => {
   }
 
   return (
-    <Box height="100%" padding="3px" bg="brand.50" borderRadius="20px">
-      <Button size="sm" rightIcon={<AddIcon />} margin="3" onClick={onNewTraining}>
-        Add a training
-      </Button>
-      <Tabs variant="enclosed-colored" background="white">
-        <TabList>
-          <Tab>Upcoming trainings</Tab>
-          <Tab>Completed trainings</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
+    <Box height="100%" padding="3px" borderRadius="20px">
+      <Tabs variant="solid-rounded">
+        <Flex>
+          <TabList>
+            <Tab
+              textTransform="uppercase"
+              color="#ffffff"
+              height="32px"
+              fontSize="10pt"
+              paddingInline="26px"
+              minW="120px"
+              fontWeight="bold"
+              borderRadius="full"
+              bg="rgba(255, 255, 255, 0.1);"
+              mr="16px"
+              _focus={{
+                boxShadow: 'none',
+              }}
+              _selected={{
+                color: 'darkKnight.700',
+                bg: 'ghost.50',
+              }}
+            >
+              Upcoming training
+            </Tab>
+            <Tab
+              textTransform="uppercase"
+              color="#ffffff"
+              height="32px"
+              fontSize="10pt"
+              paddingInline="26px"
+              minW="120px"
+              fontWeight="bold"
+              borderRadius="full"
+              bg="rgba(255, 255, 255, 0.1);"
+              _focus={{
+                boxShadow: 'none',
+              }}
+              _selected={{
+                color: 'darkKnight.700',
+                bg: 'ghost.50',
+              }}
+            >
+              Completed training
+            </Tab>
+          </TabList>
+          <Spacer />
+          <Button
+            variant="primary-transparent"
+            size="sm"
+            leftIcon={<AddIcon />}
+            onClick={onNewTraining}
+            fontSize="10pt"
+            fontWeight="bold"
+            minW="170px"
+          >
+            New training
+          </Button>
+        </Flex>
+        <TabPanels color="white" borderRadius="5px" bg="rgba(255, 255, 255, 0.1)" mt="4">
+          <TabPanel p={0} m={0}>
             <ListTable>{Trainings({ past: false })}</ListTable>
           </TabPanel>
-          <TabPanel>
+          <TabPanel p={0} m={0}>
             <ListTable>{Trainings({ past: true })}</ListTable>
           </TabPanel>
         </TabPanels>
