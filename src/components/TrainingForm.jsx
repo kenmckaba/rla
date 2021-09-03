@@ -41,6 +41,7 @@ import {
 import { Polls } from './Polls'
 import { AccordionItemCustom } from './AccordionItemCustom'
 import { useRef } from 'react'
+import { AddIcon } from '@chakra-ui/icons'
 
 export const TrainingForm = ({ onClose, trainingId }) => {
   const [title, setTitle] = useState('')
@@ -267,36 +268,26 @@ export const TrainingForm = ({ onClose, trainingId }) => {
             </HStack>
           </AccordionItemCustom>
           <AccordionItemCustom title="Attendees">
-            <FormControl padding="0" mt="10px" mb="2px">
-              <FormLabel fontWeight="bold" textTransform="uppercase">
-                Attendee registration page
-                <Tooltip hasArrow placement="right" label="Copy to clipboard">
-                  <IconButton
-                    size="xs"
-                    marginLeft="8px"
-                    variant="ghost"
-                    icon={<CopyIcon />}
-                    color="black"
-                    onClick={onCopy}
-                  ></IconButton>
-                </Tooltip>
-              </FormLabel>
-              <Box
-                borderRadius="6px"
-                pl="16px"
-                fontSize="12"
-                border="1px solid #e2e8f0"
-                whiteSpace="nowrap"
-                overflow="hidden"
-                textOverflow="ellipsis"
-              >
-                <Link href={regLink.current} isExternal>
-                  {window.location.href}registration/{trainingId}
-                  <ExternalLinkIcon m="2px" />
-                </Link>
-              </Box>
+            <FormControl>
+              <HStack px={4} py={2}>
+                <FormLabel flex="1" textDecoration="underline" textTransform="uppercase">
+                  <Link color="blue.600" href={regLink.current} isExternal>
+                    Attendee registration page <ExternalLinkIcon mb="2px" />
+                  </Link>
+                </FormLabel>
+                <Button
+                  flex="1"
+                  maxWidth="140px"
+                  size="xs"
+                  leftIcon={<AddIcon />}
+                  variant="primary-trueblue"
+                  onClick={() => handleOpenAttendee()}
+                >
+                  Add attendee
+                </Button>
+              </HStack>
             </FormControl>
-            <AttendeeList attendees={attendees} updateAttendee={handleOpenAttendee} />
+            <AttendeeList attendees={attendees} />
           </AccordionItemCustom>
           <AccordionItemCustom title="Polls">
             <Polls trainingId={trainingId} polls={polls} />
