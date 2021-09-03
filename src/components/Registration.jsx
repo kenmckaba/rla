@@ -13,6 +13,7 @@ import {
   ModalBody,
   useDisclosure,
   Flex,
+  Center,
 } from '@chakra-ui/react'
 import { getTraining } from '../graphql/queries'
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -77,44 +78,52 @@ export const Registration = ({
 
   return (
     <>
-      <VStack padding="3" background="white" borderRadius="20px" alignItems="flex-start">
-        <Box fontWeight="bold">Training registration form:</Box>
-        <Box>Title: {training.title}</Box>
-        {training.description && <Box>{training.description}</Box>}
-        <Box>Start time: {prettyTime(new Date(Number(training.scheduledTime)))}</Box>; ;
-        <FormControl>
-          <FormLabel>Your name</FormLabel>
-          <Input fontSize="12" value={attendeeName} onChange={onChangeAttendeeName} h="24px" />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Email address</FormLabel>
-          <Input fontSize="12" value={attendeeEmail} onChange={onChangeAttendeeEmail} h="24px" />
-        </FormControl>
-        <Button size="md" onClick={handleSubmit}>
-          Save
-        </Button>
-      </VStack>
+      <Center w="100%" h="100%">
+        <VStack
+          fontFamily="heading"
+          padding="8"
+          bg="rgba(255, 255, 255, 0.1)"
+          borderRadius="md"
+          alignItems="flex-start"
+        >
+          <Box fontWeight="bold">Training registration form:</Box>
+          <Box>Title: {training.title}</Box>
+          {training.description && <Box>{training.description}</Box>}
+          <Box>Start time: {prettyTime(new Date(Number(training.scheduledTime)))}</Box>; ;
+          <FormControl>
+            <FormLabel>Your name</FormLabel>
+            <Input fontSize="12" value={attendeeName} onChange={onChangeAttendeeName} h="24px" />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Email address</FormLabel>
+            <Input fontSize="12" value={attendeeEmail} onChange={onChangeAttendeeEmail} h="24px" />
+          </FormControl>
+          <Button size="md" onClick={handleSubmit}>
+            Save
+          </Button>
+        </VStack>
 
-      <Modal isOpen={isModalOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent height="300px">
-          <ModalHeader>
-            <Flex justifyContent="center">Thanks for registering!</Flex>
-          </ModalHeader>
-          <ModalBody>
-            <Box justifyContent="center" textAlign="center">
-              <Box paddingBottom="10px">
-                You will soon receive an email with a link you can use to join the training at the
-                scheduled time.
+        <Modal isOpen={isModalOpen} scrollBehavior="inside">
+          <ModalOverlay />
+          <ModalContent height="300px">
+            <ModalHeader>
+              <Flex justifyContent="center">Thanks for registering!</Flex>
+            </ModalHeader>
+            <ModalBody>
+              <Box justifyContent="center" textAlign="center">
+                <Box paddingBottom="10px">
+                  You will soon receive an email with a link you can use to join the training at the
+                  scheduled time.
+                </Box>
+                <Box paddingBottom="10px">Use this link to change or delete your registration.</Box>
+                <a target="_blank" rel="noreferrer" href={`/registration-update/${attendeeId}`}>
+                  {window.location.href}registration-update/{attendeeId}
+                </a>
               </Box>
-              <Box paddingBottom="10px">Use this link to change or delete your registration.</Box>
-              <a target="_blank" rel="noreferrer" href={`/registration-update/${attendeeId}`}>
-                {window.location.href}registration-update/{attendeeId}
-              </a>
-            </Box>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </Center>
     </>
   )
 }
