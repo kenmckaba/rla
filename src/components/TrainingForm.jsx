@@ -328,8 +328,10 @@ export const TrainingForm = ({ onClose, trainingId }) => {
       <Modal variant="primary-transparent" isOpen={isModalOpen} scrollBehavior="inside">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{currentAttendee ? 'Attendee' : 'New Attendee'}</ModalHeader>
-          <ModalBody>
+          <ModalHeader color="darkKnight.700">
+            {currentAttendee ? 'Attendee' : 'New Attendee'}
+          </ModalHeader>
+          <ModalBody color="darkKnight.700">
             <AttendeeForm
               trainingId={trainingId}
               onClose={onAttendeeClose}
