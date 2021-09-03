@@ -234,6 +234,38 @@ export const TrainingForm = ({ onClose, trainingId }) => {
           />
         </FormControl>
         <Accordion width="100%" mt={2} allowToggle>
+          <AccordionItemCustom title="BlueJeans meeting">
+            <HStack mt="3">
+              <FormControl isRequired>
+                <FormLabel fontWeight="bold" textTransform="uppercase">
+                  BlueJeans meeting ID
+                </FormLabel>
+                <Input fontSize="12" value={meetingId} onChange={onChangeMeetingId} h="24px" />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel fontWeight="bold" textTransform="uppercase">
+                  Moderator passcode
+                </FormLabel>
+                <Input
+                  fontSize="12"
+                  value={moderatorPasscode}
+                  onChange={onChangeModeratorPasscode}
+                  h="24px"
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel fontWeight="bold" textTransform="uppercase">
+                  Participant passcode
+                </FormLabel>
+                <Input
+                  fontSize="12"
+                  value={participantPasscode}
+                  onChange={onChangeParticipantPasscode}
+                  h="24px"
+                />
+              </FormControl>
+            </HStack>
+          </AccordionItemCustom>
           <AccordionItemCustom title="Attendees">
             <FormControl padding="0" mt="10px" mb="2px">
               <FormLabel fontWeight="bold" textTransform="uppercase">
@@ -268,38 +300,6 @@ export const TrainingForm = ({ onClose, trainingId }) => {
           </AccordionItemCustom>
           <AccordionItemCustom title="Polls">
             <Polls trainingId={trainingId} polls={polls} />
-          </AccordionItemCustom>
-          <AccordionItemCustom title="BlueJeans meeting">
-            <HStack mt="3">
-              <FormControl isRequired>
-                <FormLabel fontWeight="bold" textTransform="uppercase">
-                  BlueJeans meeting ID
-                </FormLabel>
-                <Input fontSize="12" value={meetingId} onChange={onChangeMeetingId} h="24px" />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel fontWeight="bold" textTransform="uppercase">
-                  Moderator passcode
-                </FormLabel>
-                <Input
-                  fontSize="12"
-                  value={moderatorPasscode}
-                  onChange={onChangeModeratorPasscode}
-                  h="24px"
-                />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel fontWeight="bold" textTransform="uppercase">
-                  Participant passcode
-                </FormLabel>
-                <Input
-                  fontSize="12"
-                  value={participantPasscode}
-                  onChange={onChangeParticipantPasscode}
-                  h="24px"
-                />
-              </FormControl>
-            </HStack>
           </AccordionItemCustom>
         </Accordion>
       </Box>
