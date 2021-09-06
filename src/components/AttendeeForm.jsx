@@ -62,21 +62,35 @@ export const AttendeeForm = ({ trainingId, onClose, attendee = emptyAttendee }) 
     <>
       <Box>
         <FormControl pb="5" isRequired>
-          <FormLabel>Name</FormLabel>
-          <Input type="text" value={name} onChange={onChangeName} />
+          <FormLabel fontWeight="bold" textTransform="capitalize">
+            Name
+          </FormLabel>
+          <Input
+            placeholder="Type first & last name here"
+            type="text"
+            value={name}
+            onChange={onChangeName}
+          />
         </FormControl>
 
         <FormControl pb="5" isRequired>
-          <FormLabel>Email address</FormLabel>
-          <Input type="email" value={email} onChange={onChangeEmail} />
+          <FormLabel color="darkKnight.700" fontWeight="bold" textTransform="capitalize">
+            Email address
+          </FormLabel>
+          <Input
+            placeholder="Type email address here"
+            type="email"
+            value={email}
+            onChange={onChangeEmail}
+          />
         </FormControl>
       </Box>
-      <HStack float="right" mt="3" mb="3">
-        <Button size="md" onClick={handleSubmit}>
-          Save
-        </Button>
-        <Button size="md" variant="outline" onClick={handleCancel}>
+      <HStack spacing="3" marginBlock="3">
+        <Button w="100%" size="md" variant="outline" onClick={handleCancel}>
           Cancel
+        </Button>
+        <Button w="100%" size="md" onClick={handleSubmit}>
+          Save
         </Button>
       </HStack>
     </>
