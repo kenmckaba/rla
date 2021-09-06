@@ -8,19 +8,26 @@ import {
 
 export const AccordionItemCustom = ({ title, children }) => {
   return (
-    <AccordionItem border="none" mt="3px">
+    <AccordionItem border="none" mt="2">
       <AccordionButton
-        height="26px"
         borderWidth="1px"
-        borderRadius="4px"
-        borderColor="rgb(226, 232, 240)"
+        borderRadius="lg"
+        borderColor="darkKnight.900"
+        _expanded={{ borderBottom: '0', borderBottomRadius: 0 }}
       >
-        <Box flex="1" fontSize="12px" fontWeight="500" textAlign="left">
+        <Box fontWeight="semibold" flex="1" fontSize="10pt" textAlign="left">
           {title}
         </Box>
         <AccordionIcon />
       </AccordionButton>
-      <AccordionPanel padding="0" pb={4}>
+      <AccordionPanel
+        p={0}
+        borderWidth="1px"
+        borderRadius="lg"
+        borderColor="darkKnight.900"
+        borderTop="0"
+        borderTopRadius="0"
+      >
         {children}
       </AccordionPanel>
     </AccordionItem>

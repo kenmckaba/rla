@@ -6,6 +6,7 @@ import {
   FormLabel,
   HStack,
   Box,
+  Flex,
   Modal,
   ModalOverlay,
   ModalHeader,
@@ -17,6 +18,9 @@ import {
   IconButton,
   Tooltip,
   useClipboard,
+  Spacer,
+  Text,
+  Heading,
 } from '@chakra-ui/react'
 import { getTraining } from '../graphql/queries'
 import { useMutation, gql, useQuery } from '@apollo/client'
@@ -37,6 +41,7 @@ import {
 import { Polls } from './Polls'
 import { AccordionItemCustom } from './AccordionItemCustom'
 import { useRef } from 'react'
+import { AddIcon } from '@chakra-ui/icons'
 
 export const TrainingForm = ({ onClose, trainingId }) => {
   const [title, setTitle] = useState('')
@@ -84,9 +89,9 @@ export const TrainingForm = ({ onClose, trainingId }) => {
         subscribeToMore(buildSubscription(gql(onCreatePoll), gql(getTraining))),
         subscribeToMore(buildSubscription(gql(onDeletePoll), gql(getTraining))),
       ]
-      return () => {
+      /*       return () => {
         cleanupFuncs.forEach((func) => func())
-      }
+      } */
     }
   }, [subscribeToMore])
 
@@ -191,27 +196,38 @@ export const TrainingForm = ({ onClose, trainingId }) => {
     <>
       <Box>
         <FormControl isRequired>
-          <FormLabel mt="0">Title</FormLabel>
-          <Input fontSize="12" value={title} onChange={onChangeTitle} h="24px" />
+          <FormLabel fontWeight="bold" textTransform="uppercase" mt="0">
+            Title
+          </FormLabel>
+          <Input variant="filled" value={title} onChange={onChangeTitle} placeholder="Type here" />
         </FormControl>
         <FormControl>
-          <FormLabel>Description</FormLabel>
+          <FormLabel fontWeight="bold" textTransform="uppercase">
+            Description
+          </FormLabel>
           <Input
-            fontSize="12"
+            variant="filled"
             value={description}
             onChange={onChangeDescription}
-            h="24px"
-            placeholder="optional"
+            placeholder="Optional"
           />
         </FormControl>
         <FormControl isRequired>
-          <FormLabel>Trainer name</FormLabel>
-          <Input fontSize="12" value={trainerName} onChange={onChangeTrainerName} h="24px" />
+          <FormLabel fontWeight="bold" textTransform="uppercase">
+            Trainer
+          </FormLabel>
+          <Input
+            variant="filled"
+            value={trainerName}
+            onChange={onChangeTrainerName}
+            placeholder="First & Last Name"
+          />
         </FormControl>
         <FormControl isRequired>
-          <FormLabel>Date & Time</FormLabel>
+          <FormLabel fontWeight="bold" textTransform="uppercase">
+            Date & Time
+          </FormLabel>
           <DatePicker
-            fontSize="12"
             selected={scheduledTime}
             onChange={(date) => onChangeScheduledFor(date)}
             showTimeSelect
@@ -219,55 +235,18 @@ export const TrainingForm = ({ onClose, trainingId }) => {
           />
         </FormControl>
         <Accordion width="100%" mt={2} allowToggle>
-          <AccordionItemCustom
-            title={
-              <Box flex="1" fontSize="12px" fontWeight="500" textAlign="left">
-                Attendees
-              </Box>
-            }
-          >
-            <FormControl padding="0" mt="10px" mb="2px">
-              <FormLabel>
-                Attendee registration page
-                <Tooltip hasArrow placement="right" label="Copy to clipboard">
-                  <IconButton
-                    size="xs"
-                    marginLeft="8px"
-                    variant="ghost"
-                    icon={<CopyIcon />}
-                    color="black"
-                    onClick={onCopy}
-                  ></IconButton>
-                </Tooltip>
-              </FormLabel>
-              <Box
-                borderRadius="6px"
-                pl="16px"
-                fontSize="12"
-                border="1px solid #e2e8f0"
-                whiteSpace="nowrap"
-                overflow="hidden"
-                textOverflow="ellipsis"
-              >
-                <Link href={regLink.current} isExternal>
-                  {window.location.href}registration/{trainingId}
-                  <ExternalLinkIcon m="2px" />
-                </Link>
-              </Box>
-            </FormControl>
-            <AttendeeList attendees={attendees} updateAttendee={handleOpenAttendee} />
-          </AccordionItemCustom>
-          <AccordionItemCustom title="Polls">
-            <Polls trainingId={trainingId} polls={polls} />
-          </AccordionItemCustom>
           <AccordionItemCustom title="BlueJeans meeting">
             <HStack mt="3">
               <FormControl isRequired>
-                <FormLabel>BlueJeans meeting ID</FormLabel>
+                <FormLabel fontWeight="bold" textTransform="uppercase">
+                  BlueJeans meeting ID
+                </FormLabel>
                 <Input fontSize="12" value={meetingId} onChange={onChangeMeetingId} h="24px" />
               </FormControl>
               <FormControl isRequired>
-                <FormLabel>Moderator passcode</FormLabel>
+                <FormLabel fontWeight="bold" textTransform="uppercase">
+                  Moderator passcode
+                </FormLabel>
                 <Input
                   fontSize="12"
                   value={moderatorPasscode}
@@ -276,7 +255,9 @@ export const TrainingForm = ({ onClose, trainingId }) => {
                 />
               </FormControl>
               <FormControl isRequired>
-                <FormLabel>Participant passcode</FormLabel>
+                <FormLabel fontWeight="bold" textTransform="uppercase">
+                  Participant passcode
+                </FormLabel>
                 <Input
                   fontSize="12"
                   value={participantPasscode}
@@ -286,9 +267,34 @@ export const TrainingForm = ({ onClose, trainingId }) => {
               </FormControl>
             </HStack>
           </AccordionItemCustom>
+          <AccordionItemCustom title="Attendees">
+            <FormControl>
+              <HStack px={4} py={2}>
+                <FormLabel flex="1" textDecoration="underline" textTransform="uppercase">
+                  <Link color="blue.600" href={regLink.current} isExternal>
+                    Attendee registration page <ExternalLinkIcon mb="2px" />
+                  </Link>
+                </FormLabel>
+                <Button
+                  flex="1"
+                  maxWidth="140px"
+                  size="xs"
+                  leftIcon={<AddIcon />}
+                  variant="primary-trueblue"
+                  onClick={() => handleOpenAttendee()}
+                >
+                  Add attendee
+                </Button>
+              </HStack>
+            </FormControl>
+            <AttendeeList attendees={attendees} />
+          </AccordionItemCustom>
+          <AccordionItemCustom title="Polls">
+            <Polls trainingId={trainingId} polls={polls} />
+          </AccordionItemCustom>
         </Accordion>
       </Box>
-      <Button
+      {/*       <Button
         position="relative"
         top="20px"
         size="sm"
@@ -309,17 +315,17 @@ export const TrainingForm = ({ onClose, trainingId }) => {
       >
         Delete
       </Button>
-
-      <HStack float="right" mt="3" mb="3">
-        <Button size="md" onClick={handleSubmit} isDisabled={missingFields()}>
-          Save
-        </Button>
-        <Button size="md" variant="outline" onClick={handleCancel}>
+ */}
+      <HStack spacing="3" marginBlock="3">
+        <Button w="100%" size="md" variant="outline" onClick={handleCancel}>
           Cancel
+        </Button>
+        <Button w="100%" size="md" onClick={handleSubmit} isDisabled={missingFields()}>
+          Save
         </Button>
       </HStack>
 
-      <Modal isOpen={isModalOpen} scrollBehavior="inside">
+      <Modal variant="primary-transparent" isOpen={isModalOpen} scrollBehavior="inside">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{currentAttendee ? 'Attendee' : 'New Attendee'}</ModalHeader>

@@ -124,7 +124,6 @@ export const TrainingList = () => {
         _hover={{
           bg: 'rgba(255, 255, 255, 0.1)',
         }}
-        onClick={() => handleTrainingClick(training)}
         onMouseEnter={() => {
           setTrainingHovered(training.id)
         }}
@@ -153,7 +152,7 @@ export const TrainingList = () => {
         <Td></Td>
         <Td>
           {trainingHovered === training.id ? (
-            <TrainingToolbar />
+            <TrainingToolbar editTraining={() => handleTrainingClick(training)} />
           ) : (
             prettyTime(new Date(Number(training.scheduledTime)))
           )}
@@ -256,7 +255,7 @@ export const TrainingList = () => {
 
       <Modal isOpen={isModalOpen} scrollBehavior="inside">
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent color="darkKnight.700">
           <ModalHeader>{newTraining ? 'New Training' : 'Update Training'}</ModalHeader>
           <ModalBody>
             <TrainingForm onClose={onModalClose} trainingId={currentTraining?.id} />
