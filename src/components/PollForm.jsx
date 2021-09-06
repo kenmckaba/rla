@@ -9,6 +9,7 @@ import {
   RadioGroup,
   Radio,
   Flex,
+  Select,
   IconButton,
 } from '@chakra-ui/react'
 import { useMutation, gql } from '@apollo/client'
@@ -20,7 +21,7 @@ const MultiChoice = 'MULTICHOICE'
 
 export const PollForm = ({ trainingId, onClose, poll }) => {
   const [question, setQuestion] = useState(poll?.question || '')
-  const [answers, setAnswers] = useState(poll?.answers || ['', ''])
+  const [answers, setAnswers] = useState(poll?.answers || [''])
   const [type, setType] = useState(poll?.type || SingleChoice)
 
   const [addNewPoll, { error }] = useMutation(gql(createPoll))
@@ -94,11 +95,21 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
     <>
       <Box>
         <FormControl pb={1} isRequired>
-          <FormLabel>Question</FormLabel>
-          <Input type="text" value={question} onChange={onChangeQuestion} />
+          <FormLabel fontWeight="bold" textTransform="uppercase">
+            Question
+          </FormLabel>
+          <Input
+            variant="filled"
+            placeholder="Type question here"
+            type="text"
+            value={question}
+            onChange={onChangeQuestion}
+          />
         </FormControl>
         <FormControl pb={1} isRequired>
-          <FormLabel>Poll type</FormLabel>
+          <FormLabel fontWeight="bold" textTransform="uppercase">
+            Poll type
+          </FormLabel>
           <Flex
             justifyContent="center"
             alignItems="center"
@@ -106,30 +117,30 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
             borderRadius="4px"
             height="36px"
           >
-            <RadioGroup onChange={setType} value={type}>
-              <HStack direction="row">
-                <Radio value={SingleChoice}>Single choice</Radio>
-                <Radio value={MultiChoice}>Multiple choice</Radio>
-              </HStack>
-            </RadioGroup>
+            <Select onChange={(e) => setType(e.target.value)} value={type}>
+              <option value={SingleChoice}>Single choice</option>
+              <option value={MultiChoice}>Multiple choice</option>
+            </Select>
           </Flex>
         </FormControl>
         <FormControl pb={1} isRequired>
-          <FormLabel>Answers</FormLabel>
+          <FormLabel fontWeight="bold" textTransform="uppercase">
+            Answers
+          </FormLabel>
           <Box
             justifyContent="center"
             alignItems="center"
-            border="1px solid lightgrey"
-            borderRadius="4px"
             height="fit-content"
             padding="4px"
+            marginBottom="2"
           >
             {answers.map((answer, index) => {
               return (
                 <Input
+                  variant="filled"
+                  placeholder="Type answer here"
                   key={index}
-                  height="24px"
-                  marginBottom="2px"
+                  marginBottom="2"
                   value={answer}
                   onChange={(e) => {
                     onChangeAnswer(index, e)
@@ -137,22 +148,24 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
                 />
               )
             })}
-            <IconButton
-              onClick={addAnswer}
-              size="xs"
-              icon={<AddIcon />}
-              variant="outline"
-              borderRadius="6px"
-            ></IconButton>
           </Box>
+          <Button
+            minW="128px"
+            size="xs"
+            leftIcon={<AddIcon />}
+            variant="primary-trueblue"
+            onClick={addAnswer}
+          >
+            Add answer
+          </Button>
         </FormControl>
       </Box>
-      <HStack float="right" mt="3" mb="3">
-        <Button size="md" onClick={handleSubmit}>
-          Save
-        </Button>
-        <Button size="md" variant="outline" onClick={handleCancel}>
+      <HStack spacing="3" marginBlock="3">
+        <Button w="100%" size="md" variant="outline" onClick={handleCancel}>
           Cancel
+        </Button>
+        <Button w="100%" size="md" onClick={handleSubmit}>
+          Save
         </Button>
       </HStack>
     </>
