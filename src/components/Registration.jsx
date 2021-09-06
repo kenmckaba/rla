@@ -6,6 +6,7 @@ import {
   FormLabel,
   Box,
   VStack,
+  HStack,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -14,6 +15,9 @@ import {
   useDisclosure,
   Flex,
   Center,
+  Stat,
+  StatLabel,
+  StatHelpText,
 } from '@chakra-ui/react'
 import { getTraining } from '../graphql/queries'
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -78,52 +82,89 @@ export const Registration = ({
 
   return (
     <>
-      <Center w="100%" h="100%">
-        <VStack
-          fontFamily="heading"
-          padding="8"
-          bg="rgba(255, 255, 255, 0.1)"
-          borderRadius="md"
-          alignItems="flex-start"
-        >
-          <Box fontWeight="bold">Training registration form:</Box>
-          <Box>Title: {training.title}</Box>
-          {training.description && <Box>{training.description}</Box>}
-          <Box>Start time: {prettyTime(new Date(Number(training.scheduledTime)))}</Box>; ;
-          <FormControl>
-            <FormLabel>Your name</FormLabel>
-            <Input fontSize="12" value={attendeeName} onChange={onChangeAttendeeName} h="24px" />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Email address</FormLabel>
-            <Input fontSize="12" value={attendeeEmail} onChange={onChangeAttendeeEmail} h="24px" />
-          </FormControl>
-          <Button size="md" onClick={handleSubmit}>
-            Save
-          </Button>
-        </VStack>
+      <Box w="100%" h="100%">
+        <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
+          <VStack
+            fontFamily="heading"
+            padding="8"
+            width="100%"
+            maxWidth="720px"
+            bg="rgba(255, 255, 255, 0.1)"
+            borderRadius="md"
+            alignItems="flex-start"
+          >
+            <Box textTransform="uppercase" fontWeight="thin" fontSize="0.75em">
+              Training registration form:
+            </Box>
+            <Box paddingBottom="4">
+              <Stat textTransform="capitalize" fontWeight="bold">
+                <StatLabel fontSize="2em">{training.title}</StatLabel>
+                <StatHelpText fontSize="0.875em">
+                  {prettyTime(new Date(Number(training.scheduledTime)))}
+                </StatHelpText>
+              </Stat>
+            </Box>
+            {/* {training.description && <Box>{training.description}</Box>} */}
+            <FormControl>
+              <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                Your name
+              </FormLabel>
+              <Input
+                variant="filled"
+                fontSize="0.75em"
+                placeholder="Type your name here"
+                value={attendeeName}
+                onChange={onChangeAttendeeName}
+                h="8"
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                Email address
+              </FormLabel>
+              <Input
+                variant="filled"
+                fontSize="0.75em"
+                placeholder="Type your email here"
+                value={attendeeEmail}
+                onChange={onChangeAttendeeEmail}
+                h="8"
+              />
+            </FormControl>
+            <HStack w="100%" spacing="3" paddingTop="3">
+              <Button w="100%" size="md" variant="secondary-ghost-outline">
+                Cancel
+              </Button>
+              <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
+                Save
+              </Button>
+            </HStack>
+          </VStack>
 
-        <Modal isOpen={isModalOpen} scrollBehavior="inside">
-          <ModalOverlay />
-          <ModalContent height="300px">
-            <ModalHeader>
-              <Flex justifyContent="center">Thanks for registering!</Flex>
-            </ModalHeader>
-            <ModalBody>
-              <Box justifyContent="center" textAlign="center">
-                <Box paddingBottom="10px">
-                  You will soon receive an email with a link you can use to join the training at the
-                  scheduled time.
+          <Modal isOpen={isModalOpen} scrollBehavior="inside">
+            <ModalOverlay />
+            <ModalContent height="300px">
+              <ModalHeader>
+                <Flex justifyContent="center">Thanks for registering!</Flex>
+              </ModalHeader>
+              <ModalBody>
+                <Box justifyContent="center" textAlign="center">
+                  <Box paddingBottom="10px">
+                    You will soon receive an email with a link you can use to join the training at
+                    the scheduled time.
+                  </Box>
+                  <Box paddingBottom="10px">
+                    Use this link to change or delete your registration.
+                  </Box>
+                  <a target="_blank" rel="noreferrer" href={`/registration-update/${attendeeId}`}>
+                    {window.location.href}registration-update/{attendeeId}
+                  </a>
                 </Box>
-                <Box paddingBottom="10px">Use this link to change or delete your registration.</Box>
-                <a target="_blank" rel="noreferrer" href={`/registration-update/${attendeeId}`}>
-                  {window.location.href}registration-update/{attendeeId}
-                </a>
-              </Box>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      </Center>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        </Flex>
+      </Box>
     </>
   )
 }
