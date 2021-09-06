@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Table, Tr, Th, Td, Tbody, Thead, Button, Flex, useDisclosure } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, EditIcon } from '@chakra-ui/icons'
 import { PollModal } from './PollModal'
 
 export const Polls = ({ trainingId, polls }) => {
@@ -19,17 +19,6 @@ export const Polls = ({ trainingId, polls }) => {
 
   return (
     <>
-      <Flex marginLeft="12px" marginTop="3px" justifyContent="space-between" float="right">
-        <Button
-          size="xs"
-          marginRight="3px"
-          rightIcon={<AddIcon />}
-          variant="outline"
-          onClick={addPoll}
-        >
-          Add a poll
-        </Button>
-      </Flex>
       <Table size="sm">
         <Thead>
           <Tr>
@@ -37,6 +26,11 @@ export const Polls = ({ trainingId, polls }) => {
               Question
             </Th>
             <Th pb="0">Completed</Th>
+            <Th>
+              <Button size="xs" leftIcon={<AddIcon />} variant="primary-trueblue" onClick={addPoll}>
+                Add a poll
+              </Button>
+            </Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -53,6 +47,20 @@ export const Polls = ({ trainingId, polls }) => {
                   </Td>
                   <Td fontSize="12" paddingLeft="16px">
                     {poll.startedAt ? '✅' : ''}
+                  </Td>
+                  <Td>
+                    <Button
+                      leftIcon={<EditIcon />}
+                      variant="outline"
+                      float="right"
+                      color="lightslategray"
+                      disabled
+                      size="xs"
+                      height="14px"
+                      // onClick={(e) => editPoll(poll)}
+                    >
+                      Edit
+                    </Button>
                   </Td>
                 </Tr>
               )
