@@ -9,6 +9,8 @@ import {
   AccordionIcon,
   Tr,
   Td,
+  Thead,
+  Th,
 } from '@chakra-ui/react'
 import { useMemo } from 'react'
 import { AttendeeItem } from './AttendeeItem'
@@ -29,15 +31,21 @@ export const ClassRoster = ({ attendees }) => {
 
   return (
     <Accordion allowMultiple width="100%" defaultIndex={0} allowToggle>
-      <AccordionItem border="none">
-        <AccordionButton padding="0px">
-          <Box flex="1" textAlign="left" fontWeight="bold">
-            Class roster
+      <AccordionItem p={0} m={0} border="none">
+        <AccordionButton p="2">
+          <Box marginLeft="2" flex="1" textAlign="left" fontWeight="semibold" fontSize="0.9em">
+            Attendees
           </Box>
           <AccordionIcon />
         </AccordionButton>
-        <AccordionPanel padding="0" pb={4}>
+        <AccordionPanel marginTop="4" padding="0" pb={4}>
           <Table size="sm" width="100%" margin="0">
+            <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
+              <Tr>
+                <Th color="white">Name</Th>
+                <Th color="white">Completed</Th>
+              </Tr>
+            </Thead>
             <Tbody>{Attendees}</Tbody>
           </Table>
         </AccordionPanel>

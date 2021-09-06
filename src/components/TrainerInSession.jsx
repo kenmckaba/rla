@@ -18,6 +18,13 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Tr,
+  Td,
+  Thead,
+  Th,
+  Table,
+  Tbody,
+  Text,
 } from '@chakra-ui/react'
 import { updateTraining } from '../graphql/mutations'
 import { useState } from 'react'
@@ -119,9 +126,9 @@ export const TrainerInSession = ({
         subscribeToMore(buildSubscription(gql(onCreatePoll), gql(getTraining))),
         subscribeToMore(buildSubscription(gql(onDeletePoll), gql(getTraining))),
       ]
-      return () => {
+      /*       return () => {
         cleanupFuncs.forEach((func) => func())
-      }
+      } */
     }
   }, [subscribeToMore])
 
@@ -200,37 +207,66 @@ export const TrainerInSession = ({
 
   return (
     <>
-      <HStack align="left">
-        <VStack align="left" width="250px" minWidth="250px">
-          <Box background="white" borderRadius="16px" padding="8px">
-            <Box fontWeight="bold">Training: {training.title}</Box>
-            <Box>Description: {training.description}</Box>
+      <HStack bg="white" w="100%" h="100%" minH="100vh" alignItems="start">
+        <VStack
+          pos="absolute"
+          bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
+          opacity="85%"
+          align="left"
+          width="250px"
+          h="100%"
+          p="4"
+          minWidth="400px"
+        >
+          <Box borderRadius="16px" padding="8px">
+            <Box fontSize="1em" fontWeight="bold" textTransform="capitalize">
+              {training.title}
+            </Box>
+            <Box marginTop="1" fontSize="0.66em">
+              {training.description}
+            </Box>
           </Box>
-          <Box align="start" background="white" borderRadius="16px" padding="8px" fontWeight="600">
+          <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
             <ClassRoster attendees={attendees} />
           </Box>
-          <Box align="start" background="white" borderRadius="16px" padding="8px" fontWeight="600">
+          <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
             <Accordion allowMultiple width="100%" allowToggle>
-              <AccordionItem border="none">
-                <AccordionButton padding="0px">
-                  <Box flex="1" textAlign="left" fontWeight="bold">
+              <AccordionItem p={0} m={0} border="none">
+                <AccordionButton p="2">
+                  <Box
+                    marginLeft="2"
+                    flex="1"
+                    textAlign="left"
+                    fontWeight="semibold"
+                    fontSize="0.9em"
+                  >
                     Polls
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
                 <AccordionPanel padding="0" pb={4}>
                   <Box>
-                    {Polls}
-                    <Button
-                      size="xs"
-                      variant="outline"
-                      float="right"
-                      mt="3px"
-                      onClick={addAPoll}
-                      rightIcon={<AddIcon />}
-                    >
-                      Add a poll
-                    </Button>
+                    <Table size="sm" width="100%" margin="0">
+                      <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
+                        <Tr>
+                          <Th color="white">Question</Th>
+                          <Th color="white">Completed</Th>
+                          <Th />
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {Polls}
+                        <Tr>
+                          <Td colSpan="3">
+                            <Button size="xs" variant="unstyled" onClick={addAPoll}>
+                              <Text textTransform="capitalize" fontWeight="thin">
+                                + Add poll
+                              </Text>
+                            </Button>
+                          </Td>
+                        </Tr>
+                      </Tbody>
+                    </Table>
                   </Box>
                 </AccordionPanel>
               </AccordionItem>

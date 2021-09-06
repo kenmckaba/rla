@@ -50,7 +50,7 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
   return (
     <>
       {isModerator && (
-        <FormControl backgroundColor="white" borderRadius="5px" p="5px">
+        <FormControl borderRadius="5px" p="5px">
           <Box marginLeft="5px">
             <Checkbox size="sm" onChange={shareScreen} isChecked={!!bjnSharingScreen}>
               Share my screen
@@ -58,7 +58,7 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
           </Box>
         </FormControl>
       )}
-      <FormControl backgroundColor="white" borderRadius="5px" p="5px" paddingTop="0">
+      <FormControl borderRadius="5px" p="5px" paddingTop="0">
         <Checkbox
           size="sm"
           onChange={muteMic}
@@ -74,7 +74,7 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
           changeSelection={bjnApi.selectMicrophone}
         />
       </FormControl>
-      <FormControl backgroundColor="white" borderRadius="5px" p="5px" paddingTop="0">
+      <FormControl borderRadius="5px" p="5px" paddingTop="0">
         <Box fontSize="14px" paddingLeft="5px">
           Webcam layout
         </Box>
@@ -84,7 +84,7 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
           })}
         </Select>
       </FormControl>
-      <FormControl backgroundColor="white" borderRadius="5px" p="5px" paddingTop="0">
+      <FormControl borderRadius="5px" p="5px" paddingTop="0">
         <Checkbox
           size="sm"
           onChange={muteCam}
