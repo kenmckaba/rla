@@ -8,6 +8,8 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Tr,
+  Td,
 } from '@chakra-ui/react'
 import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
@@ -35,9 +37,9 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
         subscribeToMore(buildSubscription(gql(onUpdatePoll), gql(getPoll))),
         subscribeToMore(buildSubscription(gql(onCreatePollResponse), gql(getPoll))),
       ]
-      return () => {
+      /*       return () => {
         cleanupFuncs.forEach((func) => func())
-      }
+      } */
     }
   }, [subscribeToMore])
 
@@ -109,51 +111,57 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
   }
 
   return (
-    <Accordion width="100%" allowToggle key={poll.id}>
-      <AccordionItem>
-        <AccordionButton padding="0px" as="div">
-          <Box
-            fontWeight="500"
-            fontSize="14px"
-            flex="1"
-            textAlign="left"
-            cursor="pointer"
-            backgroundColor={startedPoll?.id === poll.id ? 'gold' : ''}
-          >
-            <Button
-              size="xs"
-              marginLeft="3px"
-              backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'lightcyan'}
-              padding="1px"
-              height="15px"
-              variant="outline"
-              marginRight="5px"
-              onClick={(e) => {
-                startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
-              }}
-              isDisabled={startedPoll && startedPoll.id !== poll.id}
-            >
-              {startedPoll?.id === poll.id ? 'Stop' : poll.stoppedAt ? 'Share' : 'Launch'}
-            </Button>
-            {poll.question}
-            {!poll.startedAt && (
-              <EditIcon w={2} h={2} float="right" mt="6px" onClick={editThisPoll} />
-            )}
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel padding="0" pb={4}>
-          {poll.answers.map((answer) => {
-            return typeof answer === 'string' ? ( // huh? for some reason, one of the answers is often an answer object, not a string
-              <Box key={answer} fontWeight="normal" fontSize="12px" paddingLeft="5px">
-                {answer} {answerCount(answer)}
+    <Tr>
+      <Td>
+        <Accordion padding="0" width="100%" allowToggle key={poll.id}>
+          <AccordionItem p={0} m={0} border="none">
+            <AccordionButton padding="0" as="div">
+              <Box
+                fontWeight="500"
+                fontSize="14px"
+                flex="1"
+                cursor="pointer"
+                backgroundColor={startedPoll?.id === poll.id ? 'gold' : ''}
+              >
+                {poll.question}
+                {!poll.startedAt && (
+                  <EditIcon w={2} h={2} float="right" mt="6px" onClick={editThisPoll} />
+                )}
               </Box>
-            ) : (
-              <Box key={answer} />
-            )
-          })}
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel padding="0" pb={4}>
+              {poll.answers.map((answer) => {
+                return typeof answer === 'string' ? ( // huh? for some reason, one of the answers is often an answer object, not a string
+                  <Box key={answer} fontWeight="normal" fontSize="12px" paddingLeft="5px">
+                    {answer} {answerCount(answer)}
+                  </Box>
+                ) : (
+                  <Box key={answer} />
+                )
+              })}
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </Td>
+      <Td />
+      <Td>
+        <Button
+          size="xs"
+          fontWeight="bold"
+          minW="80px"
+          backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'lightcyan'}
+          padding="1px"
+          height="15px"
+          variant="outline"
+          onClick={(e) => {
+            startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
+          }}
+          isDisabled={startedPoll && startedPoll.id !== poll.id}
+        >
+          {startedPoll?.id === poll.id ? 'Stop' : poll.stoppedAt ? 'Share' : 'Launch'}
+        </Button>
+      </Td>
+    </Tr>
   )
 }

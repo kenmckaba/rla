@@ -18,6 +18,17 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Tr,
+  Td,
+  Thead,
+  Th,
+  Table,
+  Tbody,
+  Text,
+  Spacer,
+  IconButton,
+  Icon,
+  Center,
 } from '@chakra-ui/react'
 import { updateTraining } from '../graphql/mutations'
 import { useState } from 'react'
@@ -38,6 +49,7 @@ import { AddIcon } from '@chakra-ui/icons'
 import { MicCamControls } from './MicCamControls'
 import { BjnMedia } from './BjnMedia'
 import { CamInUseModal } from './CamInUseModal'
+import { FaCamera, FaMicrophone, FaVideo } from 'react-icons/fa'
 
 export const TrainerInSession = ({
   match: {
@@ -119,9 +131,9 @@ export const TrainerInSession = ({
         subscribeToMore(buildSubscription(gql(onCreatePoll), gql(getTraining))),
         subscribeToMore(buildSubscription(gql(onDeletePoll), gql(getTraining))),
       ]
-      return () => {
+      /*       return () => {
         cleanupFuncs.forEach((func) => func())
-      }
+      } */
     }
   }, [subscribeToMore])
 
@@ -200,49 +212,108 @@ export const TrainerInSession = ({
 
   return (
     <>
-      <HStack align="left">
-        <VStack align="left" width="250px" minWidth="250px">
-          <Box background="white" borderRadius="16px" padding="8px">
-            <Box fontWeight="bold">Training: {training.title}</Box>
-            <Box>Description: {training.description}</Box>
+      <VStack
+        bg="white"
+        w="100%"
+        h="100%"
+        minH="100vh"
+        alignItems="start"
+        wrap="wrap"
+        alignContent="center"
+        justifyContent="center"
+      >
+        <VStack
+          pos="absolute"
+          bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
+          opacity="85%"
+          align="left"
+          width="250px"
+          h="100%"
+          px="4"
+          py="8"
+          minWidth="400px"
+        >
+          <Box pb="12">
+            <Box fontSize="1.25em" fontWeight="bold" textTransform="capitalize">
+              {training.title}
+            </Box>
+            <Box marginTop="1" fontSize=".8em">
+              {training.description}
+            </Box>
           </Box>
-          <Box align="start" background="white" borderRadius="16px" padding="8px" fontWeight="600">
+          <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
             <ClassRoster attendees={attendees} />
           </Box>
-          <Box align="start" background="white" borderRadius="16px" padding="8px" fontWeight="600">
+          <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
             <Accordion allowMultiple width="100%" allowToggle>
-              <AccordionItem border="none">
-                <AccordionButton padding="0px">
-                  <Box flex="1" textAlign="left" fontWeight="bold">
+              <AccordionItem p={0} m={0} border="none">
+                <AccordionButton p="2">
+                  <Box
+                    marginLeft="2"
+                    flex="1"
+                    textAlign="left"
+                    fontWeight="semibold"
+                    fontSize="0.9em"
+                  >
                     Polls
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel padding="0" pb={4}>
+                <AccordionPanel overflowY="scroll" maxH="48" padding="0" pb={4}>
                   <Box>
-                    {Polls}
-                    <Button
-                      size="xs"
-                      variant="outline"
-                      float="right"
-                      mt="3px"
-                      onClick={addAPoll}
-                      rightIcon={<AddIcon />}
-                    >
-                      Add a poll
-                    </Button>
+                    <Table size="sm" width="100%" margin="0">
+                      <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
+                        <Tr>
+                          <Th color="white">Question</Th>
+                          <Th color="white">Completed</Th>
+                          <Th />
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {Polls}
+                        <Tr>
+                          <Td border="none" colSpan="3">
+                            <Button size="xs" variant="unstyled" onClick={addAPoll}>
+                              <Text textTransform="capitalize" fontWeight="thin">
+                                + Add poll
+                              </Text>
+                            </Button>
+                          </Td>
+                        </Tr>
+                      </Tbody>
+                    </Table>
                   </Box>
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
           </Box>
           <MicCamControls localVideoRef={localVideoRef} isModerator={true} />
-          <Button onClick={endTraining} width="100%">
-            End Training
-          </Button>
+          <Box w="100%" h="100%">
+            <Flex w="100%" h="100%" px="4" alignContent="end" wrap="wrap">
+              <IconButton
+                boxSize="12"
+                bg="rgba(255,255,255,.1)"
+                aria-label="Mute or unmute the microphone"
+                icon={<Icon as={FaMicrophone} w="100%" h="45%" />}
+              />
+              <Spacer />
+              <IconButton
+                boxSize="12"
+                bg="rgba(255,255,255,.1)"
+                aria-label="Turn on or turn off the camera"
+                icon={<Icon as={FaVideo} w="100%" h="45%" />}
+              />
+              <Spacer />
+              <Button w="65%" onClick={endTraining}>
+                End Training
+              </Button>
+            </Flex>
+          </Box>
         </VStack>
-        <BjnMedia />
-      </HStack>
+        <Center>
+          <BjnMedia />
+        </Center>
+      </VStack>
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />
         <ModalContent height="300px">

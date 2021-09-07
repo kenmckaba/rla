@@ -27,7 +27,7 @@ export const BjnMedia = () => {
   }, [bjnReceivingScreenShare, camsOn, bjnIsConnected])
 
   return (
-    <Flex height="inherit" width="100%" background="darkgrey" borderRadius="16px" padding="10px">
+    <Flex h="100%" align="left" background="darkgrey" borderRadius="16px" padding="10px">
       {/* have to keep videos in the dom so the ref doesn't change, so use display: none */}
       <VStack justifyContent="center" height="100%" style={showMedia ? {} : { display: 'none' }}>
         <video ref={remoteContentRef} style={bjnReceivingScreenShare ? {} : { display: 'none' }} />

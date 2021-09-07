@@ -8,6 +8,8 @@ import {
   Checkbox,
   FormControl,
   Select,
+  Flex,
+  FormLabel,
 } from '@chakra-ui/react'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
 import { Selections } from './Selections'
@@ -49,17 +51,29 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
 
   return (
     <>
-      {isModerator && (
-        <FormControl backgroundColor="white" borderRadius="5px" p="5px">
+      {/*       {isModerator && (
+        <FormControl borderRadius="5px" p="5px">
           <Box marginLeft="5px">
             <Checkbox size="sm" onChange={shareScreen} isChecked={!!bjnSharingScreen}>
               Share my screen
             </Checkbox>
           </Box>
         </FormControl>
-      )}
-      <FormControl backgroundColor="white" borderRadius="5px" p="5px" paddingTop="0">
-        <Checkbox
+      )} */}
+      {/*       <FormControl pb={2} isRequired>
+        <FormLabel mb={1} fontWeight="bold" textTransform="uppercase">
+          Poll type
+        </FormLabel>
+        <Select>
+          <option>Single choice</option>
+          <option>Multiple choice</option>
+        </Select>
+      </FormControl> */}
+      <FormControl pt="8">
+        <FormLabel mb={1} fontWeight="bold" textTransform="uppercase">
+          Microphone
+        </FormLabel>
+        {/*         <Checkbox
           size="sm"
           onChange={muteMic}
           isChecked={!!bjnAudioMuted}
@@ -67,14 +81,14 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
           marginLeft="5px"
         >
           Mute my microphone
-        </Checkbox>
+        </Checkbox> */}
         <Selections
           choices={bjnAvailableMicrophones}
           selectedId={bjnSelectedMicrophone?.id}
           changeSelection={bjnApi.selectMicrophone}
         />
       </FormControl>
-      <FormControl backgroundColor="white" borderRadius="5px" p="5px" paddingTop="0">
+      {/*       <FormControl borderRadius="5px" p="5px" paddingTop="0">
         <Box fontSize="14px" paddingLeft="5px">
           Webcam layout
         </Box>
@@ -83,9 +97,9 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
             return <option key={index}>{layout}</option>
           })}
         </Select>
-      </FormControl>
-      <FormControl backgroundColor="white" borderRadius="5px" p="5px" paddingTop="0">
-        <Checkbox
+      </FormControl> */}
+      <FormControl pt="2">
+        {/*         <Checkbox
           size="sm"
           onChange={muteCam}
           isChecked={!!bjnVideoMuted}
@@ -93,7 +107,10 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
           marginLeft="5px"
         >
           Mute my camera
-        </Checkbox>
+        </Checkbox> */}
+        <FormLabel mb={1} fontWeight="bold" textTransform="uppercase">
+          Camera
+        </FormLabel>
         <Selections
           choices={bjnAvailableCameras}
           selectedId={bjnSelectedCamera?.id}
