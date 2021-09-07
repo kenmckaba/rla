@@ -215,14 +215,15 @@ export const TrainerInSession = ({
           align="left"
           width="250px"
           h="100%"
-          p="4"
+          px="4"
+          py="8"
           minWidth="400px"
         >
-          <Box borderRadius="16px" padding="8px">
-            <Box fontSize="1em" fontWeight="bold" textTransform="capitalize">
+          <Box pb="12">
+            <Box fontSize="1.25em" fontWeight="bold" textTransform="capitalize">
               {training.title}
             </Box>
-            <Box marginTop="1" fontSize="0.66em">
+            <Box marginTop="1" fontSize=".8em">
               {training.description}
             </Box>
           </Box>
@@ -257,7 +258,7 @@ export const TrainerInSession = ({
                       <Tbody>
                         {Polls}
                         <Tr>
-                          <Td colSpan="3">
+                          <Td border="none" colSpan="3">
                             <Button size="xs" variant="unstyled" onClick={addAPoll}>
                               <Text textTransform="capitalize" fontWeight="thin">
                                 + Add poll
