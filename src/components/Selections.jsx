@@ -8,13 +8,13 @@ export const Selections = ({ choices, selectedId, changeSelection, placeholder }
   }
 
   return (
-    <Select placeholder={placeholder} size="xs" onChange={onSelect} value={selectedId}>
+    <Select placeholder={placeholder} onChange={onSelect} value={selectedId}>
       {!choices ? (
         <option>please wait...</option>
       ) : (
         choices.map((opt) => {
           return (
-            <option key={opt.id} value={opt.id}>
+            <option style={{ color: 'black' }} key={opt.id} value={opt.id}>
               {opt.name}
             </option>
           )
