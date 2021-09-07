@@ -259,7 +259,7 @@ export const TrainerInSession = ({
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel padding="0" pb={4}>
+                <AccordionPanel overflowY="scroll" maxH="48" padding="0" pb={4}>
                   <Box>
                     <Table size="sm" width="100%" margin="0">
                       <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">

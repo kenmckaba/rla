@@ -38,7 +38,7 @@ export const ClassRoster = ({ attendees }) => {
           </Box>
           <AccordionIcon />
         </AccordionButton>
-        <AccordionPanel marginTop="4" padding="0" pb={4}>
+        <AccordionPanel overflowY="scroll" maxH="48" marginTop="4" padding="0" pb={4}>
           <Table size="sm" width="100%" margin="0">
             <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
               <Tr>
