@@ -25,6 +25,9 @@ import {
   Table,
   Tbody,
   Text,
+  Spacer,
+  IconButton,
+  Icon,
 } from '@chakra-ui/react'
 import { updateTraining } from '../graphql/mutations'
 import { useState } from 'react'
@@ -45,6 +48,7 @@ import { AddIcon } from '@chakra-ui/icons'
 import { MicCamControls } from './MicCamControls'
 import { BjnMedia } from './BjnMedia'
 import { CamInUseModal } from './CamInUseModal'
+import { FaCamera, FaMicrophone, FaVideo } from 'react-icons/fa'
 
 export const TrainerInSession = ({
   match: {
@@ -274,9 +278,27 @@ export const TrainerInSession = ({
             </Accordion>
           </Box>
           <MicCamControls localVideoRef={localVideoRef} isModerator={true} />
-          <Button onClick={endTraining} width="100%">
-            End Training
-          </Button>
+          <Box w="100%" h="100%">
+            <Flex w="100%" h="100%" px="4" alignContent="end" wrap="wrap">
+              <IconButton
+                boxSize="12"
+                bg="rgba(255,255,255,.1)"
+                aria-label="Mute or unmute the microphone"
+                icon={<Icon as={FaMicrophone} w="100%" h="45%" />}
+              />
+              <Spacer />
+              <IconButton
+                boxSize="12"
+                bg="rgba(255,255,255,.1)"
+                aria-label="Turn on or turn off the camera"
+                icon={<Icon as={FaVideo} w="100%" h="45%" />}
+              />
+              <Spacer />
+              <Button w="65%" onClick={endTraining}>
+                End Training
+              </Button>
+            </Flex>
+          </Box>
         </VStack>
         <BjnMedia />
       </HStack>
