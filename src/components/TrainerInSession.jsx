@@ -28,6 +28,7 @@ import {
   Spacer,
   IconButton,
   Icon,
+  Center,
 } from '@chakra-ui/react'
 import { updateTraining } from '../graphql/mutations'
 import { useState } from 'react'
@@ -211,7 +212,16 @@ export const TrainerInSession = ({
 
   return (
     <>
-      <HStack bg="white" w="100%" h="100%" minH="100vh" alignItems="start">
+      <VStack
+        bg="white"
+        w="100%"
+        h="100%"
+        minH="100vh"
+        alignItems="start"
+        wrap="wrap"
+        alignContent="center"
+        justifyContent="center"
+      >
         <VStack
           pos="absolute"
           bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
@@ -300,8 +310,10 @@ export const TrainerInSession = ({
             </Flex>
           </Box>
         </VStack>
-        <BjnMedia />
-      </HStack>
+        <Center>
+          <BjnMedia />
+        </Center>
+      </VStack>
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />
         <ModalContent height="300px">
