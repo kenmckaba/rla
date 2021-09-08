@@ -166,14 +166,14 @@ export const TrainingList = () => {
       <Table variant="unstyled">
         <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
           <Tr>
-            <Th width="25%" color="white">
+            <Th fontWeight="thin" width="25%" color="white">
               Title
             </Th>
-            <Th width="25%" color="white">
+            <Th fontWeight="thin" width="25%" color="white">
               Attendee
             </Th>
-            <Th width="35%" />
-            <Th width="15%" color="white">
+            <Th fontWeight="thin" width="35%" />
+            <Th fontWeight="thin" width="15%" color="white">
               <CalendarIcon boxSize="1.5em" />
             </Th>
           </Tr>
