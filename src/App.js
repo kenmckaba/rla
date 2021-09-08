@@ -14,17 +14,15 @@ function App() {
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <Fonts />
-      <Background>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/attendee/:attendeeId" component={AttendeeLanding} />
-            <Route path="/trainerInSession/:trainingId" component={TrainerInSession} />
-            <Route path="/registration-update/:attendeeId" component={RegistrationUpdate} />
-            <Route path="/registration/:trainingId" component={Registration} />
-            <Route path="/" component={TrainingList} />
-          </Switch>
-        </BrowserRouter>
-      </Background>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/attendee/:attendeeId" component={AttendeeLanding} />
+          <Route path="/trainerInSession/:trainingId" component={TrainerInSession} />
+          <Route path="/registration-update/:attendeeId" component={RegistrationUpdate} />
+          <Route path="/registration/:trainingId" component={Registration} />
+          <Route path="/" component={TrainingList} />
+        </Switch>
+      </BrowserRouter>
     </ChakraProvider>
   )
 }

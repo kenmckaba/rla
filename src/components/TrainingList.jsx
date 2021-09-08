@@ -39,6 +39,7 @@ import { buildSubscription } from 'aws-appsync'
 import { createTraining } from '../graphql/mutations'
 import { prettyTime } from '../pretty-time'
 import { TrainingToolbar } from './Trainings/TrainingToolbar'
+import Background from './Background'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -193,91 +194,93 @@ export const TrainingList = () => {
   }
 
   return (
-    <Box height="100%" width="100%" padding="3px" borderRadius="20px">
-      <Tabs height="100%" width="100%" variant="solid-rounded">
-        <Flex>
-          <TabList>
-            <Tab
-              textTransform="uppercase"
-              color="#ffffff"
-              height="32px"
+    <Background>
+      <Box height="100%" width="100%" padding="3px" borderRadius="20px">
+        <Tabs height="100%" width="100%" variant="solid-rounded">
+          <Flex>
+            <TabList>
+              <Tab
+                textTransform="uppercase"
+                color="#ffffff"
+                height="32px"
+                fontSize="10pt"
+                paddingInline="26px"
+                minW="120px"
+                fontWeight="bold"
+                borderRadius="full"
+                bg="rgba(255, 255, 255, 0.1);"
+                mr="16px"
+                _focus={{
+                  boxShadow: 'none',
+                }}
+                _selected={{
+                  color: 'darkKnight.700',
+                  bg: 'ghost.50',
+                }}
+              >
+                Upcoming training
+              </Tab>
+              <Tab
+                textTransform="uppercase"
+                color="#ffffff"
+                height="32px"
+                fontSize="10pt"
+                paddingInline="26px"
+                minW="120px"
+                fontWeight="bold"
+                borderRadius="full"
+                bg="rgba(255, 255, 255, 0.1);"
+                _focus={{
+                  boxShadow: 'none',
+                }}
+                _selected={{
+                  color: 'darkKnight.700',
+                  bg: 'ghost.50',
+                }}
+              >
+                Completed training
+              </Tab>
+            </TabList>
+            <Spacer />
+            <Button
+              variant="primary-transparent"
+              size="sm"
+              leftIcon={<AddIcon />}
+              onClick={onNewTraining}
               fontSize="10pt"
-              paddingInline="26px"
-              minW="120px"
               fontWeight="bold"
-              borderRadius="full"
-              bg="rgba(255, 255, 255, 0.1);"
-              mr="16px"
-              _focus={{
-                boxShadow: 'none',
-              }}
-              _selected={{
-                color: 'darkKnight.700',
-                bg: 'ghost.50',
-              }}
+              minW="170px"
             >
-              Upcoming training
-            </Tab>
-            <Tab
-              textTransform="uppercase"
-              color="#ffffff"
-              height="32px"
-              fontSize="10pt"
-              paddingInline="26px"
-              minW="120px"
-              fontWeight="bold"
-              borderRadius="full"
-              bg="rgba(255, 255, 255, 0.1);"
-              _focus={{
-                boxShadow: 'none',
-              }}
-              _selected={{
-                color: 'darkKnight.700',
-                bg: 'ghost.50',
-              }}
-            >
-              Completed training
-            </Tab>
-          </TabList>
-          <Spacer />
-          <Button
-            variant="primary-transparent"
-            size="sm"
-            leftIcon={<AddIcon />}
-            onClick={onNewTraining}
-            fontSize="10pt"
-            fontWeight="bold"
-            minW="170px"
+              New training
+            </Button>
+          </Flex>
+          <TabPanels
+            minHeight="80vh"
+            width="100%"
+            color="white"
+            borderRadius="5px"
+            bg="rgba(255, 255, 255, 0.1)"
+            mt="4"
           >
-            New training
-          </Button>
-        </Flex>
-        <TabPanels
-          minHeight="80vh"
-          width="100%"
-          color="white"
-          borderRadius="5px"
-          bg="rgba(255, 255, 255, 0.1)"
-          mt="4"
-        >
-          <TabPanel p={0} m={0}>
-            <ListTable>{Trainings({ past: false })}</ListTable>
-          </TabPanel>
-          <TabPanel p={0} m={0}>
-            <ListTable>{Trainings({ past: true })}</ListTable>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+            <TabPanel p={0} m={0}>
+              <ListTable>{Trainings({ past: false })}</ListTable>
+            </TabPanel>
+            <TabPanel p={0} m={0}>
+              <ListTable>{Trainings({ past: true })}</ListTable>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
 
-      <Modal isOpen={isModalOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent color="darkKnight.700">
-          <ModalHeader>{newTraining ? 'New Training' : 'Update Training'}</ModalHeader>
-          <ModalBody>
-            <TrainingForm onClose={onModalClose} trainingId={currentTraining?.id} />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </Box>
+        <Modal isOpen={isModalOpen} scrollBehavior="inside">
+          <ModalOverlay />
+          <ModalContent color="darkKnight.700">
+            <ModalHeader>{newTraining ? 'New Training' : 'Update Training'}</ModalHeader>
+            <ModalBody>
+              <TrainingForm onClose={onModalClose} trainingId={currentTraining?.id} />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </Box>
+    </Background>
   )
 }
