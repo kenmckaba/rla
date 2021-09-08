@@ -140,7 +140,7 @@ export const TrainingList = () => {
               {training.title}
             </StatLabel>
             <StatHelpText fontSize="0.75em" textTransform="uppercase">
-              trainer: name
+              trainer: {training.trainerName}
             </StatHelpText>
           </Stat>
         </Td>
