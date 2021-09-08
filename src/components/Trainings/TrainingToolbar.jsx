@@ -10,7 +10,6 @@ export const TrainingToolbar = ({ startTraining, editTraining }) => {
           variant="secondary-ghost-outline"
           size="sm"
           leftIcon={<EditIcon />}
-          minW="120px"
         >
           Edit
         </Button>
@@ -19,7 +18,6 @@ export const TrainingToolbar = ({ startTraining, editTraining }) => {
           variant="primary-trueblue"
           size="sm"
           leftIcon={<Icon as={IoPlay} />}
-          minW="120px"
         >
           Start
         </Button>
