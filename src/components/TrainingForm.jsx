@@ -199,13 +199,20 @@ export const TrainingForm = ({ onClose, trainingId }) => {
           <FormLabel fontWeight="bold" textTransform="uppercase" mt="0">
             Title
           </FormLabel>
-          <Input variant="filled" value={title} onChange={onChangeTitle} placeholder="Type here" />
+          <Input
+            maxLength="25"
+            variant="filled"
+            value={title}
+            onChange={onChangeTitle}
+            placeholder="Type here"
+          />
         </FormControl>
         <FormControl mt="4">
           <FormLabel fontWeight="bold" textTransform="uppercase">
             Description
           </FormLabel>
           <Input
+            maxLength="50"
             variant="filled"
             value={description}
             onChange={onChangeDescription}
@@ -217,6 +224,7 @@ export const TrainingForm = ({ onClose, trainingId }) => {
             Trainer
           </FormLabel>
           <Input
+            maxLength="25"
             variant="filled"
             value={trainerName}
             onChange={onChangeTrainerName}
