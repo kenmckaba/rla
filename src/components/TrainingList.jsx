@@ -134,10 +134,10 @@ export const TrainingList = () => {
       >
         <Td>
           <Stat>
-            <StatLabel fontWeight="semibold" textTransform="capitalize">
+            <StatLabel fontSize="1.25em" fontWeight="semibold" textTransform="capitalize">
               {training.title}
             </StatLabel>
-            <StatHelpText fontSize="8pt" textTransform="uppercase">
+            <StatHelpText fontSize="0.75em" textTransform="uppercase">
               trainer: name
             </StatHelpText>
           </Stat>
