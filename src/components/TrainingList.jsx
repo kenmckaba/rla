@@ -151,9 +151,14 @@ export const TrainingList = () => {
         </Td>
         <Td>
           <HStack>
-            <Avatar name="A" bg="rgba(255, 255, 255, 0.1)" />
-            <Avatar name="B" bg="rgba(255, 255, 255, 0.1)" />
-            <Avatar name="C" bg="rgba(255, 255, 255, 0.1)" />
+            {training.attendees.items.slice(0, 5).map((attendee) => (
+              <Avatar
+                key={attendee.id}
+                name={attendee.name}
+                color="white"
+                bg="rgba(255, 255, 255, 0.1)"
+              />
+            ))}
           </HStack>
         </Td>
         <Td></Td>

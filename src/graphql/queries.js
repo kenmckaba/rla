@@ -84,6 +84,10 @@ export const listTrainings = /* GraphQL */ `
         pollMode
         currentPollId
         attendees {
+          items {
+            id
+            name
+        }
           nextToken
         }
         chatMessages {
