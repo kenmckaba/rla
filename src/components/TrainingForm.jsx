@@ -199,31 +199,39 @@ export const TrainingForm = ({ onClose, trainingId }) => {
           <FormLabel fontWeight="bold" textTransform="uppercase" mt="0">
             Title
           </FormLabel>
-          <Input variant="filled" value={title} onChange={onChangeTitle} placeholder="Type here" />
+          <Input
+            maxLength="25"
+            variant="filled"
+            value={title}
+            onChange={onChangeTitle}
+            placeholder="Type here"
+          />
         </FormControl>
-        <FormControl>
+        <FormControl mt="4">
           <FormLabel fontWeight="bold" textTransform="uppercase">
             Description
           </FormLabel>
           <Input
+            maxLength="50"
             variant="filled"
             value={description}
             onChange={onChangeDescription}
             placeholder="Optional"
           />
         </FormControl>
-        <FormControl isRequired>
+        <FormControl mt="4" isRequired>
           <FormLabel fontWeight="bold" textTransform="uppercase">
             Trainer
           </FormLabel>
           <Input
+            maxLength="25"
             variant="filled"
             value={trainerName}
             onChange={onChangeTrainerName}
             placeholder="First & Last Name"
           />
         </FormControl>
-        <FormControl isRequired>
+        <FormControl mt="4" isRequired>
           <FormLabel fontWeight="bold" textTransform="uppercase">
             Date & Time
           </FormLabel>
@@ -234,7 +242,7 @@ export const TrainingForm = ({ onClose, trainingId }) => {
             dateFormat="Pp"
           />
         </FormControl>
-        <Accordion width="100%" mt={2} allowToggle>
+        <Accordion mt="4" width="100%" mt={2} allowToggle>
           <AccordionItemCustom title="BlueJeans meeting">
             <HStack mt="3">
               <FormControl isRequired>

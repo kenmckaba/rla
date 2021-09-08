@@ -16,6 +16,8 @@ import {
   Th,
   Td,
   Tbody,
+  Icon,
+  IconButton,
   Thead,
   Modal,
   ModalOverlay,
@@ -29,14 +31,17 @@ import {
   StatLabel,
   StatHelpText,
 } from '@chakra-ui/react'
-import { AddIcon, CalendarIcon } from '@chakra-ui/icons'
+import { AddIcon, CalendarIcon, CloseIcon } from '@chakra-ui/icons'
+import { IoIosCalendar } from 'react-icons/io'
+import { IoTrashOutline } from 'react-icons/io5'
 import { TrainingForm } from './TrainingForm'
 import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
-import { createTraining } from '../graphql/mutations'
+import { createTraining, deleteTraining } from '../graphql/mutations'
 import { prettyTime } from '../pretty-time'
 import { TrainingToolbar } from './Trainings/TrainingToolbar'
+import Background from './Background'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -45,6 +50,7 @@ export const TrainingList = () => {
   const { loading, error, data, subscribeToMore } = useQuery(gql(listTrainings))
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const [addTraining] = useMutation(gql(createTraining))
+  const [removeTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
 
   useEffect(() => {
@@ -99,6 +105,15 @@ export const TrainingList = () => {
     onModalOpen()
   }
 
+  const openRegPage = (trainingId) => {
+    window.open(`/trainerInSession/${trainingId}`)
+  }
+
+  const handleDelete = async (trainingId) => {
+    await removeTraining({ variables: { input: { id: trainingId } } })
+    onModalClose()
+  }
+
   const Trainings = ({ past }) => {
     if (!trainings || trainings.length === 0) {
       return (
@@ -134,25 +149,33 @@ export const TrainingList = () => {
       >
         <Td>
           <Stat>
-            <StatLabel fontWeight="semibold" textTransform="capitalize">
+            <StatLabel fontSize="1.25em" fontWeight="semibold" textTransform="capitalize">
               {training.title}
             </StatLabel>
-            <StatHelpText fontSize="8pt" textTransform="uppercase">
-              trainer: name
+            <StatHelpText fontSize="0.75em" textTransform="uppercase">
+              trainer: {training.trainerName}
             </StatHelpText>
           </Stat>
         </Td>
         <Td>
           <HStack>
-            <Avatar name="A" bg="rgba(255, 255, 255, 0.1)" />
-            <Avatar name="B" bg="rgba(255, 255, 255, 0.1)" />
-            <Avatar name="C" bg="rgba(255, 255, 255, 0.1)" />
+            {training.attendees.items.slice(0, 5).map((attendee) => (
+              <Avatar
+                key={attendee.id}
+                name={attendee.name}
+                color="white"
+                bg="rgba(255, 255, 255, 0.1)"
+              />
+            ))}
           </HStack>
         </Td>
         <Td></Td>
         <Td>
           {trainingHovered === training.id ? (
-            <TrainingToolbar editTraining={() => handleTrainingClick(training)} />
+            <TrainingToolbar
+              editTraining={() => handleTrainingClick(training)}
+              startTraining={() => openRegPage(training.id)}
+            />
           ) : (
             prettyTime(new Date(Number(training.scheduledTime)))
           )}
@@ -166,15 +189,15 @@ export const TrainingList = () => {
       <Table variant="unstyled">
         <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
           <Tr>
-            <Th width="25%" color="white">
+            <Th fontWeight="thin" width="25%" color="white">
               Title
             </Th>
-            <Th width="25%" color="white">
+            <Th fontWeight="thin" width="25%" color="white">
               Attendee
             </Th>
-            <Th width="35%" />
-            <Th width="15%" color="white">
-              <CalendarIcon boxSize="1.5em" />
+            <Th fontWeight="thin" width="35%" />
+            <Th fontWeight="thin" width="15%" color="white">
+              <Icon as={IoIosCalendar} boxSize="1.5em" />
             </Th>
           </Tr>
         </Thead>
@@ -184,84 +207,107 @@ export const TrainingList = () => {
   }
 
   return (
-    <Box height="100%" padding="3px" borderRadius="20px">
-      <Tabs variant="solid-rounded">
-        <Flex>
-          <TabList>
-            <Tab
-              textTransform="uppercase"
-              color="#ffffff"
-              height="32px"
+    <Background>
+      <Box height="100%" width="100%" padding="3px" borderRadius="20px">
+        <Tabs height="100%" width="100%" variant="solid-rounded">
+          <Flex>
+            <TabList>
+              <Tab
+                textTransform="uppercase"
+                color="#ffffff"
+                height="32px"
+                fontSize="10pt"
+                paddingInline="26px"
+                minW="120px"
+                fontWeight="bold"
+                borderRadius="full"
+                bg="rgba(255, 255, 255, 0.1);"
+                mr="16px"
+                _focus={{
+                  boxShadow: 'none',
+                }}
+                _selected={{
+                  color: 'darkKnight.700',
+                  bg: 'ghost.50',
+                }}
+              >
+                Upcoming training
+              </Tab>
+              <Tab
+                textTransform="uppercase"
+                color="#ffffff"
+                height="32px"
+                fontSize="10pt"
+                paddingInline="26px"
+                minW="120px"
+                fontWeight="bold"
+                borderRadius="full"
+                bg="rgba(255, 255, 255, 0.1);"
+                _focus={{
+                  boxShadow: 'none',
+                }}
+                _selected={{
+                  color: 'darkKnight.700',
+                  bg: 'ghost.50',
+                }}
+              >
+                Completed training
+              </Tab>
+            </TabList>
+            <Spacer />
+            <Button
+              variant="primary-transparent"
+              size="sm"
+              leftIcon={<AddIcon />}
+              onClick={onNewTraining}
               fontSize="10pt"
-              paddingInline="26px"
-              minW="120px"
               fontWeight="bold"
-              borderRadius="full"
-              bg="rgba(255, 255, 255, 0.1);"
-              mr="16px"
-              _focus={{
-                boxShadow: 'none',
-              }}
-              _selected={{
-                color: 'darkKnight.700',
-                bg: 'ghost.50',
-              }}
+              minW="170px"
             >
-              Upcoming training
-            </Tab>
-            <Tab
-              textTransform="uppercase"
-              color="#ffffff"
-              height="32px"
-              fontSize="10pt"
-              paddingInline="26px"
-              minW="120px"
-              fontWeight="bold"
-              borderRadius="full"
-              bg="rgba(255, 255, 255, 0.1);"
-              _focus={{
-                boxShadow: 'none',
-              }}
-              _selected={{
-                color: 'darkKnight.700',
-                bg: 'ghost.50',
-              }}
-            >
-              Completed training
-            </Tab>
-          </TabList>
-          <Spacer />
-          <Button
-            variant="primary-transparent"
-            size="sm"
-            leftIcon={<AddIcon />}
-            onClick={onNewTraining}
-            fontSize="10pt"
-            fontWeight="bold"
-            minW="170px"
+              New training
+            </Button>
+          </Flex>
+          <TabPanels
+            minHeight="75vh"
+            width="100%"
+            color="white"
+            borderRadius="5px"
+            bg="rgba(255, 255, 255, 0.1)"
+            mt="4"
           >
-            New training
-          </Button>
-        </Flex>
-        <TabPanels color="white" borderRadius="5px" bg="rgba(255, 255, 255, 0.1)" mt="4">
-          <TabPanel p={0} m={0}>
-            <ListTable>{Trainings({ past: false })}</ListTable>
-          </TabPanel>
-          <TabPanel p={0} m={0}>
-            <ListTable>{Trainings({ past: true })}</ListTable>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+            <TabPanel p={0} m={0}>
+              <ListTable>{Trainings({ past: false })}</ListTable>
+            </TabPanel>
+            <TabPanel p={0} m={0}>
+              <ListTable>{Trainings({ past: true })}</ListTable>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
 
-      <Modal isOpen={isModalOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent color="darkKnight.700">
-          <ModalHeader>{newTraining ? 'New Training' : 'Update Training'}</ModalHeader>
-          <ModalBody>
-            <TrainingForm onClose={onModalClose} trainingId={currentTraining?.id} />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </Box>
+        <Modal isOpen={isModalOpen} scrollBehavior="inside">
+          <ModalOverlay />
+          <ModalContent color="darkKnight.700">
+            <ModalHeader>
+              <Flex>
+                <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
+                <Spacer></Spacer>
+                <Box>
+                  <HStack spacing={8}>
+                    <Icon
+                      onClick={() => handleDelete(currentTraining?.id)}
+                      as={IoTrashOutline}
+                    ></Icon>
+                    <Icon onClick={onModalClose} boxSize={3} as={CloseIcon}></Icon>
+                  </HStack>
+                </Box>
+              </Flex>
+            </ModalHeader>
+            <ModalBody>
+              <TrainingForm onClose={onModalClose} trainingId={currentTraining?.id} />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </Box>
+    </Background>
   )
 }

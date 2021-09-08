@@ -1,5 +1,6 @@
 import { extendTheme } from '@chakra-ui/react'
 import Button from './components/button'
+import Input from './components/input'
 // 37, 57, 94   25, 39, 5e
 const config = {
   initialColorMode: 'dark',
@@ -23,9 +24,9 @@ const config = {
       200: '#bbddf9',
       300: '#8dbcef',
       400: '#5f96e3',
-      500: '#4972d7',
+      500: '#3774cd',
       600: '#0d62c5',
-      700: '#3040a3',
+      700: '#2255a3',
       800: '#212b76',
       900: '#131b4b',
     },
@@ -184,6 +185,7 @@ const config = {
       },
     },
     Button,
+    Input,
   },
 }
 
