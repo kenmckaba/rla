@@ -16,6 +16,7 @@ import {
   Th,
   Td,
   Tbody,
+  Icon,
   Thead,
   Modal,
   ModalOverlay,
@@ -30,6 +31,7 @@ import {
   StatHelpText,
 } from '@chakra-ui/react'
 import { AddIcon, CalendarIcon } from '@chakra-ui/icons'
+import { IoIosCalendar } from 'react-icons/io'
 import { TrainingForm } from './TrainingForm'
 import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
@@ -174,7 +176,7 @@ export const TrainingList = () => {
             </Th>
             <Th fontWeight="thin" width="35%" />
             <Th fontWeight="thin" width="15%" color="white">
-              <CalendarIcon boxSize="1.5em" />
+              <Icon as={IoIosCalendar} boxSize="1.5em" />
             </Th>
           </Tr>
         </Thead>
