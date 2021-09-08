@@ -17,6 +17,7 @@ import {
   Td,
   Tbody,
   Icon,
+  IconButton,
   Thead,
   Modal,
   ModalOverlay,
@@ -30,13 +31,14 @@ import {
   StatLabel,
   StatHelpText,
 } from '@chakra-ui/react'
-import { AddIcon, CalendarIcon } from '@chakra-ui/icons'
+import { AddIcon, CalendarIcon, CloseIcon } from '@chakra-ui/icons'
 import { IoIosCalendar } from 'react-icons/io'
+import { IoTrashOutline } from 'react-icons/io5'
 import { TrainingForm } from './TrainingForm'
 import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
-import { createTraining } from '../graphql/mutations'
+import { createTraining, deleteTraining } from '../graphql/mutations'
 import { prettyTime } from '../pretty-time'
 import { TrainingToolbar } from './Trainings/TrainingToolbar'
 import Background from './Background'
@@ -48,6 +50,7 @@ export const TrainingList = () => {
   const { loading, error, data, subscribeToMore } = useQuery(gql(listTrainings))
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const [addTraining] = useMutation(gql(createTraining))
+  const [removeTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
 
   useEffect(() => {
@@ -104,6 +107,11 @@ export const TrainingList = () => {
 
   const openRegPage = (trainingId) => {
     window.open(`/trainerInSession/${trainingId}`)
+  }
+
+  const handleDelete = async (trainingId) => {
+    await removeTraining({ variables: { input: { id: trainingId } } })
+    onModalClose()
   }
 
   const Trainings = ({ past }) => {
@@ -279,7 +287,21 @@ export const TrainingList = () => {
         <Modal isOpen={isModalOpen} scrollBehavior="inside">
           <ModalOverlay />
           <ModalContent color="darkKnight.700">
-            <ModalHeader>{newTraining ? 'New Training' : 'Update Training'}</ModalHeader>
+            <ModalHeader>
+              <Flex>
+                <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
+                <Spacer></Spacer>
+                <Box>
+                  <HStack spacing={8}>
+                    <Icon
+                      onClick={() => handleDelete(currentTraining?.id)}
+                      as={IoTrashOutline}
+                    ></Icon>
+                    <Icon onClick={onModalClose} boxSize={3} as={CloseIcon}></Icon>
+                  </HStack>
+                </Box>
+              </Flex>
+            </ModalHeader>
             <ModalBody>
               <TrainingForm onClose={onModalClose} trainingId={currentTraining?.id} />
             </ModalBody>
