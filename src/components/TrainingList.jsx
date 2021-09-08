@@ -101,6 +101,10 @@ export const TrainingList = () => {
     onModalOpen()
   }
 
+  const openRegPage = (trainingId) => {
+    window.open(`/trainerInSession/${trainingId}`)
+  }
+
   const Trainings = ({ past }) => {
     if (!trainings || trainings.length === 0) {
       return (
@@ -154,7 +158,10 @@ export const TrainingList = () => {
         <Td></Td>
         <Td>
           {trainingHovered === training.id ? (
-            <TrainingToolbar editTraining={() => handleTrainingClick(training)} />
+            <TrainingToolbar
+              editTraining={() => handleTrainingClick(training)}
+              startTraining={() => openRegPage(training.id)}
+            />
           ) : (
             prettyTime(new Date(Number(training.scheduledTime)))
           )}
