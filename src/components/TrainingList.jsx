@@ -292,12 +292,19 @@ export const TrainingList = () => {
                 <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
                 <Spacer></Spacer>
                 <Box>
-                  <HStack spacing={8}>
-                    <Icon
+                  <HStack spacing={2}>
+                    <IconButton
+                      variant="icon-button"
+                      aria-label="Delete training"
+                      icon={<Icon as={IoTrashOutline} boxSize={5} />}
                       onClick={() => handleDelete(currentTraining?.id)}
-                      as={IoTrashOutline}
-                    ></Icon>
-                    <Icon onClick={onModalClose} boxSize={3} as={CloseIcon}></Icon>
+                    />
+                    <IconButton
+                      variant="icon-button"
+                      aria-label="Close form"
+                      icon={<CloseIcon boxSize={3} />}
+                      onClick={onModalClose}
+                    />
                   </HStack>
                 </Box>
               </Flex>

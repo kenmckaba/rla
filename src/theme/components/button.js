@@ -168,6 +168,19 @@ const Button = {
         borderColor: 'blue.700',
       },
     },
+    'icon-button': {
+      bg: 'transparent',
+      color: 'darkKnight.700',
+      _hover: {
+        bg: 'darkKnight.100',
+      },
+      _active: {
+        bg: 'darkKnight.200',
+      },
+      _focus: {
+        bg: 'darkKnight.200',
+      },
+    },
   },
   defaultProps: {
     colorScheme: 'blue',
