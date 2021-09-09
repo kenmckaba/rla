@@ -317,12 +317,6 @@ export const TrainingList = () => {
                 </Button>
               </HStack>
             </AlertDialogBody>
-            {/*               <Button ref={cancelRef} onClick={onAlertClose}>
-                No
-              </Button>
-              <Button colorScheme="red" onClick={() => handleDelete(currentTraining?.id)} ml={3}>
-                Yes
-              </Button> */}
           </AlertDialogContent>
         </AlertDialog>
         <Modal isOpen={isModalOpen} scrollBehavior="inside">
@@ -334,12 +328,14 @@ export const TrainingList = () => {
                 <Spacer></Spacer>
                 <Box>
                   <HStack spacing={2}>
-                    <IconButton
-                      variant="icon-button"
-                      aria-label="Delete training"
-                      icon={<Icon as={IoTrashOutline} boxSize={5} />}
-                      onClick={onAlertOpen}
-                    />
+                    {!newTraining && (
+                      <IconButton
+                        variant="icon-button"
+                        aria-label="Delete training"
+                        icon={<Icon as={IoTrashOutline} boxSize={5} />}
+                        onClick={onAlertOpen}
+                      />
+                    )}
                     <IconButton
                       variant="icon-button"
                       aria-label="Close form"
