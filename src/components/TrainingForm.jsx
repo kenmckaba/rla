@@ -200,6 +200,7 @@ export const TrainingForm = ({ onClose, trainingId }) => {
             Title
           </FormLabel>
           <Input
+            autoFocus
             maxLength="25"
             variant="filled"
             value={title}
