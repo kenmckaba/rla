@@ -14,6 +14,9 @@ export const AccordionItemCustom = ({ title, children }) => {
         borderRadius="lg"
         borderColor="darkKnight.900"
         _expanded={{ borderBottom: '0', borderBottomRadius: 0 }}
+        _focus={{
+          boxShadow: 'none',
+        }}
       >
         <Box fontWeight="semibold" flex="1" fontSize="10pt" textAlign="left">
           {title}
