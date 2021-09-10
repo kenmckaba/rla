@@ -146,6 +146,21 @@ const Button = {
         color: '#ffffff',
       },
     },
+    'splashscreen-button': {
+      minH: '50px',
+      minW: '220px',
+      bg: 'ghost.50',
+      color: 'blue.500',
+      _hover: {
+        bg: 'blue.100',
+      },
+      _active: {
+        bg: 'blue.200',
+      },
+      _focus: {
+        bg: 'blue.200',
+      },
+    },
     'tertiary-outline': {
       textTransform: 'capitalization',
       bg: 'transparent',
