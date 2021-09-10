@@ -13,6 +13,7 @@ const config = {
     global: {
       body: {
         color: 'white',
+        minHeight: '100vh',
         bgGradient: 'linear(to-b, #284A83, #396AA1)',
       },
     },
