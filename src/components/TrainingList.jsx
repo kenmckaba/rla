@@ -30,6 +30,13 @@ import {
   Stat,
   StatLabel,
   StatHelpText,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogCloseButton,
 } from '@chakra-ui/react'
 import { AddIcon, CalendarIcon, CloseIcon } from '@chakra-ui/icons'
 import { IoIosCalendar } from 'react-icons/io'
@@ -49,6 +56,8 @@ export const TrainingList = () => {
   const [currentTraining, setCurrentTraining] = useState()
   const { loading, error, data, subscribeToMore } = useQuery(gql(listTrainings))
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
+  const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure()
+  const cancelRef = React.useRef()
   const [addTraining] = useMutation(gql(createTraining))
   const [removeTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
@@ -111,6 +120,7 @@ export const TrainingList = () => {
 
   const handleDelete = async (trainingId) => {
     await removeTraining({ variables: { input: { id: trainingId } } })
+    onAlertClose()
     onModalClose()
   }
 
@@ -283,7 +293,32 @@ export const TrainingList = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
+        <AlertDialog
+          motionPreset="slideInBottom"
+          leastDestructiveRef={cancelRef}
+          onClose={onAlertClose}
+          isOpen={isAlertOpen}
+          isCentered
+        >
+          <AlertDialogOverlay />
 
+          <AlertDialogContent color="darkKnight.700">
+            <AlertDialogHeader fontSize="1.1em">
+              Are you sure you want to delete this training?
+            </AlertDialogHeader>
+            <AlertDialogCloseButton />
+            <AlertDialogBody>
+              <HStack spacing="3" marginBlock="3">
+                <Button w="100%" size="md" variant="outline" ref={cancelRef} onClick={onAlertClose}>
+                  No
+                </Button>
+                <Button w="100%" size="md" onClick={() => handleDelete(currentTraining?.id)}>
+                  Yes
+                </Button>
+              </HStack>
+            </AlertDialogBody>
+          </AlertDialogContent>
+        </AlertDialog>
         <Modal isOpen={isModalOpen} scrollBehavior="inside">
           <ModalOverlay />
           <ModalContent color="darkKnight.700">
@@ -292,12 +327,21 @@ export const TrainingList = () => {
                 <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
                 <Spacer></Spacer>
                 <Box>
-                  <HStack spacing={8}>
-                    <Icon
-                      onClick={() => handleDelete(currentTraining?.id)}
-                      as={IoTrashOutline}
-                    ></Icon>
-                    <Icon onClick={onModalClose} boxSize={3} as={CloseIcon}></Icon>
+                  <HStack spacing={2}>
+                    {!newTraining && (
+                      <IconButton
+                        variant="icon-button"
+                        aria-label="Delete training"
+                        icon={<Icon as={IoTrashOutline} boxSize={5} />}
+                        onClick={onAlertOpen}
+                      />
+                    )}
+                    <IconButton
+                      variant="icon-button"
+                      aria-label="Close form"
+                      icon={<CloseIcon boxSize={3} />}
+                      onClick={onModalClose}
+                    />
                   </HStack>
                 </Box>
               </Flex>
