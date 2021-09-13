@@ -61,7 +61,7 @@ export const TrainingForm = ({ onClose, trainingId }) => {
     variables: { id: trainingId },
   })
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
-  const regLink = useRef(`${window.location.href}registration/${trainingId}`)
+  const regLink = useRef(`/registration/${trainingId}`)
   const { onCopy } = useClipboard(regLink.current)
 
   useEffect(() => {
