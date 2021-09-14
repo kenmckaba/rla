@@ -146,9 +146,27 @@ const Button = {
         color: '#ffffff',
       },
     },
-    'splashscreen-button': {
-      minH: '50px',
-      minW: '220px',
+    'splashscreen-signup-button': {
+      bg: 'transparent',
+      color: 'ghost.100',
+      border: '1px',
+      borderColor: 'ghost.100',
+      _hover: {
+        bg: 'ghost.100',
+        color: 'darkKnight.700',
+      },
+      _active: {
+        bg: 'ghost.100',
+        color: 'darkKnight.700',
+        borderColor: 'ghost.100',
+      },
+      _focus: {
+        bg: 'ghost.100',
+        color: 'darkKnight.700',
+        borderColor: 'ghost.100',
+      },
+    },
+    'splashscreen-login-button': {
       bg: 'ghost.50',
       color: 'blue.500',
       _hover: {

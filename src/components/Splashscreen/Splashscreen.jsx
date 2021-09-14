@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Box,
   Flex,
@@ -9,11 +9,20 @@ import {
   Button,
   Image,
   Container,
-  Link,
+  HStack,
+  useDisclosure,
 } from '@chakra-ui/react'
-import { Link as ReactLink } from 'react-router-dom'
+import LoginModal from './LoginModal'
 
 export const Splashscreen = () => {
+  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
+  const [isLogin, setIsLogin] = useState(false)
+
+  const handleButtonClick = async (isLogin) => {
+    setIsLogin(!!isLogin)
+    onModalOpen()
+  }
+
   return (
     <>
       <Container maxW="container.xl">
@@ -40,11 +49,24 @@ export const Splashscreen = () => {
                 Ensure your nurses feel supported and valued with tools to provide professional
                 development support
               </Text>
-              <Box mt="12">
-                <Link as={ReactLink} to="/dashboard">
-                  <Button variant="splashscreen-button">LAUNCH EXPERIENCE</Button>
-                </Link>
-              </Box>
+              <HStack mt="12" spacing="4">
+                <Button
+                  onClick={() => handleButtonClick(false)}
+                  variant="secondary-ghost-outline"
+                  minH="50px"
+                  minW="200px"
+                >
+                  SIGN UP
+                </Button>
+                <Button
+                  onClick={() => handleButtonClick(true)}
+                  variant="splashscreen-login-button"
+                  minH="50px"
+                  minW="200px"
+                >
+                  LOGIN
+                </Button>
+              </HStack>
             </Box>
             <Spacer />
             <Box>
@@ -53,6 +75,7 @@ export const Splashscreen = () => {
           </Flex>
         </Flex>
       </Container>
+      <LoginModal isModalOpen={isModalOpen} onModalClose={onModalClose} isLogin={isLogin} />
     </>
   )
 }
