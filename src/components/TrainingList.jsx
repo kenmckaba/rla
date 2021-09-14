@@ -62,6 +62,8 @@ export const TrainingList = () => {
   const [removeTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
 
+  const MAX_ATTENDEE_ICONS = 5
+
   useEffect(() => {
     if (data) {
       const tr = data.listTrainings.items.filter((t) => t.title !== '<temp>')
@@ -169,14 +171,22 @@ export const TrainingList = () => {
         </Td>
         <Td>
           <HStack>
-            {training.attendees.items.slice(0, 5).map((attendee) => (
+            {training.attendees.items.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
               <Avatar
                 key={attendee.id}
                 name={attendee.name}
                 color="white"
-                bg="rgba(255, 255, 255, 0.1)"
+                bg="rgba(255, 255, 255, 0.25)"
               />
             ))}
+            {training.attendees.items.length > MAX_ATTENDEE_ICONS && (
+              <Avatar
+                getInitials={(name) => name}
+                name={`+${training.attendees.items.length - MAX_ATTENDEE_ICONS}`}
+                color="white"
+                bg="rgba(255, 255, 255, 0.1)"
+              />
+            )}
           </HStack>
         </Td>
         <Td></Td>
