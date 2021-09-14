@@ -181,8 +181,8 @@ export const TrainingList = () => {
             ))}
             {training.attendees.items.length > MAX_ATTENDEE_ICONS && (
               <Avatar
-                getInitials={(name) => `+${training.attendees.items.length - MAX_ATTENDEE_ICONS}`}
-                name="hola"
+                getInitials={(name) => name}
+                name={`+${training.attendees.items.length - MAX_ATTENDEE_ICONS}`}
                 color="white"
                 bg="rgba(255, 255, 255, 0.1)"
               />
