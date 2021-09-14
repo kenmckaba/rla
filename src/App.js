@@ -8,6 +8,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { TrainerInSession } from './components/TrainerInSession'
 import { Registration } from './components/Registration'
 import { RegistrationUpdate } from './components/RegistrationUpdate'
+import { Splashscreen } from './components/Splashscreen/Splashscreen'
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
           <Route path="/trainerInSession/:trainingId" component={TrainerInSession} />
           <Route path="/registration-update/:attendeeId" component={RegistrationUpdate} />
           <Route path="/registration/:trainingId" component={Registration} />
-          <Route path="/" component={TrainingList} />
+          <Route path="/dashboard" component={TrainingList} />
+          <Route path="/" component={Splashscreen} />
         </Switch>
       </BrowserRouter>
     </ChakraProvider>

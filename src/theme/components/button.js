@@ -146,6 +146,39 @@ const Button = {
         color: '#ffffff',
       },
     },
+    'splashscreen-signup-button': {
+      bg: 'transparent',
+      color: 'ghost.100',
+      border: '1px',
+      borderColor: 'ghost.100',
+      _hover: {
+        bg: 'ghost.100',
+        color: 'darkKnight.700',
+      },
+      _active: {
+        bg: 'ghost.100',
+        color: 'darkKnight.700',
+        borderColor: 'ghost.100',
+      },
+      _focus: {
+        bg: 'ghost.100',
+        color: 'darkKnight.700',
+        borderColor: 'ghost.100',
+      },
+    },
+    'splashscreen-login-button': {
+      bg: 'ghost.50',
+      color: 'blue.500',
+      _hover: {
+        bg: 'blue.100',
+      },
+      _active: {
+        bg: 'blue.200',
+      },
+      _focus: {
+        bg: 'blue.200',
+      },
+    },
     'tertiary-outline': {
       textTransform: 'capitalization',
       bg: 'transparent',
