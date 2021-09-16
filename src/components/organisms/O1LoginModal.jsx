@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
 import { useHistory } from 'react-router-dom'
-const LoginModal = ({ isModalOpen, onModalClose, isLogin }) => {
+const O1LoginModal = ({ isModalOpen, onModalClose, isLogin }) => {
   let history = useHistory()
   const openDashboardPage = () => {
     history.push('/dashboard')
@@ -95,4 +95,4 @@ const LoginModal = ({ isModalOpen, onModalClose, isLogin }) => {
   )
 }
 
-export default LoginModal
+export default O1LoginModal

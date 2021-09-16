@@ -12,9 +12,9 @@ import {
   HStack,
   useDisclosure,
 } from '@chakra-ui/react'
-import LoginModal from './LoginModal'
+import O1LoginModal from '../../organisms/O1LoginModal'
 
-export const Splashscreen = () => {
+export const V1Splashscreen = () => {
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const [isLogin, setIsLogin] = useState(false)
 
@@ -75,7 +75,7 @@ export const Splashscreen = () => {
           </Flex>
         </Flex>
       </Container>
-      <LoginModal isModalOpen={isModalOpen} onModalClose={onModalClose} isLogin={isLogin} />
+      <O1LoginModal isModalOpen={isModalOpen} onModalClose={onModalClose} isLogin={isLogin} />
     </>
   )
 }

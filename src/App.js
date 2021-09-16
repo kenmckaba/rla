@@ -1,6 +1,4 @@
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
-import Background from './components/Background'
-import { TrainingList } from './components/TrainingList'
 import { AttendeeLanding } from './components/AttendeeLanding'
 import theme from './theme/index'
 import Fonts from './theme/fonts'
@@ -8,7 +6,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { TrainerInSession } from './components/TrainerInSession'
 import { Registration } from './components/Registration'
 import { RegistrationUpdate } from './components/RegistrationUpdate'
-import { Splashscreen } from './components/Splashscreen/Splashscreen'
+import { V1Splashscreen } from './components/views/V1Splashscreen/V1Splashscreen'
+import { V2TrainingList } from './components/views/V2TrainingList/V2TrainingList'
 
 function App() {
   return (
@@ -21,8 +20,8 @@ function App() {
           <Route path="/trainerInSession/:trainingId" component={TrainerInSession} />
           <Route path="/registration-update/:attendeeId" component={RegistrationUpdate} />
           <Route path="/registration/:trainingId" component={Registration} />
-          <Route path="/dashboard" component={TrainingList} />
-          <Route path="/" component={Splashscreen} />
+          <Route path="/dashboard" component={V2TrainingList} />
+          <Route path="/" component={V1Splashscreen} />
         </Switch>
       </BrowserRouter>
     </ChakraProvider>
