@@ -9,8 +9,8 @@ import {
   Flex,
   Spacer,
 } from '@chakra-ui/react'
-import { Trainings } from '../views/V2TrainingList/V2TrainingList'
 import { ListTable } from '../views/V2TrainingList/V2TrainingList'
+import O3TrainingTable from './O3TrainingTable'
 
 export default function O2TrainingListHeader({
   onNewTraining,
@@ -89,7 +89,7 @@ export default function O2TrainingListHeader({
       >
         <TabPanel p={0} m={0}>
           <ListTable>
-            <Trainings past={false}
+            <O3TrainingTable past={false}
               trainings={trainings}
               setTrainingHovered={setTrainingHovered}
               trainingHovered={trainingHovered}
@@ -99,7 +99,7 @@ export default function O2TrainingListHeader({
           </ListTable>
         </TabPanel>
         <TabPanel p={0} m={0}>
-          <Trainings past={true}
+          <O3TrainingTable past={true}
             trainings={trainings}
             setTrainingHovered={setTrainingHovered}
             trainingHovered={trainingHovered}

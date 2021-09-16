@@ -1,6 +1,8 @@
 import { Button, Icon, Grid } from '@chakra-ui/react'
 import { IoPlay } from 'react-icons/io5'
 import { EditIcon } from '@chakra-ui/icons'
+
+//TODO: Export to an organism/molecule file
 export const TrainingToolbar = ({ startTraining, editTraining }) => {
   return (
     <>
