@@ -11,7 +11,7 @@ import {
   Flex,
   FormLabel,
 } from '@chakra-ui/react'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans } from '../../bluejeans/useBlueJeans'
 import { Selections } from './Selections'
 
 export const MicCamControls = ({ localVideoRef, isModerator }) => {

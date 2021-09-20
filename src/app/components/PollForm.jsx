@@ -13,7 +13,7 @@ import {
   IconButton,
 } from '@chakra-ui/react'
 import { useMutation, gql } from '@apollo/client'
-import { createPoll, updatePoll } from '../graphql/mutations'
+import { createPoll, updatePoll } from '../../graphql/mutations'
 import { AddIcon } from '@chakra-ui/icons'
 
 const SingleChoice = 'SINGLECHOICE'

@@ -1,6 +1,4 @@
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
-import Background from './components/Background'
-import { TrainingList } from './components/TrainingList'
 import { AttendeeLanding } from './components/AttendeeLanding'
 import theme from './theme/index'
 import Fonts from './theme/fonts'
@@ -8,7 +6,10 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { TrainerInSession } from './components/TrainerInSession'
 import { Registration } from './components/Registration'
 import { RegistrationUpdate } from './components/RegistrationUpdate'
-import { Splashscreen } from './components/Splashscreen/Splashscreen'
+import { TrainingList } from './pages/TrainingList/TrainingList'
+import { Splashscreen } from './pages/Splashscreen/Splashscreen'
+
+
 
 function App() {
   return (

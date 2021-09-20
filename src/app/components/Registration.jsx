@@ -20,10 +20,10 @@ import {
   StatLabel,
   StatHelpText,
 } from '@chakra-ui/react'
-import { getTraining } from '../graphql/queries'
+import { getTraining } from '../../graphql/queries'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { createAttendee } from '../graphql/mutations'
-import { prettyTime } from '../pretty-time'
+import { createAttendee } from '../../graphql/mutations'
+import { prettyTime } from '../../pretty-time'
 import Background from './Background'
 
 export const Registration = ({

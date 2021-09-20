@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useQuery, gql, useMutation } from '@apollo/client'
-import { listTrainings } from '../graphql/queries'
+import { listTrainings } from '../../../graphql/queries'
 import {
   Avatar,
   HStack,
@@ -41,14 +41,14 @@ import {
 import { AddIcon, CalendarIcon, CloseIcon } from '@chakra-ui/icons'
 import { IoIosCalendar } from 'react-icons/io'
 import { IoTrashOutline } from 'react-icons/io5'
-import { TrainingForm } from './TrainingForm'
+import { TrainingForm } from '../../components/TrainingForm'
 import { useEffect } from 'react'
-import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
+import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../../../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
-import { createTraining, deleteTraining } from '../graphql/mutations'
-import { prettyTime } from '../pretty-time'
-import { TrainingToolbar } from './Trainings/TrainingToolbar'
-import Background from './Background'
+import { createTraining, deleteTraining } from '../../../graphql/mutations'
+import { prettyTime } from '../../../pretty-time'
+import { TrainingToolbar } from '../../components/Trainings/TrainingToolbar'
+import Background from '../../components/Background'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])

@@ -10,7 +10,7 @@ import {
   HStack,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { getPoll } from '../graphql/queries'
+import { getPoll } from '../../graphql/queries'
 
 export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
   const [value, setValue] = useState()

@@ -1,10 +1,10 @@
 import { gql, useQuery, useMutation } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { Tr, Td, Box, Flex, Tooltip } from '@chakra-ui/react'
-import { getAttendee } from '../graphql/queries'
+import { getAttendee } from '../../graphql/queries'
 import { buildSubscription } from 'aws-appsync'
-import { onUpdateAttendee } from '../graphql/subscriptions'
-import { updateAttendee } from '../graphql/mutations'
+import { onUpdateAttendee } from '../../graphql/subscriptions'
+import { updateAttendee } from '../../graphql/mutations'
 
 export const AttendeeItem = ({ attendeeId }) => {
   const [attendee, setAttendee] = useState()

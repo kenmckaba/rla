@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react'
-import { getTraining } from '../graphql/queries'
+import { getTraining } from '../../graphql/queries'
 import { gql, useQuery, useMutation } from '@apollo/client'
 import {
   Box,
@@ -30,7 +30,7 @@ import {
   Icon,
   Center,
 } from '@chakra-ui/react'
-import { updateTraining } from '../graphql/mutations'
+import { updateTraining } from '../../graphql/mutations'
 import { useState } from 'react'
 import {
   onCreateAttendee,
@@ -39,11 +39,11 @@ import {
   onDeletePoll,
   onUpdateAttendee,
   onUpdatePoll,
-} from '../graphql/subscriptions'
+} from '../../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
 import { TrainerPoll } from './TrainerPoll'
 import { PollModal } from './PollModal'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans } from '../../bluejeans/useBlueJeans'
 import { ClassRoster } from './ClassRoster'
 import { AddIcon } from '@chakra-ui/icons'
 import { MicCamControls } from './MicCamControls'

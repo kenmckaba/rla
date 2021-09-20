@@ -16,10 +16,10 @@ import {
   useToast,
   HStack,
 } from '@chakra-ui/react'
-import { getAttendee } from '../graphql/queries'
+import { getAttendee } from '../../graphql/queries'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { deleteAttendee, updateAttendee } from '../graphql/mutations'
-import { prettyTime } from '../pretty-time'
+import { deleteAttendee, updateAttendee } from '../../graphql/mutations'
+import { prettyTime } from '../../pretty-time'
 
 export const RegistrationUpdate = ({
   match: {

@@ -13,9 +13,9 @@ import {
 } from '@chakra-ui/react'
 import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
-import { updatePoll } from '../graphql/mutations'
-import { getPoll } from '../graphql/queries'
-import { onCreatePollResponse, onUpdatePoll } from '../graphql/subscriptions'
+import { updatePoll } from '../../graphql/mutations'
+import { getPoll } from '../../graphql/queries'
+import { onCreatePollResponse, onUpdatePoll } from '../../graphql/subscriptions'
 
 export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPoll }) => {
   const [poll, setPoll] = useState()

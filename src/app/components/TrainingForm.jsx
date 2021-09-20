@@ -22,9 +22,9 @@ import {
   Text,
   Heading,
 } from '@chakra-ui/react'
-import { getTraining } from '../graphql/queries'
+import { getTraining } from '../../graphql/queries'
 import { useMutation, gql, useQuery } from '@apollo/client'
-import { deleteTraining, updateTraining } from '../graphql/mutations'
+import { deleteTraining, updateTraining } from '../../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
 import { AttendeeForm } from './AttendeeForm'
 import DatePicker from './DatePicker'
@@ -37,7 +37,7 @@ import {
   onDeletePoll,
   onUpdateAttendee,
   onUpdatePoll,
-} from '../graphql/subscriptions'
+} from '../../graphql/subscriptions'
 import { Polls } from './Polls'
 import { AccordionItemCustom } from './AccordionItemCustom'
 import { useRef } from 'react'

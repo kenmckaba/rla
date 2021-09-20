@@ -1,6 +1,6 @@
 import { Center, Flex, VStack, Wrap, WrapItem } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans } from '../../bluejeans/useBlueJeans'
 
 export const BjnMedia = () => {
   const { bjnApi, bjnIsConnected, bjnReceivingScreenShare, bjnParticipants, bjnVideoState } =

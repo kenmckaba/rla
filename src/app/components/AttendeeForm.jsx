@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Input, Button, FormControl, FormLabel, HStack, Box } from '@chakra-ui/react'
 import { useMutation, gql } from '@apollo/client'
-import { createAttendee, updateAttendee } from '../graphql/mutations'
+import { createAttendee, updateAttendee } from '../../graphql/mutations'
 
 const emptyAttendee = {
   name: '',

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { getAttendee, getTraining } from '../graphql/queries'
+import { getAttendee, getTraining } from '../../graphql/queries'
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import {
   VStack,
@@ -15,12 +15,12 @@ import {
   ModalBody,
   useDisclosure,
 } from '@chakra-ui/react'
-import { createPollResponse, updateAttendee } from '../graphql/mutations'
+import { createPollResponse, updateAttendee } from '../../graphql/mutations'
 import { buildSubscription } from 'aws-appsync'
-import { onUpdateAttendee, onUpdateTraining } from '../graphql/subscriptions'
+import { onUpdateAttendee, onUpdateTraining } from '../../graphql/subscriptions'
 import { PollChoices } from './PollChoices'
-import { prettyTime } from '../pretty-time'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { prettyTime } from '../../pretty-time'
+import { useBlueJeans } from '../../bluejeans/useBlueJeans'
 import { MicCamControls } from './MicCamControls'
 import { BjnMedia } from './BjnMedia'
 import { CamInUseModal } from './CamInUseModal'
