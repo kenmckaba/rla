@@ -49,6 +49,7 @@ import { createTraining, deleteTraining } from '../../../graphql/mutations'
 import { prettyTime } from '../../../pretty-time'
 import { TrainingToolbar } from '../../components/Trainings/TrainingToolbar'
 import Background from '../../components/Background'
+import TrainingListHeader from '../../components/TrainingList/TrainingListHeader'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -228,6 +229,7 @@ export const TrainingList = () => {
 
   return (
     <Background>
+      <TrainingListHeader />
       <Box height="100%" width="100%" padding="3px" borderRadius="20px">
         <Tabs height="100%" width="100%" variant="solid-rounded">
           <Flex>
