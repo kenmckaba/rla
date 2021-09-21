@@ -1,3 +1,5 @@
+
+export const timestampToPrettyTime = (dt) => prettyTime(new Date(Number(dt)))
 export const prettyTime = (dt) => {
   const options = {
     year: 'numeric',

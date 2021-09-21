@@ -46,7 +46,7 @@ import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../../../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
 import { createTraining, deleteTraining } from '../../../graphql/mutations'
-import { prettyTime } from '../../../pretty-time'
+import { timestampToPrettyTime } from '../../../pretty-time'
 import { TrainingToolbar } from '../../components/Trainings/TrainingToolbar'
 import Background from '../../components/Background'
 import TrainingListHeader from '../../components/TrainingList/TrainingListHeader'
@@ -198,7 +198,7 @@ export const TrainingList = () => {
               startTraining={() => openRegPage(training.id)}
             />
           ) : (
-            prettyTime(new Date(Number(training.scheduledTime)))
+            timestampToPrettyTime(training.scheduledTime)
           )}
         </Td>
       </Tr>
@@ -229,7 +229,7 @@ export const TrainingList = () => {
 
   return (
     <Background>
-      <TrainingListHeader />
+      <TrainingListHeader trainings={trainings} />
       <Box height="100%" width="100%" padding="3px" borderRadius="20px">
         <Tabs height="100%" width="100%" variant="solid-rounded">
           <Flex>
