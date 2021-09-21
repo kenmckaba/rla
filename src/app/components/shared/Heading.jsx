@@ -4,7 +4,7 @@ export const H1Heading = (props) => {
   const { children } = props
 
   return (
-    <Heading fontSize="5xl" fontWeight="normal"{...props} >
+    <Heading fontSize="5xl" fontWeight="normal" {...props} >
       {children}
     </Heading>
   )

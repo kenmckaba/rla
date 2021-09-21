@@ -50,6 +50,7 @@ import { timestampToPrettyTime } from '../../../pretty-time'
 import { TrainingToolbar } from '../../components/Trainings/TrainingToolbar'
 import Background from '../../components/Background'
 import TrainingListHeader from '../../components/TrainingList/TrainingListHeader'
+import TestVideoSetup from '../../components/TrainingList/TestVideoSetup'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -231,138 +232,144 @@ export const TrainingList = () => {
     <Background>
       <TrainingListHeader trainings={trainings} />
       <Box height="100%" width="100%" padding="3px" borderRadius="20px">
-        <Tabs height="100%" width="100%" variant="solid-rounded">
-          <Flex>
-            <TabList>
-              <Tab
-                textTransform="uppercase"
-                color="#ffffff"
-                height="32px"
-                fontSize="10pt"
-                paddingInline="26px"
-                minW="120px"
-                fontWeight="bold"
-                borderRadius="full"
-                bg="rgba(255, 255, 255, 0.1);"
-                mr="16px"
-                _focus={{
-                  boxShadow: 'none',
-                }}
-                _selected={{
-                  color: 'darkKnight.700',
-                  bg: 'ghost.50',
-                }}
-              >
+        <Flex >
+          {/* TODO: When the calendar is done this Box should be extracted on a LateralPanel component or something */}
+          <Box mr="16px" width="18.3%" height="266px">
+            <TestVideoSetup/>
+          </Box>
+          <Tabs height="100%" width="81.7%" variant="solid-rounded">
+            <Flex>
+              <TabList>
+                <Tab
+                  textTransform="uppercase"
+                  color="#ffffff"
+                  height="32px"
+                  fontSize="10pt"
+                  paddingInline="26px"
+                  minW="120px"
+                  fontWeight="bold"
+                  borderRadius="full"
+                  bg="rgba(255, 255, 255, 0.1);"
+                  mr="16px"
+                  _focus={{
+                    boxShadow: 'none',
+                  }}
+                  _selected={{
+                    color: 'darkKnight.700',
+                    bg: 'ghost.50',
+                  }}
+                >
                 Upcoming training
-              </Tab>
-              <Tab
-                textTransform="uppercase"
-                color="#ffffff"
-                height="32px"
-                fontSize="10pt"
-                paddingInline="26px"
-                minW="120px"
-                fontWeight="bold"
-                borderRadius="full"
-                bg="rgba(255, 255, 255, 0.1);"
-                _focus={{
-                  boxShadow: 'none',
-                }}
-                _selected={{
-                  color: 'darkKnight.700',
-                  bg: 'ghost.50',
-                }}
-              >
+                </Tab>
+                <Tab
+                  textTransform="uppercase"
+                  color="#ffffff"
+                  height="32px"
+                  fontSize="10pt"
+                  paddingInline="26px"
+                  minW="120px"
+                  fontWeight="bold"
+                  borderRadius="full"
+                  bg="rgba(255, 255, 255, 0.1);"
+                  _focus={{
+                    boxShadow: 'none',
+                  }}
+                  _selected={{
+                    color: 'darkKnight.700',
+                    bg: 'ghost.50',
+                  }}
+                >
                 Completed training
-              </Tab>
-            </TabList>
-            <Spacer />
-            <Button
-              variant="primary-transparent"
-              size="sm"
-              leftIcon={<AddIcon />}
-              onClick={onNewTraining}
-              fontSize="10pt"
-              fontWeight="bold"
-              minW="170px"
-            >
+                </Tab>
+              </TabList>
+              <Spacer />
+              <Button
+                variant="primary-transparent"
+                size="sm"
+                leftIcon={<AddIcon />}
+                onClick={onNewTraining}
+                fontSize="10pt"
+                fontWeight="bold"
+                minW="170px"
+              >
               New training
-            </Button>
-          </Flex>
-          <TabPanels
-            minHeight="75vh"
-            width="100%"
-            color="white"
-            borderRadius="5px"
-            bg="rgba(255, 255, 255, 0.1)"
-            mt="4"
+              </Button>
+            </Flex>
+            <TabPanels
+              minHeight="75vh"
+              width="100%"
+              color="white"
+              borderRadius="5px"
+              bg="rgba(255, 255, 255, 0.1)"
+              mt="4"
+            >
+              <TabPanel p={0} m={0}>
+                <ListTable>{Trainings({ past: false })}</ListTable>
+              </TabPanel>
+              <TabPanel p={0} m={0}>
+                <ListTable>{Trainings({ past: true })}</ListTable>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+          <AlertDialog
+            motionPreset="slideInBottom"
+            leastDestructiveRef={cancelRef}
+            onClose={onAlertClose}
+            isOpen={isAlertOpen}
+            isCentered
           >
-            <TabPanel p={0} m={0}>
-              <ListTable>{Trainings({ past: false })}</ListTable>
-            </TabPanel>
-            <TabPanel p={0} m={0}>
-              <ListTable>{Trainings({ past: true })}</ListTable>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-        <AlertDialog
-          motionPreset="slideInBottom"
-          leastDestructiveRef={cancelRef}
-          onClose={onAlertClose}
-          isOpen={isAlertOpen}
-          isCentered
-        >
-          <AlertDialogOverlay />
+            <AlertDialogOverlay />
 
-          <AlertDialogContent color="darkKnight.700">
-            <AlertDialogHeader fontSize="1.1em">
+            <AlertDialogContent color="darkKnight.700">
+              <AlertDialogHeader fontSize="1.1em">
               Are you sure you want to delete this training?
-            </AlertDialogHeader>
-            <AlertDialogCloseButton />
-            <AlertDialogBody>
-              <HStack spacing="3" marginBlock="3">
-                <Button w="100%" size="md" variant="outline" ref={cancelRef} onClick={onAlertClose}>
+              </AlertDialogHeader>
+              <AlertDialogCloseButton />
+              <AlertDialogBody>
+                <HStack spacing="3" marginBlock="3">
+                  <Button w="100%" size="md" variant="outline" ref={cancelRef} onClick={onAlertClose}>
                   No
-                </Button>
-                <Button w="100%" size="md" onClick={() => handleDelete(currentTraining?.id)}>
+                  </Button>
+                  <Button w="100%" size="md" onClick={() => handleDelete(currentTraining?.id)}>
                   Yes
-                </Button>
-              </HStack>
-            </AlertDialogBody>
-          </AlertDialogContent>
-        </AlertDialog>
-        <Modal isOpen={isModalOpen} scrollBehavior="inside">
-          <ModalOverlay />
-          <ModalContent color="darkKnight.700">
-            <ModalHeader>
-              <Flex>
-                <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
-                <Spacer></Spacer>
-                <Box>
-                  <HStack spacing={2}>
-                    {!newTraining && (
+                  </Button>
+                </HStack>
+              </AlertDialogBody>
+            </AlertDialogContent>
+          </AlertDialog>
+          <Modal isOpen={isModalOpen} scrollBehavior="inside">
+            <ModalOverlay />
+            <ModalContent color="darkKnight.700">
+              <ModalHeader>
+                <Flex>
+                  <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
+                  <Spacer></Spacer>
+                  <Box>
+                    <HStack spacing={2}>
+                      {!newTraining && (
+                        <IconButton
+                          variant="icon-button"
+                          aria-label="Delete training"
+                          icon={<Icon as={IoTrashOutline} boxSize={5} />}
+                          onClick={onAlertOpen}
+                        />
+                      )}
                       <IconButton
                         variant="icon-button"
-                        aria-label="Delete training"
-                        icon={<Icon as={IoTrashOutline} boxSize={5} />}
-                        onClick={onAlertOpen}
+                        aria-label="Close form"
+                        icon={<CloseIcon boxSize={3} />}
+                        onClick={onModalClose}
                       />
-                    )}
-                    <IconButton
-                      variant="icon-button"
-                      aria-label="Close form"
-                      icon={<CloseIcon boxSize={3} />}
-                      onClick={onModalClose}
-                    />
-                  </HStack>
-                </Box>
-              </Flex>
-            </ModalHeader>
-            <ModalBody>
-              <TrainingForm onClose={onModalClose} trainingId={currentTraining?.id} />
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+                    </HStack>
+                  </Box>
+                </Flex>
+              </ModalHeader>
+              <ModalBody>
+                <TrainingForm onClose={onModalClose} trainingId={currentTraining?.id} />
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        </Flex>
       </Box>
     </Background>
   )
