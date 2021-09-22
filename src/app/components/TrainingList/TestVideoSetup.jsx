@@ -13,41 +13,38 @@ const BlackBox = ({ children }) => (
     </Center>
   </Center>)
 
-// TODO: This will probably gonna be wrapped on a Button to do the redirect
-const PlayerButton = () => (
+const PlayerButton = (props) => (
   <Center
     bg="rgba(255, 255, 255, 0.3)"
     height="63px"
     width="63px"
     borderRadius="full"
     cursor="pointer"
-  >
+    {...props}>
     <ArrowRight />
   </Center>
 
 )
 // TODO: Check the font properties
-export default function TestVideoSetup(props) {
+export default function TestVideoSetup({ onJoinMeetingClick, ...props }) {
   return (
     <Box
       bg="rgba(255, 255, 255, 0.1)"
       borderRadius="8px"
       height="266px"
       width="332px"
-
       overflow="hidden"
       {...props}>
 
       <Center
         bg="rgba(255, 255, 255, 0.1)"
-        height="36px"
-      >
+        height="36px">
         Test Video Setup
       </Center>
 
       <Box height="230px" padding="2">
         <BlackBox>
-          <PlayerButton />
+          <PlayerButton onClick={() => onJoinMeetingClick()} />
         </BlackBox>
 
         {/* TODO: Standardize the xs font size to 10px */}
@@ -59,7 +56,7 @@ export default function TestVideoSetup(props) {
           </EditButton>
           <Spacer />
           <PrimaryButton
-            onClick={() => console.log('click')}
+            onClick={() => onJoinMeetingClick()}
             variant="primary-button"
             size="xs"
             width="89px"

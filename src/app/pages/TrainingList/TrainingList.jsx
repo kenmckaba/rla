@@ -235,7 +235,7 @@ export const TrainingList = () => {
         <Flex >
           {/* TODO: When the calendar is done this Box should be extracted on a LateralPanel component or something */}
           <Box mr="16px" width="18.3%" height="266px">
-            <TestVideoSetup/>
+            <TestVideoSetup onJoinMeetingClick={() => openRegPage(trainings[0].id)}/>
           </Box>
           <Tabs height="100%" width="81.7%" variant="solid-rounded">
             <Flex>
