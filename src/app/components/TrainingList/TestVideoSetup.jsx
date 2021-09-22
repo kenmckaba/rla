@@ -1,5 +1,6 @@
-import { Box, Center } from '@chakra-ui/layout'
+import { Box, Center, Flex, Spacer } from '@chakra-ui/layout'
 import React from 'react'
+import { EditButton, PrimaryButton } from '../shared/Buttons'
 import { ArrowRight } from '../shared/Shapes'
 
 const BlackBox = ({ children }) => (
@@ -7,8 +8,7 @@ const BlackBox = ({ children }) => (
     <Center
       bg="#000"
       height="177px"
-      width="315px"
-      mt="2">
+      width="315px">
       {children}
     </Center>
   </Center>)
@@ -32,8 +32,9 @@ export default function TestVideoSetup(props) {
     <Box
       bg="rgba(255, 255, 255, 0.1)"
       borderRadius="8px"
-      height="100%"
-      width="100%"
+      height="266px"
+      width="332px"
+
       overflow="hidden"
       {...props}>
 
@@ -43,9 +44,30 @@ export default function TestVideoSetup(props) {
       >
         Test Video Setup
       </Center>
-      <BlackBox>
-        <PlayerButton />
-      </BlackBox>
+
+      <Box height="230px" padding="2">
+        <BlackBox>
+          <PlayerButton />
+        </BlackBox>
+
+        {/* TODO: Standardize the xs font size to 10px */}
+        <Flex mt="2.5">
+          <EditButton
+            size="xs"
+            fontSize="10px">
+            SETTINGS
+          </EditButton>
+          <Spacer />
+          <PrimaryButton
+            onClick={() => console.log('click')}
+            variant="primary-button"
+            size="xs"
+            width="89px"
+            fontSize="10px">
+            JOIN MEETING
+          </PrimaryButton>
+        </Flex>
+      </Box>
     </Box>
   )
 }

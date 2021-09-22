@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import LoginModal from './LoginModal'
 import { H1Heading, H3Heading } from '../../components/shared/Heading'
+import { PrimaryButton } from '../../components/shared/Buttons'
 
 export const Splashscreen = () => {
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
@@ -59,14 +60,14 @@ export const Splashscreen = () => {
                 >
                   SIGN UP
                 </Button>
-                <Button
+                <PrimaryButton
                   onClick={() => handleButtonClick(true)}
-                  variant="splashscreen-login-button"
+                  variant="primary-button"
                   minH="50px"
                   minW="200px"
                 >
                   LOGIN
-                </Button>
+                </PrimaryButton>
               </HStack>
             </Box>
             <Spacer />
