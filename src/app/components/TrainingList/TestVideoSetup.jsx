@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Spacer } from '@chakra-ui/layout'
+import { Box, Center, Flex, Spacer, Text } from '@chakra-ui/layout'
 import React from 'react'
 import { EditButton, PrimaryButton } from '../shared/Buttons'
 import { ArrowRight } from '../shared/Shapes'
@@ -25,7 +25,7 @@ const PlayerButton = (props) => (
   </Center>
 
 )
-// TODO: Check the font properties
+
 export default function TestVideoSetup({ onJoinMeetingClick, ...props }) {
   return (
     <Box
@@ -39,7 +39,9 @@ export default function TestVideoSetup({ onJoinMeetingClick, ...props }) {
       <Center
         bg="rgba(255, 255, 255, 0.1)"
         height="36px">
-        Test Video Setup
+        <Text fontWeight="600" fontSize="0.75em">
+          Test Video Setup
+        </Text>
       </Center>
 
       <Box height="230px" padding="2">
@@ -47,7 +49,7 @@ export default function TestVideoSetup({ onJoinMeetingClick, ...props }) {
           <PlayerButton onClick={() => onJoinMeetingClick()} />
         </BlackBox>
 
-        {/* TODO: Standardize the xs font size to 10px */}
+        {/* TODO: Standardize the xs button font size to 10px */}
         <Flex mt="2.5">
           <EditButton
             size="xs"
