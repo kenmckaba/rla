@@ -166,7 +166,7 @@ const Button = {
         borderColor: 'ghost.100',
       },
     },
-    'splashscreen-login-button': {
+    'primary-button': {
       bg: 'ghost.50',
       color: 'blue.500',
       _hover: {
