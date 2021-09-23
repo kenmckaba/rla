@@ -1,15 +1,20 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { EditIcon } from '@chakra-ui/icons'
 import {
-  Box,
-  Button,
   Accordion,
   AccordionItem,
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Box,
+  Button,
+  Center,
+  Flex,
+  HStack,
+  Spacer,
   Tr,
   Td,
+  Text
 } from '@chakra-ui/react'
 import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
@@ -116,19 +121,45 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
         <Accordion padding="0" width="100%" allowToggle key={poll.id}>
           <AccordionItem p={0} m={0} border="none">
             <AccordionButton padding="0" as="div">
-              <Box
-                fontWeight="500"
-                fontSize="14px"
-                flex="1"
-                cursor="pointer"
-                backgroundColor={startedPoll?.id === poll.id ? 'gold' : ''}
-              >
-                {poll.question}
-                {!poll.startedAt && (
-                  <EditIcon w={2} h={2} float="right" mt="6px" onClick={editThisPoll} />
-                )}
-              </Box>
-              <AccordionIcon />
+              <Flex width="100%">
+                <Box
+                  fontWeight="500"
+                  fontSize="14px"
+                  flex="1"
+                  cursor="pointer"
+                  backgroundColor={startedPoll?.id === poll.id ? 'gold' : ''}
+                >
+
+                  <Text
+                    mt="1"
+                    maxW="150px"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap">
+                    {poll.question}
+                  </Text>
+
+                  {!poll.startedAt && (
+                    <EditIcon w={5} h={5} float="right" mt="6px" onClick={editThisPoll} />
+                  )}
+                </Box>
+                <Spacer />
+                <Button
+                  size="xs"
+                  fontWeight="bold"
+                  minW="80px"
+                  backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'lightcyan'}
+                  padding="1px"
+                  variant="outline"
+                  onClick={(e) => {
+                    startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
+                  }}
+                  isDisabled={startedPoll && startedPoll.id !== poll.id}
+                >
+                  {startedPoll?.id === poll.id ? 'Stop' : poll.stoppedAt ? 'Share' : 'Launch'}
+                </Button>
+                <AccordionIcon />
+              </Flex>
             </AccordionButton>
             <AccordionPanel padding="0" pb={4}>
               {poll.answers.map((answer) => {
@@ -143,24 +174,6 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
-      </Td>
-      <Td />
-      <Td>
-        <Button
-          size="xs"
-          fontWeight="bold"
-          minW="80px"
-          backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'lightcyan'}
-          padding="1px"
-          height="15px"
-          variant="outline"
-          onClick={(e) => {
-            startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
-          }}
-          isDisabled={startedPoll && startedPoll.id !== poll.id}
-        >
-          {startedPoll?.id === poll.id ? 'Stop' : poll.stoppedAt ? 'Share' : 'Launch'}
-        </Button>
       </Td>
     </Tr>
   )
