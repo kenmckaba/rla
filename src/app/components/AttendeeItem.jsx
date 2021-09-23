@@ -1,10 +1,12 @@
 import { gql, useQuery, useMutation } from '@apollo/client'
 import { useEffect, useState } from 'react'
-import { Tr, Td, Box, Flex, Tooltip } from '@chakra-ui/react'
+import { Box, Center, Flex, HStack, Tr, Td, Tooltip } from '@chakra-ui/react'
 import { getAttendee } from '../../graphql/queries'
 import { buildSubscription } from 'aws-appsync'
 import { onUpdateAttendee } from '../../graphql/subscriptions'
 import { updateAttendee } from '../../graphql/mutations'
+import { ReactComponent as HandIcon } from '../../assets/images/hand-icon.svg'
+import { ReactComponent as EyeIcon } from '../../assets/images/eye-icon.svg'
 
 export const AttendeeItem = ({ attendeeId }) => {
   const [attendee, setAttendee] = useState()
@@ -59,7 +61,7 @@ export const AttendeeItem = ({ attendeeId }) => {
     <Tr id={attendee.id} key={attendee.id}>
       <Td paddingLeft="0">{attendee.name}</Td>
       <Td paddingRight="0">
-        <Flex float="right">
+        <Center>
           {attendeePresent() && '✅'}
           <Box width="20px" marginLeft="10px" cursor="pointer" onClick={lowerHand}>
             {attendee.handRaised && attendeePresent() && (
@@ -68,7 +70,16 @@ export const AttendeeItem = ({ attendeeId }) => {
               </Tooltip>
             )}
           </Box>
-        </Flex>
+        </Center>
+      </Td>
+      <Td>
+        <Center>
+
+          <HStack>
+            <EyeIcon />
+            <HandIcon />
+          </HStack>
+        </Center>
       </Td>
     </Tr>
   )

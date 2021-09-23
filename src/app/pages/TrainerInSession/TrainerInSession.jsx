@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react'
-import { getTraining } from '../../graphql/queries'
+import { getTraining } from '../../../graphql/queries'
 import { gql, useQuery, useMutation } from '@apollo/client'
 import {
   Box,
@@ -30,7 +30,7 @@ import {
   Icon,
   Center,
 } from '@chakra-ui/react'
-import { updateTraining } from '../../graphql/mutations'
+import { updateTraining } from '../../../graphql/mutations'
 import { useState } from 'react'
 import {
   onCreateAttendee,
@@ -39,17 +39,19 @@ import {
   onDeletePoll,
   onUpdateAttendee,
   onUpdatePoll,
-} from '../../graphql/subscriptions'
+} from '../../../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
-import { TrainerPoll } from './TrainerPoll'
-import { PollModal } from './PollModal'
-import { useBlueJeans } from '../../bluejeans/useBlueJeans'
-import { ClassRoster } from './ClassRoster'
+import { TrainerPoll } from '../../components/TrainerPoll'
+import { PollModal } from '../../components/PollModal'
+import { useBlueJeans } from '../../../bluejeans/useBlueJeans'
+import { ClassRoster } from '../../components/ClassRoster'
 import { AddIcon } from '@chakra-ui/icons'
-import { MicCamControls } from './MicCamControls'
-import { BjnMedia } from './BjnMedia'
-import { CamInUseModal } from './CamInUseModal'
+import { MicCamControls } from '../../components/MicCamControls'
+import { BjnMedia } from '../../components/BjnMedia'
+import { CamInUseModal } from '../../components/CamInUseModal'
 import { FaCamera, FaMicrophone, FaVideo } from 'react-icons/fa'
+import { prettyTime } from '../../../pretty-time'
+
 
 export const TrainerInSession = ({
   match: {
@@ -234,12 +236,25 @@ export const TrainerInSession = ({
           minWidth="400px"
         >
           <Box pb="12">
-            <Box fontSize="1.25em" fontWeight="bold" textTransform="capitalize">
+            <Text fontSize="1.25em" fontWeight="bold" textTransform="capitalize">
               {training.title}
-            </Box>
-            <Box marginTop="1" fontSize=".8em">
+            </Text>
+
+            <Text fontSize=".62em" fontWeight="bold" textTransform="capitalize">
+              {prettyTime(new Date(+training.scheduledTime))}
+            </Text>
+
+            <Box
+              bg="white"
+              height="0px"
+              width="300px"
+              border="1px solid #ffffff"
+              opacity="0.25"
+            />
+
+            <Text marginTop="1" fontSize=".62em" opacity="0.5">
               {training.description}
-            </Box>
+            </Text>
           </Box>
           <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
             <ClassRoster attendees={attendees} />
