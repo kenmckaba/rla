@@ -7,6 +7,8 @@ import { onUpdateAttendee } from '../../graphql/subscriptions'
 import { updateAttendee } from '../../graphql/mutations'
 import { ReactComponent as HandIcon } from '../../assets/images/hand-icon.svg'
 import { ReactComponent as EyeIcon } from '../../assets/images/eye-icon.svg'
+import { ReactComponent as CheckMark } from '../../assets/images/check-mark.svg'
+import { ReactComponent as XMark } from '../../assets/images/x-mark.svg'
 
 export const AttendeeItem = ({ attendeeId }) => {
   const [attendee, setAttendee] = useState()
@@ -62,19 +64,11 @@ export const AttendeeItem = ({ attendeeId }) => {
       <Td paddingLeft="0">{attendee.name}</Td>
       <Td paddingRight="0">
         <Center>
-          {attendeePresent() && '✅'}
-          <Box width="20px" marginLeft="10px" cursor="pointer" onClick={lowerHand}>
-            {attendee.handRaised && attendeePresent() && (
-              <Tooltip hasArrow placement="right" label="Lower hand">
-                🙋
-              </Tooltip>
-            )}
-          </Box>
+          {attendeePresent() ? <CheckMark /> : <XMark /> }
         </Center>
       </Td>
       <Td>
         <Center>
-
           <HStack>
             <EyeIcon />
             <HandIcon />
