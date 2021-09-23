@@ -5,10 +5,10 @@ import { getAttendee } from '../../graphql/queries'
 import { buildSubscription } from 'aws-appsync'
 import { onUpdateAttendee } from '../../graphql/subscriptions'
 import { updateAttendee } from '../../graphql/mutations'
-import { ReactComponent as HandIcon } from '../../assets/images/hand-icon.svg'
-import { ReactComponent as EyeIcon } from '../../assets/images/eye-icon.svg'
-import { ReactComponent as CheckMark } from '../../assets/images/check-mark.svg'
-import { ReactComponent as XMark } from '../../assets/images/x-mark.svg'
+import { ReactComponent as HandIcon } from '../../assets/icons/hand-icon.svg'
+import { ReactComponent as EyeIcon } from '../../assets/icons/eye-icon.svg'
+import { ReactComponent as CheckMark } from '../../assets/icons/check-mark.svg'
+import { ReactComponent as XMark } from '../../assets/icons/x-mark.svg'
 
 export const AttendeeItem = ({ attendeeId }) => {
   const [attendee, setAttendee] = useState()

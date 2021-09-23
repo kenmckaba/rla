@@ -51,6 +51,7 @@ import { BjnMedia } from '../../components/BjnMedia'
 import { CamInUseModal } from '../../components/CamInUseModal'
 import { FaCamera, FaMicrophone, FaVideo } from 'react-icons/fa'
 import { prettyTime } from '../../../pretty-time'
+import MiddlePanel from '../../components/TrainerInSession/MiddlePanel'
 
 
 export const TrainerInSession = ({
@@ -214,6 +215,7 @@ export const TrainerInSession = ({
 
   return (
     <>
+      
       <VStack
         bg="white"
         w="100%"
@@ -224,6 +226,7 @@ export const TrainerInSession = ({
         alignContent="center"
         justifyContent="center"
       >
+        {/* <LeftPanel> */}
         <VStack
           pos="absolute"
           bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
@@ -334,9 +337,10 @@ export const TrainerInSession = ({
             </Flex>
           </Box>
         </VStack>
-        <Center>
-          <BjnMedia />
-        </Center>
+        {/* </LeftPanel> */}
+
+        <MiddlePanel />
+
       </VStack>
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />
@@ -357,6 +361,8 @@ export const TrainerInSession = ({
         poll={pollToEdit}
       />
       <CamInUseModal code={bjnCamInUseError} />
+      
+
     </>
   )
 }
