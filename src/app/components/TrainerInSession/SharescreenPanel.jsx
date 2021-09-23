@@ -3,15 +3,13 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
-  Spacer,
   HStack
 } from '@chakra-ui/react'
 
-import { ReactComponent as LineIcon } from '../../../../assets/icons/line.svg'
+import { ReactComponent as LineIcon } from '../../../assets/icons/line.svg'
 
-import { Box, Text, Flex } from '@chakra-ui/layout'
-import TrainerCam from './TrainerCam'
-import AttendeesCamsList from './AttendeesCamsList'
+import { Box, Text, Flex, Spacer } from '@chakra-ui/layout'
+import Sharescreen from './Sharescreen/Sharescreen'
 
 const Header = () => (
   <Box
@@ -20,25 +18,16 @@ const Header = () => (
     paddingRight="4"
     paddingTop="2"
     paddingBottom="2"
-    width="448px"
+    width="564px"
     borderRadius="8px 8px 0 0"
   >
     <Flex>
       <Text
         fontWeight="bold"
         mr="8">
-        Screen
+        Sharescreen
       </Text>
-
-      <Text
-        fontWeight="bold"
-        textTransform="capitalize"
-        opacity="0.5">
-        View Mode &gt;&gt;
-      </Text>
-
       <Spacer />
-      
       <HStack mb="1">
         <LineIcon />
       </HStack>
@@ -46,7 +35,8 @@ const Header = () => (
   </Box>
 )
 
-export default function ParticipantCams() {
+
+export const SharescreenPanel = () => {
   return (
     <Accordion allowToggle defaultIndex={0}>
       <AccordionItem border="none">
@@ -56,8 +46,7 @@ export default function ParticipantCams() {
           <Header />
         </AccordionButton>
         <AccordionPanel padding="0">
-          <TrainerCam />
-          <AttendeesCamsList />
+          <Sharescreen />
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
