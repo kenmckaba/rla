@@ -1,8 +1,8 @@
 import React from 'react'
-import TrainerCam from './TrainerCam'
+import ParticipantCams from './ParticipantCams'
 
 export default function MiddlePanel() {
   return (
-    <TrainerCam />
+    <ParticipantCams />
   )
 }
