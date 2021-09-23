@@ -1,5 +1,5 @@
-import { Image } from '@chakra-ui/react'
+import ParticipantCam from './ParticipantCam'
 
 export default function TrainerCam() {
-  return <Image maxW="448px" src="/images/cams/trainer-cam.png" alt="Trainer Cam" />
+  return <ParticipantCam picture="/images/cams/trainer-cam.png" alt="Trainer's Cam" name="Trainer (me)" maxWidth="448px" />
 }
