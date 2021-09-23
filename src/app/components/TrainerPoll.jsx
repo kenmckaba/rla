@@ -121,36 +121,38 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
         <Accordion padding="0" width="100%" allowToggle key={poll.id}>
           <AccordionItem p={0} m={0} border="none">
             <AccordionButton padding="0" as="div">
-              <Flex width="100%">
-                <Box
+              <Flex width="100%" >
+                <Flex
                   fontWeight="500"
                   fontSize="14px"
-                  flex="1"
                   cursor="pointer"
                   backgroundColor={startedPoll?.id === poll.id ? 'gold' : ''}
                 >
 
                   <Text
                     mt="1"
+                    width="150px"
                     maxW="150px"
                     overflow="hidden"
                     textOverflow="ellipsis"
-                    whiteSpace="nowrap">
+                    whiteSpace="nowrap"
+                    mr="2">
                     {poll.question}
                   </Text>
 
                   {!poll.startedAt && (
-                    <EditIcon w={5} h={5} float="right" mt="6px" onClick={editThisPoll} />
+                    <EditIcon w={4} h={4} mt="1" onClick={editThisPoll} />
                   )}
-                </Box>
+                </Flex>
                 <Spacer />
                 <Button
                   size="xs"
                   fontWeight="bold"
                   minW="80px"
-                  backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'lightcyan'}
+                  backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'transparent'}
                   padding="1px"
                   variant="outline"
+                  color="#7a96b8"
                   onClick={(e) => {
                     startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
                   }}

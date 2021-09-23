@@ -3,7 +3,6 @@ import { getTraining } from '../../../graphql/queries'
 import { gql, useQuery, useMutation } from '@apollo/client'
 import {
   Box,
-  HStack,
   VStack,
   Button,
   Modal,
@@ -24,6 +23,7 @@ import {
   Th,
   Table,
   Tbody,
+  Heading,
   Text,
   Spacer,
   IconButton,
@@ -236,11 +236,19 @@ export const TrainerInSession = ({
           minWidth="400px"
         >
           <Box pb="12">
-            <Text fontSize="1.25em" fontWeight="bold" textTransform="capitalize">
+            <Heading
+              fontSize="1.25em"
+              fontWeight="bold"
+              textTransform="capitalize"
+              mb="2">
               {training.title}
-            </Text>
+            </Heading>
 
-            <Text fontSize=".62em" fontWeight="bold" textTransform="capitalize">
+            <Text
+              fontSize=".62em"
+              fontWeight="bold"
+              textTransform="capitalize"
+              mb="1">
               {prettyTime(new Date(+training.scheduledTime))}
             </Text>
 
@@ -252,7 +260,10 @@ export const TrainerInSession = ({
               opacity="0.25"
             />
 
-            <Text marginTop="1" fontSize=".62em" opacity="0.5">
+            <Text
+              mt="1"
+              fontSize=".62em"
+              opacity="0.5">
               {training.description}
             </Text>
           </Box>
