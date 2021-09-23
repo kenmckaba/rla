@@ -7,7 +7,7 @@ import {
   HStack
 } from '@chakra-ui/react'
 
-import { ReactComponent as LineIcon } from '../../../assets/icons/line.svg'
+import { ReactComponent as LineIcon } from '../../../../assets/icons/line.svg'
 
 import { Box, Text, Flex } from '@chakra-ui/layout'
 import TrainerCam from './TrainerCam'
