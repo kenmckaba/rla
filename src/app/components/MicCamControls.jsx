@@ -75,6 +75,7 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
         </FormLabel> */}
         <Flex flexDirection="column">
           <Selections
+            placeholder="Choose your microphone"
             choices={bjnAvailableMicrophones}
             selectedId={bjnSelectedMicrophone?.id}
             changeSelection={bjnApi.selectMicrophone}
@@ -115,6 +116,7 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
           Camera
         </FormLabel> */}
         <Selections
+          placeholder="Choose your cam"
           choices={bjnAvailableCameras}
           selectedId={bjnSelectedCamera?.id}
           changeSelection={bjnApi.selectCamera}
