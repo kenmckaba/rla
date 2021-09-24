@@ -10,18 +10,17 @@ import {
 import { ReactComponent as LineIcon } from '../../../assets/icons/line.svg'
 
 import { Box, Text, Flex } from '@chakra-ui/layout'
-import TrainerCam from './TrainerCam'
-import AttendeesCamsList from './AttendeesCamsList'
+import TrainerCam from './ParticipantCams/TrainerCam'
+import AttendeesCamsList from './ParticipantCams/AttendeesCamsList'
 
-const Header = () => (
+const Header = (props) => (
   <Box
     bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
     paddingLeft="4"
     paddingRight="4"
-    paddingTop="2"
-    paddingBottom="2"
-    width="448px"
+    height="24px"
     borderRadius="8px 8px 0 0"
+    {...props}
   >
     <Flex>
       <Text
@@ -46,16 +45,16 @@ const Header = () => (
   </Box>
 )
 
-export default function ParticipantCams() {
+export default function ParticipantCams(props) {
   return (
-    <Accordion allowToggle defaultIndex={0}>
-      <AccordionItem border="none">
+    <Accordion allowToggle defaultIndex={0} {...props}>
+      <AccordionItem border="none" >
         <AccordionButton
           padding="0"
           as="div">
-          <Header />
+          <Header width="30vw" maxWidth="500px"/>
         </AccordionButton>
-        <AccordionPanel padding="0">
+        <AccordionPanel padding="0" width="30vw" maxWidth="500px">
           <TrainerCam />
           <AttendeesCamsList />
         </AccordionPanel>
