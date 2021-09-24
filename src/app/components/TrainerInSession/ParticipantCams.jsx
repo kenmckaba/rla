@@ -13,15 +13,14 @@ import { Box, Text, Flex } from '@chakra-ui/layout'
 import TrainerCam from './ParticipantCams/TrainerCam'
 import AttendeesCamsList from './ParticipantCams/AttendeesCamsList'
 
-const Header = () => (
+const Header = (props) => (
   <Box
     bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
     paddingLeft="4"
     paddingRight="4"
-
-    width="100%"
     height="24px"
     borderRadius="8px 8px 0 0"
+    {...props}
   >
     <Flex>
       <Text
@@ -53,7 +52,7 @@ export default function ParticipantCams(props) {
         <AccordionButton
           padding="0"
           as="div">
-          <Header />
+          <Header width="30vw" maxWidth="500px"/>
         </AccordionButton>
         <AccordionPanel padding="0" width="30vw" maxWidth="500px">
           <TrainerCam />

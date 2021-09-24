@@ -1,8 +1,8 @@
 import { Box } from '@chakra-ui/layout'
 
-export default function Chat() {
+export default function Chat(props) {
   return (
-    <Box color="black" bg="lightcyan" width="40vw" maxWidth="700px">
+    <Box color="black" bg="lightcyan" {...props}>
       <p>asdasd</p>
       <p>asdasd</p>
       <p>asdasd</p>

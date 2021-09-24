@@ -11,7 +11,7 @@ import { ReactComponent as LineIcon } from '../../../../assets/icons/line.svg'
 import { Box, Text, Flex, Spacer } from '@chakra-ui/layout'
 import Sharescreen from './Sharescreen'
 
-const Header = () => (
+const Header = (props) => (
   <Box
     bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
     paddingLeft="4"
@@ -19,6 +19,7 @@ const Header = () => (
     width="100%"
     borderRadius="8px 8px 0 0"
     height="24px"
+    {...props}
   >
     <Flex>
       <Text
@@ -42,7 +43,7 @@ export const SharescreenPanel = () => {
         <AccordionButton
           padding="0"
           as="div">
-          <Header />
+          <Header width="40vw" maxWidth="700px"/>
         </AccordionButton>
         <AccordionPanel padding="0">
           <Sharescreen width="40vw" maxWidth="700px"/>

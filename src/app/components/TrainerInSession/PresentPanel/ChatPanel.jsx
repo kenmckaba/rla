@@ -9,15 +9,14 @@ import { ReactComponent as LineIcon } from '../../../../assets/icons/line.svg'
 import { Box, Text, Flex, Spacer } from '@chakra-ui/layout'
 import Chat from './Chat'
 
-const Header = () => (
+const Header = (props) => (
   <Box
     bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
     paddingLeft="4"
     paddingRight="4"
-
-    width="100%"
     height="24px"
     borderRadius="8px 8px 0 0"
+    {...props}
   >
     <Flex>
       <Text
@@ -41,10 +40,10 @@ export const ChatPanel = () => {
         <AccordionButton
           padding="0"
           as="div">
-          <Header />
+          <Header width="40vw" maxWidth="700px"/>
         </AccordionButton>
         <AccordionPanel padding="0">
-          <Chat />
+          <Chat width="40vw" maxWidth="700px" />
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
