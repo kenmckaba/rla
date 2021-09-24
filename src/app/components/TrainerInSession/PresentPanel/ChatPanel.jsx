@@ -3,15 +3,11 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
-  Spacer,
   HStack
 } from '@chakra-ui/react'
-
-import { ReactComponent as LineIcon } from '../../../assets/icons/line.svg'
-
-import { Box, Text, Flex } from '@chakra-ui/layout'
-import TrainerCam from './ParticipantCams/TrainerCam'
-import AttendeesCamsList from './ParticipantCams/AttendeesCamsList'
+import { ReactComponent as LineIcon } from '../../../../assets/icons/line.svg'
+import { Box, Text, Flex, Spacer } from '@chakra-ui/layout'
+import Chat from './Chat'
 
 const Header = () => (
   <Box
@@ -27,18 +23,9 @@ const Header = () => (
       <Text
         fontWeight="bold"
         mr="8">
-        Screen
+        Chat
       </Text>
-
-      <Text
-        fontWeight="bold"
-        textTransform="capitalize"
-        opacity="0.5">
-        View Mode &gt;&gt;
-      </Text>
-
       <Spacer />
-      
       <HStack mb="1">
         <LineIcon />
       </HStack>
@@ -46,18 +33,18 @@ const Header = () => (
   </Box>
 )
 
-export default function ParticipantCams(props) {
+
+export const ChatPanel = () => {
   return (
-    <Accordion allowToggle defaultIndex={0} {...props}>
-      <AccordionItem border="none" >
+    <Accordion allowToggle defaultIndex={0}>
+      <AccordionItem border="none">
         <AccordionButton
           padding="0"
           as="div">
           <Header />
         </AccordionButton>
-        <AccordionPanel padding="0" width="30vw" maxWidth="500px">
-          <TrainerCam />
-          <AttendeesCamsList />
+        <AccordionPanel padding="0">
+          <Chat />
         </AccordionPanel>
       </AccordionItem>
     </Accordion>

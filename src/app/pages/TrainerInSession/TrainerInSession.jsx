@@ -28,6 +28,7 @@ import {
   Spacer,
   IconButton,
   Icon,
+  HStack,
   Center,
 } from '@chakra-ui/react'
 import { updateTraining } from '../../../graphql/mutations'
@@ -52,6 +53,7 @@ import { CamInUseModal } from '../../components/CamInUseModal'
 import { FaCamera, FaMicrophone, FaVideo } from 'react-icons/fa'
 import { prettyTime } from '../../../pretty-time'
 import MiddlePanel from '../../components/TrainerInSession/MiddlePanel'
+import RightPanel from '../../components/TrainerInSession/RightPanel'
 
 
 export const TrainerInSession = ({
@@ -215,25 +217,16 @@ export const TrainerInSession = ({
 
   return (
     <>
-      
-      <VStack
-        bg="white"
-        w="100%"
-        h="100%"
-        minH="100vh"
-        alignItems="start"
-        wrap="wrap"
-        alignContent="center"
-        justifyContent="center"
-      >
+      <HStack bg="white" h="100vh">
         {/* <LeftPanel> */}
         <VStack
-          pos="absolute"
+          pos="relative"
+          left="0"
           bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
           opacity="85%"
           align="left"
           width="250px"
-          h="100%"
+          h="100vh"
           px="4"
           py="8"
           minWidth="400px"
@@ -339,9 +332,17 @@ export const TrainerInSession = ({
         </VStack>
         {/* </LeftPanel> */}
 
-        <MiddlePanel />
+        <Flex justifyContent="space-evenly" width="100%">
+          <MiddlePanel />
+          <RightPanel />
+        </Flex>
 
-      </VStack>
+      </HStack>
+        
+
+        
+      
+
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />
         <ModalContent height="300px">
