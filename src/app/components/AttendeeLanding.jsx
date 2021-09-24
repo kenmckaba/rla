@@ -24,6 +24,7 @@ import { useBlueJeans } from '../../bluejeans/useBlueJeans'
 import { MicCamControls } from './MicCamControls'
 import { BjnMedia } from './BjnMedia'
 import { CamInUseModal } from './CamInUseModal'
+import { ThemeTypings } from '@chakra-ui/styled-system'
 
 export const AttendeeLanding = ({
   match: {
@@ -199,27 +200,34 @@ export const AttendeeLanding = ({
 
   return (
     <>
-      <HStack height="100%" alignItems="flex-start">
+      <HStack height="100%" alignItems="flex-start" margin="7px">
         <VStack alignItems="normal" width="250px" minWidth="250px">
           <VStack alignItems="flex-start" background="white" borderRadius="20px" padding="8px">
-            <Box fontWeight="bold">Welcome to the training!</Box>
-            <Box>Title: {training.title}</Box>
-            {training.description && <Box>{training.description}</Box>}
-            <Box>Start time: {prettyTime(new Date(Number(training.scheduledTime)))}</Box>
+            <Box fontWeight="bold" color="black">
+              Welcome to the training!
+            </Box>
+            <Box color="black">Title: {training.title}</Box>
+            {/* {training.description && <Box>{training.description}</Box>} */}
+            <Box color="black">
+              Start time: {prettyTime(new Date(Number(training.scheduledTime)))}
+            </Box>
             <HStack alignContent="center">
-              <Box width="55px">Join as:</Box>
+              <Box color="black" width="55px">
+                Join as:
+              </Box>
               <Input
+                color="black"
                 width="100px"
                 height="20px"
                 type="text"
                 value={participantName}
                 onChange={onChangeParticipantName}
               />
-              <Button size="xs" variant="outline" onClick={updateName}>
+              <Button borderRadius="5px" size="xs" variant="outline" onClick={updateName}>
                 Update
               </Button>
             </HStack>
-            <Button size="sm" onClick={toggleHand} variant="outline">
+            <Button borderRadius="5px" size="sm" onClick={toggleHand} variant="outline">
               {handRaised ? 'Lower hand 🙋' : 'Raise hand 🙋'}
             </Button>
           </VStack>
@@ -245,7 +253,7 @@ export const AttendeeLanding = ({
             </VStack>
           )}
           <MicCamControls localVideoRef={localVideoRef} isModerator={false} />
-          <Button size="sm" onClick={leaveTraining}>
+          <Button borderRadius="5px" size="sm" onClick={leaveTraining}>
             Leave training
           </Button>
         </VStack>
