@@ -1,7 +1,7 @@
 import { HStack } from '@chakra-ui/layout'
 import React from 'react'
 import ParticipantCams from './ParticipantCams'
-import { SharescreenPanel } from './SharescreenPanel'
+import { SharescreenPanel } from './PresentPanel/SharescreenPanel'
 
 export default function MiddlePanel() {
   return (

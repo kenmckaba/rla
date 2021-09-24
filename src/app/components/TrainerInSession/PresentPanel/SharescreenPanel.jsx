@@ -6,10 +6,10 @@ import {
   HStack
 } from '@chakra-ui/react'
 
-import { ReactComponent as LineIcon } from '../../../assets/icons/line.svg'
+import { ReactComponent as LineIcon } from '../../../../assets/icons/line.svg'
 
 import { Box, Text, Flex, Spacer } from '@chakra-ui/layout'
-import Sharescreen from './Sharescreen/Sharescreen'
+import Sharescreen from './Sharescreen'
 
 const Header = () => (
   <Box
