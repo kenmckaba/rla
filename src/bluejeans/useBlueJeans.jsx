@@ -9,11 +9,11 @@ const log = (...args) => {
 
 // webrtcSDK.setLoggingMode('DEBUG')
 const cams = [
-  { id: 0, name: 'cam-1' },
+  { id: 0, name: 'Choose your cam' },
   { id: 1, name: 'cam-2' },
 ]
 const mics = [
-  { id: 0, name: 'mic-1' },
+  { id: 0, name: 'Choose your microphone' },
   { id: 1, name: 'mic-2' },
 ]
 
