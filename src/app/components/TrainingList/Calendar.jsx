@@ -16,7 +16,7 @@ const TrainingCalendar = ({ props }) => {
         borderRadius="md"
         overflow="hidden"
         marginBottom="10px"
-        fontSize="m"
+        fontSize="0.7em"
         lineHeight="33px"
       >
         <Calendar onChange={onChange} value={value} />
