@@ -8,16 +8,13 @@
 
 .react-calendar__tile {
   color: #adadad;
-  border-radius: 100%;
 }
 
-.react-calendar__tile--active,
-.react-calendar__tile:hover {
+.react-calendar__tile--active > abbr,
+.react-calendar__tile.react-calendar__month-view__days__day > abbr:hover {
+  padding: 8px;
   background: #ffffff;
-}
-
-.react-calendar__tile:hover {
-  transition: 0.2s;
+  border-radius: 100%;
 }
 
 /* .react-calendar__navigation__arrow {
@@ -26,4 +23,8 @@
 
 abbr[title] {
   text-decoration: none !important;
+}
+
+.chakra-tabs__tab-panels > .chakra-tabs__tab-panel > table > tbody > tr:first-of-type {
+  /* background-color: yellow !important; */
 }

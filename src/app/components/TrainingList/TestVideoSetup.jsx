@@ -30,7 +30,7 @@ export default function TestVideoSetup({ onJoinMeetingClick, ...props }) {
       bg="rgba(255, 255, 255, 0.1)"
       borderRadius="8px"
       height="266px"
-      width="22vw"
+      width="18vw"
       overflow="hidden"
       marginBottom="10px"
       {...props}

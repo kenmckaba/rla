@@ -11,7 +11,7 @@ const TrainingCalendar = ({ props }) => {
       <Box
         mr="16px"
         height="266px"
-        width="22vw"
+        width="18vw"
         bg="rgba(255, 255, 255, 0.1)"
         borderRadius="md"
         overflow="hidden"
