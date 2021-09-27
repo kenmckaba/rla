@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react'
 import './Calendar.css'
 
 const TrainingCalendar = ({ props }) => {
-  const [value, onChange] = useState(new Date())
+  const [date, setDate] = useState(new Date())
 
   return (
     <>
@@ -19,7 +19,7 @@ const TrainingCalendar = ({ props }) => {
         fontSize="0.7em"
         lineHeight="33px"
       >
-        <Calendar onChange={onChange} value={value} />
+        <Calendar calendarType="US" onChange={setDate} value={date} />
       </Box>
     </>
   )
