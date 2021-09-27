@@ -1,8 +1,9 @@
 import React from 'react'
 import ParticipantCams from './ParticipantCams'
 
-export default function MiddlePanel() {
+
+export default function MiddlePanel(props) {
   return (
-    <ParticipantCams />
+    <ParticipantCams {...props} />
   )
 }

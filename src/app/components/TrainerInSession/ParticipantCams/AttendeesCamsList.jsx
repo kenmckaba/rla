@@ -16,7 +16,7 @@ export default function AttendeesCamsList() {
 
   return (
     <Grid templateColumns="repeat(2, 1fr)">
-      {attendeesList.map(attendee => <ParticipantCam picture={attendee.picture} name={attendee.name} maxWidth="224px" />)}
+      {attendeesList.map(attendee => <ParticipantCam picture={attendee.picture} name={attendee.name} maxWidth="100%" />)}
     </Grid>
   )
 
