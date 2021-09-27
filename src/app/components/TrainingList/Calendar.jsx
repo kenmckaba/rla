@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Calendar from 'react-calendar'
 import { Box } from '@chakra-ui/react'
+import './Calendar.css'
 
 const TrainingCalendar = ({ props }) => {
   const [value, onChange] = useState(new Date())
@@ -8,7 +9,6 @@ const TrainingCalendar = ({ props }) => {
   return (
     <>
       <Box
-        p={4}
         mr="16px"
         height="266px"
         width="22vw"
