@@ -1,0 +1,38 @@
+.preview-screen {
+  display: flex;
+  align-items: flex-end;
+  background: url('../../../assets/previewscreen/previewscreen.png');
+  height: 252px;
+  width: 448px;
+  margin: 20px 0;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.preview-settings {
+
+}
+
+.preview-controls {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.preview-cam {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  width: 60px!important;
+  height: 60px!important;
+  padding: 12px;
+}
+
+.preview-mic {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  width: 60px!important;
+  height: 60px!important;
+  padding: 12px;
+  margin-left: 10px;
+}
