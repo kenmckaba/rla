@@ -38,15 +38,11 @@ export const Splashscreen = () => {
           overflow="hidden"
         >
           <Box pos="absolute" top="8" left="8">
-            <H3Heading>
-              Remote Learning Platform
-            </H3Heading>
+            <H3Heading>Remote Learning Platform</H3Heading>
           </Box>
           <Flex dir="row" w="100%" alignItems="center">
             <Box>
-              <H1Heading>
-                Verizon Nursing Training Session
-              </H1Heading>
+              <H1Heading>Verizon Nursing Training Session</H1Heading>
               <Text maxW="450px" mt="2" fontWeight="normal" fontSize="lg">
                 Ensure your nurses feel supported and valued with tools to provide professional
                 development support

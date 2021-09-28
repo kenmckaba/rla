@@ -43,14 +43,18 @@ import { IoIosCalendar } from 'react-icons/io'
 import { IoTrashOutline } from 'react-icons/io5'
 import { TrainingForm } from '../../components/TrainingForm'
 import { useEffect } from 'react'
-import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../../../graphql/subscriptions'
+import {
+  onCreateTraining,
+  onDeleteTraining,
+  onUpdateTraining,
+} from '../../../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
 import { createTraining, deleteTraining } from '../../../graphql/mutations'
 import { timestampToPrettyTime } from '../../../pretty-time'
 import { TrainingToolbar } from '../../components/Trainings/TrainingToolbar'
 import Background from '../../components/Background'
 import TrainingListHeader from '../../components/TrainingList/TrainingListHeader'
-import TestVideoSetup from '../../components/TrainingList/TestVideoSetup'
+import TrainingSidePanel from '../../components/TrainingList/TrainingSidePanel'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -232,11 +236,8 @@ export const TrainingList = () => {
     <Background>
       <TrainingListHeader trainings={trainings} />
       <Box height="100%" width="100%" padding="3px" borderRadius="20px">
-        <Flex >
-          {/* TODO: When the calendar is done this Box should be extracted on a LateralPanel component or something */}
-          <Box mr="16px" width="18.3%" height="266px">
-            <TestVideoSetup onJoinMeetingClick={() => openRegPage(trainings[0].id)}/>
-          </Box>
+        <Flex>
+          <TrainingSidePanel date={'hola'} trainingNum={() => openRegPage(trainings[0].id)} />
           <Tabs height="100%" width="81.7%" variant="solid-rounded">
             <Flex>
               <TabList>
@@ -259,7 +260,7 @@ export const TrainingList = () => {
                     bg: 'ghost.50',
                   }}
                 >
-                Upcoming training
+                  Upcoming training
                 </Tab>
                 <Tab
                   textTransform="uppercase"
@@ -279,7 +280,7 @@ export const TrainingList = () => {
                     bg: 'ghost.50',
                   }}
                 >
-                Completed training
+                  Completed training
                 </Tab>
               </TabList>
               <Spacer />
@@ -292,7 +293,7 @@ export const TrainingList = () => {
                 fontWeight="bold"
                 minW="170px"
               >
-              New training
+                New training
               </Button>
             </Flex>
             <TabPanels
@@ -322,16 +323,22 @@ export const TrainingList = () => {
 
             <AlertDialogContent color="darkKnight.700">
               <AlertDialogHeader fontSize="1.1em">
-              Are you sure you want to delete this training?
+                Are you sure you want to delete this training?
               </AlertDialogHeader>
               <AlertDialogCloseButton />
               <AlertDialogBody>
                 <HStack spacing="3" marginBlock="3">
-                  <Button w="100%" size="md" variant="outline" ref={cancelRef} onClick={onAlertClose}>
-                  No
+                  <Button
+                    w="100%"
+                    size="md"
+                    variant="outline"
+                    ref={cancelRef}
+                    onClick={onAlertClose}
+                  >
+                    No
                   </Button>
                   <Button w="100%" size="md" onClick={() => handleDelete(currentTraining?.id)}>
-                  Yes
+                    Yes
                   </Button>
                 </HStack>
               </AlertDialogBody>

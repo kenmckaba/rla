@@ -69,25 +69,38 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
           <option>Multiple choice</option>
         </Select>
       </FormControl> */}
-      <FormControl pt="8">
-        <FormLabel mb={1} fontWeight="bold" textTransform="uppercase">
+      <FormControl pt="8" color="black">
+        {/* <FormLabel mb={1} fontWeight="bold" textTransform="uppercase">
           Microphone
-        </FormLabel>
-        {/*         <Checkbox
-          size="sm"
-          onChange={muteMic}
-          isChecked={!!bjnAudioMuted}
-          marginTop="5px"
-          marginLeft="5px"
-        >
-          Mute my microphone
-        </Checkbox> */}
-        <Selections
-          choices={bjnAvailableMicrophones}
-          selectedId={bjnSelectedMicrophone?.id}
-          changeSelection={bjnApi.selectMicrophone}
-        />
+        </FormLabel> */}
+        <Flex flexDirection="column">
+          <Selections
+            placeholder="Choose your microphone"
+            choices={bjnAvailableMicrophones}
+            selectedId={bjnSelectedMicrophone?.id}
+            changeSelection={bjnApi.selectMicrophone}
+          />
+          <Checkbox
+            size="md"
+            onChange={muteMic}
+            isChecked={!!bjnAudioMuted}
+            marginTop="5px"
+            marginLeft="5px"
+          >
+            Mute my mic
+          </Checkbox>
+          <Checkbox
+            size="md"
+            onChange={muteCam}
+            isChecked={!!bjnVideoMuted}
+            marginTop="5px"
+            marginLeft="5px"
+          >
+            Mute my cam
+          </Checkbox>
+        </Flex>
       </FormControl>
+
       {/*       <FormControl borderRadius="5px" p="5px" paddingTop="0">
         <Box fontSize="14px" paddingLeft="5px">
           Webcam layout
@@ -98,20 +111,12 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
           })}
         </Select>
       </FormControl> */}
-      <FormControl pt="2">
-        {/*         <Checkbox
-          size="sm"
-          onChange={muteCam}
-          isChecked={!!bjnVideoMuted}
-          marginTop="5px"
-          marginLeft="5px"
-        >
-          Mute my camera
-        </Checkbox> */}
-        <FormLabel mb={1} fontWeight="bold" textTransform="uppercase">
+      <FormControl pt="2" color="black">
+        {/* <FormLabel mb={1} fontWeight="bold" textTransform="uppercase">
           Camera
-        </FormLabel>
+        </FormLabel> */}
         <Selections
+          placeholder="Choose your cam"
           choices={bjnAvailableCameras}
           selectedId={bjnSelectedCamera?.id}
           changeSelection={bjnApi.selectCamera}

@@ -5,13 +5,11 @@ import { ArrowRight } from '../shared/Shapes'
 
 const BlackBox = ({ children }) => (
   <Center>
-    <Center
-      bg="#000"
-      height="177px"
-      width="315px">
+    <Center bg="#000" height="177px" width="315px">
       {children}
     </Center>
-  </Center>)
+  </Center>
+)
 
 const PlayerButton = (props) => (
   <Center
@@ -20,10 +18,10 @@ const PlayerButton = (props) => (
     width="63px"
     borderRadius="full"
     cursor="pointer"
-    {...props}>
+    {...props}
+  >
     <ArrowRight />
   </Center>
-
 )
 
 export default function TestVideoSetup({ onJoinMeetingClick, ...props }) {
@@ -32,13 +30,12 @@ export default function TestVideoSetup({ onJoinMeetingClick, ...props }) {
       bg="rgba(255, 255, 255, 0.1)"
       borderRadius="8px"
       height="266px"
-      width="332px"
+      width="18vw"
       overflow="hidden"
-      {...props}>
-
-      <Center
-        bg="rgba(255, 255, 255, 0.1)"
-        height="36px">
+      marginBottom="10px"
+      {...props}
+    >
+      <Center bg="rgba(255, 255, 255, 0.1)" height="36px">
         <Text fontWeight="600" fontSize="0.75em">
           Test Video Setup
         </Text>
@@ -51,9 +48,7 @@ export default function TestVideoSetup({ onJoinMeetingClick, ...props }) {
 
         {/* TODO: Standardize the xs button font size to 10px */}
         <Flex mt="2.5">
-          <EditButton
-            size="xs"
-            fontSize="10px">
+          <EditButton size="xs" fontSize="10px">
             SETTINGS
           </EditButton>
           <Spacer />
@@ -62,7 +57,8 @@ export default function TestVideoSetup({ onJoinMeetingClick, ...props }) {
             variant="primary-button"
             size="xs"
             width="89px"
-            fontSize="10px">
+            fontSize="10px"
+          >
             JOIN MEETING
           </PrimaryButton>
         </Flex>
