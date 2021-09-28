@@ -5,6 +5,7 @@ import './Calendar.css'
 
 const TrainingCalendar = ({ props }) => {
   const [date, setDate] = useState(new Date())
+  const showTwoCharts = (date) => ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][date.getDay()]
 
   return (
     <>
@@ -19,7 +20,12 @@ const TrainingCalendar = ({ props }) => {
         fontSize="0.7em"
         lineHeight="33px"
       >
-        <Calendar calendarType="US" onChange={setDate} value={date} />
+        <Calendar
+          formatShortWeekday={(locale, date) => showTwoCharts(date)}
+          calendarType="US"
+          onChange={setDate}
+          value={date}
+        />
       </Box>
     </>
   )
