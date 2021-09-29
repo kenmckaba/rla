@@ -220,6 +220,7 @@ export const TrainerInSession = ({
       <HStack bg="white" h="100vh">
         {/* <LeftPanel> */}
         <VStack
+          spacing="20px"
           pos="relative"
           left="0"
           bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
@@ -231,7 +232,7 @@ export const TrainerInSession = ({
           py="8"
           minWidth="400px"
         >
-          <Box pb="12">
+          <Box paddingBottom="4">
             <Heading
               fontSize="1.25em"
               fontWeight="bold"
@@ -257,19 +258,19 @@ export const TrainerInSession = ({
             />
 
             <Text
-              mt="1"
               fontSize=".62em"
               opacity="0.5">
               {training.description}
             </Text>
           </Box>
           <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
-            <ClassRoster attendees={attendees} />
+            <ClassRoster attendees={attendees} paddingBottom="2" />
           </Box>
+
           <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
             <Accordion allowMultiple width="100%" allowToggle>
               <AccordionItem p={0} m={0} border="none">
-                <AccordionButton p="2">
+                <AccordionButton p="2" >
                   <Box
                     marginLeft="2"
                     flex="1"
@@ -281,7 +282,7 @@ export const TrainerInSession = ({
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel overflowY="scroll" maxH="48" padding="0" pb={4}>
+                <AccordionPanel overflowY="scroll" h="20vh" padding="0" pb={4}>
                   <Box>
                     <Table size="sm" width="100%" margin="0">
                       <Thead borderBottom="1px" borderColor="#ffffff">
@@ -307,41 +308,15 @@ export const TrainerInSession = ({
               </AccordionItem>
             </Accordion>
           </Box>
-          <MicCamControls localVideoRef={localVideoRef} isModerator={true} />
-          <Box w="100%" h="100%">
-            <Flex w="100%" h="100%" px="4" alignContent="end" wrap="wrap">
-              <IconButton
-                boxSize="12"
-                bg="rgba(255,255,255,.1)"
-                aria-label="Mute or unmute the microphone"
-                icon={<Icon as={FaMicrophone} w="100%" h="45%" />}
-              />
-              <Spacer />
-              <IconButton
-                boxSize="12"
-                bg="rgba(255,255,255,.1)"
-                aria-label="Turn on or turn off the camera"
-                icon={<Icon as={FaVideo} w="100%" h="45%" />}
-              />
-              <Spacer />
-              <Button w="65%" onClick={endTraining}>
-                End Training
-              </Button>
-            </Flex>
-          </Box>
         </VStack>
         {/* </LeftPanel> */}
 
-        <Flex justifyContent="space-evenly" width="100%">
+        <Flex justifyContent="space-evenly" width="100%" height="100%">
           <MiddlePanel />
-          <RightPanel />
+          <RightPanel /> 
         </Flex>
 
       </HStack>
-        
-
-        
-      
 
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />
@@ -362,7 +337,6 @@ export const TrainerInSession = ({
         poll={pollToEdit}
       />
       <CamInUseModal code={bjnCamInUseError} />
-      
 
     </>
   )

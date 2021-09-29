@@ -15,7 +15,7 @@ import {
 import { useMemo } from 'react'
 import { AttendeeItem } from './AttendeeItem'
 
-export const ClassRoster = ({ attendees }) => {
+export const ClassRoster = ({ attendees, ...props }) => {
   const Attendees = useMemo(() => {
     if (attendees.length === 0) {
       return [
@@ -38,7 +38,7 @@ export const ClassRoster = ({ attendees }) => {
           </Box>
           <AccordionIcon />
         </AccordionButton>
-        <AccordionPanel overflowY="scroll" maxH="48" marginTop="2" padding="0" pb={4} >
+        <AccordionPanel overflowY="scroll" h="55vh" marginTop="2" padding="0" >
           <Table size="sm" width="100%" margin="0">
             <Thead borderBottom="1px" borderColor="#ffffff">
               <Tr>
