@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { listTrainings } from '../../../graphql/queries'
+import { LinkIcon } from '@chakra-ui/icons'
 import {
   Avatar,
   HStack,
@@ -37,6 +38,8 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogCloseButton,
+  Divider,
+  Select,
 } from '@chakra-ui/react'
 import { AddIcon, CalendarIcon, CloseIcon } from '@chakra-ui/icons'
 import { IoIosCalendar } from 'react-icons/io'
@@ -153,10 +156,9 @@ export const TrainingList = () => {
 
     return selected.map((training) => (
       <Tr
+        height="224px"
+        width="1028px"
         key={training.id}
-        _hover={{
-          bg: 'rgba(255, 255, 255, 0.1)',
-        }}
         onMouseEnter={() => {
           setTrainingHovered(training.id)
         }}
@@ -165,55 +167,121 @@ export const TrainingList = () => {
         }}
         cursor="pointer"
       >
-        <Td>
-          <Stat>
-            <StatLabel fontSize="1.25em" fontWeight="semibold" textTransform="capitalize">
-              {training.title}
-            </StatLabel>
-            <StatHelpText fontSize="0.75em" textTransform="uppercase">
-              trainer: {training.trainerName}
-            </StatHelpText>
-          </Stat>
-        </Td>
-        <Td>
-          <HStack>
-            {training.attendees.items.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
-              <Avatar
-                key={attendee.id}
-                name={attendee.name}
-                color="white"
-                bg="rgba(255, 255, 255, 0.25)"
-              />
-            ))}
-            {training.attendees.items.length > MAX_ATTENDEE_ICONS && (
-              <Avatar
-                getInitials={(name) => name}
-                name={`+${training.attendees.items.length - MAX_ATTENDEE_ICONS}`}
-                color="white"
-                bg="rgba(255, 255, 255, 0.1)"
-              />
-            )}
-          </HStack>
-        </Td>
-        <Td></Td>
-        <Td>
-          {trainingHovered === training.id ? (
-            <TrainingToolbar
-              editTraining={() => handleTrainingClick(training)}
-              startTraining={() => openRegPage(training.id)}
-            />
-          ) : (
-            timestampToPrettyTime(training.scheduledTime)
-          )}
-        </Td>
+        <Flex
+          borderRadius="5px"
+          backgroundColor="rgba(255, 255, 255, 0.1)"
+          direction="column"
+          justify="center"
+          _hover={{
+            bg: 'rgba(255, 255, 255, 0.3)',
+          }}
+        >
+          <Td>
+            <Stat>
+              <StatLabel fontSize="1.50em" fontWeight="semibold" textTransform="capitalize">
+                {/* {training.title} */} Training title 001
+              </StatLabel>
+            </Stat>
+          </Td>
+          <Td>
+            <HStack display="flex" justifyContent="space-between">
+              <Flex direction="column">
+                <StatLabel>
+                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
+                    DATE/TIME
+                  </StatHelpText>
+                </StatLabel>
+                <StatLabel>
+                  <StatHelpText fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
+                    {timestampToPrettyTime(training.scheduledTime)}
+                  </StatHelpText>
+                </StatLabel>
+              </Flex>
+              <Flex direction="column">
+                <StatLabel>
+                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
+                    TRAINER NAME
+                  </StatHelpText>
+                </StatLabel>
+                <StatLabel>
+                  <StatHelpText fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
+                    {/* {training.trainerName} */}
+                    John Lee
+                  </StatHelpText>
+                </StatLabel>
+              </Flex>
+              <Flex direction="column">
+                <StatLabel>
+                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
+                    ATTENDEE
+                  </StatHelpText>
+                </StatLabel>
+                <Flex>
+                  {training.attendees.items.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
+                    <Avatar
+                      key={attendee.id}
+                      size="xs"
+                      name={attendee.name}
+                      color="white"
+                      bg="rgba(255, 255, 255, 0.25)"
+                    />
+                  ))}
+                </Flex>
+                {/* {training.attendees.items.length > MAX_ATTENDEE_ICONS && (
+                  <Avatar
+                    getInitials={(name) => name}
+                    name={`+${training.attendees.items.length - MAX_ATTENDEE_ICONS}`}
+                    color="white"
+                    bg="rgba(255, 255, 255, 0.1)"
+                  />
+                )} */}
+              </Flex>
+              <Flex direction="column">
+                <StatLabel>
+                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
+                    JOINING INFO
+                  </StatHelpText>
+                </StatLabel>
+                <StatLabel>
+                  <StatHelpText fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
+                    https://verizon-bluejeans-nursing {<Icon as={LinkIcon} />}
+                  </StatHelpText>
+                </StatLabel>
+              </Flex>
+            </HStack>
+          </Td>
+          <Divider orientation="horizontal" />
+          <Td>
+            <Flex justify="space-between" height="50px">
+              <Select
+                fontWeight="bold"
+                size="xs"
+                width="fit-content"
+                placeholder="BLUE JEANS MEETING INFO"
+                border="none"
+              ></Select>
+              <Spacer />
+              {trainingHovered === training.id && (
+                <TrainingToolbar
+                  editTraining={() => handleTrainingClick(training)}
+                  startTraining={() => openRegPage(training.id)}
+                  deleteTraining={() => handleDelete(training.id)}
+                />
+              )}
+            </Flex>
+            {/* <Box> */}
+
+            {/* </Box> */}
+          </Td>
+        </Flex>
       </Tr>
     ))
   }
 
   const ListTable = ({ children }) => {
     return (
-      <Table variant="unstyled">
-        <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
+      <Table variant="unstyled" backgroundColor="rgb(40 74 131)">
+        {/* <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
           <Tr>
             <Th fontWeight="thin" width="25%" color="white">
               Title
@@ -226,8 +294,10 @@ export const TrainingList = () => {
               <Icon as={IoIosCalendar} boxSize="1.5em" />
             </Th>
           </Tr>
-        </Thead>
-        <Tbody>{children}</Tbody>
+        </Thead> */}
+        <Tbody backgroundImage="linear-gradient(to bottom, rgb(40 74 131), rgb(57 106 161))">
+          {children}
+        </Tbody>
       </Table>
     )
   }
@@ -237,7 +307,7 @@ export const TrainingList = () => {
       <TrainingListHeader trainings={trainings} />
       <Box height="100%" width="100%" padding="3px" borderRadius="20px">
         <Flex>
-          <TrainingSidePanel date={'hola'} trainingNum={() => openRegPage(trainings[0].id)} />
+          <TrainingSidePanel date={'date'} trainingNum={() => openRegPage(trainings[0].id)} />
           <Tabs height="100%" width="81.7%" variant="solid-rounded">
             <Flex>
               <TabList>
