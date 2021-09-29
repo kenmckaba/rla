@@ -10,6 +10,10 @@
   padding-right: 10px;
 }
 
+.toggle-screen {
+  background: black;
+}
+
 .preview-settings {
 
 }
@@ -35,4 +39,12 @@
   height: 60px!important;
   padding: 12px;
   margin-left: 10px;
+}
+
+.toggle-control-cam {
+  background: rgba(255, 0, 0, 0.75);
+}
+
+.toggle-control-mic {
+  background: rgba(255, 0, 0, 0.75);
 }
