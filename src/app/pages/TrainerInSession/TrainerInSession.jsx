@@ -311,9 +311,13 @@ export const TrainerInSession = ({
         </VStack>
         {/* </LeftPanel> */}
 
-        <Flex justifyContent="space-evenly" width="100%" height="100vh">
-          <MiddlePanel flex="3"/>
-          {/* <RightPanel flex="1"/>  */}
+        <Flex
+          justifyContent="space-evenly"
+          flexDirection="row"
+          width="100%"
+          height="100vh">
+          <MiddlePanel marginRight="4" flex="5"/>
+          <RightPanel flex="1"/>
         </Flex>
 
       </HStack>

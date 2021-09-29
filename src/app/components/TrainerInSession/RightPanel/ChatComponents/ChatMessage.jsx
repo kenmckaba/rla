@@ -10,8 +10,8 @@ export default function ChatMessage({type, senderName, children}) {
       justifyContent="center"
       bg="#f2f3f5"
       minHeight="50px"
-      width="316px"
-      alignSelf={isIncoming ? 'flex-start' : 'flex-end'}
+      width="216px"
+      alignSelf='flex-start'
 
       ml="4"
       mt="4"
