@@ -1,6 +1,7 @@
+
+export const timestampToPrettyTime = (dt) => prettyTime(new Date(Number(dt)))
 export const prettyTime = (dt) => {
   const options = {
-    weekday: 'short',
     year: 'numeric',
     month: 'short',
     day: 'numeric',
