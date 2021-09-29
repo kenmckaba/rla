@@ -312,8 +312,8 @@ export const TrainerInSession = ({
         {/* </LeftPanel> */}
 
         <Flex justifyContent="space-evenly" width="100%" height="100%">
-          <MiddlePanel />
-          <RightPanel /> 
+          <MiddlePanel flex="3"/>
+          <RightPanel flex="1"/> 
         </Flex>
 
       </HStack>
