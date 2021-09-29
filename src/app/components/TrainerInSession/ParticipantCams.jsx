@@ -47,8 +47,8 @@ const Header = (props) => (
 
 export default function ParticipantCams(props) {
   return (
-    <Accordion allowToggle defaultIndex={0} {...props}>
-      <AccordionItem border="none" >
+    <Accordion allowToggle defaultIndex={0} paddingY="4" width="54vw">
+      <AccordionItem border="none">
         <AccordionButton
           padding="0"
           as="div">
