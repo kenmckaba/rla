@@ -1,15 +1,11 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
-  HStack
-} from '@chakra-ui/react'
-import { ReactComponent as LineIcon } from '../../../../assets/icons/line.svg'
-import { Box, Text, Flex, Spacer } from '@chakra-ui/layout'
+import { Collapse } from '@chakra-ui/transition'
+import { ReactComponent as DoubleArrowRightIcon } from '../../../../assets/icons/double-arrow-right.svg'
+import { ReactComponent as DoubleArrowLeftIcon } from '../../../../assets/icons/double-arrow-left.svg'
+import { Box, Text, Flex, Spacer, Center } from '@chakra-ui/layout'
 import Chat from './Chat'
+import { useState } from 'react'
 
-const Header = (props) => (
+const Header = ({ isOpen, onDisplayClick, ...props }) => (
   <Box
     bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
     paddingLeft="4"
@@ -17,6 +13,7 @@ const Header = (props) => (
     height="24px"
     width="100%"
     borderRadius="8px 8px 0 0"
+    onClick={onDisplayClick}
     {...props}
   >
     <Flex>
@@ -26,27 +23,26 @@ const Header = (props) => (
         Chat
       </Text>
       <Spacer />
-      <HStack mb="1">
-        <LineIcon />
-      </HStack>
+
+      <Center _hover={{cursor: 'pointer'}}>
+        {isOpen ? <DoubleArrowRightIcon/> : <DoubleArrowLeftIcon/>}
+      </Center>
     </Flex>
   </Box>
 )
 
-
 export const ChatPanel = () => {
+
+  const [isOpen, setIsOpen] = useState(true)
+
   return (
-    <Accordion allowToggle defaultIndex={0} paddingY="4" height="100vh">
-      <AccordionItem border="none">
-        <AccordionButton
-          padding="0"
-          as="div">
-          <Header />
-        </AccordionButton>
-        <AccordionPanel padding="0">
-          <Chat />
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+    <Box
+      height="100vh"
+      paddingY="4">
+      <Header isOpen={isOpen} onDisplayClick={() => setIsOpen(!isOpen)} />
+      <Collapse in={isOpen} >
+        <Chat />
+      </Collapse>
+    </Box>
   )
 }

@@ -2,7 +2,7 @@ import { Flex, Spacer } from '@chakra-ui/layout'
 import ChatInput from './ChatInput'
 import ChatMessage from './ChatMessage'
 
-export default function ChatBox({messageList, ...props}) {
+export default function ChatBox({isOpen, messageList, ...props}) {
   return (
     <Flex
       flexDirection="column"

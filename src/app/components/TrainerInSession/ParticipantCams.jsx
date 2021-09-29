@@ -9,7 +9,7 @@ import {
 
 import { ReactComponent as LineIcon } from '../../../assets/icons/line.svg'
 
-import { Box, Text, Flex } from '@chakra-ui/layout'
+import { Box, Text, Flex, Center } from '@chakra-ui/layout'
 import ParticipantCamsGrid from './ParticipantCams/ParticipantCamsGrid'
 
 const Header = (props) => (
@@ -38,9 +38,9 @@ const Header = (props) => (
 
       <Spacer />
       
-      <HStack mb="1">
+      <Center _hover={{cursor: 'pointer'}}>
         <LineIcon />
-      </HStack>
+      </Center>
     </Flex>
   </Box>
 )

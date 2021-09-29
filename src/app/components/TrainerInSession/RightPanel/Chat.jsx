@@ -1,6 +1,6 @@
 import ChatBox from './ChatComponents/ChatBox'
 
-export default function Chat(props) {
+export default function Chat({isOpen}) {
 
   const chat = [
     {
@@ -25,6 +25,6 @@ export default function Chat(props) {
   ]
 
   return (
-    <ChatBox messageList={chat} />
+    <ChatBox isOpen={isOpen} messageList={chat} />
   )
 }
