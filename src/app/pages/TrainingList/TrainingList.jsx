@@ -294,7 +294,9 @@ export const TrainingList = () => {
             </Th>
           </Tr>
         </Thead> */}
-        <Tbody backgroundColor="rgb(40 74 131)">{children}</Tbody>
+        <Tbody backgroundImage="linear-gradient(to bottom, rgb(40 74 131), rgb(57 106 161))">
+          {children}
+        </Tbody>
       </Table>
     )
   }
