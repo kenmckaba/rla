@@ -11,8 +11,8 @@ export default function MiddlePanel({ shareScreenLayout, ...props }) {
       {
         shareScreenLayout ? (
           <VStack height="100vh" paddingY="4" marginRight="4" flex="5" >
-            <Sharescreen />
-            <ParticipantCamsRow flex="1 1 16.6666%" {...props} />
+            <Sharescreen flexGrow="5" />
+            <ParticipantCamsRow flex="1 1 16.6666%" flexGrow="1" {...props} />
           </VStack>
         ) : <ParticipantCamsGrid {...props} />
       }

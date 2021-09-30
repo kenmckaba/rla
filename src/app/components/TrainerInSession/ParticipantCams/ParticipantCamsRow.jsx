@@ -1,7 +1,7 @@
 import ParticipantCam from './ParticipantCam'
 import { Flex } from '@chakra-ui/react'
 
-export default function ParticipantRow({flex, ...props}) {
+export default function ParticipantRow({flex, flexGrow, ...props}) {
 
   const attendeesList = [
     { picture: '/images/cams/trainer.png', name: 'Trainer (me)' },
@@ -19,7 +19,7 @@ export default function ParticipantRow({flex, ...props}) {
   ]
 
   return (
-    <Flex flexWrap="wrap" width="100%" height="100%" {...props}>
+    <Flex flexGrow={flexGrow} flexWrap="wrap" width="100%" height="25%" {...props}>
       {attendeesList.slice(0, 6).map(attendee => <ParticipantCam picture={attendee.picture} name={attendee.name} flex={flex} maxWidth="100%" />)}
     </Flex>
   )

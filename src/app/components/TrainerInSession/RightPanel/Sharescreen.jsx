@@ -8,7 +8,7 @@ import {
   Spacer
 } from '@chakra-ui/react'
 import { ReactComponent as LineIcon } from '../../../../assets/icons/line.svg'
-import { Box, Text, Flex, Center } from '@chakra-ui/layout'
+import { Box, Text, Flex, Center, HStack, VStack } from '@chakra-ui/layout'
 
 const Header = (props) => (
   <Box
@@ -37,20 +37,20 @@ const Header = (props) => (
 )
 
 
-export default function Sharescreen({width, maxWidth, maxHeight}) {
+export default function Sharescreen({flexGrow}) {
   return (
-    <Accordion allowToggle defaultIndex={0} >
-      <AccordionItem border="none">
-        <AccordionButton
-          padding="0"
-          as="div">
-          <Header  />
-        </AccordionButton>
-        <AccordionPanel padding="0">
-          <Image src="/images/sharescreen/sharescreen.png" alt="Sharescreen" maxW="1028px"  />
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+    <VStack height="100%" width="100%" spacing="0" flexGrow={flexGrow}>
+      <Header />
+      <Box position="relative"
+        backgroundImage={'url("/images/sharescreen/sharescreen.png")'}
+        backgroundPosition="center"
+        backgroundSize="cover"
+        backgroundRepeat="no-repeat"
+        width="100%"
+        height= "100%"
+      >
+      </Box>
+    </VStack>
     
   )
 }
