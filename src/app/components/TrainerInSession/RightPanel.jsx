@@ -1,7 +1,7 @@
-import PresentPanel from './PresentPanel'
+import { ChatPanel } from './RightPanel/ChatPanel'
 
-export default function RightPanel(props) {
+export default function RightPanel({chatIsOpen, handleChatVisibility}) {
   return (
-    <PresentPanel {...props} />
+    <ChatPanel isOpen={chatIsOpen} handleChatVisibility={handleChatVisibility} />
   )
 }

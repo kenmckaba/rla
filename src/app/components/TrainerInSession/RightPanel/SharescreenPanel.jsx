@@ -43,10 +43,10 @@ export const SharescreenPanel = () => {
         <AccordionButton
           padding="0"
           as="div">
-          <Header width="40vw" maxWidth="700px"/>
+          <Header />
         </AccordionButton>
         <AccordionPanel padding="0">
-          <Sharescreen width="40vw" maxWidth="700px"/>
+          <Sharescreen />
         </AccordionPanel>
       </AccordionItem>
     </Accordion>

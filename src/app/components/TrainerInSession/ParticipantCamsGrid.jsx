@@ -3,15 +3,13 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
-  Spacer,
-  HStack
+  Spacer
 } from '@chakra-ui/react'
 
 import { ReactComponent as LineIcon } from '../../../assets/icons/line.svg'
 
-import { Box, Text, Flex } from '@chakra-ui/layout'
-import TrainerCam from './ParticipantCams/TrainerCam'
-import AttendeesCamsList from './ParticipantCams/AttendeesCamsList'
+import { Box, Text, Flex, Center } from '@chakra-ui/layout'
+import ParticipantCamsGridList from './ParticipantCams/ParticipantCamsGridList'
 
 const Header = (props) => (
   <Box
@@ -20,6 +18,7 @@ const Header = (props) => (
     paddingRight="4"
     height="24px"
     borderRadius="8px 8px 0 0"
+    width="100%"
     {...props}
   >
     <Flex>
@@ -31,32 +30,32 @@ const Header = (props) => (
 
       <Text
         fontWeight="bold"
-        textTransform="capitalize"
+        textTransform="uppercase"
         opacity="0.5">
-        View Mode &gt;&gt;
+        view mode: gallery &gt;&gt;
       </Text>
 
       <Spacer />
       
-      <HStack mb="1">
+      <Center _hover={{cursor: 'pointer'}}>
         <LineIcon />
-      </HStack>
+      </Center>
     </Flex>
   </Box>
 )
 
-export default function ParticipantCams(props) {
+export default function ParticipantCamsGrid({shareScreenLayout, chatIsVisible, ...props}) {
+  const flexItemsWidth = chatIsVisible ? '33.33333%' : '25%'
   return (
-    <Accordion allowToggle defaultIndex={0} {...props}>
-      <AccordionItem border="none" >
+    <Accordion allowToggle defaultIndex={0} width="100%" paddingY="4" marginRight="4">
+      <AccordionItem border="none">
         <AccordionButton
           padding="0"
           as="div">
-          <Header width="30vw" maxWidth="500px"/>
+          <Header  />
         </AccordionButton>
-        <AccordionPanel padding="0" width="30vw" maxWidth="500px">
-          <TrainerCam />
-          <AttendeesCamsList />
+        <AccordionPanel padding="0">
+          <ParticipantCamsGridList flex={`1 1 ${flexItemsWidth}`} {...props}/>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>

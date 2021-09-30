@@ -54,7 +54,8 @@ import { FaCamera, FaMicrophone, FaVideo } from 'react-icons/fa'
 import { prettyTime } from '../../../pretty-time'
 import MiddlePanel from '../../components/TrainerInSession/MiddlePanel'
 import RightPanel from '../../components/TrainerInSession/RightPanel'
-
+import LeftPanel from '../../components/TrainerInSession/LeftPanel'
+import FloatingRightPanel from '../../components/TrainerInSession/FloatingRightPanel'
 
 export const TrainerInSession = ({
   match: {
@@ -87,44 +88,16 @@ export const TrainerInSession = ({
     onClose: onPollModalClose,
   } = useDisclosure()
 
+  const [chatIsOpen, setChatIsOpen] = useState(true)
+  const [shareScreenLayout, setShareScreenLayout] = useState(false)
+  const handleChatVisibility = () => setChatIsOpen(!chatIsOpen)
+  const handleShareScreenVisibility = () => {console.log('debug'); setShareScreenLayout(!shareScreenLayout)}
+
+
   const addAPoll = () => {
     setPollToEdit(null)
     onPollModalOpen()
   }
-
-  const Polls = useMemo(() => {
-    const startPoll = (poll) => {
-      updateCurrentTraining({
-        variables: {
-          input: {
-            id: training.id,
-            currentPollId: poll ? poll.id : '',
-            pollMode: poll?.stoppedAt ? 'SHOWRESULTS' : 'POLL',
-          },
-        },
-      })
-    }
-
-    const editPoll = (p) => {
-      setPollToEdit(p)
-      onPollModalOpen()
-    }
-
-    if (polls.length === 0) {
-      return <Box>*None*</Box>
-    }
-    return polls.map((poll) => {
-      return (
-        <TrainerPoll
-          key={poll.id}
-          pollId={poll.id}
-          startPoll={startPoll}
-          startedPoll={startedPoll}
-          editPoll={() => editPoll(poll)}
-        />
-      )
-    })
-  }, [polls, startedPoll, updateCurrentTraining, training?.id, onPollModalOpen])
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -216,132 +189,36 @@ export const TrainerInSession = ({
   }
 
   return (
-    <>
-      <HStack bg="white" h="100vh">
-        {/* <LeftPanel> */}
-        <VStack
-          pos="relative"
-          left="0"
-          bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
-          opacity="85%"
-          align="left"
-          width="250px"
-          h="100vh"
-          px="4"
-          py="8"
-          minWidth="400px"
-        >
-          <Box pb="12">
-            <Heading
-              fontSize="1.25em"
-              fontWeight="bold"
-              textTransform="capitalize"
-              mb="2">
-              {training.title}
-            </Heading>
-
-            <Text
-              fontSize=".62em"
-              fontWeight="bold"
-              textTransform="capitalize"
-              mb="1">
-              {prettyTime(new Date(+training.scheduledTime))}
-            </Text>
-
-            <Box
-              bg="white"
-              height="0px"
-              width="300px"
-              border="1px solid #ffffff"
-              opacity="0.25"
-            />
-
-            <Text
-              mt="1"
-              fontSize=".62em"
-              opacity="0.5">
-              {training.description}
-            </Text>
-          </Box>
-          <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
-            <ClassRoster attendees={attendees} />
-          </Box>
-          <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
-            <Accordion allowMultiple width="100%" allowToggle>
-              <AccordionItem p={0} m={0} border="none">
-                <AccordionButton p="2">
-                  <Box
-                    marginLeft="2"
-                    flex="1"
-                    textAlign="left"
-                    fontWeight="semibold"
-                    fontSize="0.9em"
-                  >
-                    Polls
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-                <AccordionPanel overflowY="scroll" maxH="48" padding="0" pb={4}>
-                  <Box>
-                    <Table size="sm" width="100%" margin="0">
-                      <Thead borderBottom="1px" borderColor="#ffffff">
-                        <Tr>
-                          <Th color="white">Question</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        {Polls}
-                        <Tr>
-                          <Td border="none" colSpan="3">
-                            <Button size="xs" variant="unstyled" onClick={addAPoll}>
-                              <Text textTransform="capitalize" fontWeight="thin">
-                                + Add poll
-                              </Text>
-                            </Button>
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </Box>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-          </Box>
-          <MicCamControls localVideoRef={localVideoRef} isModerator={true} />
-          <Box w="100%" h="100%">
-            <Flex w="100%" h="100%" px="4" alignContent="end" wrap="wrap">
-              <IconButton
-                boxSize="12"
-                bg="rgba(255,255,255,.1)"
-                aria-label="Mute or unmute the microphone"
-                icon={<Icon as={FaMicrophone} w="100%" h="45%" />}
-              />
-              <Spacer />
-              <IconButton
-                boxSize="12"
-                bg="rgba(255,255,255,.1)"
-                aria-label="Turn on or turn off the camera"
-                icon={<Icon as={FaVideo} w="100%" h="45%" />}
-              />
-              <Spacer />
-              <Button w="65%" onClick={endTraining}>
-                End Training
-              </Button>
-            </Flex>
-          </Box>
-        </VStack>
-        {/* </LeftPanel> */}
-
-        <Flex justifyContent="space-evenly" width="100%">
-          <MiddlePanel />
-          <RightPanel />
+    <Box>
+      <HStack bg="#292929" h="100vh">
+        <LeftPanel
+          training={training}
+          attendees={attendees}
+          polls={polls}
+          addAPoll={addAPoll}
+          startedPoll={startedPoll}
+          updateCurrentTraining={updateCurrentTraining}
+          setPollToEdit={setPollToEdit}
+          onPollModalOpen={onPollModalOpen} />
+        <Flex
+          justifyContent="space-evenly"
+          flexDirection="row"
+          width="100%"
+          height="100vh">
+          
+          <MiddlePanel
+            shareScreenLayout={shareScreenLayout}
+            handleShareScreenVisibility={handleShareScreenVisibility}
+            chatIsVisible={chatIsOpen}
+          />
+          <RightPanel 
+            flex="1"
+            chatIsOpen={chatIsOpen}
+            handleChatVisibility={handleChatVisibility}
+          />
         </Flex>
-
       </HStack>
-        
-
-        
-      
+      <FloatingRightPanel handleChatVisibility={handleChatVisibility} handleShareScreenVisibility={handleShareScreenVisibility}/>
 
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />
@@ -362,8 +239,7 @@ export const TrainerInSession = ({
         poll={pollToEdit}
       />
       <CamInUseModal code={bjnCamInUseError} />
-      
 
-    </>
+    </Box>
   )
 }

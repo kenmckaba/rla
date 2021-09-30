@@ -1,15 +1,14 @@
-import { Flex } from '@chakra-ui/layout'
+import { Flex, Spacer } from '@chakra-ui/layout'
 import ChatInput from './ChatInput'
 import ChatMessage from './ChatMessage'
 
-export default function ChatBox({messageList, ...props}) {
+export default function ChatBox({isOpen, messageList, ...props}) {
   return (
     <Flex
       flexDirection="column"
       color="black"
       bg="#ffffff"
-      minHeight="200px"
-      maxHeight="279px"
+      height="95vh"
       overflow="scroll"
       {...props}>
 
@@ -18,6 +17,7 @@ export default function ChatBox({messageList, ...props}) {
           {message.content}
         </ChatMessage>)
       )}
+      <Spacer />
 
       <ChatInput mt="4" />
     </Flex>
