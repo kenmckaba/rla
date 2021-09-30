@@ -46,7 +46,7 @@ const Header = (props) => (
 
 export default function ParticipantCamsGrid({shareScreenLayout, ...props}) {
   return (
-    <Accordion allowToggle defaultIndex={0} width="100%">
+    <Accordion allowToggle defaultIndex={0} width="100%" paddingY="4" marginRight="4">
       <AccordionItem border="none">
         <AccordionButton
           padding="0"
