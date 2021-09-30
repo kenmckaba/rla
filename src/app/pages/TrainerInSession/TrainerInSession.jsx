@@ -89,7 +89,10 @@ export const TrainerInSession = ({
   } = useDisclosure()
 
   const [chatIsOpen, setChatIsOpen] = useState(true)
-  const handleChatVisibility = () => {console.log('asd'); setChatIsOpen(!chatIsOpen)}
+  const [shareScreenLayout, setShareScreenLayout] = useState(false)
+  const handleChatVisibility = () => setChatIsOpen(!chatIsOpen)
+  const handleShareScreenVisibility = () => {console.log('debug'); setShareScreenLayout(!shareScreenLayout)}
+
 
   const addAPoll = () => {
     setPollToEdit(null)
@@ -202,11 +205,11 @@ export const TrainerInSession = ({
           flexDirection="row"
           width="100%"
           height="100vh">
-          <MiddlePanel marginRight="4" flex="5"/>
+          <MiddlePanel shareScreenLayout={shareScreenLayout} />
           <RightPanel flex="1" chatIsOpen={chatIsOpen} handleChatVisibility={handleChatVisibility} />
         </Flex>
       </HStack>
-      <FloatingRightPanel handleChatVisibility={handleChatVisibility}/>
+      <FloatingRightPanel handleChatVisibility={handleChatVisibility} handleShareScreenVisibility={handleShareScreenVisibility}/>
 
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />

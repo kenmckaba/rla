@@ -21,7 +21,7 @@ const IconWrapper = ({ children, backgroundColor, ...props }) => (
     {children}
   </Center>)
 
-export default function FloatingRightPanel({handleChatVisibility}) {
+export default function FloatingRightPanel({handleChatVisibility, handleShareScreenVisibility}) {
   const [showFloatingPanel, setShowFloatingPanel] = useState(false)
   return (
     <Box
@@ -52,7 +52,7 @@ export default function FloatingRightPanel({handleChatVisibility}) {
             <WebcamIcon style={{height:'100%', widht:'100%'}} />
           </IconWrapper>
       
-          <IconWrapper>
+          <IconWrapper onClick={() => handleShareScreenVisibility()}>
             <SharescreenIcon style={{height:'100%', widht:'100%'}} />
           </IconWrapper>
 

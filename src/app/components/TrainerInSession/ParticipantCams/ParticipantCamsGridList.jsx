@@ -1,7 +1,7 @@
 import ParticipantCam from './ParticipantCam'
 import { Flex } from '@chakra-ui/react'
 
-export default function ParticipantCamsGrid() {
+export default function ParticipantCamsGridList({flex, ...props}) {
 
   const attendeesList = [
     { picture: '/images/cams/trainer.png', name: 'Trainer (me)' },
@@ -19,8 +19,8 @@ export default function ParticipantCamsGrid() {
   ]
 
   return (
-    <Flex flexWrap="wrap" height="94vh">
-      {attendeesList.map(attendee => <ParticipantCam picture={attendee.picture} name={attendee.name} maxWidth="100%" />)}
+    <Flex flexWrap="wrap" height="94vh" {...props}>
+      {attendeesList.map(attendee => <ParticipantCam picture={attendee.picture} name={attendee.name} flex={flex} maxWidth="100%" />)}
     </Flex>
   )
 

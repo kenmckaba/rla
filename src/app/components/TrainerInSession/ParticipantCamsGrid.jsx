@@ -9,7 +9,7 @@ import {
 import { ReactComponent as LineIcon } from '../../../assets/icons/line.svg'
 
 import { Box, Text, Flex, Center } from '@chakra-ui/layout'
-import ParticipantCamsGrid from './ParticipantCams/ParticipantCamsGrid'
+import ParticipantCamsGridList from './ParticipantCams/ParticipantCamsGridList'
 
 const Header = (props) => (
   <Box
@@ -44,9 +44,9 @@ const Header = (props) => (
   </Box>
 )
 
-export default function ParticipantCams(props) {
+export default function ParticipantCamsGrid({shareScreenLayout, ...props}) {
   return (
-    <Accordion allowToggle defaultIndex={0} paddingY="4" {...props}>
+    <Accordion allowToggle defaultIndex={0} width="100%">
       <AccordionItem border="none">
         <AccordionButton
           padding="0"
@@ -54,7 +54,7 @@ export default function ParticipantCams(props) {
           <Header  />
         </AccordionButton>
         <AccordionPanel padding="0">
-          <ParticipantCamsGrid />
+          <ParticipantCamsGridList flex="1 1 33.3333%" {...props}/>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
