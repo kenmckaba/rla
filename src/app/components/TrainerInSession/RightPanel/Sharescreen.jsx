@@ -10,7 +10,7 @@ import {
 import { ReactComponent as LineIcon } from '../../../../assets/icons/line.svg'
 import { Box, Text, Flex, Center, HStack, VStack } from '@chakra-ui/layout'
 
-const Header = (props) => (
+const Header = ({handleShareScreenVisibility, ...props}) => (
   <Box
     bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
     paddingLeft="4"
@@ -29,7 +29,7 @@ const Header = (props) => (
 
       <Spacer />
       
-      <Center _hover={{cursor: 'pointer'}}>
+      <Center onClick={() => handleShareScreenVisibility()} _hover={{cursor: 'pointer'}}>
         <LineIcon />
       </Center>
     </Flex>
@@ -37,10 +37,10 @@ const Header = (props) => (
 )
 
 
-export default function Sharescreen({flexGrow}) {
+export default function Sharescreen({flexGrow, handleShareScreenVisibility}) {
   return (
     <VStack height="100%" width="100%" spacing="0" flexGrow={flexGrow}>
-      <Header />
+      <Header handleShareScreenVisibility={handleShareScreenVisibility}/>
       <Box position="relative"
         backgroundImage={'url("/images/sharescreen/sharescreen.png")'}
         backgroundPosition="center"
