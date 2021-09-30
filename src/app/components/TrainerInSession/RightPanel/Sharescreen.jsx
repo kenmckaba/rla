@@ -1,14 +1,8 @@
-import { Image } from '@chakra-ui/react'
-
 import {
-  Accordion,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
   Spacer
 } from '@chakra-ui/react'
 import { ReactComponent as LineIcon } from '../../../../assets/icons/line.svg'
-import { Box, Text, Flex, Center, HStack, VStack } from '@chakra-ui/layout'
+import { Box, Text, Flex, Center, VStack } from '@chakra-ui/layout'
 
 const Header = ({handleShareScreenVisibility, ...props}) => (
   <Box
