@@ -2,12 +2,14 @@ import { Box, Center, VStack } from '@chakra-ui/layout'
 import { Collapse } from '@chakra-ui/transition'
 import React, { useState } from 'react'
 import { ReactComponent as MicIcon } from '../../../assets/icons/mic-icon.svg'
+import { ReactComponent as MicOffIcon } from '../../../assets/icons/mic-off-icon.svg'
 import { ReactComponent as WebcamIcon } from '../../../assets/icons/webcam-icon.svg'
 import { ReactComponent as SharescreenIcon } from '../../../assets/icons/sharescreen-icon.svg'
 import { ReactComponent as SettingsIcon } from '../../../assets/icons/settings-icon.svg'
 import { ReactComponent as WhiteboardIcon } from '../../../assets/icons/whiteboard-icon.svg'
 import { ReactComponent as ChatIcon } from '../../../assets/icons/chat-icon.svg'
 import { ReactComponent as HangupIcon } from '../../../assets/icons/hangup-icon.svg'
+import { ReactComponent as WebcamOffIcon } from '../../../assets/icons/webcam-off-icon.svg'
 
 const IconWrapper = ({ children, backgroundColor, ...props }) => (
   <Center
@@ -22,11 +24,23 @@ const IconWrapper = ({ children, backgroundColor, ...props }) => (
   </Center>)
 
 export default function FloatingRightPanel({
+  chatIsVisible,
+  shareScreenIsVisible,
+  webcamIsVisible,
+  micIsVisible,
+  handleMicVisibility,
+  handleWebcamVisibility,
   handleChatVisibility, 
   handleShareScreenVisibility, 
   handleSettingsModalVisibility
 }) {
   const [showFloatingPanel, setShowFloatingPanel] = useState(false)
+  const activeBgColor = '#bebebe'
+  const chatButtonBgColor = chatIsVisible && activeBgColor
+  const sharescreenButtonBgColor = shareScreenIsVisible && activeBgColor
+  const webcamButtonBgColor = !webcamIsVisible && '#81272a'
+  const micButtonBgColor = !micIsVisible && '#81272a'
+
   return (
     <Box
       height="30%"
@@ -48,15 +62,23 @@ export default function FloatingRightPanel({
           justifyContent="center"
 
         >
-          <IconWrapper>
-            <MicIcon style={{height:'100%', widht:'100%'}} />
+          <IconWrapper onClick={() => handleMicVisibility()} backgroundColor={micButtonBgColor}>
+            {micIsVisible ? (
+              <MicIcon style={{height:'100%', widht:'100%'}} />
+            ) : (
+              <MicOffIcon style={{height:'100%', widht:'100%'}} />
+            )}
           </IconWrapper>
-
-          <IconWrapper>
-            <WebcamIcon style={{height:'100%', widht:'100%'}} />
+          
+          <IconWrapper onClick={() => handleWebcamVisibility()} backgroundColor={webcamButtonBgColor}>
+            {webcamIsVisible ? (
+              <WebcamIcon style={{height:'100%', widht:'100%'}} />
+            ) : (
+              <WebcamOffIcon style={{height:'100%', widht:'100%'}} />
+            )}
           </IconWrapper>
       
-          <IconWrapper onClick={() => handleShareScreenVisibility()}>
+          <IconWrapper onClick={() => handleShareScreenVisibility()} backgroundColor={sharescreenButtonBgColor}>
             <SharescreenIcon style={{height:'100%', widht:'100%'}} />
           </IconWrapper>
 
@@ -68,7 +90,7 @@ export default function FloatingRightPanel({
             <WhiteboardIcon style={{height:'100%', widht:'100%', marginBottom: '4', marginLeft: '2'}} />
           </IconWrapper>
 
-          <IconWrapper onClick={() => handleChatVisibility()}>
+          <IconWrapper onClick={() => handleChatVisibility()} backgroundColor={chatButtonBgColor}>
             <ChatIcon style={{height:'100%', widht:'100%', marginTop: '6'}} />
           </IconWrapper>
 
