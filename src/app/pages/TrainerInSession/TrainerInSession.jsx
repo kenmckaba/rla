@@ -218,6 +218,7 @@ export const TrainerInSession = ({
   return (
     <>
       <HStack bg="white" h="100vh">
+        {/* TODO: Extract the left panel to another component */}
         {/* <LeftPanel> */}
         <VStack
           spacing="20px"
@@ -267,6 +268,7 @@ export const TrainerInSession = ({
             <ClassRoster attendees={attendees} paddingBottom="2" />
           </Box>
 
+          {/* <Polls> */}
           <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
             <Accordion allowMultiple width="100%" allowToggle>
               <AccordionItem p={0} m={0} border="none">
@@ -282,7 +284,9 @@ export const TrainerInSession = ({
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel overflowY="scroll" h="20vh" padding="0" pb={4}>
+                {/* TODO: Style the scrollbar */}
+                {/* TODO: If possible in the future it wold be great to reuse this accordion panel with the one on the list of Attendees (ClassRoster.jsx) */}
+                <AccordionPanel overflowY="auto" maxHeight="20vh" padding="0" pb={4}>
                   <Box>
                     <Table size="sm" width="100%" margin="0">
                       <Thead borderBottom="1px" borderColor="#ffffff">
@@ -308,6 +312,7 @@ export const TrainerInSession = ({
               </AccordionItem>
             </Accordion>
           </Box>
+          {/* </Polls> */}
         </VStack>
         {/* </LeftPanel> */}
 
