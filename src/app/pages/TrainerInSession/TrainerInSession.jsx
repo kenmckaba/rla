@@ -190,7 +190,7 @@ export const TrainerInSession = ({
 
   return (
     <Box>
-      <HStack bg="white" h="100vh">
+      <HStack bg="#292929" h="100vh">
         <LeftPanel
           training={training}
           attendees={attendees}
