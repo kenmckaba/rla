@@ -31,6 +31,7 @@ import RightPanel from '../../components/TrainerInSession/RightPanel'
 import LeftPanel from '../../components/TrainerInSession/LeftPanel'
 import FloatingRightPanel from '../../components/TrainerInSession/FloatingRightPanel'
 import SettingsModal from '../../components/Modals/SettingsModal'
+import EndTrainingModal from '../../components/Modals/EndTrainingModal'
 
 export const TrainerInSession = ({
   match: {
@@ -62,10 +63,12 @@ export const TrainerInSession = ({
     onOpen: onPollModalOpen,
     onClose: onPollModalClose,
   } = useDisclosure()
+  
+  const [showSettingsModal, setShowSettingsModal] = useState(false)
+  const [showEndTrainingModal, setShowEndTrainingModal] = useState(false)
 
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [shareScreenLayout, setShareScreenLayout] = useState(false)
-  const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [webcamIsVisible, setWebcamIsVisible] = useState(false)
   const [micIsVisible, setMicIsVisible] = useState(false)
   
@@ -74,6 +77,21 @@ export const TrainerInSession = ({
   const handleSettingsModalVisibility = () => setShowSettingsModal(!showSettingsModal)
   const handleWebcamVisibility = () => setWebcamIsVisible(!webcamIsVisible)
   const handleMicVisibility = () => setMicIsVisible(!micIsVisible)
+  const handleEndTrainingModalClick = () => setShowEndTrainingModal(true)
+  const handleEndTrainingClick = () => {
+    bjnApi.leave(true)
+    updateCurrentTraining({
+      variables: {
+        input: {
+          id: trainingId,
+          endedAt: Date.now(),
+        },
+      },
+    })
+
+    setShowEndTrainingModal(false)
+    // TODO: Redirect to Dashboard
+  }
 
 
   const addAPoll = () => {
@@ -149,19 +167,6 @@ export const TrainerInSession = ({
     }
   })
 
-  const endTraining = () => {
-    bjnApi.leave(true)
-    onEndModalOpen()
-    updateCurrentTraining({
-      variables: {
-        input: {
-          id: trainingId,
-          endedAt: Date.now(),
-        },
-      },
-    })
-  }
-
   if (error || updateError) {
     return <p>An error occured</p>
   }
@@ -210,13 +215,24 @@ export const TrainerInSession = ({
         handleChatVisibility={handleChatVisibility}
         handleShareScreenVisibility={handleShareScreenVisibility}
         handleSettingsModalVisibility={handleSettingsModalVisibility}
+        handleEndTrainingModalClick={handleEndTrainingModalClick}
       />
 
+      
       <SettingsModal
         isOpen={showSettingsModal}
         onClose={() => setShowSettingsModal(false)}
         onSave={() => setShowSettingsModal(false)}
       />
+
+      <EndTrainingModal
+        isOpen={showEndTrainingModal}
+        onClose={() => setShowEndTrainingModal(false)}
+        onEndTraining={() => handleEndTrainingClick()}
+      />
+
+
+      
 
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />

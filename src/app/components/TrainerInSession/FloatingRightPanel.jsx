@@ -32,7 +32,8 @@ export default function FloatingRightPanel({
   handleWebcamVisibility,
   handleChatVisibility, 
   handleShareScreenVisibility, 
-  handleSettingsModalVisibility
+  handleSettingsModalVisibility,
+  handleEndTrainingModalClick
 }) {
   const [showFloatingPanel, setShowFloatingPanel] = useState(false)
   const activeBgColor = '#bebebe'
@@ -60,7 +61,6 @@ export default function FloatingRightPanel({
           height="100%"
           spacing={2}
           justifyContent="center"
-
         >
           <IconWrapper onClick={() => handleMicVisibility()} backgroundColor={micButtonBgColor}>
             {micIsVisible ? (
@@ -94,7 +94,7 @@ export default function FloatingRightPanel({
             <ChatIcon style={{height:'100%', widht:'100%', marginTop: '6'}} />
           </IconWrapper>
 
-          <IconWrapper backgroundColor="#FF4E4E">
+          <IconWrapper backgroundColor="#FF4E4E" onClick={() => handleEndTrainingModalClick()}>
             <HangupIcon style={{height:'100%', widht:'100%'}} />
           </IconWrapper>
         </VStack>
