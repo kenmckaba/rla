@@ -16,6 +16,7 @@ import { EditButton, PrimaryButton } from '../../components/shared/Buttons'
 import { useState } from 'react'
 import { FaCamera, FaMicrophone, FaVideo } from 'react-icons/fa'
 import { H1Heading, H3Heading } from '../../components/shared/Heading'
+import SettingsModal from '../../components/Modals/SettingsModal'
 import './PreviewScreen.css'
 
 export const PreviewScreen = ({
@@ -23,10 +24,8 @@ export const PreviewScreen = ({
     params: { trainingId },
   },
 }) => {
-  // const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
-  // const onSettings = () => {
-  //   onModalOpen()
-  // }
+  const [showSettingsModal, setShowSettingsModal] = useState(false)
+  const handleSettingsModalVisibility = () => {console.log('debug') ; setShowSettingsModal(!showSettingsModal) }
   const [toggleControlCam, setToggleControlCam] = useState(false)
   const toggleControlButtonCam = () => {
     setToggleControlCam(!toggleControlCam)
@@ -57,7 +56,7 @@ export const PreviewScreen = ({
               Hello Ken.<br></br>Let’s check out the camera and mic
             </H1Heading>
             <div className={`${toggleControlCam ? 'preview-screen toggle-screen' : 'preview-screen'}`}>
-              <EditButton w="30%" h="12%" className="preview-settings">
+              <EditButton w="30%" h="12%" className="preview-settings" onClick={() => handleSettingsModalVisibility()}>
                 Settings
               </EditButton>
               <div className="preview-controls">
@@ -76,6 +75,11 @@ export const PreviewScreen = ({
           </Flex>
         </Flex>
       </Container>
+      <SettingsModal
+        isOpen={showSettingsModal}
+        onClose={() => setShowSettingsModal(false)}
+        onSave={() => setShowSettingsModal(false)}
+      />
     </>
   )
 }
