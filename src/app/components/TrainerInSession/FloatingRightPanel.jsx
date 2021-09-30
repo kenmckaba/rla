@@ -21,7 +21,11 @@ const IconWrapper = ({ children, backgroundColor, ...props }) => (
     {children}
   </Center>)
 
-export default function FloatingRightPanel({handleChatVisibility, handleShareScreenVisibility}) {
+export default function FloatingRightPanel({
+  handleChatVisibility, 
+  handleShareScreenVisibility, 
+  handleSettingsModalVisibility
+}) {
   const [showFloatingPanel, setShowFloatingPanel] = useState(false)
   return (
     <Box
@@ -56,7 +60,7 @@ export default function FloatingRightPanel({handleChatVisibility, handleShareScr
             <SharescreenIcon style={{height:'100%', widht:'100%'}} />
           </IconWrapper>
 
-          <IconWrapper>
+          <IconWrapper onClick={() => handleSettingsModalVisibility()}>
             <SettingsIcon style={{height:'100%', widht:'100%'}} />
           </IconWrapper>
 
