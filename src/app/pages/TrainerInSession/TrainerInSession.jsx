@@ -205,8 +205,17 @@ export const TrainerInSession = ({
           flexDirection="row"
           width="100%"
           height="100vh">
-          <MiddlePanel shareScreenLayout={shareScreenLayout} handleShareScreenVisibility={handleShareScreenVisibility} />
-          <RightPanel flex="1" chatIsOpen={chatIsOpen} handleChatVisibility={handleChatVisibility} />
+          
+          <MiddlePanel
+            shareScreenLayout={shareScreenLayout}
+            handleShareScreenVisibility={handleShareScreenVisibility}
+            chatIsVisible={chatIsOpen}
+          />
+          <RightPanel 
+            flex="1"
+            chatIsOpen={chatIsOpen}
+            handleChatVisibility={handleChatVisibility}
+          />
         </Flex>
       </HStack>
       <FloatingRightPanel handleChatVisibility={handleChatVisibility} handleShareScreenVisibility={handleShareScreenVisibility}/>

@@ -5,7 +5,7 @@ import ParticipantCamsGrid from './ParticipantCamsGrid'
 import Sharescreen from './RightPanel/Sharescreen'
 
 
-export default function MiddlePanel({ shareScreenLayout, handleShareScreenVisibility, ...props }) {
+export default function MiddlePanel({ shareScreenLayout, handleShareScreenVisibility, chatIsVisible, ...props }) {
   return (
     <>
       {
@@ -14,7 +14,7 @@ export default function MiddlePanel({ shareScreenLayout, handleShareScreenVisibi
             <Sharescreen flexGrow="5" handleShareScreenVisibility={handleShareScreenVisibility} />
             <ParticipantCamsRow flex="1 1 16.6666%" flexGrow="1" {...props} />
           </VStack>
-        ) : <ParticipantCamsGrid {...props} />
+        ) : <ParticipantCamsGrid chatIsVisible={chatIsVisible} {...props} />
       }
     </>
   )

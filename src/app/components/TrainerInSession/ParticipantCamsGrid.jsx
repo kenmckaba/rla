@@ -44,7 +44,8 @@ const Header = (props) => (
   </Box>
 )
 
-export default function ParticipantCamsGrid({shareScreenLayout, ...props}) {
+export default function ParticipantCamsGrid({shareScreenLayout, chatIsVisible, ...props}) {
+  const flexItemsWidth = chatIsVisible ? '33.33333%' : '25%'
   return (
     <Accordion allowToggle defaultIndex={0} width="100%" paddingY="4" marginRight="4">
       <AccordionItem border="none">
@@ -54,7 +55,7 @@ export default function ParticipantCamsGrid({shareScreenLayout, ...props}) {
           <Header  />
         </AccordionButton>
         <AccordionPanel padding="0">
-          <ParticipantCamsGridList flex="1 1 33.3333%" {...props}/>
+          <ParticipantCamsGridList flex={`1 1 ${flexItemsWidth}`} {...props}/>
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
