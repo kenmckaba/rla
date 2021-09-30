@@ -10,6 +10,7 @@ import {
   Icon,
   Flex,
   Container,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { EditButton, PrimaryButton } from '../../components/shared/Buttons'
 import { useState } from 'react'
@@ -22,6 +23,10 @@ export const PreviewScreen = ({
     params: { trainingId },
   },
 }) => {
+  // const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
+  // const onSettings = () => {
+  //   onModalOpen()
+  // }
   const [toggleControlCam, setToggleControlCam] = useState(false)
   const toggleControlButtonCam = () => {
     setToggleControlCam(!toggleControlCam)
@@ -61,7 +66,7 @@ export const PreviewScreen = ({
               </div>
             </div>
             <Flex flexDirection="row" w="100%" alignItems="center" justifyContent="center">
-              <EditButton w="15%">
+              <EditButton w="15%" className='remove-icon-from-button'>
                 Go Back
               </EditButton>
               <PrimaryButton w="15%" style={{marginLeft: '20px'}}>
