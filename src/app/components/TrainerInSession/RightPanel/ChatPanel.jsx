@@ -36,13 +36,13 @@ export const ChatPanel = () => {
   const [isOpen, setIsOpen] = useState(true)
 
   return (
-    <Box
-      height="100vh"
-      paddingY="4">
-      <Header isOpen={isOpen} onDisplayClick={() => setIsOpen(!isOpen)} />
-      <Collapse in={isOpen} >
+    <Collapse in={isOpen} >
+      <Box
+        height="100vh"
+        paddingY="4">
+        <Header isOpen={isOpen} onDisplayClick={() => setIsOpen(!isOpen)} />
         <Chat />
-      </Collapse>
-    </Box>
+      </Box>
+    </Collapse>
   )
 }
