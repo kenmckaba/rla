@@ -56,6 +56,7 @@ import MiddlePanel from '../../components/TrainerInSession/MiddlePanel'
 import RightPanel from '../../components/TrainerInSession/RightPanel'
 import LeftPanel from '../../components/TrainerInSession/LeftPanel'
 import FloatingRightPanel from '../../components/TrainerInSession/FloatingRightPanel'
+import SettingsModal from '../../components/Modals/SettingsModal'
 
 export const TrainerInSession = ({
   match: {
@@ -90,8 +91,10 @@ export const TrainerInSession = ({
 
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [shareScreenLayout, setShareScreenLayout] = useState(false)
+  const [showSettingsModal, setShowSettingsModal] = useState(false)
   const handleChatVisibility = () => setChatIsOpen(!chatIsOpen)
-  const handleShareScreenVisibility = () => {console.log('debug'); setShareScreenLayout(!shareScreenLayout)}
+  const handleShareScreenVisibility = () => setShareScreenLayout(!shareScreenLayout)
+  const handleSettingsModalVisibility = () => {console.log('debug') ; setShowSettingsModal(!showSettingsModal) }
 
 
   const addAPoll = () => {
@@ -218,7 +221,17 @@ export const TrainerInSession = ({
           />
         </Flex>
       </HStack>
-      <FloatingRightPanel handleChatVisibility={handleChatVisibility} handleShareScreenVisibility={handleShareScreenVisibility}/>
+      <FloatingRightPanel
+        handleChatVisibility={handleChatVisibility}
+        handleShareScreenVisibility={handleShareScreenVisibility}
+        handleSettingsModalVisibility={handleSettingsModalVisibility}
+      />
+
+      <SettingsModal
+        isOpen={showSettingsModal}
+        onClose={() => setShowSettingsModal(false)}
+        onSave={() => setShowSettingsModal(false)}
+      />
 
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />
