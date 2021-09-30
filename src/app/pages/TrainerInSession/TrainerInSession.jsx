@@ -55,7 +55,7 @@ import { prettyTime } from '../../../pretty-time'
 import MiddlePanel from '../../components/TrainerInSession/MiddlePanel'
 import RightPanel from '../../components/TrainerInSession/RightPanel'
 import LeftPanel from '../../components/TrainerInSession/LeftPanel'
-
+import FloatingRightPanel from '../../components/TrainerInSession/FloatingRightPanel'
 
 export const TrainerInSession = ({
   match: {
@@ -183,7 +183,7 @@ export const TrainerInSession = ({
   }
 
   return (
-    <>
+    <Box>
       <HStack bg="white" h="100vh">
         <LeftPanel
           training={training}
@@ -202,8 +202,8 @@ export const TrainerInSession = ({
           <MiddlePanel marginRight="4" flex="5"/>
           <RightPanel flex="1"/>
         </Flex>
-
       </HStack>
+      <FloatingRightPanel/>
 
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />
@@ -225,6 +225,6 @@ export const TrainerInSession = ({
       />
       <CamInUseModal code={bjnCamInUseError} />
 
-    </>
+    </Box>
   )
 }
