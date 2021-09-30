@@ -48,3 +48,7 @@
 .toggle-control-mic {
   background: rgba(255, 0, 0, 0.75);
 }
+
+.remove-icon-from-button span {
+  display: none;
+}
