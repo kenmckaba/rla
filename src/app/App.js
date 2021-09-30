@@ -4,6 +4,7 @@ import theme from './theme/index'
 import Fonts from './theme/fonts'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { TrainerInSession } from './pages/TrainerInSession/TrainerInSession'
+import { PreviewScreen } from './pages/PreviewScreen/PreviewScreen'
 import { Registration } from './components/Registration'
 import { RegistrationUpdate } from './components/RegistrationUpdate'
 import { TrainingList } from './pages/TrainingList/TrainingList'
@@ -19,6 +20,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path="/attendee/:attendeeId" component={AttendeeLanding} />
+          <Route path="/previewScreen/:trainingId" component={PreviewScreen} />
           <Route path="/trainerInSession/:trainingId" component={TrainerInSession} />
           <Route path="/registration-update/:attendeeId" component={RegistrationUpdate} />
           <Route path="/registration/:trainingId" component={Registration} />
