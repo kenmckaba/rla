@@ -3,8 +3,7 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
-  Spacer,
-  HStack
+  Spacer
 } from '@chakra-ui/react'
 
 import { ReactComponent as LineIcon } from '../../../assets/icons/line.svg'

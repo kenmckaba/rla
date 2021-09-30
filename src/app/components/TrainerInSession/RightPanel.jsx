@@ -1,9 +1,7 @@
-import { Center, VStack } from '@chakra-ui/layout'
 import { ChatPanel } from './RightPanel/ChatPanel'
-import { SharescreenPanel } from './RightPanel/SharescreenPanel'
 
-export default function RightPanel(props) {
+export default function RightPanel({chatIsOpen, handleChatVisibility}) {
   return (
-    <ChatPanel />
+    <ChatPanel isOpen={chatIsOpen} handleChatVisibility={handleChatVisibility} />
   )
 }

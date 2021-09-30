@@ -88,6 +88,9 @@ export const TrainerInSession = ({
     onClose: onPollModalClose,
   } = useDisclosure()
 
+  const [chatIsOpen, setChatIsOpen] = useState(true)
+  const handleChatVisibility = () => {console.log('asd'); setChatIsOpen(!chatIsOpen)}
+
   const addAPoll = () => {
     setPollToEdit(null)
     onPollModalOpen()
@@ -200,10 +203,10 @@ export const TrainerInSession = ({
           width="100%"
           height="100vh">
           <MiddlePanel marginRight="4" flex="5"/>
-          <RightPanel flex="1"/>
+          <RightPanel flex="1" chatIsOpen={chatIsOpen} handleChatVisibility={handleChatVisibility} />
         </Flex>
       </HStack>
-      <FloatingRightPanel/>
+      <FloatingRightPanel handleChatVisibility={handleChatVisibility}/>
 
       <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
         <ModalOverlay />

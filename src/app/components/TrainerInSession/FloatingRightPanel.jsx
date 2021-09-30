@@ -1,5 +1,5 @@
 import { Box, Center, VStack } from '@chakra-ui/layout'
-import { Collapse, Slide } from '@chakra-ui/transition'
+import { Collapse } from '@chakra-ui/transition'
 import React, { useState } from 'react'
 import { ReactComponent as MicIcon } from '../../../assets/icons/mic-icon.svg'
 import { ReactComponent as WebcamIcon } from '../../../assets/icons/webcam-icon.svg'
@@ -9,25 +9,27 @@ import { ReactComponent as WhiteboardIcon } from '../../../assets/icons/whiteboa
 import { ReactComponent as ChatIcon } from '../../../assets/icons/chat-icon.svg'
 import { ReactComponent as HangupIcon } from '../../../assets/icons/hangup-icon.svg'
 
-const IconWrapper = ({ children, backgroundColor }) => (
+const IconWrapper = ({ children, backgroundColor, ...props }) => (
   <Center
     h="48px"
     w="48px"
     borderRadius="full"
     bg={backgroundColor ? backgroundColor : 'rgba(94, 97, 103, 0.75)'}
-    _hover={{ cursor: 'pointer' }}>
+    _hover={{ cursor: 'pointer' }}
+    {...props}
+  >
     {children}
   </Center>)
 
-export default function FloatingRightPanel() {
+export default function FloatingRightPanel({handleChatVisibility}) {
   const [showFloatingPanel, setShowFloatingPanel] = useState(false)
   return (
     <Box
-      height="100%"
+      height="30%"
       width="112px"
-      position="fixed"
+      position="absolute"
       right="0"
-      top="0"
+      top="25%"
       onMouseEnter={() => setShowFloatingPanel(true)}
       onMouseLeave={() => setShowFloatingPanel(false)}
     >
@@ -62,7 +64,7 @@ export default function FloatingRightPanel() {
             <WhiteboardIcon style={{height:'100%', widht:'100%', marginBottom: '4', marginLeft: '2'}} />
           </IconWrapper>
 
-          <IconWrapper>
+          <IconWrapper onClick={() => handleChatVisibility()}>
             <ChatIcon style={{height:'100%', widht:'100%', marginTop: '6'}} />
           </IconWrapper>
 
