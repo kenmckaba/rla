@@ -59,7 +59,6 @@ export const TrainerInSession = ({
     variables: { id: trainingId },
   })
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
-  const { isOpen: isEndModalOpen, onOpen: onEndModalOpen } = useDisclosure()
   const {
     isOpen: isPollModalOpen,
     onOpen: onPollModalOpen,
@@ -232,21 +231,6 @@ export const TrainerInSession = ({
         onClose={() => setShowEndTrainingModal(false)}
         onEndTraining={() => handleEndTrainingClick()}
       />
-
-
-      
-
-      <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent height="300px">
-          <ModalHeader>
-            <Flex justifyContent="center">The training is over</Flex>
-          </ModalHeader>
-          <ModalBody>
-            <Flex justifyContent="center">Thanks for attending!</Flex>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
 
       <PollModal
         trainingId={trainingId}
