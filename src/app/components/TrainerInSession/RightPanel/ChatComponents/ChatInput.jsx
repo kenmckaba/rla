@@ -1,6 +1,6 @@
-import { HStack, Input } from '@chakra-ui/react'
+import { Box, HStack, Input } from '@chakra-ui/react'
 import { ReactComponent as AttachIcon } from '../../../../../assets/icons/chat-attach-icon.svg'
-export default function ChatInput(props) {
+export default function ChatInput({onAttachClick, ...props}) {
   return (
     <HStack
       alignItems="center"
@@ -11,7 +11,12 @@ export default function ChatInput(props) {
         bg="#f2f3f5"
         placeholder="Type answer here..."
       />
-      <AttachIcon />
+      <Box
+        onClick={() => onAttachClick()}
+        cursor="pointer"
+      >
+        <AttachIcon />
+      </Box>
     </HStack>
   )
 }

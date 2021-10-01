@@ -94,7 +94,7 @@ export default function LeftPanel({
         <Text
           fontSize=".62em"
           opacity="0.5">
-          {training.description}
+          {training.description ? training.description : 'Description here' }
         </Text>
       </Box>
       <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">

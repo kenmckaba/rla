@@ -11,6 +11,7 @@ import { ReactComponent as WhiteboardIcon } from '../../../assets/icons/whiteboa
 import { ReactComponent as ChatIcon } from '../../../assets/icons/chat-icon.svg'
 import { ReactComponent as HangupIcon } from '../../../assets/icons/hangup-icon.svg'
 import { ReactComponent as WebcamOffIcon } from '../../../assets/icons/webcam-off-icon.svg'
+import { ReactComponent as HandIcon } from '../../../assets/icons/hand-icon-2.svg'
 import { Tooltip } from '@chakra-ui/react'
 
 const IconWrapper = ({ tooltip, children, backgroundColor, ...props }) => (
@@ -29,6 +30,7 @@ const IconWrapper = ({ tooltip, children, backgroundColor, ...props }) => (
 )
 
 export default function FloatingRightPanel({
+  role, //'instructor' | 'student'
   chatIsVisible,
   shareScreenIsVisible,
   webcamIsVisible,
@@ -39,7 +41,7 @@ export default function FloatingRightPanel({
   handleShareScreenVisibility,
   handleSettingsModalVisibility,
   handleEndTrainingModalClick,
-  handleSharescreenModalVisibility
+  handleShareDocumentsModalVisibility
 }) {
   const [showFloatingPanel, setShowFloatingPanel] = useState(false)
   const activeBgColor = '#bebebe'
@@ -91,15 +93,16 @@ export default function FloatingRightPanel({
             )}
           </IconWrapper>
 
-          <IconWrapper
-            onClick={() => handleShareScreenVisibility()}
-            backgroundColor={sharescreenButtonBgColor}
-            tooltip="Sharescreen">
-            <SharescreenIcon style={{ height: '100%', widht: '100%' }} />
-          </IconWrapper>
+          {role === 'instructor' &&
+            <IconWrapper
+              onClick={() => handleShareScreenVisibility()}
+              backgroundColor={sharescreenButtonBgColor}
+              tooltip="Sharescreen">
+              <SharescreenIcon style={{ height: '100%', widht: '100%' }} />
+            </IconWrapper>}
 
           <IconWrapper
-            onClick={() => handleSharescreenModalVisibility()}
+            onClick={() => handleShareDocumentsModalVisibility()}
             tooltip="Share documents">
             <ShareDocumentsIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>
@@ -114,6 +117,12 @@ export default function FloatingRightPanel({
           <IconWrapper tooltip="Whiteboard">
             <WhiteboardIcon style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }} />
           </IconWrapper>
+
+          {role === 'student' &&
+            <IconWrapper tooltip="Raise hand">
+              <HandIcon style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }} />
+            </IconWrapper>
+          }
 
           <IconWrapper
             onClick={() => handleChatVisibility()}

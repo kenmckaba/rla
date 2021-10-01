@@ -1,6 +1,6 @@
 import ChatBox from './ChatComponents/ChatBox'
 
-export default function Chat({isOpen}) {
+export default function Chat({onAttachClick, isOpen}) {
 
   const chat = [
     {
@@ -25,6 +25,6 @@ export default function Chat({isOpen}) {
   ]
 
   return (
-    <ChatBox isOpen={isOpen} messageList={chat} />
+    <ChatBox isOpen={isOpen} messageList={chat} onAttachClick={onAttachClick} />
   )
 }
