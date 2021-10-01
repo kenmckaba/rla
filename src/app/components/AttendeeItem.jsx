@@ -61,8 +61,8 @@ export const AttendeeItem = ({ attendeeId }) => {
 
   return (
     <Tr id={attendee.id} key={attendee.id}>
-      <Td paddingLeft="0">{attendee.name}</Td>
-      <Td paddingRight="0">
+      <Td paddingLeft="4">{attendee.name}</Td>
+      <Td paddingRight="6">
         <Center>
           {attendeePresent() ? <CheckMark /> : <XMark /> }
         </Center>

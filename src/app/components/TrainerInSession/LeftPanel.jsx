@@ -4,6 +4,7 @@ import { Box, Heading, Text, VStack } from '@chakra-ui/layout'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import React, { useMemo } from 'react'
 import { prettyTime } from '../../../pretty-time'
+import { scrollBarStyle } from '../../theme/components/scrollbar'
 import { ClassRoster } from '../ClassRoster'
 import { TrainerPoll } from '../TrainerPoll'
 
@@ -116,9 +117,8 @@ export default function LeftPanel({
               </Box>
               <AccordionIcon />
             </AccordionButton>
-            {/* TODO: Style the scrollbar */}
             {/* TODO: If possible in the future it wold be great to reuse this accordion panel with the one on the list of Attendees (ClassRoster.jsx) */}
-            <AccordionPanel overflowY="auto" maxHeight="20vh" padding="0" pb={4}>
+            <AccordionPanel overflowY="auto" maxHeight="20vh" padding="0" pb={4} sx={scrollBarStyle}>
               <Box>
                 <Table size="sm" width="100%" margin="0">
                   <Thead borderBottom="1px" borderColor="#ffffff">

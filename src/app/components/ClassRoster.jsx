@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { useMemo } from 'react'
 import { dummyAttendees } from '../dummyData/dummyAttendees'
+import { scrollBarStyle } from '../theme/components/scrollbar'
 import { AttendeeItem } from './AttendeeItem'
 
 export const ClassRoster = ({ attendees, ...props }) => {
@@ -43,8 +44,7 @@ export const ClassRoster = ({ attendees, ...props }) => {
           </Box>
           <AccordionIcon />
         </AccordionButton>
-        {/* TODO: Add a custom scrollbar */}
-        <AccordionPanel overflowY="auto" maxHeight="55vh" marginTop="2" padding="0" >
+        <AccordionPanel overflowY="auto" maxHeight="53vh" marginTop="2" padding="0" sx={scrollBarStyle} >
           <Table size="sm" width="100%" margin="0">
             <Thead borderBottom="1px" borderColor="#ffffff">
               <Tr>
