@@ -126,7 +126,7 @@ export const TrainingList = () => {
   }
 
   const openRegPage = (trainingId) => {
-    window.open(`/trainerInSession/${trainingId}`)
+    window.location.replace(`/previewScreen/${trainingId}`)
   }
 
   const handleDelete = async (trainingId) => {

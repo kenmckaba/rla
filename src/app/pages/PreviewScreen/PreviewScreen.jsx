@@ -34,6 +34,11 @@ export const PreviewScreen = ({
   const toggleControlButtonMic = () => {
     setToggleControlMic(!toggleControlMic)
   }
+
+  const openRegPage = (trainingId) => {
+    window.location.replace('/trainerInSession/' + trainingId)
+  }
+
   return (
     <>
       <Container maxW="container.xl" maxWidth="unset">
@@ -68,7 +73,7 @@ export const PreviewScreen = ({
               <EditButton w="15%" className='remove-icon-from-button'>
                 Go Back
               </EditButton>
-              <PrimaryButton w="15%" style={{marginLeft: '20px'}}>
+              <PrimaryButton w="15%" style={{marginLeft: '20px'}} onClick={() => openRegPage(trainingId)}>
                 Start training
               </PrimaryButton>
             </Flex>
