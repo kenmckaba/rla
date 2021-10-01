@@ -3,7 +3,7 @@ import { Badge, Box, Center, Flex, HStack, Text } from '@chakra-ui/react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { IconButton } from '@chakra-ui/button'
 
-export default function ParticipantCamsGridList({flex, ...props}) {
+export default function ParticipantCamsGridList({flex, onNextCamClick, onPrevCamClick, ...props}) {
 
   const attendeesList = [
     { picture: '/images/cams/trainer.png', name: 'Trainer (me)' },
@@ -41,12 +41,14 @@ export default function ParticipantCamsGridList({flex, ...props}) {
               aria-label="Previous page of cams"
               variant="unstyled"
               icon={<ChevronLeftIcon />}
+              onClick={() => onPrevCamClick && onPrevCamClick()}
             />
             <Text>1/2</Text>
             <IconButton
               aria-label="Next page of cams"
               variant="unstyled"
               icon={<ChevronRightIcon />}
+              onClick={() => onNextCamClick && onNextCamClick()}
             />
           </HStack>
         </Center>

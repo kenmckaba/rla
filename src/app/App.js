@@ -9,6 +9,7 @@ import { Registration } from './components/Registration'
 import { RegistrationUpdate } from './components/RegistrationUpdate'
 import { TrainingList } from './pages/TrainingList/TrainingList'
 import { Splashscreen } from './pages/Splashscreen/Splashscreen'
+import { StudentView } from './pages/StudentView/StudentView'
 
 
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/attendee/:attendeeId" component={AttendeeLanding} />
           <Route path="/previewScreen/:trainingId" component={PreviewScreen} />
           <Route path="/trainerInSession/:trainingId" component={TrainerInSession} />
+          <Route path="/studentView/:trainingId" component={StudentView} />
           <Route path="/registration-update/:attendeeId" component={RegistrationUpdate} />
           <Route path="/registration/:trainingId" component={Registration} />
           <Route path="/dashboard" component={TrainingList} />
