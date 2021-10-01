@@ -32,6 +32,7 @@ import LeftPanel from '../../components/TrainerInSession/LeftPanel'
 import FloatingRightPanel from '../../components/TrainerInSession/FloatingRightPanel'
 import SettingsModal from '../../components/Modals/SettingsModal'
 import EndTrainingModal from '../../components/Modals/EndTrainingModal'
+import { useHistory } from 'react-router'
 
 export const TrainerInSession = ({
   match: {
@@ -47,6 +48,7 @@ export const TrainerInSession = ({
   const joined = useRef(false)
   const localVideoRef = useRef(null)
   const gotVideosRef = useRef(false)
+  const history = useHistory()
   const { bjnApi, bjnIsInitialized, bjnCamInUseError } = useBlueJeans()
   const {
     data: trainingData,
@@ -90,7 +92,7 @@ export const TrainerInSession = ({
     })
 
     setShowEndTrainingModal(false)
-    // TODO: Redirect to Dashboard
+    history.push('/dashboard')
   }
 
 
