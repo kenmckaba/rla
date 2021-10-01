@@ -245,7 +245,7 @@ export const TrainingForm = ({ onClose, trainingId }) => {
         </FormControl>
         <Accordion mt="4" width="100%" mt={2} allowToggle>
           <AccordionItemCustom title="BlueJeans meeting">
-            <HStack mt="3">
+            <HStack padding="4">
               <FormControl isRequired>
                 <FormLabel fontWeight="bold" textTransform="uppercase">
                   BlueJeans meeting ID
