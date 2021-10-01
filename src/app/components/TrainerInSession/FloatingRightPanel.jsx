@@ -5,6 +5,7 @@ import { ReactComponent as MicIcon } from '../../../assets/icons/mic-icon.svg'
 import { ReactComponent as MicOffIcon } from '../../../assets/icons/mic-off-icon.svg'
 import { ReactComponent as WebcamIcon } from '../../../assets/icons/webcam-icon.svg'
 import { ReactComponent as SharescreenIcon } from '../../../assets/icons/sharescreen-icon.svg'
+import { ReactComponent as ShareDocumentsIcon } from '../../../assets/icons/share-documents-icon.svg'
 import { ReactComponent as SettingsIcon } from '../../../assets/icons/settings-icon.svg'
 import { ReactComponent as WhiteboardIcon } from '../../../assets/icons/whiteboard-icon.svg'
 import { ReactComponent as ChatIcon } from '../../../assets/icons/chat-icon.svg'
@@ -37,7 +38,8 @@ export default function FloatingRightPanel({
   handleChatVisibility,
   handleShareScreenVisibility,
   handleSettingsModalVisibility,
-  handleEndTrainingModalClick
+  handleEndTrainingModalClick,
+  handleSharescreenModalVisibility
 }) {
   const [showFloatingPanel, setShowFloatingPanel] = useState(false)
   const activeBgColor = '#bebebe'
@@ -94,6 +96,12 @@ export default function FloatingRightPanel({
             backgroundColor={sharescreenButtonBgColor}
             tooltip="Sharescreen">
             <SharescreenIcon style={{ height: '100%', widht: '100%' }} />
+          </IconWrapper>
+
+          <IconWrapper
+            onClick={() => handleSharescreenModalVisibility()}
+            tooltip="Share documents">
+            <ShareDocumentsIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>
 
           <IconWrapper

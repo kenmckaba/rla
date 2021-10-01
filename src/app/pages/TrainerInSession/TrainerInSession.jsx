@@ -33,6 +33,7 @@ import FloatingRightPanel from '../../components/TrainerInSession/FloatingRightP
 import SettingsModal from '../../components/Modals/SettingsModal'
 import EndTrainingModal from '../../components/Modals/EndTrainingModal'
 import { useHistory } from 'react-router'
+import ShareDocumentsModal from '../../components/Modals/ShareDocumentsModal'
 
 export const TrainerInSession = ({
   match: {
@@ -64,18 +65,20 @@ export const TrainerInSession = ({
     onOpen: onPollModalOpen,
     onClose: onPollModalClose,
   } = useDisclosure()
-  
+
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [showEndTrainingModal, setShowEndTrainingModal] = useState(false)
+  const [showShareDocumentsModal, setShowShareDocumentsModal] = useState(false)
 
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [shareScreenLayout, setShareScreenLayout] = useState(false)
   const [webcamIsVisible, setWebcamIsVisible] = useState(false)
   const [micIsVisible, setMicIsVisible] = useState(false)
-  
+
   const handleChatVisibility = () => setChatIsOpen(!chatIsOpen)
   const handleShareScreenVisibility = () => setShareScreenLayout(!shareScreenLayout)
   const handleSettingsModalVisibility = () => setShowSettingsModal(!showSettingsModal)
+  const handleSharescreenModalVisibility = () => setShowShareDocumentsModal(!showShareDocumentsModal)
   const handleWebcamVisibility = () => setWebcamIsVisible(!webcamIsVisible)
   const handleMicVisibility = () => setMicIsVisible(!micIsVisible)
   const handleEndTrainingModalClick = () => setShowEndTrainingModal(true)
@@ -193,13 +196,13 @@ export const TrainerInSession = ({
           flexDirection="row"
           width="100%"
           height="100vh">
-          
+
           <MiddlePanel
             shareScreenLayout={shareScreenLayout}
             handleShareScreenVisibility={handleShareScreenVisibility}
             chatIsVisible={chatIsOpen}
           />
-          <RightPanel 
+          <RightPanel
             flex="1"
             chatIsOpen={chatIsOpen}
             handleChatVisibility={handleChatVisibility}
@@ -211,15 +214,16 @@ export const TrainerInSession = ({
         shareScreenIsVisible={shareScreenLayout}
         webcamIsVisible={webcamIsVisible}
         micIsVisible={micIsVisible}
+        handleSettingsModalVisibility={handleSettingsModalVisibility}
+        handleSharescreenModalVisibility={handleSharescreenModalVisibility}
         handleMicVisibility={handleMicVisibility}
         handleWebcamVisibility={handleWebcamVisibility}
         handleChatVisibility={handleChatVisibility}
         handleShareScreenVisibility={handleShareScreenVisibility}
-        handleSettingsModalVisibility={handleSettingsModalVisibility}
         handleEndTrainingModalClick={handleEndTrainingModalClick}
       />
 
-      
+
       <SettingsModal
         isOpen={showSettingsModal}
         onClose={() => setShowSettingsModal(false)}
@@ -230,6 +234,12 @@ export const TrainerInSession = ({
         isOpen={showEndTrainingModal}
         onClose={() => setShowEndTrainingModal(false)}
         onEndTraining={() => handleEndTrainingClick()}
+      />
+
+      <ShareDocumentsModal
+        isOpen={showShareDocumentsModal}
+        onClose={() => setShowShareDocumentsModal(false)}
+        onSave={() => setShowShareDocumentsModal(false)}
       />
 
       <PollModal
