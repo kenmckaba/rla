@@ -210,6 +210,7 @@ export const StudentView = ({
       <AnswerPollModal
         isOpen={showAnswerPollModal}
         onClose={() => setShowAnswerPollModal(false)}
+        onAnswer={() => setShowAnswerPollModal(false)}
       />
 
       <CamInUseModal code={bjnCamInUseError} />
