@@ -31,7 +31,7 @@ const Header = ({ isOpen, onDisplayClick, ...props }) => (
   </Box>
 )
 
-export const ChatPanel = ({isOpen, handleChatVisibility}) => {
+export const ChatPanel = ({isOpen, onAttachClick, handleChatVisibility}) => {
 
   return (
     <Collapse in={isOpen} >
@@ -39,7 +39,7 @@ export const ChatPanel = ({isOpen, handleChatVisibility}) => {
         height="100vh"
         paddingY="4">
         <Header isOpen={isOpen} onDisplayClick={handleChatVisibility} />
-        <Chat />
+        <Chat onAttachClick={onAttachClick}/>
       </Box>
     </Collapse>
   )

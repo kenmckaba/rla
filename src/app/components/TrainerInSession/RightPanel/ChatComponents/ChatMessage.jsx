@@ -12,8 +12,6 @@ export default function ChatMessage({type, senderName, children}) {
       minHeight="50px"
       width="216px"
       alignSelf='flex-start'
-
-      ml="4"
       mt="4"
       padding={2}>
       <Heading fontSize="10px" color="#0d62c5">{isIncoming ? senderName : defaultOutgoingSenderName}</Heading>

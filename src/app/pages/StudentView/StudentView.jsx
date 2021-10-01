@@ -59,13 +59,13 @@ export const StudentView = ({
 
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [shareScreenLayout, setShareScreenLayout] = useState(false)
-  const [webcamIsVisible, setWebcamIsVisible] = useState(false)
-  const [micIsVisible, setMicIsVisible] = useState(false)
+  const [webcamIsVisible, setWebcamIsVisible] = useState(true)
+  const [micIsVisible, setMicIsVisible] = useState(true)
 
   const handleChatVisibility = () => setChatIsOpen(!chatIsOpen)
   const handleShareScreenVisibility = () => setShareScreenLayout(!shareScreenLayout)
   const handleSettingsModalVisibility = () => setShowSettingsModal(!showSettingsModal)
-  const handleSharescreenModalVisibility = () => setShowShareDocumentsModal(!showShareDocumentsModal)
+  const handleShareDocumentsModalVisibility = () => setShowShareDocumentsModal(!showShareDocumentsModal)
   const handleWebcamVisibility = () => setWebcamIsVisible(!webcamIsVisible)
   const handleMicVisibility = () => setMicIsVisible(!micIsVisible)
   const handleLeaveTrainingModalClick = () => setShowLeaveTrainingModal(true)
@@ -171,23 +171,24 @@ export const StudentView = ({
             flex="1"
             chatIsOpen={chatIsOpen}
             handleChatVisibility={handleChatVisibility}
+            handleShareDocumentsModalVisibility={handleShareDocumentsModalVisibility}
           />
         </Flex>
       </HStack>
       <FloatingRightPanel
+        role="student"
         chatIsVisible={chatIsOpen}
         shareScreenIsVisible={shareScreenLayout}
         webcamIsVisible={webcamIsVisible}
         micIsVisible={micIsVisible}
         handleSettingsModalVisibility={handleSettingsModalVisibility}
-        handleSharescreenModalVisibility={handleSharescreenModalVisibility}
+        handleShareDocumentsModalVisibility={handleShareDocumentsModalVisibility}
         handleMicVisibility={handleMicVisibility}
         handleWebcamVisibility={handleWebcamVisibility}
         handleChatVisibility={handleChatVisibility}
         handleShareScreenVisibility={handleShareScreenVisibility}
         handleEndTrainingModalClick={handleLeaveTrainingModalClick}
       />
-
 
       <SettingsModal
         isOpen={showSettingsModal}
