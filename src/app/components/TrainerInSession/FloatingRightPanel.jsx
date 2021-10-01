@@ -10,18 +10,22 @@ import { ReactComponent as WhiteboardIcon } from '../../../assets/icons/whiteboa
 import { ReactComponent as ChatIcon } from '../../../assets/icons/chat-icon.svg'
 import { ReactComponent as HangupIcon } from '../../../assets/icons/hangup-icon.svg'
 import { ReactComponent as WebcamOffIcon } from '../../../assets/icons/webcam-off-icon.svg'
+import { Tooltip } from '@chakra-ui/react'
 
-const IconWrapper = ({ children, backgroundColor, ...props }) => (
-  <Center
-    h="48px"
-    w="48px"
-    borderRadius="full"
-    bg={backgroundColor ? backgroundColor : 'rgba(94, 97, 103, 0.75)'}
-    _hover={{ cursor: 'pointer' }}
-    {...props}
-  >
-    {children}
-  </Center>)
+const IconWrapper = ({ tooltip, children, backgroundColor, ...props }) => (
+  <Tooltip label={tooltip} placement="left" borderRadius="full" paddingY="5px" paddingX="10px" background="rgba(0,0,0,0.7) ">
+    <Center
+      h="48px"
+      w="48px"
+      borderRadius="full"
+      bg={backgroundColor ? backgroundColor : 'rgba(94, 97, 103, 0.75)'}
+      _hover={{ cursor: 'pointer' }}
+      {...props}
+    >
+      {children}
+    </Center>
+  </Tooltip>
+)
 
 export default function FloatingRightPanel({
   chatIsVisible,
@@ -30,8 +34,8 @@ export default function FloatingRightPanel({
   micIsVisible,
   handleMicVisibility,
   handleWebcamVisibility,
-  handleChatVisibility, 
-  handleShareScreenVisibility, 
+  handleChatVisibility,
+  handleShareScreenVisibility,
   handleSettingsModalVisibility,
   handleEndTrainingModalClick
 }) {
@@ -62,40 +66,61 @@ export default function FloatingRightPanel({
           spacing={2}
           justifyContent="center"
         >
-          <IconWrapper onClick={() => handleMicVisibility()} backgroundColor={micButtonBgColor}>
+          <IconWrapper
+            onClick={() => handleMicVisibility()}
+            backgroundColor={micButtonBgColor}
+            tooltip="Microphone"
+          >
             {micIsVisible ? (
-              <MicIcon style={{height:'100%', widht:'100%'}} />
+              <MicIcon style={{ height: '100%', widht: '100%' }} />
             ) : (
-              <MicOffIcon style={{height:'100%', widht:'100%'}} />
+              <MicOffIcon style={{ height: '100%', widht: '100%' }} />
             )}
           </IconWrapper>
-          
-          <IconWrapper onClick={() => handleWebcamVisibility()} backgroundColor={webcamButtonBgColor}>
+
+          <IconWrapper
+            onClick={() => handleWebcamVisibility()}
+            backgroundColor={webcamButtonBgColor}
+            tooltip="Webcam">
             {webcamIsVisible ? (
-              <WebcamIcon style={{height:'100%', widht:'100%'}} />
+              <WebcamIcon style={{ height: '100%', widht: '100%' }} />
             ) : (
-              <WebcamOffIcon style={{height:'100%', widht:'100%'}} />
+              <WebcamOffIcon style={{ height: '100%', widht: '100%' }} />
             )}
           </IconWrapper>
-      
-          <IconWrapper onClick={() => handleShareScreenVisibility()} backgroundColor={sharescreenButtonBgColor}>
-            <SharescreenIcon style={{height:'100%', widht:'100%'}} />
+
+          <IconWrapper
+            onClick={() => handleShareScreenVisibility()}
+            backgroundColor={sharescreenButtonBgColor}
+            tooltip="Sharescreen">
+            <SharescreenIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>
 
-          <IconWrapper onClick={() => handleSettingsModalVisibility()}>
-            <SettingsIcon style={{height:'100%', widht:'100%'}} />
+          <IconWrapper
+            onClick={() => handleSettingsModalVisibility()}
+            tooltip="Settings"
+          >
+            <SettingsIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>
 
-          <IconWrapper>
-            <WhiteboardIcon style={{height:'100%', widht:'100%', marginBottom: '4', marginLeft: '2'}} />
+          <IconWrapper tooltip="Whiteboard">
+            <WhiteboardIcon style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }} />
           </IconWrapper>
 
-          <IconWrapper onClick={() => handleChatVisibility()} backgroundColor={chatButtonBgColor}>
-            <ChatIcon style={{height:'100%', widht:'100%', marginTop: '6'}} />
+          <IconWrapper
+            onClick={() => handleChatVisibility()}
+            backgroundColor={chatButtonBgColor}
+            tooltip="Chat"
+          >
+            <ChatIcon style={{ height: '100%', widht: '100%', marginTop: '6' }} />
           </IconWrapper>
 
-          <IconWrapper backgroundColor="#FF4E4E" onClick={() => handleEndTrainingModalClick()}>
-            <HangupIcon style={{height:'100%', widht:'100%'}} />
+          <IconWrapper
+            backgroundColor="#FF4E4E"
+            onClick={() => handleEndTrainingModalClick()}
+            tooltip="End training"
+          >
+            <HangupIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>
         </VStack>
 
