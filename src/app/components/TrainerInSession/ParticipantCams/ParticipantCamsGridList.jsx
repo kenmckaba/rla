@@ -1,9 +1,8 @@
 import ParticipantCam from './ParticipantCam'
-import { Badge, Box, Center, Flex, HStack, Text } from '@chakra-ui/react'
+import { Badge, Box, Center, SimpleGrid, HStack, Text } from '@chakra-ui/react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { IconButton } from '@chakra-ui/button'
-
-export default function ParticipantCamsGridList({flex, onNextCamClick, onPrevCamClick, ...props}) {
+export default function ParticipantCamsGridList({ dimensions, isStudentView, chatIsVisible, flex, onNextCamClick, onPrevCamClick, ...props }) {
 
   const attendeesList = [
     { picture: '/images/cams/trainer.png', name: 'Trainer (me)' },
@@ -11,23 +10,77 @@ export default function ParticipantCamsGridList({flex, onNextCamClick, onPrevCam
     { picture: '/images/cams/attendee-2.png', name: 'Amani Kim' },
     { picture: '/images/cams/attendee-3.png', name: 'Amani Kim' },
     { picture: '/images/cams/attendee-4.png', name: 'Lisa Iu' },
-    { picture: '/images/cams/attendee-5.png', name: 'Kimmy Johnson' },
-    { picture: '/images/cams/attendee-6.png', name: 'Robert Lee' },
-    { picture: '/images/cams/attendee-1.png', name: 'Omar Rogers' },
+    { picture: '/images/cams/attendee-5.png', name: 'Kimmert Lee' },
+    { picture: '/images/cams/attendee-1.png', name: 'Omay Johnson' },
+    { picture: '/images/cams/attendee-6.png', name: 'Robr Rogers' },
     { picture: '/images/cams/attendee-2.png', name: 'Yasir Sierra' },
+    { picture: '/images/cams/attendee-2.png', name: 'Amani Kim' },
     { picture: '/images/cams/attendee-3.png', name: 'Amani Kim' },
-    { picture: '/images/cams/attendee-4.png', name: 'Amani Kim' },
-    { picture: '/images/cams/attendee-5.png', name: 'Lisa Iu' },
+    { picture: '/images/cams/attendee-4.png', name: 'Lisa Iu' },
+    { picture: '/images/cams/attendee-5.png', name: 'Kimmert Lee' },
+    { picture: '/images/cams/attendee-1.png', name: 'Omay Johnson' },
+    { picture: '/images/cams/attendee-6.png', name: 'Robr Rogers' },
+    { picture: '/images/cams/attendee-2.png', name: 'Yasir Sierra' },
   ]
+
+  const getAttendeesDisplayList = () => {
+    if (isStudentView) {
+      if (chatIsVisible) {
+        return attendeesList.splice(0, 9)
+      } else {
+        return dimensions.width >= 1890 ? attendeesList.splice(0, 16) : attendeesList.splice(0, 12)
+      }
+    } else {
+      if (chatIsVisible) {
+        return dimensions.width >= 1890 ? attendeesList.splice(0, 9) : attendeesList.splice(0, 6)
+      } else {
+        return dimensions.width >= 1890 ? attendeesList.splice(0, 9) : attendeesList.splice(0, 6)
+      }
+    }
+  }
+
+  const getAttendeesDisplayWidth = () => {
+    if (isStudentView) {
+      if (!chatIsVisible && dimensions.width >= 1890) {
+        return '1540px'
+      } else {
+        return '1155px'
+      }
+    } else {
+      return !chatIsVisible && dimensions.width < 1890 ? '800px' : '1155px'
+    }
+  }
+
+  const getAttendeesLayout = () => {
+    if (isStudentView) {
+      if (!chatIsVisible) {
+        if (dimensions.width >= 1890) {
+          return 4
+        } else {
+          return 3
+        }
+      } else {
+        return 3
+      }
+    } else if (!chatIsVisible) {
+      if (dimensions.width >= 1890) {
+        return 3
+      } else {
+        return 2
+      }
+    } else {
+      return 2
+    }
+  }
 
   return (
     <Box position="relative">
-      <Flex flexWrap="wrap" height="94vh" {...props}>
-        {attendeesList.map(attendee => <ParticipantCam picture={attendee.picture} name={attendee.name} flex={flex} maxWidth="100%" />)}
-      </Flex>
+      <SimpleGrid columns={getAttendeesLayout()} spacing={0} {...props} width={getAttendeesDisplayWidth()} overflowY="hidden">
+        {getAttendeesDisplayList().map(attendee => <ParticipantCam picture={attendee.picture} name={attendee.name} flex={flex} maxWidth="100%" />)}
+      </SimpleGrid>
       <Badge
         position="absolute"
-        right="0"
+        right="20"
         bottom="2"
         width="100px"
         height="48px"

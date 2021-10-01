@@ -161,6 +161,7 @@ export const StudentView = ({
           height="100vh">
 
           <MiddlePanel
+            isStudentView
             shareScreenLayout={shareScreenLayout}
             handleShareScreenVisibility={handleShareScreenVisibility}
             chatIsVisible={chatIsOpen}
