@@ -116,7 +116,8 @@ export default function FloatingRightPanel({
             <SettingsIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>
 
-          <IconWrapper tooltip="Whiteboard">
+          <IconWrapper tooltip="Whiteboard"
+            onClick={() => role === 'student' && handleShareScreenVisibility()}>
             <WhiteboardIcon style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }} />
           </IconWrapper>
 
