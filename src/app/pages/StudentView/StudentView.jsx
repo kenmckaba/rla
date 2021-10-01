@@ -28,6 +28,7 @@ import { useHistory } from 'react-router'
 import ShareDocumentsModal from '../../components/Modals/ShareDocumentsModal'
 import LeaveTrainingModal from '../../components/Modals/LeaveTrainingModal'
 import AnswerPollModal from '../../components/Modals/AnswerPollModal'
+import ExternalDocumentsModal from '../../components/Modals/ExternalDocumentsModal'
 
 export const StudentView = ({
   match: {
@@ -54,7 +55,7 @@ export const StudentView = ({
 
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [showLeaveTrainingModal, setShowLeaveTrainingModal] = useState(false)
-  const [showShareDocumentsModal, setShowShareDocumentsModal] = useState(false)
+  const [showExternalDocumentsModal, setShowExternalDocumentsModal] = useState(false)
   const [showAnswerPollModal, setShowAnswerPollModal] = useState(false)
 
   const [chatIsOpen, setChatIsOpen] = useState(true)
@@ -65,7 +66,7 @@ export const StudentView = ({
   const handleChatVisibility = () => setChatIsOpen(!chatIsOpen)
   const handleShareScreenVisibility = () => setShareScreenLayout(!shareScreenLayout)
   const handleSettingsModalVisibility = () => setShowSettingsModal(!showSettingsModal)
-  const handleShareDocumentsModalVisibility = () => setShowShareDocumentsModal(!showShareDocumentsModal)
+  const handleExternalDocumentsModalVisibility = () => setShowExternalDocumentsModal(!showExternalDocumentsModal)
   const handleWebcamVisibility = () => setWebcamIsVisible(!webcamIsVisible)
   const handleMicVisibility = () => setMicIsVisible(!micIsVisible)
   const handleLeaveTrainingModalClick = () => setShowLeaveTrainingModal(true)
@@ -171,7 +172,7 @@ export const StudentView = ({
             flex="1"
             chatIsOpen={chatIsOpen}
             handleChatVisibility={handleChatVisibility}
-            handleShareDocumentsModalVisibility={handleShareDocumentsModalVisibility}
+            handleShareDocumentsModalVisibility={handleExternalDocumentsModalVisibility}
           />
         </Flex>
       </HStack>
@@ -182,7 +183,7 @@ export const StudentView = ({
         webcamIsVisible={webcamIsVisible}
         micIsVisible={micIsVisible}
         handleSettingsModalVisibility={handleSettingsModalVisibility}
-        handleShareDocumentsModalVisibility={handleShareDocumentsModalVisibility}
+        handleShareDocumentsModalVisibility={handleExternalDocumentsModalVisibility}
         handleMicVisibility={handleMicVisibility}
         handleWebcamVisibility={handleWebcamVisibility}
         handleChatVisibility={handleChatVisibility}
@@ -202,10 +203,9 @@ export const StudentView = ({
         onEndTraining={() => handleLeaveTrainingClick()}
       />
 
-      <ShareDocumentsModal
-        isOpen={showShareDocumentsModal}
-        onClose={() => setShowShareDocumentsModal(false)}
-        onSave={() => setShowShareDocumentsModal(false)}
+      <ExternalDocumentsModal
+        isOpen={showExternalDocumentsModal}
+        onClose={() => setShowExternalDocumentsModal(false)}
       />
 
       <AnswerPollModal

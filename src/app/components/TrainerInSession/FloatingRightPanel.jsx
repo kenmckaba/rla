@@ -43,12 +43,14 @@ export default function FloatingRightPanel({
   handleEndTrainingModalClick,
   handleShareDocumentsModalVisibility
 }) {
+  const [raiseHand, setRaiseHand] = useState(false)
   const [showFloatingPanel, setShowFloatingPanel] = useState(false)
   const activeBgColor = '#bebebe'
   const chatButtonBgColor = chatIsVisible && activeBgColor
   const sharescreenButtonBgColor = shareScreenIsVisible && activeBgColor
   const webcamButtonBgColor = !webcamIsVisible && '#81272a'
   const micButtonBgColor = !micIsVisible && '#81272a'
+  const raiseHandBgColor = raiseHand && activeBgColor
 
   return (
     <Box
@@ -119,7 +121,10 @@ export default function FloatingRightPanel({
           </IconWrapper>
 
           {role === 'student' &&
-            <IconWrapper tooltip="Raise hand">
+            <IconWrapper
+              tooltip="Raise hand"
+              backgroundColor={raiseHandBgColor}
+              onClick={() => setRaiseHand(!raiseHand)}>
               <HandIcon style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }} />
             </IconWrapper>
           }
