@@ -36,15 +36,15 @@ const Header = (props) => (
       </Text>
 
       <Spacer />
-      
-      <Center _hover={{cursor: 'pointer'}}>
+
+      <Center _hover={{ cursor: 'pointer' }}>
         <LineIcon />
       </Center>
     </Flex>
   </Box>
 )
 
-export default function ParticipantCamsGrid({shareScreenLayout, chatIsVisible, ...props}) {
+export default function ParticipantCamsGrid({ shareScreenLayout, chatIsVisible, onNextCamClick, onPrevCamClick, ...props }) {
   const flexItemsWidth = chatIsVisible ? '33.33333%' : '25%'
   return (
     <Accordion allowToggle defaultIndex={0} width="100%" paddingY="4" marginRight="4">
@@ -52,10 +52,10 @@ export default function ParticipantCamsGrid({shareScreenLayout, chatIsVisible, .
         <AccordionButton
           padding="0"
           as="div">
-          <Header  />
+          <Header />
         </AccordionButton>
         <AccordionPanel padding="0">
-          <ParticipantCamsGridList flex={`1 1 ${flexItemsWidth}`} {...props}/>
+          <ParticipantCamsGridList onNextCamClick={onNextCamClick} onPrevCamClick={onPrevCamClick} flex={`1 1 ${flexItemsWidth}`} {...props} />
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
