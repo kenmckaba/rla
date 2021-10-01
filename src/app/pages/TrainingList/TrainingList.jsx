@@ -307,7 +307,7 @@ export const TrainingList = () => {
       <TrainingListHeader trainings={trainings} />
       <Box height="100%" width="100%" padding="3px" borderRadius="20px">
         <Flex>
-          <TrainingSidePanel date={'date'} trainingNum={() => openRegPage(trainings[0].id)} />
+          <TrainingSidePanel date={'date'} />
           <Tabs height="100%" width="81.7%" variant="solid-rounded">
             <Flex>
               <TabList>
