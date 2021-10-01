@@ -4,6 +4,7 @@ import { Box, Heading, Text, VStack } from '@chakra-ui/layout'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table'
 import React, { useMemo } from 'react'
 import { prettyTime } from '../../../pretty-time'
+import { scrollBarStyle } from '../../theme/components/scrollbar'
 import { ClassRoster } from '../ClassRoster'
 import { TrainerPoll } from '../TrainerPoll'
 
@@ -30,12 +31,12 @@ export default function LeftPanel({
         },
       })
     }
-  
+
     const editPoll = (p) => {
       setPollToEdit(p)
       onPollModalOpen()
     }
-  
+
     if (polls.length === 0) {
       return <Box>*None*</Box>
     }
@@ -52,98 +53,107 @@ export default function LeftPanel({
     })
   }, [polls, startedPoll, updateCurrentTraining, training?.id, onPollModalOpen, setPollToEdit])
 
+  const onAddPollClick = (event, poll) => {
+    event.stopPropagation()
+    onPollModalOpen()
+  }
+
   return (
-    <VStack
-      spacing="20px"
-      pos="relative"
-      left="0"
-      bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
-      opacity="85%"
-      align="left"
-      width="250px"
-      h="100vh"
-      px="4"
-      py="8"
-      minWidth="400px"
-    >
-      <Box paddingBottom="4">
-        <Heading
-          fontSize="1.25em"
-          fontWeight="bold"
-          textTransform="capitalize"
-          mb="2">
-          {training.title}
-        </Heading>
+    <>
+      <VStack
+        spacing="20px"
+        pos="relative"
+        left="0"
+        bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
+        opacity="85%"
+        align="left"
+        width="250px"
+        h="100vh"
+        px="4"
+        py="8"
+        minWidth="400px"
+      >
+        <Box paddingBottom="4">
+          <Heading
+            fontSize="1.25em"
+            fontWeight="bold"
+            textTransform="capitalize"
+            mb="2">
+            {training.title}
+          </Heading>
 
-        <Text
-          fontSize=".62em"
-          fontWeight="bold"
-          textTransform="capitalize"
-          mb="1">
-          {prettyTime(new Date(+training.scheduledTime))}
-        </Text>
+          <Text
+            fontSize=".62em"
+            fontWeight="bold"
+            textTransform="capitalize"
+            mb="1">
+            {prettyTime(new Date(+training.scheduledTime))}
+          </Text>
 
-        <Box
-          bg="white"
-          height="0px"
-          width="300px"
-          border="1px solid #ffffff"
-          opacity="0.25"
-        />
+          <Box
+            bg="white"
+            height="0px"
+            width="300px"
+            border="1px solid #ffffff"
+            opacity="0.25"
+          />
 
-        <Text
-          fontSize=".62em"
-          opacity="0.5">
-          {training.description ? training.description : 'Description here' }
-        </Text>
-      </Box>
-      <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
-        <ClassRoster attendees={attendees} paddingBottom="2" />
-      </Box>
+          <Text
+            fontSize=".62em"
+            opacity="0.5">
+            {training.description ? training.description : 'Description here'}
+          </Text>
+        </Box>
+        <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
+          <ClassRoster attendees={attendees} paddingBottom="2" />
+        </Box>
 
-      <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
-        <Accordion allowMultiple width="100%" allowToggle>
-          <AccordionItem p={0} m={0} border="none">
-            <AccordionButton p="2" >
-              <Box
-                marginLeft="2"
-                flex="1"
-                textAlign="left"
-                fontWeight="semibold"
-                fontSize="0.9em"
-              >
-             Polls
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-            {/* TODO: Style the scrollbar */}
-            {/* TODO: If possible in the future it wold be great to reuse this accordion panel with the one on the list of Attendees (ClassRoster.jsx) */}
-            <AccordionPanel overflowY="auto" maxHeight="20vh" padding="0" pb={4}>
-              <Box>
-                <Table size="sm" width="100%" margin="0">
-                  <Thead borderBottom="1px" borderColor="#ffffff">
-                    <Tr>
-                      <Th color="white">Question</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {Polls}
-                    <Tr>
-                      <Td border="none" colSpan="3">
-                        <Button size="xs" variant="unstyled" onClick={addAPoll}>
-                          <Text textTransform="capitalize" fontWeight="thin">
-                         + Add poll
-                          </Text>
-                        </Button>
-                      </Td>
-                    </Tr>
-                  </Tbody>
-                </Table>
-              </Box>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-      </Box>
-    </VStack>
+        <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
+          <Accordion allowMultiple width="100%" allowToggle>
+            <AccordionItem p={0} m={0} border="none">
+              <AccordionButton p="2" >
+
+                <Text
+                  marginLeft="2"
+                  flex="1"
+                  textAlign="left"
+                  fontWeight="semibold"
+                  fontSize="0.9em"
+                >
+                  Polls
+                </Text>
+
+                <Button size="xs" paddingX="4" marginRight="4" variant="primary-trueblue" onClick={(e) => onAddPollClick(e)}>+ Add</Button>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel overflowY="auto" maxHeight="20vh" padding="0" pb={4} sx={scrollBarStyle}>
+                <Box>
+                  <Table size="sm" width="100%" margin="0">
+                    <Thead borderBottom="1px" borderColor="#ffffff">
+                      <Tr>
+                        <Th color="white">Question</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {Polls}
+                      <Tr>
+                        <Td border="none" colSpan="3">
+                          <Button size="xs" variant="unstyled" onClick={addAPoll}>
+                            <Text textTransform="capitalize" fontWeight="thin">
+                              + Add poll
+                            </Text>
+                          </Button>
+                        </Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </Box>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        </Box>
+      </VStack>
+
+    </>
   )
 }

@@ -131,8 +131,8 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
 
                   <Text
                     mt="1"
-                    width="150px"
-                    maxW="150px"
+                    width="80px"
+                    maxW="80px"
                     overflow="hidden"
                     textOverflow="ellipsis"
                     whiteSpace="nowrap"
