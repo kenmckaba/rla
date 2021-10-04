@@ -42,6 +42,8 @@ import { Polls } from './Polls'
 import { AccordionItemCustom } from './AccordionItemCustom'
 import { useRef } from 'react'
 import { AddIcon } from '@chakra-ui/icons'
+import { dummyDocuments } from '../dummyData/dummyDocuments'
+import ShareDocuments from './Modals/ShareDocuments'
 
 export const TrainingForm = ({ onClose, trainingId }) => {
   const [title, setTitle] = useState('')
@@ -54,6 +56,7 @@ export const TrainingForm = ({ onClose, trainingId }) => {
   const [attendees, setAttendees] = useState([])
   const [polls, setPolls] = useState([])
   const [currentAttendee, setCurrentAttendee] = useState()
+  const [documents, setDocuments] = useState([]) //TODO: Get the documents from the SDk
 
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
   const [deleteCurrentTraining] = useMutation(gql(deleteTraining))
@@ -80,6 +83,8 @@ export const TrainingForm = ({ onClose, trainingId }) => {
   }, [data])
 
   useEffect(() => {
+    setDocuments(dummyDocuments)
+
     if (subscribeToMore) {
       const cleanupFuncs = [
         subscribeToMore(buildSubscription(gql(onCreateAttendee), gql(getTraining))),
@@ -275,6 +280,9 @@ export const TrainingForm = ({ onClose, trainingId }) => {
                 />
               </FormControl>
             </HStack>
+          </AccordionItemCustom>
+          <AccordionItemCustom title="Attach documents">
+            <ShareDocuments documents={documents}/>
           </AccordionItemCustom>
           <AccordionItemCustom title="Attendees">
             <FormControl>
