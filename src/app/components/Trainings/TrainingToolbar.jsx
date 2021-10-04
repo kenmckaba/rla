@@ -11,7 +11,7 @@ export const TrainingToolbar = ({ startTraining, editTraining, deleteTraining })
           margin="5px"
           width="100px"
           border="1px solid #FFFFFF"
-          borderRadius="500px"
+          borderRadius="full"
           size="xs"
           onClick={deleteTraining}
           leftIcon={<Icon as={DeleteIcon} />}
@@ -22,7 +22,7 @@ export const TrainingToolbar = ({ startTraining, editTraining, deleteTraining })
           margin="5px"
           width="100px"
           border="1px solid #FFFFFF"
-          borderRadius="500px"
+          borderRadius="full"
           size="xs"
           onClick={editTraining}
         >
@@ -32,7 +32,7 @@ export const TrainingToolbar = ({ startTraining, editTraining, deleteTraining })
           margin="5px"
           width="100px"
           border="1px solid #FFFFFF"
-          borderRadius="500px"
+          borderRadius="full"
           onClick={startTraining}
           variant="primary-trueblue"
           size="xs"

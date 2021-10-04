@@ -176,14 +176,27 @@ export const TrainingList = () => {
             bg: 'rgba(255, 255, 255, 0.3)',
           }}
         >
-          <Td>
-            <Stat>
-              <StatLabel fontSize="1.50em" fontWeight="semibold" textTransform="capitalize">
-                {/* {training.title} */} Training title 001
-              </StatLabel>
-            </Stat>
+          <Td marginBottom="6">
+            <Flex justify="flex-start" height="50px">
+              <Stat marginTop="2">
+                <StatLabel whiteSpace="nowrap" fontSize="2em" fontWeight="semibold" textTransform="capitalize">
+                  {/* {training.title} */} Training title 001
+                </StatLabel>
+              </Stat>
+
+              <Spacer />
+
+              {trainingHovered === training.id && (
+                <TrainingToolbar
+                  editTraining={() => handleTrainingClick(training)}
+                  startTraining={() => openRegPage(training.id)}
+                  deleteTraining={() => handleDelete(training.id)}
+                />
+              )}
+            </Flex>
+            
           </Td>
-          <Td>
+          <Td paddingBottom="10">
             <HStack display="flex" justifyContent="space-between">
               <Flex direction="column">
                 <StatLabel>
@@ -250,29 +263,7 @@ export const TrainingList = () => {
               </Flex>
             </HStack>
           </Td>
-          <Divider orientation="horizontal" />
-          <Td>
-            <Flex justify="space-between" height="50px">
-              <Select
-                fontWeight="bold"
-                size="xs"
-                width="fit-content"
-                placeholder="BLUE JEANS MEETING INFO"
-                border="none"
-              ></Select>
-              <Spacer />
-              {trainingHovered === training.id && (
-                <TrainingToolbar
-                  editTraining={() => handleTrainingClick(training)}
-                  startTraining={() => openRegPage(training.id)}
-                  deleteTraining={() => handleDelete(training.id)}
-                />
-              )}
-            </Flex>
-            {/* <Box> */}
-
-            {/* </Box> */}
-          </Td>
+          
         </Flex>
       </Tr>
     ))
