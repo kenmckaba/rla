@@ -20,16 +20,7 @@ export default function ShareDocumentsModal({ isOpen, onClose, onSave }) {
           <ModalBody>
             <Center borderRadius="5px" border="1px solid #444444" width="400px" padding="2" >
               <VStack width="100%" align="start" spacing="4" paddingBottom="2">
-                <HStack width="100%">
-                  <Flex
-                    justifyContent="flex-start"
-                    fontWeight="semibold"
-                    color="black"
-                  >
-                  Attach Documents
-                  </Flex>
-
-                  <Spacer />
+                <HStack width="100%" justifyContent="flex-end">
 
                   <Button
                     size="xs"
