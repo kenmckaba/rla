@@ -50,6 +50,7 @@ export const ClassRoster = ({ attendees, ...props }) => {
     {
       Header: 'Check-in',
       accessor: 'checkIn',
+      sortType: 'basic',
       Cell: ({ value }) => (
         <Center>
           {value ? <CheckMark /> : <XMark />}
@@ -105,11 +106,11 @@ export const ClassRoster = ({ attendees, ...props }) => {
                     {headerGroup.headers.map((column) => (
                       <Th
                         color="white"
-                        cursor={column.Header === 'Name' ? 'pointer !important' : 'auto !important'}
+                        cursor={column.Header === 'Name' || column.Header === 'Check-in' ? 'pointer !important' : 'auto !important'}
                         {...column.getHeaderProps(column.getSortByToggleProps())}
                       >
                         {column.render('Header')}
-                        {column.Header === 'Name' && (
+                        {column.Header === 'Name' || column.Header === 'Check-in' && (
                           <chakra.span pl="4">
                             {column.isSorted ? (
                               column.isSortedDesc ? (
