@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, Tr, Th, Td, Tbody, Thead, Box, Button, Flex } from '@chakra-ui/react'
 
-export const AttendeeList = ({ attendees = [] }) => {
+export const AttendeeList = ({ onClickName, attendees = [] }) => {
   const joinAttendee = (e, attendee) => {
     e.stopPropagation()
     window.open(`/attendee/${attendee.id}`)
@@ -25,7 +25,7 @@ export const AttendeeList = ({ attendees = [] }) => {
           attendees.map((attendee) => {
             return (
               <Tr key={attendee.id} cursor="pointer">
-                <Td fontSize="12">{attendee.name}</Td>
+                <Td fontSize="12" onClick={() => onClickName(attendee)}>{attendee.name}</Td>
                 <Td fontSize="12">{attendee.joinedTime ? '✅' : ''}</Td>
                 <Td fontSize="12">
                   <Button
