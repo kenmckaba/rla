@@ -7,6 +7,7 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Center,
   Tr,
   Td,
   Thead,
@@ -49,14 +50,27 @@ export const ClassRoster = ({ attendees, ...props }) => {
             <Thead borderBottom="1px" borderColor="#ffffff">
               <Tr>
                 <Th color="white">Name</Th>
-                <Th color="white">Check-in</Th>
-                <Th color="white">Notification</Th>
+                <Th color="white">
+                  <Center>
+                    Check-in
+                  </Center>
+                </Th>
+                <Th color="white">
+                  <Center>
+                    Eye
+                  </Center>
+                </Th>
+                <Th color="white">
+                  <Center>
+                    Hand
+                  </Center>
+                </Th>
               </Tr>
             </Thead>
             <Tbody>{Attendees}</Tbody>
           </Table>
         </AccordionPanel>
       </AccordionItem>
-    </Accordion>
+    </Accordion >
   )
 }
