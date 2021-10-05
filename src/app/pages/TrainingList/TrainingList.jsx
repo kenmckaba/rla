@@ -58,6 +58,7 @@ import { TrainingToolbar } from '../../components/Trainings/TrainingToolbar'
 import Background from '../../components/Background'
 import TrainingListHeader from '../../components/TrainingList/TrainingListHeader'
 import TrainingSidePanel from '../../components/TrainingList/TrainingSidePanel'
+import AttendeeAvatar from './AttendeeAvatar'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -194,7 +195,7 @@ export const TrainingList = () => {
                 />
               )}
             </Flex>
-            
+
           </Td>
           <Td paddingBottom="10">
             <HStack display="flex" justifyContent="space-between">
@@ -229,15 +230,9 @@ export const TrainingList = () => {
                     ATTENDEE
                   </StatHelpText>
                 </StatLabel>
-                <Flex>
+                <Flex height="24px">
                   {training.attendees.items.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
-                    <Avatar
-                      key={attendee.id}
-                      size="xs"
-                      name={attendee.name}
-                      color="white"
-                      bg="rgba(255, 255, 255, 0.25)"
-                    />
+                    <AttendeeAvatar attendee={attendee} />
                   ))}
                 </Flex>
                 {/* {training.attendees.items.length > MAX_ATTENDEE_ICONS && (
@@ -263,7 +258,7 @@ export const TrainingList = () => {
               </Flex>
             </HStack>
           </Td>
-          
+
         </Flex>
       </Tr>
     ))
