@@ -271,7 +271,7 @@ export const TrainingList = () => {
 
   const ListTable = ({ children }) => {
     return (
-      <Table variant="unstyled" backgroundColor="rgb(40 74 131)">
+      <Table variant="unstyled" >
         {/* <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
           <Tr>
             <Th fontWeight="thin" width="25%" color="white">
@@ -286,7 +286,7 @@ export const TrainingList = () => {
             </Th>
           </Tr>
         </Thead> */}
-        <Tbody backgroundImage="linear-gradient(to bottom, rgb(40 74 131), rgb(57 106 161))">
+        <Tbody>
           {children}
         </Tbody>
       </Table>
@@ -362,7 +362,6 @@ export const TrainingList = () => {
               width="100%"
               color="white"
               borderRadius="5px"
-              bg="rgba(255, 255, 255, 0.1)"
               mt="4"
             >
               <TabPanel p={0} m={0}>
