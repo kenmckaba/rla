@@ -64,15 +64,17 @@ export const AttendeeItem = ({ attendeeId }) => {
       <Td paddingLeft="4">{attendee.name}</Td>
       <Td paddingRight="6">
         <Center>
-          {attendeePresent() ? <CheckMark /> : <XMark /> }
+          {attendeePresent() ? <CheckMark /> : <XMark />}
+        </Center>
+      </Td>
+      <Td>
+        <Center >
+          <EyeIcon paddingRight="2" />
         </Center>
       </Td>
       <Td>
         <Center>
-          <HStack>
-            <EyeIcon />
-            <HandIcon />
-          </HStack>
+          <HandIcon />
         </Center>
       </Td>
     </Tr>
