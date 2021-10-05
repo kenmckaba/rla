@@ -304,7 +304,7 @@ export const TrainingForm = ({ onClose, trainingId }) => {
                 </Button>
               </HStack>
             </FormControl>
-            <AttendeeList attendees={attendees} />
+            <AttendeeList onClickName={handleOpenAttendee} attendees={attendees} />
           </AccordionItemCustom>
           <AccordionItemCustom title="Polls">
             <Polls trainingId={trainingId} polls={polls} />
