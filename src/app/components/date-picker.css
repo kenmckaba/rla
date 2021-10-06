@@ -186,6 +186,12 @@
   color: var(--gray);
 }
 
+
+
+.react-datepicker__time-list-item .react-datepicker__time-list-item--selected{
+border-radius: 0;
+}
+
 .react-datepicker__day:hover {
   background: var(--blue200);
   border-radius: 100%;
@@ -210,6 +216,9 @@
   background: var(--blue700);
   font-weight: normal;
   color: var(--negative-text);
+}
+
+.react-datepicker__day{
   border-radius: 100%;
 }
 
