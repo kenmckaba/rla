@@ -87,6 +87,7 @@ export const listTrainings = /* GraphQL */ `
           items {
             id
             name
+            email
         }
           nextToken
         }

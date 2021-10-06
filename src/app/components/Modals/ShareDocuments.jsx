@@ -18,7 +18,10 @@ export default function ShareDocuments({ isModal, documents }) {
             <Button
               size="xs"
               variant="primary-trueblue"
-              onClick={() => setShowAddAttachmentModal(true)}>+ add attachment</Button>
+              onClick={() => setShowAddAttachmentModal(true)}
+            >
+              + add attachment
+            </Button>
           </HStack>
 
           <Table>

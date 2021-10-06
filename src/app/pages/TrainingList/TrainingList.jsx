@@ -59,6 +59,7 @@ import Background from '../../components/Background'
 import TrainingListHeader from '../../components/TrainingList/TrainingListHeader'
 import TrainingSidePanel from '../../components/TrainingList/TrainingSidePanel'
 import AttendeeAvatar from './AttendeeAvatar'
+import ParticipantsModal from '../../components/Modals/ParticipantsModal'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -71,6 +72,12 @@ export const TrainingList = () => {
   const [addTraining] = useMutation(gql(createTraining))
   const [removeTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
+  const [showParticipantsModal, setShowParticipantsModal] = useState(false)
+
+  const handleShowParticipantsModal = (training) =>{
+    setCurrentTraining(training)
+    setShowParticipantsModal(true)
+  }
 
   const MAX_ATTENDEE_ICONS = 5
 
@@ -230,7 +237,7 @@ export const TrainingList = () => {
                     ATTENDEE
                   </StatHelpText>
                 </StatLabel>
-                <Flex height="24px">
+                <Flex height="24px" onClick={() => handleShowParticipantsModal(training, training.attendees )}>
                   {training.attendees.items.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
                     <AttendeeAvatar attendee={attendee} />
                   ))}
@@ -399,6 +406,13 @@ export const TrainingList = () => {
               </AlertDialogBody>
             </AlertDialogContent>
           </AlertDialog>
+
+          <ParticipantsModal
+            training={currentTraining}
+            isOpen={showParticipantsModal}
+            onClose={() => setShowParticipantsModal(false)}
+          />
+
           <Modal isOpen={isModalOpen} scrollBehavior="inside">
             <ModalOverlay />
             <ModalContent color="darkKnight.700">
