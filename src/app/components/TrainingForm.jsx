@@ -44,6 +44,7 @@ import { useRef } from 'react'
 import { AddIcon } from '@chakra-ui/icons'
 import { dummyDocuments } from '../dummyData/dummyDocuments'
 import ShareDocuments from './Modals/ShareDocuments'
+import AddAttendeeModal from './Modals/AddAttendeeModal'
 
 export const TrainingForm = ({ onClose, trainingId }) => {
   const [title, setTitle] = useState('')
@@ -342,21 +343,13 @@ export const TrainingForm = ({ onClose, trainingId }) => {
         </Button>
       </HStack>
 
-      <Modal variant="primary-transparent" isOpen={isModalOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader color="darkKnight.700">
-            {currentAttendee ? 'Attendee' : 'New Attendee'}
-          </ModalHeader>
-          <ModalBody color="darkKnight.700">
-            <AttendeeForm
-              trainingId={trainingId}
-              onClose={onAttendeeClose}
-              attendee={currentAttendee}
-            />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+
+      <AddAttendeeModal
+        isOpen={isModalOpen}
+        currentAttendee={currentAttendee}
+        trainingId={trainingId}
+        onAttendeeClose={onAttendeeClose}
+      />
     </>
   )
 }

@@ -74,6 +74,8 @@ export const TrainerInSession = ({
   const [shareScreenLayout, setShareScreenLayout] = useState(false)
   const [webcamIsVisible, setWebcamIsVisible] = useState(true)
   const [micIsVisible, setMicIsVisible] = useState(true)
+  const [hoverFloatingRightPanel, setHoverFloatingRightPanel] = useState(false)
+  const [showFloatingRightPanel, setShowFloatingRightPanel] = useState(false)
 
   const handleChatVisibility = () => setChatIsOpen(!chatIsOpen)
   const handleShareScreenVisibility = () => setShareScreenLayout(!shareScreenLayout)
@@ -82,6 +84,35 @@ export const TrainerInSession = ({
   const handleWebcamVisibility = () => setWebcamIsVisible(!webcamIsVisible)
   const handleMicVisibility = () => setMicIsVisible(!micIsVisible)
   const handleEndTrainingModalClick = () => setShowEndTrainingModal(true)
+
+  /* Mouse Movement Listener */
+  const displayTime = 1000 //ms
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms)) //sleep
+  const [listener, setListener] = useState()
+  const [rightPanelAnimationEnd, setRightPanelAnimationEnd] = useState(true)
+
+  const handleMouseMove = async () => {
+    setShowFloatingRightPanel(true)
+    clearTimeout(listener)
+    if(!hoverFloatingRightPanel){
+      if (rightPanelAnimationEnd) {
+        const timeout = setTimeout(async () => {
+          setRightPanelAnimationEnd(false)
+        
+          setShowFloatingRightPanel(false)
+          const animEndTime = 500 //ms
+          await sleep(animEndTime)
+
+          setRightPanelAnimationEnd(true)
+        }
+        , displayTime)
+
+        setListener(timeout)
+      }
+    }
+  }
+  /* Mouse Movement Listener */
+
   const handleEndTrainingClick = () => {
     bjnApi.leave(true)
     updateCurrentTraining({
@@ -180,7 +211,7 @@ export const TrainerInSession = ({
   }
 
   return (
-    <Box>
+    <Box onMouseMove={handleMouseMove}>
       <HStack bg="#292929" h="100vh">
         <LeftPanel
           training={training}
@@ -212,6 +243,8 @@ export const TrainerInSession = ({
       </HStack>
       <FloatingRightPanel
         role="instructor"
+        hoverOnPanel={setHoverFloatingRightPanel}
+        panelIsVisible={showFloatingRightPanel}
         chatIsVisible={chatIsOpen}
         shareScreenIsVisible={shareScreenLayout}
         webcamIsVisible={webcamIsVisible}

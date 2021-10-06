@@ -32,6 +32,8 @@ const IconWrapper = ({ tooltip, children, backgroundColor, ...props }) => (
 export default function FloatingRightPanel({
   role, //'instructor' | 'student'
   chatIsVisible,
+  hoverOnPanel,
+  panelIsVisible,
   shareScreenIsVisible,
   webcamIsVisible,
   micIsVisible,
@@ -59,10 +61,10 @@ export default function FloatingRightPanel({
       position="absolute"
       right="0"
       top="25%"
-      onMouseEnter={() => setShowFloatingPanel(true)}
-      onMouseLeave={() => setShowFloatingPanel(false)}
+      onMouseEnter={() => hoverOnPanel(true)}
+      onMouseLeave={() => hoverOnPanel(false)}
     >
-      <Collapse in={showFloatingPanel} animateOpacity>
+      <Collapse in={panelIsVisible} animateOpacity>
         <VStack
           position="fixed"
           right="0"
