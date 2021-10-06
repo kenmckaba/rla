@@ -360,7 +360,6 @@ export const TrainingList = () => {
               </Button>
             </Flex>
             <TabPanels
-              minHeight="75vh"
               width="100%"
               color="white"
               borderRadius="5px"
