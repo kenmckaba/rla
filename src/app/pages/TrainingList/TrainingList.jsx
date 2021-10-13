@@ -74,7 +74,7 @@ export const TrainingList = () => {
   const [trainingHovered, setTrainingHovered] = useState(-1)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
 
-  const handleShowParticipantsModal = (training) =>{
+  const handleShowParticipantsModal = (training) => {
     setCurrentTraining(training)
     setShowParticipantsModal(true)
   }
@@ -164,8 +164,18 @@ export const TrainingList = () => {
 
     return selected.map((training) => (
       <Tr
+        borderRadius="5px"
+        display="flex"
+        backgroundColor="rgba(255, 255, 255, 0.1)"
+        flexDirection="column"
+        justifyContent="center"
+        marginBottom={4}
+        _hover={{
+          backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        }}
+
         height="224px"
-        width="1028px"
+        width="100%"
         key={training.id}
         onMouseEnter={() => {
           setTrainingHovered(training.id)
@@ -175,74 +185,65 @@ export const TrainingList = () => {
         }}
         cursor="pointer"
       >
-        <Flex
-          borderRadius="5px"
-          backgroundColor="rgba(255, 255, 255, 0.1)"
-          direction="column"
-          justify="center"
-          _hover={{
-            bg: 'rgba(255, 255, 255, 0.3)',
-          }}
-        >
-          <Td marginBottom="6">
-            <Flex justify="flex-start" height="50px">
-              <Stat marginTop="2">
-                <StatLabel whiteSpace="nowrap" fontSize="2em" fontWeight="semibold" textTransform="capitalize">
-                  {/* {training.title} */} Training title 001
+        <Td marginBottom="6">
+          <Flex justify="flex-start" height="50px">
+            <Stat marginTop="2">
+              <StatLabel whiteSpace="nowrap" fontSize="2em" fontWeight="semibold" textTransform="capitalize">
+                {/* {training.title} */} Training title 001
+              </StatLabel>
+            </Stat>
+
+            <Spacer />
+
+            {trainingHovered === training.id && (
+              <TrainingToolbar
+                editTraining={() => handleTrainingClick(training)}
+                startTraining={() => openRegPage(training.id)}
+                deleteTraining={() => handleDelete(training.id)}
+              />
+            )}
+          </Flex>
+
+        </Td>
+        <Td paddingBottom="10">
+          <HStack display="flex" justifyContent="space-between">
+            <Flex direction="column">
+              <Stat>
+                <StatLabel fontSize="0.75em" textTransform="uppercase">
+                  DATE/TIME
                 </StatLabel>
               </Stat>
-
-              <Spacer />
-
-              {trainingHovered === training.id && (
-                <TrainingToolbar
-                  editTraining={() => handleTrainingClick(training)}
-                  startTraining={() => openRegPage(training.id)}
-                  deleteTraining={() => handleDelete(training.id)}
-                />
-              )}
+              <Stat>
+                <StatLabel fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
+                  {timestampToPrettyTime(training.scheduledTime)}
+                </StatLabel>
+              </Stat>
             </Flex>
-
-          </Td>
-          <Td paddingBottom="10">
-            <HStack display="flex" justifyContent="space-between">
-              <Flex direction="column">
-                <StatLabel>
-                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
-                    DATE/TIME
-                  </StatHelpText>
+            <Flex direction="column">
+              <Stat>
+                <StatLabel fontSize="0.75em" textTransform="uppercase">
+                  TRAINER NAME
                 </StatLabel>
-                <StatLabel>
-                  <StatHelpText fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
-                    {timestampToPrettyTime(training.scheduledTime)}
-                  </StatHelpText>
+              </Stat>
+              <Stat>
+                <StatLabel fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
+                  {/* {training.trainerName} */}
+                  John Lee
                 </StatLabel>
+              </Stat>
+            </Flex>
+            <Flex direction="column">
+              <Stat>
+                <StatLabel fontSize="0.75em" textTransform="uppercase">
+                  ATTENDEE
+                </StatLabel>
+              </Stat>
+              <Flex height="24px" onClick={() => handleShowParticipantsModal(training, training.attendees)}>
+                {training.attendees.items.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
+                  <AttendeeAvatar attendee={attendee} />
+                ))}
               </Flex>
-              <Flex direction="column">
-                <StatLabel>
-                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
-                    TRAINER NAME
-                  </StatHelpText>
-                </StatLabel>
-                <StatLabel>
-                  <StatHelpText fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
-                    {/* {training.trainerName} */}
-                    John Lee
-                  </StatHelpText>
-                </StatLabel>
-              </Flex>
-              <Flex direction="column">
-                <StatLabel>
-                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
-                    ATTENDEE
-                  </StatHelpText>
-                </StatLabel>
-                <Flex height="24px" onClick={() => handleShowParticipantsModal(training, training.attendees )}>
-                  {training.attendees.items.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
-                    <AttendeeAvatar attendee={attendee} />
-                  ))}
-                </Flex>
-                {/* {training.attendees.items.length > MAX_ATTENDEE_ICONS && (
+              {/* {training.attendees.items.length > MAX_ATTENDEE_ICONS && (
                   <Avatar
                     getInitials={(name) => name}
                     name={`+${training.attendees.items.length - MAX_ATTENDEE_ICONS}`}
@@ -250,23 +251,21 @@ export const TrainingList = () => {
                     bg="rgba(255, 255, 255, 0.1)"
                   />
                 )} */}
-              </Flex>
-              <Flex direction="column">
-                <StatLabel>
-                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
-                    JOINING INFO
-                  </StatHelpText>
+            </Flex>
+            <Flex direction="column">
+              <Stat>
+                <StatLabel fontSize="0.75em" textTransform="uppercase">
+                  JOINING INFO
                 </StatLabel>
-                <StatLabel>
-                  <StatHelpText fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
-                    https://verizon-bluejeans-nursing {<Icon as={LinkIcon} />}
-                  </StatHelpText>
+              </Stat>
+              <Stat>
+                <StatLabel fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
+                  https://verizon-bluejeans-nursing {<Icon as={LinkIcon} />}
                 </StatLabel>
-              </Flex>
-            </HStack>
-          </Td>
-
-        </Flex>
+              </Stat>
+            </Flex>
+          </HStack>
+        </Td>
       </Tr>
     ))
   }
