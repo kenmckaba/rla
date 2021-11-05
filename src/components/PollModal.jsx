@@ -5,7 +5,7 @@ export const PollModal = ({ poll, isOpen, trainingId, onClose }) => {
   return (
     <Modal isOpen={isOpen} scrollBehavior="inside">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent color="darkKnight.700">
         <ModalHeader>{poll ? 'Poll' : 'New poll'}</ModalHeader>
         <ModalBody>
           <PollForm trainingId={trainingId} poll={poll} onClose={onClose} />

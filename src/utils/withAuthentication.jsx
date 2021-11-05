@@ -1,0 +1,25 @@
+import { AmplifyAuthenticator } from '@aws-amplify/ui-react'
+import { Auth } from 'aws-amplify'
+import { Button, Flex } from '@chakra-ui/react'
+
+export const WithAuthentication = (WrappedComponent) => {
+  const logout = async () => {
+    try {
+      await Auth.signOut()
+    } catch (error) {
+      console.log('error signing out: ', error)
+    }
+  }
+
+  return (props) => (
+    <Flex width="100%" flexDirection="column">
+      <AmplifyAuthenticator />
+      <Flex position="absolute" top="14px" right="20px" alignItems="center" color="white">
+        <Button marginLeft="5px" size="sm" onClick={logout}>
+          Sign out
+        </Button>
+      </Flex>
+      <WrappedComponent {...props} />
+    </Flex>
+  )
+}

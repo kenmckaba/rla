@@ -15,11 +15,14 @@ import {
   Flex,
   useToast,
   HStack,
+  Stat,
+  StatLabel,
+  StatHelpText,
 } from '@chakra-ui/react'
 import { getAttendee } from '../graphql/queries'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { deleteAttendee, updateAttendee } from '../graphql/mutations'
-import { prettyTime } from '../pretty-time'
+import { timestampToPrettyTime } from '../utils/pretty-time'
 
 export const RegistrationUpdate = ({
   match: {
@@ -51,6 +54,7 @@ export const RegistrationUpdate = ({
   }, [attendeeData])
 
   if (error) {
+    console.error('rla-log: error', error)
     return <p>An error occured</p>
   }
 
@@ -97,33 +101,67 @@ export const RegistrationUpdate = ({
   }
 
   return (
-    <>
-      <VStack padding="3" background="white" borderRadius="20px" alignItems="flex-start">
-        <Box fontWeight="bold">Update attendee registration:</Box>
-        <Box>Title: {training.title}</Box>
+    <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
+      <VStack
+        fontFamily="heading"
+        padding="8"
+        width="100%"
+        maxWidth="720px"
+        bg="rgba(255, 255, 255, 0.1)"
+        borderRadius="md"
+        alignItems="flex-start"
+      >
+        <Box textTransform="uppercase" fontWeight="thin" fontSize="0.75em">
+          Training update form:
+        </Box>
+        <Box paddingBottom="4">
+          <Stat textTransform="capitalize" fontWeight="bold">
+            <StatLabel fontSize="2em">{training.title}</StatLabel>
+            <StatHelpText fontSize="0.875em">
+              {timestampToPrettyTime(training.scheduledTime)}
+            </StatHelpText>
+          </Stat>
+        </Box>
         {training.description && <Box>{training.description}</Box>}
-        <Box>Start time: {prettyTime(new Date(Number(training.scheduledTime)))}</Box>; ;
         <FormControl>
-          <FormLabel>Your name</FormLabel>
-          <Input fontSize="12" value={attendeeName} onChange={onChangeAttendeeName} h="24px" />
+          <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+            Your name
+          </FormLabel>
+          <Input
+            variant="filled"
+            fontSize="0.75em"
+            placeholder="Type your name here"
+            value={attendeeName}
+            onChange={onChangeAttendeeName}
+            h="8"
+          />
         </FormControl>
         <FormControl>
-          <FormLabel>Email address</FormLabel>
-          <Input fontSize="12" value={attendeeEmail} onChange={onChangeAttendeeEmail} h="24px" />
+          <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+            Email address
+          </FormLabel>
+          <Input
+            variant="filled"
+            fontSize="0.75em"
+            placeholder="Type your email here"
+            value={attendeeEmail}
+            onChange={onChangeAttendeeEmail}
+            h="8"
+          />
         </FormControl>
-        <HStack>
-          <Button size="md" onClick={handleSubmit}>
-            Save
+        <HStack w="100%" spacing="3" paddingTop="3">
+          <Button w="100%" size="md" variant="secondary-ghost-outline" onClick={handleCancel}>
+            Cancel your registration
           </Button>
-          <Button size="md" onClick={handleCancel} variant="outline">
-            Cancel registration
+          <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
+            Save
           </Button>
         </HStack>
       </VStack>
 
       <Modal isOpen={isModalOpen} scrollBehavior="inside">
         <ModalOverlay />
-        <ModalContent height="300px">
+        <ModalContent color="darkKnight.700">
           <ModalHeader>
             <Flex justifyContent="center">Your registration has been cancelled.</Flex>
           </ModalHeader>
@@ -134,6 +172,6 @@ export const RegistrationUpdate = ({
           </ModalBody>
         </ModalContent>
       </Modal>
-    </>
+    </Flex>
   )
 }

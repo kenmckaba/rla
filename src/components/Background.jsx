@@ -1,23 +1,23 @@
 import React from 'react'
-import { Box, Flex } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
+import { H3Heading } from './shared/Heading'
 
 export default function Background({ children }) {
   return (
-    <Flex height="100vh" direction="column">
+    <Flex height="100vh" flexDirection="column">
       <Flex
         alignItems="center"
-        h="3rem"
-        minHeight="3rem"
-        bg="brand.500"
-        color="white"
-        paddingLeft="1rem"
         justifyContent="space-between"
+        width="100%"
+        paddingX="2em"
+        paddingY="1em"
+        bgGradient="linear(to-b, rgba(40,74,131,0.9) 0%, rgba(57,106,161, 0.9) 100%)"
       >
-        <Box>Verizon Remote Learing Platform - POC</Box>
+        <H3Heading>Remote Learning Platform</H3Heading>
       </Flex>
-      <Box height="100vh" padding="10px" bgGradient="linear(to-br, brand.100, brand.500)">
+      <Flex padding="1em" flex="1">
         {children}
-      </Box>
+      </Flex>
     </Flex>
   )
 }

@@ -15,6 +15,7 @@ export const AttendeeForm = ({ trainingId, onClose, attendee = emptyAttendee }) 
   const [updateCurrentAttendee, { error: updateError }] = useMutation(gql(updateAttendee))
 
   if (error || updateError) {
+    console.error('rla-log: AttendeeForm', error, updateError)
     return <p>Error!</p>
   }
 

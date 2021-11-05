@@ -9,7 +9,6 @@ import {
   RadioGroup,
   Radio,
   Flex,
-  IconButton,
 } from '@chakra-ui/react'
 import { useMutation, gql } from '@apollo/client'
 import { createPoll, updatePoll } from '../graphql/mutations'
@@ -27,6 +26,7 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
   const [updateCurrentPoll, { error: updateError }] = useMutation(gql(updatePoll))
 
   if (error || updateError) {
+    console.error('rla-log: error', error, updateError)
     return <p>Error!</p>
   }
 
@@ -94,11 +94,15 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
     <>
       <Box>
         <FormControl pb={1} isRequired>
-          <FormLabel>Question</FormLabel>
-          <Input type="text" value={question} onChange={onChangeQuestion} />
+          <FormLabel fontWeight="bold" textTransform="uppercase">
+            Question
+          </FormLabel>
+          <Input variant="filled" type="text" value={question} onChange={onChangeQuestion} />
         </FormControl>
         <FormControl pb={1} isRequired>
-          <FormLabel>Poll type</FormLabel>
+          <FormLabel fontWeight="bold" textTransform="uppercase">
+            Poll type
+          </FormLabel>
           <Flex
             justifyContent="center"
             alignItems="center"
@@ -115,7 +119,9 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
           </Flex>
         </FormControl>
         <FormControl pb={1} isRequired>
-          <FormLabel>Answers</FormLabel>
+          <FormLabel fontWeight="bold" textTransform="uppercase">
+            Answers
+          </FormLabel>
           <Box
             justifyContent="center"
             alignItems="center"
@@ -137,13 +143,16 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
                 />
               )
             })}
-            <IconButton
+            <Button
+              minW="128px"
               onClick={addAnswer}
               size="xs"
               icon={<AddIcon />}
-              variant="outline"
+              variant="primary-trueblue"
               borderRadius="6px"
-            ></IconButton>
+            >
+              Add an answer
+            </Button>
           </Box>
         </FormControl>
       </Box>

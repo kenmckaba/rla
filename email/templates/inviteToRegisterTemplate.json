@@ -1,0 +1,8 @@
+{
+  "Template": {
+    "TemplateName": "RLAInviteToRegister",
+    "SubjectPart": "Training registration for {{trainingTitle}}",
+    "HtmlPart": "<h1>Hello {{fname}},</h1><p>You've been invited to register for the following remote training session:</p><p><h2>{{trainingTitle}}</h2><b>{{trainingDescription}}</b></p><p>Being held on <b>{{trainingDateAndTime}}</b></p><p>If you have questions, please contact {{trainerName}} at {{trainerEmail}}</p><h2><a href={{trainingRegistrationUrl}}>Click here to register.</a></h2>",
+    "TextPart": "Hello {{fname}}, You've been invited to register for the following remote training session {{trainingTitle}} {{trainingDescription}}, Bbeing held on {{trainingDateAndTime}}. If you have questions, please contact {{trainerName}} at {{trainerEmail}}. Click here to register: {{trainingRegistrationUrl}}"
+  }
+}

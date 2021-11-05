@@ -9,10 +9,12 @@ import {
   FormControl,
   Select,
 } from '@chakra-ui/react'
+import { useEffect, useRef } from 'react'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
 import { Selections } from './Selections'
+import { webcamCapture } from '../utils/webcam-capture'
 
-export const MicCamControls = ({ localVideoRef, isModerator }) => {
+export const MicCamControls = ({ attendeeId, isModerator, setFaceStats }) => {
   const {
     bjnApi,
     bjnVideoMuted,
@@ -26,6 +28,43 @@ export const MicCamControls = ({ localVideoRef, isModerator }) => {
     bjnIsConnected,
     bjnSharingScreen,
   } = useBlueJeans()
+
+  const localVideoRef = useRef(null)
+  const faceCaptureInterval = useRef(0)
+
+  useEffect(() => {
+    bjnApi.attachLocalVideo(localVideoRef.current)
+  }, [bjnApi])
+
+  useEffect(() => {
+    if (attendeeId) {
+      const stopFaceCapture = () => {
+        if (faceCaptureInterval.current) {
+          clearInterval(faceCaptureInterval.current)
+          faceCaptureInterval.current = 0
+        }
+      }
+
+      const startFaceCapture = () => {
+        const grabScreen = async () => {
+          const result = await webcamCapture(localVideoRef.current, attendeeId)
+          if (result) {
+            setFaceStats(result)
+          }
+        }
+        if (!faceCaptureInterval.current) {
+          faceCaptureInterval.current = setInterval(grabScreen, 2000)
+        }
+      }
+
+      if (bjnIsConnected && bjnVideoMuted === false) {
+        // ignore undefined and null
+        startFaceCapture()
+      } else {
+        stopFaceCapture()
+      }
+    }
+  }, [bjnVideoMuted, attendeeId, setFaceStats, bjnIsConnected])
 
   const muteCam = (e) => {
     bjnApi.setVideoMuted(e.target.checked)

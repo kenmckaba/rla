@@ -5,6 +5,9 @@ import { getAttendee } from '../graphql/queries'
 import { buildSubscription } from 'aws-appsync'
 import { onUpdateAttendee } from '../graphql/subscriptions'
 import { updateAttendee } from '../graphql/mutations'
+import { ReactComponent as HandIcon } from '../assets/icons/hand-icon.svg'
+import { ReactComponent as CheckMark } from '../assets/icons/check-mark.svg'
+import { ReactComponent as XMark } from '../assets/icons/x-mark.svg'
 
 export const AttendeeItem = ({ attendeeId }) => {
   const [attendee, setAttendee] = useState()
@@ -26,7 +29,7 @@ export const AttendeeItem = ({ attendeeId }) => {
   }, [data, attendee, attendeeId])
 
   if (error) {
-    console.log('rla-log: error', error)
+    console.error('rla-log: error', error)
     return <p>Error!</p>
   }
 
@@ -55,16 +58,22 @@ export const AttendeeItem = ({ attendeeId }) => {
     return attendee.joinedTime && !attendee.leftTime
   }
 
+  const attendeeFacingCam = () => {
+    console.log('rla-log: pitch yaw', attendee.posePitch, attendee.poseYaw)
+    return attendee.posePitch < 15 && attendee.poseYaw < 15
+  }
+
   return (
     <Tr id={attendee.id} key={attendee.id}>
       <Td paddingLeft="0">{attendee.name}</Td>
       <Td paddingRight="0">
         <Flex float="right">
-          {attendeePresent() && '✅'}
+          {!attendeeFacingCam() && '?  '}
+          {attendeePresent() ? <CheckMark /> : <XMark />}
           <Box width="20px" marginLeft="10px" cursor="pointer" onClick={lowerHand}>
             {attendee.handRaised && attendeePresent() && (
               <Tooltip hasArrow placement="right" label="Lower hand">
-                🙋
+                <HandIcon />
               </Tooltip>
             )}
           </Box>

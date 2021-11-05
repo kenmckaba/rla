@@ -1,26 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Input,
+  Select,
   Button,
   FormControl,
   FormLabel,
   HStack,
   Box,
-  Modal,
-  ModalOverlay,
-  ModalHeader,
-  ModalContent,
-  ModalBody,
+  Center,
   useDisclosure,
   Link,
   Accordion,
   IconButton,
   Tooltip,
   useClipboard,
+  Spinner,
 } from '@chakra-ui/react'
-import { getTraining } from '../graphql/queries'
-import { useMutation, gql, useQuery } from '@apollo/client'
-import { deleteTraining, updateTraining } from '../graphql/mutations'
+import { getTraining, listStudentGroups, listStudents } from '../graphql/queries'
+import { useMutation, gql, useQuery, useLazyQuery } from '@apollo/client'
+import { updateTraining } from '../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
 import { AttendeeForm } from './AttendeeForm'
 import DatePicker from './DatePicker'
@@ -29,50 +27,109 @@ import { buildSubscription } from 'aws-appsync'
 import {
   onCreateAttendee,
   onCreatePoll,
+  onCreateStudentGroup,
   onDeleteAttendee,
   onDeletePoll,
   onUpdateAttendee,
   onUpdatePoll,
 } from '../graphql/subscriptions'
 import { Polls } from './Polls'
+import { SharedDocs } from './SharedDocs'
 import { AccordionItemCustom } from './AccordionItemCustom'
-import { useRef } from 'react'
+import OurModal from './OurModal'
+import { sendRegistrationEmails } from '../utils/sendRegistrationEmails'
 
-export const TrainingForm = ({ onClose, trainingId }) => {
+export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
+  const [training, setTraining] = useState()
+  const [emailGroupList, setEmailGroupList] = useState()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [trainerName, setTrainerName] = useState('')
+  const [trainerEmail, setTrainerEmail] = useState('')
   const [scheduledTime, setScheduledTime] = useState(new Date())
+  const [registrationUrl] = useState(`${window.location.origin}/registration/${trainingId}`)
   const [meetingId, setMeetingId] = useState('950585018')
   const [moderatorPasscode, setModeratorPasscode] = useState('1599')
   const [participantPasscode, setParticipantPasscode] = useState('6804')
   const [attendees, setAttendees] = useState([])
   const [polls, setPolls] = useState([])
+  const [sharedDocs, setSharedDocs] = useState([])
+  const [whiteboardUrl, setWhiteboard] = useState('')
+  const [maxAttendees, setMaxAttendees] = useState(25)
   const [currentAttendee, setCurrentAttendee] = useState()
-
+  const [selectedEmailGroup, setSelectedEmailGroup] = useState()
+  const sendingEmails = useRef(false)
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
-  const [deleteCurrentTraining] = useMutation(gql(deleteTraining))
-  const { data, error, loading, subscribeToMore } = useQuery(gql(getTraining), {
+  const {
+    data: trainingData,
+    error,
+    loading,
+    subscribeToMore,
+  } = useQuery(gql(getTraining), {
     variables: { id: trainingId },
   })
-  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
-  const regLink = useRef(`${window.location.href}registration/${trainingId}`)
-  const { onCopy } = useClipboard(regLink.current)
+  const { data: groupListData } = useQuery(gql(listStudentGroups))
+
+  const [getEmailAttendees, { data: emailAttendeesData }] = useLazyQuery(gql(listStudents))
+
+  const {
+    isOpen: isNewattendeeModalOpen,
+    onOpen: onNewattendeeModalOpen,
+    onClose: onNewattendeeModalClose,
+  } = useDisclosure()
+  const {
+    isOpen: isEmailsModalOpen,
+    onOpen: onEmailsModalOpen,
+    onClose: onEmailsModalClose,
+  } = useDisclosure()
+  const {
+    isOpen: isWaitModalOpen,
+    onOpen: onWaitModalOpen,
+    onClose: onWaitModalClose,
+  } = useDisclosure()
+  const { onCopy } = useClipboard(registrationUrl)
 
   useEffect(() => {
-    if (data) {
-      const training = data.getTraining
-      setTitle(training.title === '<temp>' ? '' : training.title)
-      setDescription((prev) => training.description || prev)
-      setTrainerName(training.trainerName || '')
-      setScheduledTime(new Date(Number(training.scheduledTime)))
-      setMeetingId((prev) => training.meetingId || prev)
-      setModeratorPasscode((prev) => training.moderatorPasscode || prev)
-      setParticipantPasscode((prev) => training.participantPasscode || prev)
-      setAttendees(training.attendees.items)
-      setPolls(training.polls.items)
+    if (trainingData) {
+      const tr = trainingData.getTraining
+      setTraining(tr)
+      setTitle(tr.title === '<temp>' ? '' : tr.title)
+      setDescription((prev) => tr.description || prev)
+      setTrainerName(tr.trainerName || '')
+      setTrainerEmail(tr.trainerEmail)
+      setScheduledTime(new Date(tr.scheduledTime))
+      setMaxAttendees(tr.maxAttendees || 25)
+      setMeetingId((prev) => tr.meetingId || prev)
+      setModeratorPasscode((prev) => tr.moderatorPasscode || prev)
+      setParticipantPasscode((prev) => tr.participantPasscode || prev)
+      setAttendees(tr.attendees.items)
+      setPolls(tr.polls.items)
+      setSharedDocs(tr.sharedDocs.items)
+      setWhiteboard((prev) => tr.whiteboardUrl || prev)
     }
-  }, [data])
+  }, [trainingData])
+
+  useEffect(() => {
+    const getEmailList = async () => {
+      if (emailAttendeesData && !sendingEmails.current) {
+        sendingEmails.current = true // this can be called multiple times
+        // todo: should filter in graphql
+        const students = emailAttendeesData.listStudents.items.filter(
+          (s) => s.groupId === selectedEmailGroup,
+        )
+        await sendRegistrationEmails(training, students)
+        onWaitModalClose()
+        onClose()
+      }
+    }
+    getEmailList()
+  }, [emailAttendeesData, selectedEmailGroup, training, onClose, onWaitModalClose])
+
+  useEffect(() => {
+    if (groupListData) {
+      setEmailGroupList(groupListData.listStudentGroups.items)
+    }
+  }, [groupListData])
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -83,14 +140,16 @@ export const TrainingForm = ({ onClose, trainingId }) => {
         subscribeToMore(buildSubscription(gql(onUpdatePoll), gql(getTraining))),
         subscribeToMore(buildSubscription(gql(onCreatePoll), gql(getTraining))),
         subscribeToMore(buildSubscription(gql(onDeletePoll), gql(getTraining))),
+        subscribeToMore(buildSubscription(gql(onCreateStudentGroup), gql(listStudentGroups))),
       ]
       return () => {
-        cleanupFuncs.forEach((func) => func())
+        cleanupFuncs.forEach((func) => func && func())
       }
     }
   }, [subscribeToMore])
 
   if (error || updateError) {
+    console.error('rla-log: error', error, updateError)
     return <p>An error occurred</p>
   }
 
@@ -110,6 +169,10 @@ export const TrainingForm = ({ onClose, trainingId }) => {
     setTrainerName(event.target.value)
   }
 
+  const onChangeTrainerEmail = (event) => {
+    setTrainerEmail(event.target.value)
+  }
+
   const onChangeMeetingId = (event) => {
     setMeetingId(event.target.value)
   }
@@ -126,6 +189,14 @@ export const TrainingForm = ({ onClose, trainingId }) => {
     setParticipantPasscode(event.target.value)
   }
 
+  const onChangeWhiteboard = (event) => {
+    setWhiteboard(event.target.value)
+  }
+
+  const onChangeMaxAttendees = (event) => {
+    setMaxAttendees(event.target.value)
+  }
+
   const mutationVars = () => {
     return {
       variables: {
@@ -133,17 +204,32 @@ export const TrainingForm = ({ onClose, trainingId }) => {
           id: trainingId,
           description,
           trainerName,
+          trainerEmail,
           title,
           meetingId,
-          scheduledTime: scheduledTime.getTime(),
+          scheduledTime: scheduledTime.toISOString(),
+          maxAttendees,
           moderatorPasscode,
           participantPasscode,
+          whiteboardUrl,
+          registrationUrl,
         },
       },
     }
   }
 
+  const sendRegEmails = async () => {
+    onWaitModalOpen()
+    getEmailAttendees()
+    onEmailsModalClose()
+    updateCurrentTraining(mutationVars())
+  }
+
   const handleSubmit = async () => {
+    onEmailsModalOpen()
+  }
+
+  const handleSave = async () => {
     await updateCurrentTraining(mutationVars())
     onClose()
   }
@@ -155,7 +241,7 @@ export const TrainingForm = ({ onClose, trainingId }) => {
 
   const handleOpenAttendee = async (attendee) => {
     setCurrentAttendee(attendee)
-    onModalOpen()
+    onNewattendeeModalOpen()
   }
 
   const onAttendeeClose = (attendee) => {
@@ -169,13 +255,12 @@ export const TrainingForm = ({ onClose, trainingId }) => {
         attendees[attendeePos] = attendee
       }
     }
-    onModalClose()
+    onNewattendeeModalClose()
     updateCurrentTraining(mutationVars()) // save in case they try to join
   }
 
   const handleDelete = async () => {
-    await deleteCurrentTraining({ variables: { input: { id: trainingId } } })
-    onClose()
+    onDelete(trainingId)
   }
 
   const openRegPage = (e) => {
@@ -183,8 +268,19 @@ export const TrainingForm = ({ onClose, trainingId }) => {
     window.open(`/trainerInSession/${trainingId}`)
   }
 
+  const setEmailGroup = (e) => {
+    setSelectedEmailGroup(e.target.value)
+  }
+
   const missingFields = () => {
-    return !title || !trainerName || !meetingId || !participantPasscode || !moderatorPasscode
+    return (
+      !title ||
+      !trainerName ||
+      !meetingId ||
+      !participantPasscode ||
+      !moderatorPasscode ||
+      !trainerEmail
+    )
   }
 
   return (
@@ -204,18 +300,46 @@ export const TrainingForm = ({ onClose, trainingId }) => {
             placeholder="optional"
           />
         </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Trainer name</FormLabel>
-          <Input fontSize="12" value={trainerName} onChange={onChangeTrainerName} h="24px" />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Date & Time</FormLabel>
-          <DatePicker
+        <HStack>
+          <FormControl isRequired>
+            <FormLabel>Trainer name</FormLabel>
+            <Input fontSize="12" value={trainerName} onChange={onChangeTrainerName} h="24px" />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Trainer email</FormLabel>
+            <Input fontSize="12" value={trainerEmail} onChange={onChangeTrainerEmail} h="24px" />
+          </FormControl>
+        </HStack>
+        <HStack>
+          <FormControl isRequired>
+            <FormLabel>Date & Time</FormLabel>
+            <DatePicker
+              fontSize="12"
+              selected={scheduledTime}
+              onChange={(date) => onChangeScheduledFor(date)}
+              showTimeSelect
+              dateFormat="Pp"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Max attendees</FormLabel>
+            <Input
+              fontSize="12"
+              value={maxAttendees}
+              onChange={onChangeMaxAttendees}
+              h="24px"
+              placeholder="optional"
+            />
+          </FormControl>
+        </HStack>
+        <FormControl>
+          <FormLabel>Whiteboard URL</FormLabel>
+          <Input
             fontSize="12"
-            selected={scheduledTime}
-            onChange={(date) => onChangeScheduledFor(date)}
-            showTimeSelect
-            dateFormat="Pp"
+            value={whiteboardUrl}
+            onChange={onChangeWhiteboard}
+            h="24px"
+            placeholder="optional"
           />
         </FormControl>
         <Accordion width="100%" mt={2} allowToggle>
@@ -249,8 +373,8 @@ export const TrainingForm = ({ onClose, trainingId }) => {
                 overflow="hidden"
                 textOverflow="ellipsis"
               >
-                <Link href={regLink.current} isExternal>
-                  {window.location.href}registration/{trainingId}
+                <Link href={registrationUrl} isExternal cursor="pointer" color="blue">
+                  {registrationUrl}
                   <ExternalLinkIcon m="2px" />
                 </Link>
               </Box>
@@ -259,6 +383,9 @@ export const TrainingForm = ({ onClose, trainingId }) => {
           </AccordionItemCustom>
           <AccordionItemCustom title="Polls">
             <Polls trainingId={trainingId} polls={polls} />
+          </AccordionItemCustom>
+          <AccordionItemCustom title="Shared documents">
+            <SharedDocs trainingId={trainingId} sharedDocs={sharedDocs} trainerMode={true} />
           </AccordionItemCustom>
           <AccordionItemCustom title="BlueJeans meeting">
             <HStack mt="3">
@@ -319,19 +446,51 @@ export const TrainingForm = ({ onClose, trainingId }) => {
         </Button>
       </HStack>
 
-      <Modal isOpen={isModalOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{currentAttendee ? 'Attendee' : 'New Attendee'}</ModalHeader>
-          <ModalBody>
-            <AttendeeForm
-              trainingId={trainingId}
-              onClose={onAttendeeClose}
-              attendee={currentAttendee}
-            />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <OurModal
+        header={currentAttendee ? 'Attendee' : 'New Attendee'}
+        isOpen={isNewattendeeModalOpen}
+      >
+        <AttendeeForm
+          trainingId={trainingId}
+          onClose={onAttendeeClose}
+          attendee={currentAttendee}
+        />
+      </OurModal>
+      <OurModal
+        header={<Center>Send registration invitation emails?</Center>}
+        isOpen={isEmailsModalOpen}
+        onClose={onEmailsModalClose}
+      >
+        {emailGroupList?.length ? (
+          <Select placeholder="Select email group" onChange={setEmailGroup}>
+            {emailGroupList.map((group) => {
+              return (
+                <option key={group.id} value={group.id}>
+                  {group.name}
+                  {' ('}
+                  {group.students.items.length}
+                  {' students)'}
+                </option>
+              )
+            })}
+          </Select>
+        ) : (
+          <Box>*No email groups defined*</Box>
+        )}
+        <Center marginTop="15px">
+          <Button isDisabled={!selectedEmailGroup} onClick={sendRegEmails}>
+            Send emails
+          </Button>
+          <Button marginLeft="10px" onClick={handleSave}>
+            Skip
+          </Button>
+        </Center>
+      </OurModal>
+      <OurModal header="Sending emails" isOpen={isWaitModalOpen}>
+        <Center>
+          <Spinner />
+        </Center>
+      </OurModal>
     </>
   )
 }

@@ -4,28 +4,31 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ApolloClient, InMemoryCache, ApolloProvider, ApolloLink } from '@apollo/client'
-import appSyncConfig from './aws-exports'
+import Amplify, { Auth } from 'aws-amplify'
+import awsConfig from './aws-exports'
 import { createAuthLink } from 'aws-appsync-auth-link'
 import { createSubscriptionHandshakeLink } from 'aws-appsync-subscription-link'
 import { onError } from '@apollo/client/link/error'
 
-const url = appSyncConfig.aws_appsync_graphqlEndpoint
-const region = appSyncConfig.aws_appsync_region
+Amplify.configure(awsConfig)
+
+const url = awsConfig.aws_appsync_graphqlEndpoint
+const region = awsConfig.aws_appsync_region
+const type = awsConfig.aws_appsync_authenticationType
+
 const auth = {
-  type: appSyncConfig.aws_appsync_authenticationType,
-  apiKey: appSyncConfig.aws_appsync_apiKey,
+  type,
+  credentials: () => Auth.currentCredentials(),
 }
 
-// Log any GraphQL errors or network error that occurred
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.map(({ message, locations, path }) =>
-      console.log(
-        `rla-log: [GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-      ),
-    )
+const errorLink = onError((errs) => {
+  console.error('rla-log: errors', errs)
+  const { graphQLErrors, networkError } = errs
+  if (graphQLErrors) {
+    graphQLErrors.map((err) => console.error('rla-log: [GraphQL error]:', err))
+  }
   if (networkError) {
-    console.log(`rla-log: [Network error]: ${networkError}`)
+    console.error('rla-log: [Network error]', networkError)
   }
 })
 
@@ -39,6 +42,8 @@ const client = new ApolloClient({
   link,
   cache: new InMemoryCache(),
 })
+
+window.LOG_LEVEL = 'DEBUG'
 
 ReactDOM.render(
   <React.StrictMode>

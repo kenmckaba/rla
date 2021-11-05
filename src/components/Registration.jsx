@@ -13,11 +13,17 @@ import {
   ModalBody,
   useDisclosure,
   Flex,
+  Stat,
+  Link,
+  StatLabel,
+  StatHelpText,
+  HStack,
 } from '@chakra-ui/react'
 import { getTraining } from '../graphql/queries'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { createAttendee } from '../graphql/mutations'
-import { prettyTime } from '../pretty-time'
+import { timestampToPrettyTime } from '../utils/pretty-time'
+import { sendJoinEmail } from '../utils/sendJoinEmail'
 
 export const Registration = ({
   match: {
@@ -28,6 +34,7 @@ export const Registration = ({
   const [attendeeId, setAttendeeId] = useState()
   const [attendeeName, setAttendeeName] = useState('')
   const [attendeeEmail, setAttendeeEmail] = useState('')
+  const [isFull, setIsFull] = useState(false)
   const { isOpen: isModalOpen, onOpen: onModalOpen } = useDisclosure()
 
   const {
@@ -41,11 +48,14 @@ export const Registration = ({
 
   useEffect(() => {
     if (trainingData && (!training || trainingId === trainingData?.getTraining?.id)) {
-      setTraining(trainingData.getTraining)
+      const tr = trainingData.getTraining
+      setTraining(tr)
+      setIsFull(tr.attendees.items.length > tr.maxAttendees)
     }
   }, [trainingData, training, trainingId])
 
   if (error) {
+    console.error('rla-log: error', error)
     return <p>An error occured</p>
   }
 
@@ -71,50 +81,115 @@ export const Registration = ({
         },
       },
     })
-    setAttendeeId(result.data.createAttendee.id)
+    const id = result.data.createAttendee.id
+    setAttendeeId(id)
+    sendJoinEmail(id, attendeeName, attendeeEmail, training)
     onModalOpen()
   }
 
   return (
-    <>
-      <VStack padding="3" background="white" borderRadius="20px" alignItems="flex-start">
-        <Box fontWeight="bold">Training registration form:</Box>
-        <Box>Title: {training.title}</Box>
-        {training.description && <Box>{training.description}</Box>}
-        <Box>Start time: {prettyTime(new Date(Number(training.scheduledTime)))}</Box>; ;
-        <FormControl>
-          <FormLabel>Your name</FormLabel>
-          <Input fontSize="12" value={attendeeName} onChange={onChangeAttendeeName} h="24px" />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Email address</FormLabel>
-          <Input fontSize="12" value={attendeeEmail} onChange={onChangeAttendeeEmail} h="24px" />
-        </FormControl>
-        <Button size="md" onClick={handleSubmit}>
-          Save
-        </Button>
-      </VStack>
-
-      <Modal isOpen={isModalOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent height="300px">
-          <ModalHeader>
-            <Flex justifyContent="center">Thanks for registering!</Flex>
-          </ModalHeader>
-          <ModalBody>
-            <Box justifyContent="center" textAlign="center">
-              <Box paddingBottom="10px">
-                You will soon receive an email with a link you can use to join the training at the
-                scheduled time.
-              </Box>
-              <Box paddingBottom="10px">Use this link to change or delete your registration.</Box>
-              <a target="_blank" rel="noreferrer" href={`/registration-update/${attendeeId}`}>
-                {window.location.href}registration-update/{attendeeId}
-              </a>
+    <Flex w="100%" h="100%" direction="column">
+      <Box w="100%" h="100%">
+        <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
+          <VStack
+            fontFamily="heading"
+            padding="8"
+            width="100%"
+            maxWidth="720px"
+            bg="rgba(255, 255, 255, 0.1)"
+            borderRadius="md"
+            alignItems="flex-start"
+          >
+            <Box textTransform="uppercase" fontWeight="thin" fontSize="0.75em">
+              Training registration form:
             </Box>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
+            <Box paddingBottom="4">
+              <Stat textTransform="capitalize" fontWeight="bold">
+                <StatLabel fontSize="2em">{training.title}</StatLabel>
+                <StatHelpText fontSize="0.875em">
+                  {timestampToPrettyTime(training.scheduledTime)}
+                </StatHelpText>
+              </Stat>
+            </Box>
+            {training.description && <Box>{training.description}</Box>}
+            <HStack>
+              <Box>Trainer: {training.trainerName}</Box>
+              <Link href={`mailto:${training.trainerEmail}`} isExternal cursor="pointer">
+                {training.trainerEmail}
+              </Link>
+            </HStack>
+            {isFull ? (
+              <Box fontSize="2em">Sorry, the training is full!</Box>
+            ) : (
+              <Box width="100%">
+                <FormControl>
+                  <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                    Your name
+                  </FormLabel>
+                  <Input
+                    variant="filled"
+                    fontSize="0.75em"
+                    placeholder="Type your name here"
+                    value={attendeeName}
+                    onChange={onChangeAttendeeName}
+                    h="8"
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                    Email address
+                  </FormLabel>
+                  <Input
+                    variant="filled"
+                    fontSize="0.75em"
+                    placeholder="Type your email here"
+                    value={attendeeEmail}
+                    onChange={onChangeAttendeeEmail}
+                    h="8"
+                  />
+                </FormControl>
+                <HStack w="100%" spacing="3" paddingTop="3">
+                  <Button w="100%" size="md" variant="secondary-ghost-outline">
+                    Cancel
+                  </Button>
+                  <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
+                    Save
+                  </Button>
+                </HStack>
+              </Box>
+            )}
+          </VStack>
+
+          <Modal isOpen={isModalOpen} scrollBehavior="inside">
+            <ModalOverlay />
+            <ModalContent color="darkKnight.700">
+              <ModalHeader>
+                <Flex justifyContent="center">Thanks for registering!</Flex>
+              </ModalHeader>
+              <ModalBody>
+                <Box justifyContent="center" textAlign="center">
+                  <Box paddingBottom="10px">
+                    You will soon receive an email with a link you can use to join the training at
+                    the scheduled time.
+                  </Box>
+                  <Box paddingBottom="10px">
+                    Use{' '}
+                    <Link
+                      href={`${window.location.origin}/registration-update/${attendeeId}`}
+                      isExternal
+                      cursor="pointer"
+                      color="blue"
+                    >
+                      this link
+                    </Link>{' '}
+                    to change or delete your registration.
+                  </Box>
+                </Box>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        </Flex>
+      </Box>
+    </Flex>
   )
 }

@@ -1,0 +1,213 @@
+{
+  "whiteboard": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-whiteboard-163123-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-whiteboard-163123-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-whiteboard-163123-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-whiteboard-163123-deployment",
+      "UnauthRoleName": "amplify-rlafeature-whiteboard-163123-unauthRole",
+      "StackName": "amplify-rlafeature-whiteboard-163123",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-whiteboard-163123/8be8aee0-2246-11ec-8364-0e7f146bbf37",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-whiteboard-163123-deployment",
+          "s3Key": "amplify-builds/attendeeimage-46513941494433455462-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-dev-142223-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-dev-142223-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-dev-142223-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-dev-142223-deployment",
+      "UnauthRoleName": "amplify-rlafeature-dev-142223-unauthRole",
+      "StackName": "amplify-rlafeature-dev-142223",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-dev-142223/66a1db70-05d1-11ec-875a-0e194195a24f",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      },
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-dev-142223-deployment",
+          "s3Key": "amplify-builds/attendeeimage-6763734a63466157366e-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        }
+      }
+    }
+  },
+  "ken": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-ken-173819-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-ken-173819-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-ken-173819-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-ken-173819-deployment",
+      "UnauthRoleName": "amplify-rlafeature-ken-173819-unauthRole",
+      "StackName": "amplify-rlafeature-ken-173819",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-ken-173819/3a4845e0-15bd-11ec-a669-125bddb2acd9",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-ken-173819-deployment",
+          "s3Key": "amplify-builds/attendeeimage-46513941494433455462-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      },
+      "auth": {
+        "rlafeaturead7537a2": {}
+      }
+    }
+  },
+  "kentwo": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-kentwo-133441-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-kentwo-133441-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-kentwo-133441-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-kentwo-133441-deployment",
+      "UnauthRoleName": "amplify-rlafeature-kentwo-133441-unauthRole",
+      "StackName": "amplify-rlafeature-kentwo-133441",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-kentwo-133441/03c5e490-22f7-11ec-b8c6-0a60b969c14f",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "auth": {
+        "rlafeaturead7537a2": {}
+      },
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-kentwo-133441-deployment",
+          "s3Key": "amplify-builds/attendeeimage-744961447770624f687a-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      }
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-prod-161616-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-prod-161616-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-prod-161616-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-prod-161616-deployment",
+      "UnauthRoleName": "amplify-rlafeature-prod-161616-unauthRole",
+      "StackName": "amplify-rlafeature-prod-161616",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-prod-161616/18086580-2569-11ec-bf2d-12c52bac6db9",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "auth": {
+        "rlafeaturead7537a2": {}
+      },
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-prod-161616-deployment",
+          "s3Key": "amplify-builds/attendeeimage-744961447770624f687a-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      }
+    }
+  },
+  "email": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-email-132545-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-email-132545-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-email-132545-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-email-132545-deployment",
+      "UnauthRoleName": "amplify-rlafeature-email-132545-unauthRole",
+      "StackName": "amplify-rlafeature-email-132545",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-email-132545/4041ca60-382d-11ec-9fd3-0adbbedd83a1",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "auth": {
+        "rlafeaturead7537a2": {}
+      },
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-email-132545-deployment",
+          "s3Key": "amplify-builds/attendeeimage-744961447770624f687a-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      }
+    }
+  },
+  "emailstwo": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-emailstwo-152623-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-emailstwo-152623-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-emailstwo-152623-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-emailstwo-152623-deployment",
+      "UnauthRoleName": "amplify-rlafeature-emailstwo-152623-unauthRole",
+      "StackName": "amplify-rlafeature-emailstwo-152623",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-emailstwo-152623/bfe6cad0-3b62-11ec-b12d-0abe2de4b851",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "auth": {
+        "rlafeaturead7537a2": {}
+      },
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-emailstwo-152623-deployment",
+          "s3Key": "amplify-builds/attendeeimage-744961447770624f687a-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      }
+    }
+  }
+}

@@ -1,29 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { getAttendee, getTraining } from '../graphql/queries'
+import { getAttendee, getSharedDoc, getTraining } from '../graphql/queries'
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
-import {
-  VStack,
-  HStack,
-  Box,
-  Button,
-  Input,
-  Flex,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { Box, Button, Flex, useDisclosure, Link, HStack } from '@chakra-ui/react'
 import { createPollResponse, updateAttendee } from '../graphql/mutations'
 import { buildSubscription } from 'aws-appsync'
-import { onUpdateAttendee, onUpdateTraining } from '../graphql/subscriptions'
+import {
+  onCreateChatMessage,
+  onUpdateAttendee,
+  onUpdateSharedDoc,
+  onUpdateTraining,
+} from '../graphql/subscriptions'
 import { PollChoices } from './PollChoices'
-import { prettyTime } from '../pretty-time'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
-import { MicCamControls } from './MicCamControls'
 import { BjnMedia } from './BjnMedia'
 import { CamInUseModal } from './CamInUseModal'
+import FloatingRightPanel from './TrainerInSession/FloatingRightPanel'
+import SettingsModal from './SettingsModal'
+import OurModal from './OurModal'
+import { SharedDocs } from './SharedDocs'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
+import { SidePanel } from './ChatComponents/SidePanel'
 
 export const AttendeeLanding = ({
   match: {
@@ -40,7 +36,6 @@ export const AttendeeLanding = ({
   })
   const [getCurrentTraining, { data: trainingData }] = useLazyQuery(gql(getTraining))
   const { bjnApi, bjnIsInitialized, bjnConnectionState, bjnCamInUseError } = useBlueJeans()
-
   const [attendee, setAttendee] = useState()
   const joined = useRef(false)
   const updatingJoinedTime = useRef(false)
@@ -49,23 +44,68 @@ export const AttendeeLanding = ({
   const { isOpen: isEndedModalOpen, onOpen: onEndedModalOpen } = useDisclosure()
   const [currentPoll, setCurrentPoll] = useState()
   const [pollMode, setPollMode] = useState('NONE')
+  const [sharedDocs, setSharedDocs] = useState([])
+  const [whiteboard, setWhiteboard] = useState()
+  const [whiteboardShared, setWhiteboardShared] = useState(false)
   const [handRaised, setHandRaised] = useState(false)
   const [training, setTraining] = useState()
   const [participantName, setParticipantName] = useState()
   const [updateCurrentAttendee] = useMutation(gql(updateAttendee))
   const [createCurrentPollResponse] = useMutation(gql(createPollResponse))
+  const [hoverFloatingRightPanel, setHoverFloatingRightPanel] = useState(false)
+  const [showFloatingRightPanel, setShowFloatingRightPanel] = useState(false)
+  const [showSettingsModal, setShowSettingsModal] = useState(false)
+  const [chatMessages, setChatMessages] = useState([])
 
-  const localVideoRef = useRef(null)
-  const gotVideosRef = useRef(false)
+  const {
+    isOpen: isSharedDocModalOpen,
+    onOpen: onSharedDocModalOpen,
+    onClose: onSharedDocModalClose,
+  } = useDisclosure()
+  const {
+    isOpen: isWhiteboardModalOpen,
+    onOpen: onWhiteboardModalOpen,
+    onClose: onWhiteboardModalClose,
+  } = useDisclosure()
+  const handleChatVisibility = () => setChatIsOpen(!chatIsOpen)
+
+  /* Mouse Movement Listener */
+  const displayTime = 1000 //ms
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+  const [listener, setListener] = useState()
+  const [rightPanelAnimationEnd, setRightPanelAnimationEnd] = useState(true)
+  const [chatIsOpen, setChatIsOpen] = useState(true)
+  const [attendees, setAttendees] = useState([])
+  const [shareWebcam, setShareWebcam] = useState(false)
+
+  const handleMouseMove = async () => {
+    setShowFloatingRightPanel(true)
+    clearTimeout(listener)
+    if (!hoverFloatingRightPanel) {
+      if (rightPanelAnimationEnd) {
+        const timeout = setTimeout(async () => {
+          setRightPanelAnimationEnd(false)
+          setShowFloatingRightPanel(false)
+          const animEndTime = 500 //ms
+          await sleep(animEndTime)
+          setRightPanelAnimationEnd(true)
+        }, displayTime)
+
+        setListener(timeout)
+      }
+    }
+  }
 
   useEffect(() => {
     if (subscribeToMore) {
       const cleanupFuncs = [
         subscribeToMore(buildSubscription(gql(onUpdateAttendee), gql(getAttendee))),
         subscribeToMore(buildSubscription(gql(onUpdateTraining), gql(getAttendee))),
+        subscribeToMore(buildSubscription(gql(onUpdateSharedDoc), gql(getSharedDoc))),
+        subscribeToMore(buildSubscription(gql(onCreateChatMessage), gql(getTraining))),
       ]
       return () => {
-        cleanupFuncs.forEach((func) => func())
+        cleanupFuncs.forEach((func) => func && func())
       }
     }
   }, [subscribeToMore])
@@ -91,7 +131,7 @@ export const AttendeeLanding = ({
         variables: {
           input: {
             id: attendeeId,
-            leftTime: Date.now(),
+            leftTime: new Date().toISOString(),
           },
         },
       })
@@ -102,6 +142,12 @@ export const AttendeeLanding = ({
     if (trainingData) {
       const tr = trainingData.getTraining
       setTraining(tr)
+      const d = tr.sharedDocs.items
+      setSharedDocs(d)
+      setWhiteboard(tr.whiteboardUrl)
+      setWhiteboardShared(tr.whiteboardShared)
+      setChatMessages(tr.chatMessages.items)
+      setAttendees(tr.attendees.items)
       if (tr.currentPollId) {
         const p = tr.polls.items.find((poll) => poll.id === tr.currentPollId)
         setCurrentPoll(p)
@@ -115,13 +161,12 @@ export const AttendeeLanding = ({
 
   useEffect(() => {
     if (attendee && !updatedJoinedTime.current) {
-      // updatingJoinedTime.current = true
       updatedJoinedTime.current = true
       updateCurrentAttendee({
         variables: {
           input: {
             id: attendee.id,
-            joinedTime: Date.now(),
+            joinedTime: new Date().toISOString(),
             leftTime: null, // erase in case they previously joined
           },
         },
@@ -136,14 +181,19 @@ export const AttendeeLanding = ({
     }
   }, [training, participantName, bjnIsInitialized, bjnApi])
 
-  useEffect(() => {
-    if (localVideoRef.current && !gotVideosRef.current) {
-      bjnApi.attachLocalVideo(localVideoRef.current)
-      gotVideosRef.current = true
-    }
-  })
+  const Whiteboard = whiteboardShared ? (
+    <Box marginLeft="20px">
+      <Link href={whiteboard} isExternal cursor="pointer">
+        {whiteboard}
+        <ExternalLinkIcon marginLeft="5px" marginBottom="3px" />
+      </Link>
+    </Box>
+  ) : (
+    <Box marginLeft="20px">*No whiteboard shared*</Box>
+  )
 
   if (error) {
+    console.error('rla-log: error', error)
     return <p>An error occured</p>
   }
 
@@ -164,21 +214,13 @@ export const AttendeeLanding = ({
     })
   }
 
-  const onChangeParticipantName = (e) => {
-    setParticipantName(e.target.value)
-  }
-
-  const updateName = () => {
-    bjnApi.setName(participantName)
-  }
-
   const leaveTraining = () => {
     bjnApi.leave(false)
     updateCurrentAttendee({
       variables: {
         input: {
           id: attendee.id,
-          leftTime: Date.now(),
+          leftTime: new Date().toISOString(),
         },
       },
     })
@@ -198,73 +240,74 @@ export const AttendeeLanding = ({
   }
 
   return (
-    <>
-      <HStack height="100%" alignItems="flex-start">
-        <VStack alignItems="normal" width="250px" minWidth="250px">
-          <VStack alignItems="flex-start" background="white" borderRadius="20px" padding="8px">
-            <Box fontWeight="bold">Welcome to the training!</Box>
-            <Box>Title: {training.title}</Box>
-            {training.description && <Box>{training.description}</Box>}
-            <Box>Start time: {prettyTime(new Date(Number(training.scheduledTime)))}</Box>
-            <HStack alignContent="center">
-              <Box width="55px">Join as:</Box>
-              <Input
-                width="100px"
-                height="20px"
-                type="text"
-                value={participantName}
-                onChange={onChangeParticipantName}
-              />
-              <Button size="xs" variant="outline" onClick={updateName}>
-                Update
-              </Button>
-            </HStack>
-            <Button size="sm" onClick={toggleHand} variant="outline">
-              {handRaised ? 'Lower hand 🙋' : 'Raise hand 🙋'}
-            </Button>
-          </VStack>
-
-          {currentPoll && (
-            <VStack
-              alignItems="flex-start"
-              width="100%"
-              background="white"
-              borderRadius="20px"
-              padding="8px"
-            >
-              <Box fontWeight="bold">{pollMode === 'POLL' ? 'Poll' : 'Poll results'}</Box>
-              <Box>
-                {
-                  <PollChoices
-                    pollId={currentPoll.id}
-                    pollMode={pollMode}
-                    onSubmit={onSubmitPoll}
-                  />
-                }
-              </Box>
-            </VStack>
-          )}
-          <MicCamControls localVideoRef={localVideoRef} isModerator={false} />
-          <Button size="sm" onClick={leaveTraining}>
-            Leave training
-          </Button>
-        </VStack>
-        <BjnMedia />
+    <Box onMouseMove={handleMouseMove} width="100%">
+      <HStack alignItems="start" height="100%">
+        <BjnMedia shareWebcam={shareWebcam} myAttendeeId={attendeeId} />
+        <SidePanel
+          attendees={attendees}
+          attendeeId={attendeeId}
+          chatMessages={chatMessages}
+          training={training}
+        />
       </HStack>
-      <Modal isOpen={isEndedModalOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent height="300px">
-          <ModalHeader>
-            <Flex justifyContent="center">
-              {left ? 'You have left the training.' : 'The training is over.'}
-            </Flex>
-          </ModalHeader>
-          <ModalBody>
-            <Flex justifyContent="center">Thanks for attending!</Flex>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <FloatingRightPanel
+        role="student"
+        hoverOnPanel={setHoverFloatingRightPanel}
+        panelIsVisible={showFloatingRightPanel}
+        chatIsVisible={chatIsOpen}
+        handleSettingsModalVisibility={() => setShowSettingsModal(true)}
+        handleShareDocumentsModalVisibility={onSharedDocModalOpen}
+        showWhiteboard={onWhiteboardModalOpen}
+        handleChatVisibility={handleChatVisibility}
+        handleEndTrainingModalClick={leaveTraining}
+        toggleHand={toggleHand}
+        handRaised={handRaised}
+        setWebcamMuted={(show) => setShareWebcam(show)}
+        sharedDocsCount={sharedDocs.reduce((acc, d) => {
+          if (d.shared) {
+            acc += 1
+          }
+          return acc
+        }, 0)}
+      />
+      <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
+      <OurModal isOpen={!!currentPoll} header={pollMode === 'POLL' ? 'Quick poll' : 'Poll results'}>
+        <PollChoices pollId={currentPoll?.id} pollMode={pollMode} onSubmit={onSubmitPoll} />
+      </OurModal>
+      <OurModal isOpen={isSharedDocModalOpen} header="Shared documents">
+        <Box>
+          <SharedDocs
+            trainingId={training.id}
+            sharedDocs={sharedDocs}
+            trainerMode={false}
+            isModal
+          />
+          <Button float="right" marginTop="10px" onClick={onSharedDocModalClose}>
+            Done
+          </Button>
+        </Box>
+      </OurModal>
+      <OurModal
+        isOpen={isWhiteboardModalOpen}
+        onClose={onWhiteboardModalClose}
+        header="Shared whiteboard"
+      >
+        {Whiteboard}
+        <Button marginTop="10px" float="right" onClick={onWhiteboardModalClose}>
+          Done
+        </Button>
+      </OurModal>
+      <OurModal
+        isOpen={isEndedModalOpen}
+        header={
+          <Flex justifyContent="center">
+            {left ? 'You have left the training.' : 'The training is over.'}
+          </Flex>
+        }
+      >
+        <Flex justifyContent="center">Thanks for attending!</Flex>
+      </OurModal>
       <CamInUseModal code={bjnCamInUseError} />
-    </>
+    </Box>
   )
 }

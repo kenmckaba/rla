@@ -67,40 +67,42 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
 
   return (
     <VStack alignItems="baseline">
-      <Box fontWeight="medium">{poll.question}</Box>
-      {poll.type === 'SINGLECHOICE' ? (
-        <RadioGroup onChange={setValue} value={value}>
-          <VStack alignItems="baseline">
-            {poll.answers.map((answer) => {
-              if (pollMode === 'POLL') {
+      <Box fontWeight="bold">{poll.question}</Box>
+      <Box paddingLeft="10px">
+        {poll.type === 'SINGLECHOICE' ? (
+          <RadioGroup onChange={setValue} value={value}>
+            <VStack alignItems="baseline">
+              {poll.answers.map((answer) => {
+                if (pollMode === 'POLL') {
+                  return (
+                    <Radio key={answer} value={answer} isDisabled={disabled}>
+                      {answer}
+                    </Radio>
+                  )
+                } else {
+                  return (
+                    <Box key={answer}>
+                      {answer} {answerCount(answer)}
+                    </Box>
+                  )
+                }
+              })}
+            </VStack>
+          </RadioGroup>
+        ) : (
+          <CheckboxGroup onChange={setValue} value={value}>
+            <VStack alignItems="baseline">
+              {poll.answers.map((answer) => {
                 return (
-                  <Radio key={answer} value={answer} isDisabled={disabled}>
+                  <Checkbox key={answer} value={answer} isDisabled={disabled}>
                     {answer}
-                  </Radio>
+                  </Checkbox>
                 )
-              } else {
-                return (
-                  <Box key={answer}>
-                    {answer} {answerCount(answer)}
-                  </Box>
-                )
-              }
-            })}
-          </VStack>
-        </RadioGroup>
-      ) : (
-        <CheckboxGroup onChange={setValue} value={value}>
-          <VStack alignItems="baseline">
-            {poll.answers.map((answer) => {
-              return (
-                <Checkbox key={answer} value={answer} isDisabled={disabled}>
-                  {answer}
-                </Checkbox>
-              )
-            })}
-          </VStack>
-        </CheckboxGroup>
-      )}
+              })}
+            </VStack>
+          </CheckboxGroup>
+        )}
+      </Box>
       {pollMode === 'POLL' && (
         <HStack>
           <Button size="xs" onClick={submit} isDisabled={disabled || !value}>

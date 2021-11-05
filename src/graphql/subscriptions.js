@@ -11,12 +11,20 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
       handRaised
       joinedTime
       leftTime
+      currentMood
+      posePitch
+      poseYaw
+      poseRole
       trainingId
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -25,13 +33,65 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -53,9 +113,13 @@ export const onCreateChatMessageByTrainingId = /* GraphQL */ `
       trainingId
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -64,13 +128,65 @@ export const onCreateChatMessageByTrainingId = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -81,13 +197,50 @@ export const onCreateChatMessageByTrainingId = /* GraphQL */ `
     }
   }
 `;
+export const onCreateTrainer = /* GraphQL */ `
+  subscription OnCreateTrainer {
+    onCreateTrainer {
+      id
+      name
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTrainer = /* GraphQL */ `
+  subscription OnUpdateTrainer {
+    onUpdateTrainer {
+      id
+      name
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTrainer = /* GraphQL */ `
+  subscription OnDeleteTrainer {
+    onDeleteTrainer {
+      id
+      name
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateTraining = /* GraphQL */ `
   subscription OnCreateTraining {
     onCreateTraining {
       id
+      trainerId
       title
       description
       trainerName
+      trainerEmail
+      registrationUrl
+      maxAttendees
       meetingId
       moderatorPasscode
       participantPasscode
@@ -96,6 +249,8 @@ export const onCreateTraining = /* GraphQL */ `
       endedAt
       pollMode
       currentPollId
+      whiteboardUrl
+      whiteboardShared
       attendees {
         items {
           id
@@ -105,7 +260,33 @@ export const onCreateTraining = /* GraphQL */ `
           handRaised
           joinedTime
           leftTime
+          currentMood
+          posePitch
+          poseYaw
+          poseRole
           trainingId
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -119,6 +300,28 @@ export const onCreateTraining = /* GraphQL */ `
           fromId
           toId
           trainingId
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -133,6 +336,66 @@ export const onCreateTraining = /* GraphQL */ `
           trainingId
           startedAt
           stoppedAt
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
+          responses {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      sharedDocs {
+        items {
+          id
+          title
+          type
+          url
+          shared
+          trainingId
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -147,9 +410,13 @@ export const onUpdateTraining = /* GraphQL */ `
   subscription OnUpdateTraining {
     onUpdateTraining {
       id
+      trainerId
       title
       description
       trainerName
+      trainerEmail
+      registrationUrl
+      maxAttendees
       meetingId
       moderatorPasscode
       participantPasscode
@@ -158,6 +425,8 @@ export const onUpdateTraining = /* GraphQL */ `
       endedAt
       pollMode
       currentPollId
+      whiteboardUrl
+      whiteboardShared
       attendees {
         items {
           id
@@ -167,7 +436,33 @@ export const onUpdateTraining = /* GraphQL */ `
           handRaised
           joinedTime
           leftTime
+          currentMood
+          posePitch
+          poseYaw
+          poseRole
           trainingId
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -181,6 +476,28 @@ export const onUpdateTraining = /* GraphQL */ `
           fromId
           toId
           trainingId
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -195,6 +512,66 @@ export const onUpdateTraining = /* GraphQL */ `
           trainingId
           startedAt
           stoppedAt
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
+          responses {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      sharedDocs {
+        items {
+          id
+          title
+          type
+          url
+          shared
+          trainingId
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -209,9 +586,13 @@ export const onDeleteTraining = /* GraphQL */ `
   subscription OnDeleteTraining {
     onDeleteTraining {
       id
+      trainerId
       title
       description
       trainerName
+      trainerEmail
+      registrationUrl
+      maxAttendees
       meetingId
       moderatorPasscode
       participantPasscode
@@ -220,6 +601,8 @@ export const onDeleteTraining = /* GraphQL */ `
       endedAt
       pollMode
       currentPollId
+      whiteboardUrl
+      whiteboardShared
       attendees {
         items {
           id
@@ -229,7 +612,33 @@ export const onDeleteTraining = /* GraphQL */ `
           handRaised
           joinedTime
           leftTime
+          currentMood
+          posePitch
+          poseYaw
+          poseRole
           trainingId
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -243,6 +652,28 @@ export const onDeleteTraining = /* GraphQL */ `
           fromId
           toId
           trainingId
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -257,6 +688,66 @@ export const onDeleteTraining = /* GraphQL */ `
           trainingId
           startedAt
           stoppedAt
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
+          responses {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      sharedDocs {
+        items {
+          id
+          title
+          type
+          url
+          shared
+          trainingId
+          training {
+            id
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -277,12 +768,20 @@ export const onCreateAttendee = /* GraphQL */ `
       handRaised
       joinedTime
       leftTime
+      currentMood
+      posePitch
+      poseYaw
+      poseRole
       trainingId
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -291,13 +790,65 @@ export const onCreateAttendee = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -318,12 +869,20 @@ export const onUpdateAttendee = /* GraphQL */ `
       handRaised
       joinedTime
       leftTime
+      currentMood
+      posePitch
+      poseYaw
+      poseRole
       trainingId
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -332,13 +891,65 @@ export const onUpdateAttendee = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -359,12 +970,20 @@ export const onDeleteAttendee = /* GraphQL */ `
       handRaised
       joinedTime
       leftTime
+      currentMood
+      posePitch
+      poseYaw
+      poseRole
       trainingId
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -373,13 +992,350 @@ export const onDeleteAttendee = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateSharedDoc = /* GraphQL */ `
+  subscription OnCreateSharedDoc {
+    onCreateSharedDoc {
+      id
+      title
+      type
+      url
+      shared
+      trainingId
+      training {
+        id
+        trainerId
+        title
+        description
+        trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
+        meetingId
+        moderatorPasscode
+        participantPasscode
+        scheduledTime
+        startedAt
+        endedAt
+        pollMode
+        currentPollId
+        whiteboardUrl
+        whiteboardShared
+        attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSharedDoc = /* GraphQL */ `
+  subscription OnUpdateSharedDoc {
+    onUpdateSharedDoc {
+      id
+      title
+      type
+      url
+      shared
+      trainingId
+      training {
+        id
+        trainerId
+        title
+        description
+        trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
+        meetingId
+        moderatorPasscode
+        participantPasscode
+        scheduledTime
+        startedAt
+        endedAt
+        pollMode
+        currentPollId
+        whiteboardUrl
+        whiteboardShared
+        attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSharedDoc = /* GraphQL */ `
+  subscription OnDeleteSharedDoc {
+    onDeleteSharedDoc {
+      id
+      title
+      type
+      url
+      shared
+      trainingId
+      training {
+        id
+        trainerId
+        title
+        description
+        trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
+        meetingId
+        moderatorPasscode
+        participantPasscode
+        scheduledTime
+        startedAt
+        endedAt
+        pollMode
+        currentPollId
+        whiteboardUrl
+        whiteboardShared
+        attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -402,9 +1358,13 @@ export const onCreatePoll = /* GraphQL */ `
       stoppedAt
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -413,13 +1373,65 @@ export const onCreatePoll = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -431,6 +1443,17 @@ export const onCreatePoll = /* GraphQL */ `
           attendeeId
           pollId
           response
+          poll {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -453,9 +1476,13 @@ export const onUpdatePoll = /* GraphQL */ `
       stoppedAt
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -464,13 +1491,65 @@ export const onUpdatePoll = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -482,6 +1561,17 @@ export const onUpdatePoll = /* GraphQL */ `
           attendeeId
           pollId
           response
+          poll {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -504,9 +1594,13 @@ export const onDeletePoll = /* GraphQL */ `
       stoppedAt
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -515,13 +1609,65 @@ export const onDeletePoll = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -533,6 +1679,17 @@ export const onDeletePoll = /* GraphQL */ `
           attendeeId
           pollId
           response
+          poll {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -560,9 +1717,13 @@ export const onCreatePollResponse = /* GraphQL */ `
         stoppedAt
         training {
           id
+          trainerId
           title
           description
           trainerName
+          trainerEmail
+          registrationUrl
+          maxAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -571,10 +1732,32 @@ export const onCreatePollResponse = /* GraphQL */ `
           endedAt
           pollMode
           currentPollId
+          whiteboardUrl
+          whiteboardShared
+          attendees {
+            nextToken
+          }
+          chatMessages {
+            nextToken
+          }
+          polls {
+            nextToken
+          }
+          sharedDocs {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         responses {
+          items {
+            id
+            attendeeId
+            pollId
+            response
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -602,9 +1785,13 @@ export const onUpdatePollResponse = /* GraphQL */ `
         stoppedAt
         training {
           id
+          trainerId
           title
           description
           trainerName
+          trainerEmail
+          registrationUrl
+          maxAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -613,10 +1800,32 @@ export const onUpdatePollResponse = /* GraphQL */ `
           endedAt
           pollMode
           currentPollId
+          whiteboardUrl
+          whiteboardShared
+          attendees {
+            nextToken
+          }
+          chatMessages {
+            nextToken
+          }
+          polls {
+            nextToken
+          }
+          sharedDocs {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         responses {
+          items {
+            id
+            attendeeId
+            pollId
+            response
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -644,9 +1853,13 @@ export const onDeletePollResponse = /* GraphQL */ `
         stoppedAt
         training {
           id
+          trainerId
           title
           description
           trainerName
+          trainerEmail
+          registrationUrl
+          maxAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -655,10 +1868,32 @@ export const onDeletePollResponse = /* GraphQL */ `
           endedAt
           pollMode
           currentPollId
+          whiteboardUrl
+          whiteboardShared
+          attendees {
+            nextToken
+          }
+          chatMessages {
+            nextToken
+          }
+          polls {
+            nextToken
+          }
+          sharedDocs {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         responses {
+          items {
+            id
+            attendeeId
+            pollId
+            response
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -680,9 +1915,13 @@ export const onCreateChatMessage = /* GraphQL */ `
       trainingId
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -691,13 +1930,65 @@ export const onCreateChatMessage = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -719,9 +2010,13 @@ export const onUpdateChatMessage = /* GraphQL */ `
       trainingId
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -730,13 +2025,65 @@ export const onUpdateChatMessage = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -758,9 +2105,13 @@ export const onDeleteChatMessage = /* GraphQL */ `
       trainingId
       training {
         id
+        trainerId
         title
         description
         trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -769,18 +2120,292 @@ export const onDeleteChatMessage = /* GraphQL */ `
         endedAt
         pollMode
         currentPollId
+        whiteboardUrl
+        whiteboardShared
         attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
         updatedAt
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateStudentGroup = /* GraphQL */ `
+  subscription OnCreateStudentGroup {
+    onCreateStudentGroup {
+      id
+      name
+      students {
+        items {
+          id
+          groupId
+          group {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          firstName
+          lastName
+          email
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateStudentGroup = /* GraphQL */ `
+  subscription OnUpdateStudentGroup {
+    onUpdateStudentGroup {
+      id
+      name
+      students {
+        items {
+          id
+          groupId
+          group {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          firstName
+          lastName
+          email
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteStudentGroup = /* GraphQL */ `
+  subscription OnDeleteStudentGroup {
+    onDeleteStudentGroup {
+      id
+      name
+      students {
+        items {
+          id
+          groupId
+          group {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          firstName
+          lastName
+          email
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateStudents = /* GraphQL */ `
+  subscription OnCreateStudents {
+    onCreateStudents {
+      id
+      groupId
+      group {
+        id
+        name
+        students {
+          items {
+            id
+            groupId
+            firstName
+            lastName
+            email
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      firstName
+      lastName
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateStudents = /* GraphQL */ `
+  subscription OnUpdateStudents {
+    onUpdateStudents {
+      id
+      groupId
+      group {
+        id
+        name
+        students {
+          items {
+            id
+            groupId
+            firstName
+            lastName
+            email
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      firstName
+      lastName
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteStudents = /* GraphQL */ `
+  subscription OnDeleteStudents {
+    onDeleteStudents {
+      id
+      groupId
+      group {
+        id
+        name
+        students {
+          items {
+            id
+            groupId
+            firstName
+            lastName
+            email
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      firstName
+      lastName
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateEmailContent = /* GraphQL */ `
+  subscription OnCreateEmailContent {
+    onCreateEmailContent {
+      id
+      registrationBody
+      registrationSubject
+      joinBody
+      joinSubject
+      cancelBody
+      cancelSubject
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateEmailContent = /* GraphQL */ `
+  subscription OnUpdateEmailContent {
+    onUpdateEmailContent {
+      id
+      registrationBody
+      registrationSubject
+      joinBody
+      joinSubject
+      cancelBody
+      cancelSubject
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteEmailContent = /* GraphQL */ `
+  subscription OnDeleteEmailContent {
+    onDeleteEmailContent {
+      id
+      registrationBody
+      registrationSubject
+      joinBody
+      joinSubject
+      cancelBody
+      cancelSubject
       createdAt
       updatedAt
     }

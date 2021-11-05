@@ -36,7 +36,7 @@ export const CamInUseModal = ({ code }) => {
   return (
     <Modal isOpen={!!code} scrollBehavior="inside">
       <ModalOverlay />
-      <ModalContent height="300px">
+      <ModalContent height="300px" color="darkKnight.700">
         <ModalHeader>
           <VStack>
             <Center>Join error:</Center>

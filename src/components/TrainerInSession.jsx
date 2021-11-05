@@ -1,24 +1,7 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { getTraining } from '../graphql/queries'
 import { gql, useQuery, useMutation } from '@apollo/client'
-import {
-  Box,
-  HStack,
-  VStack,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  useDisclosure,
-  Flex,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from '@chakra-ui/react'
+import { Box, HStack, useDisclosure } from '@chakra-ui/react'
 import { updateTraining } from '../graphql/mutations'
 import { useState } from 'react'
 import {
@@ -28,16 +11,24 @@ import {
   onDeletePoll,
   onUpdateAttendee,
   onUpdatePoll,
+  onCreateSharedDoc,
+  onUpdateSharedDoc,
+  onDeleteSharedDoc,
+  onCreateChatMessage,
 } from '../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
-import { TrainerPoll } from './TrainerPoll'
 import { PollModal } from './PollModal'
+import { WhiteboardModal } from './WhiteboardModal'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
-import { ClassRoster } from './ClassRoster'
-import { AddIcon } from '@chakra-ui/icons'
-import { MicCamControls } from './MicCamControls'
 import { BjnMedia } from './BjnMedia'
 import { CamInUseModal } from './CamInUseModal'
+import LeftPanel from './TrainerInSession/LeftPanel'
+import FloatingRightPanel from './TrainerInSession/FloatingRightPanel'
+import SettingsModal from './SettingsModal'
+import EndTrainingModal from './EndTrainingModal'
+import ShareDocumentsModal from './ShareDocumentsModal'
+import { ChatPanel } from './ChatComponents/ChatPanel'
+import { useHistory } from 'react-router'
 
 export const TrainerInSession = ({
   match: {
@@ -48,11 +39,14 @@ export const TrainerInSession = ({
   const [attendees, setAttendees] = useState([])
   const [pollToEdit, setPollToEdit] = useState()
   const [polls, setPolls] = useState([])
+  const [sharedDocs, setSharedDocs] = useState([])
+  const [whiteboard, setWhiteboard] = useState()
+  const [chatMessages, setChatMessages] = useState([])
+  const [whiteboardShared, setWhiteboardShared] = useState()
   const [startedPoll, setStartedPoll] = useState()
   const [startTimeUpdated, setStartTimeUpdated] = useState(false)
+  const [shareWebcam, setShareWebcam] = useState(false)
   const joined = useRef(false)
-  const localVideoRef = useRef(null)
-  const gotVideosRef = useRef(false)
   const { bjnApi, bjnIsInitialized, bjnCamInUseError } = useBlueJeans()
   const {
     data: trainingData,
@@ -63,51 +57,55 @@ export const TrainerInSession = ({
     variables: { id: trainingId },
   })
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
-  const { isOpen: isEndModalOpen, onOpen: onEndModalOpen } = useDisclosure()
   const {
     isOpen: isPollModalOpen,
     onOpen: onPollModalOpen,
     onClose: onPollModalClose,
   } = useDisclosure()
+  const {
+    isOpen: isSharedDocModalOpen,
+    onOpen: onSharedDocModalOpen,
+    onClose: onSharedDocModalClose,
+  } = useDisclosure()
+  const {
+    isOpen: isWhiteboardModalOpen,
+    onOpen: onWhiteboardModalOpen,
+    onClose: onWhiteboardModalClose,
+  } = useDisclosure()
+  const [showSettingsModal, setShowSettingsModal] = useState(false)
+  const [showEndTrainingModal, setShowEndTrainingModal] = useState(false)
+  const [chatIsOpen, setChatIsOpen] = useState(true)
+  const [hoverFloatingRightPanel, setHoverFloatingRightPanel] = useState(false)
+  const [showFloatingRightPanel, setShowFloatingRightPanel] = useState(false)
+  const history = useHistory()
 
-  const addAPoll = () => {
-    setPollToEdit(null)
-    onPollModalOpen()
+  const handleEndTrainingModalClick = () => setShowEndTrainingModal(true)
+
+  /* Mouse Movement Listener */
+  const displayTime = 1000 //ms
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)) //sleep
+  const [listener, setListener] = useState()
+  const [rightPanelAnimationEnd, setRightPanelAnimationEnd] = useState(true)
+
+  const handleMouseMove = async () => {
+    setShowFloatingRightPanel(true)
+    clearTimeout(listener)
+    if (!hoverFloatingRightPanel) {
+      if (rightPanelAnimationEnd) {
+        const timeout = setTimeout(async () => {
+          setRightPanelAnimationEnd(false)
+
+          setShowFloatingRightPanel(false)
+          const animEndTime = 500 //ms
+          await sleep(animEndTime)
+
+          setRightPanelAnimationEnd(true)
+        }, displayTime)
+
+        setListener(timeout)
+      }
+    }
   }
-
-  const Polls = useMemo(() => {
-    const startPoll = (poll) => {
-      updateCurrentTraining({
-        variables: {
-          input: {
-            id: training.id,
-            currentPollId: poll ? poll.id : '',
-            pollMode: poll?.stoppedAt ? 'SHOWRESULTS' : 'POLL',
-          },
-        },
-      })
-    }
-
-    const editPoll = (p) => {
-      setPollToEdit(p)
-      onPollModalOpen()
-    }
-
-    if (polls.length === 0) {
-      return <Box>*None*</Box>
-    }
-    return polls.map((poll) => {
-      return (
-        <TrainerPoll
-          key={poll.id}
-          pollId={poll.id}
-          startPoll={startPoll}
-          startedPoll={startedPoll}
-          editPoll={() => editPoll(poll)}
-        />
-      )
-    })
-  }, [polls, startedPoll, updateCurrentTraining, training?.id, onPollModalOpen])
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -118,15 +116,19 @@ export const TrainerInSession = ({
         subscribeToMore(buildSubscription(gql(onUpdatePoll), gql(getTraining))),
         subscribeToMore(buildSubscription(gql(onCreatePoll), gql(getTraining))),
         subscribeToMore(buildSubscription(gql(onDeletePoll), gql(getTraining))),
+        subscribeToMore(buildSubscription(gql(onCreateSharedDoc), gql(getTraining))),
+        subscribeToMore(buildSubscription(gql(onDeleteSharedDoc), gql(getTraining))),
+        subscribeToMore(buildSubscription(gql(onUpdateSharedDoc), gql(getTraining))),
+        subscribeToMore(buildSubscription(gql(onCreateChatMessage), gql(getTraining))),
       ]
       return () => {
-        cleanupFuncs.forEach((func) => func())
+        cleanupFuncs.forEach((func) => func && func())
       }
     }
   }, [subscribeToMore])
 
   useEffect(() => {
-    if (trainingData && (!training || trainingId === trainingData?.getTraining?.id)) {
+    if (trainingData?.getTraining && (!training || trainingId === trainingData?.getTraining?.id)) {
       const tr = trainingData.getTraining
       setTraining(tr)
       setAttendees(tr.attendees.items)
@@ -139,6 +141,10 @@ export const TrainerInSession = ({
       } else {
         setStartedPoll(null)
       }
+      setSharedDocs(tr.sharedDocs.items)
+      setWhiteboard(tr.whiteboardUrl)
+      setWhiteboardShared(tr.whiteboardShared)
+      setChatMessages(tr.chatMessages.items)
     }
   }, [trainingData, trainingId, training])
 
@@ -149,7 +155,7 @@ export const TrainerInSession = ({
         variables: {
           input: {
             id: training.id,
-            startedAt: Date.now(),
+            startedAt: new Date().toISOString(),
           },
         },
       })
@@ -170,27 +176,23 @@ export const TrainerInSession = ({
     joinMeeting()
   }, [training, bjnApi, bjnIsInitialized])
 
-  useEffect(() => {
-    if (localVideoRef.current && !gotVideosRef.current) {
-      bjnApi.attachLocalVideo(localVideoRef.current)
-      gotVideosRef.current = true
-    }
-  })
-
-  const endTraining = () => {
+  const handleEndTrainingClick = () => {
     bjnApi.leave(true)
-    onEndModalOpen()
     updateCurrentTraining({
       variables: {
         input: {
           id: trainingId,
-          endedAt: Date.now(),
+          endedAt: new Date().toISOString(),
         },
       },
     })
+
+    setShowEndTrainingModal(false)
+    history.push('/dashboard')
   }
 
   if (error || updateError) {
+    console.error('rla-log: error', error)
     return <p>An error occured</p>
   }
 
@@ -199,69 +201,66 @@ export const TrainerInSession = ({
   }
 
   return (
-    <>
-      <HStack align="left">
-        <VStack align="left" width="250px" minWidth="250px">
-          <Box background="white" borderRadius="16px" padding="8px">
-            <Box fontWeight="bold">Training: {training.title}</Box>
-            <Box>Description: {training.description}</Box>
-          </Box>
-          <Box align="start" background="white" borderRadius="16px" padding="8px" fontWeight="600">
-            <ClassRoster attendees={attendees} />
-          </Box>
-          <Box align="start" background="white" borderRadius="16px" padding="8px" fontWeight="600">
-            <Accordion allowMultiple width="100%" allowToggle>
-              <AccordionItem border="none">
-                <AccordionButton padding="0px">
-                  <Box flex="1" textAlign="left" fontWeight="bold">
-                    Polls
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-                <AccordionPanel padding="0" pb={4}>
-                  <Box>
-                    {Polls}
-                    <Button
-                      size="xs"
-                      variant="outline"
-                      float="right"
-                      mt="3px"
-                      onClick={addAPoll}
-                      rightIcon={<AddIcon />}
-                    >
-                      Add a poll
-                    </Button>
-                  </Box>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-          </Box>
-          <MicCamControls localVideoRef={localVideoRef} isModerator={true} />
-          <Button onClick={endTraining} width="100%">
-            End Training
-          </Button>
-        </VStack>
-        <BjnMedia />
+    <Box flex="1" width="100%" onMouseMove={handleMouseMove}>
+      <HStack align="left" height="100%">
+        <LeftPanel
+          training={training}
+          attendees={attendees}
+          polls={polls}
+          startedPoll={startedPoll}
+          updateCurrentTraining={updateCurrentTraining}
+          setPollToEdit={setPollToEdit}
+          onPollModalOpen={onPollModalOpen}
+        />
+        <BjnMedia shareWebcam={shareWebcam} myAttendeeId={null} />
+        {chatIsOpen && (
+          <ChatPanel
+            messages={chatMessages}
+            attendees={attendees}
+            trainingId={trainingId}
+            myAttendeeId={'0'}
+          />
+        )}
       </HStack>
-      <Modal isOpen={isEndModalOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent height="300px">
-          <ModalHeader>
-            <Flex justifyContent="center">The training is over</Flex>
-          </ModalHeader>
-          <ModalBody>
-            <Flex justifyContent="center">Thanks for attending!</Flex>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
 
+      <FloatingRightPanel
+        role="instructor"
+        hoverOnPanel={setHoverFloatingRightPanel}
+        panelIsVisible={showFloatingRightPanel}
+        chatIsVisible={chatIsOpen}
+        handleSettingsModalVisibility={() => setShowSettingsModal(true)}
+        handleShareDocumentsModalVisibility={onSharedDocModalOpen}
+        showWhiteboard={onWhiteboardModalOpen}
+        handleChatVisibility={() => setChatIsOpen((prev) => !prev)}
+        handleEndTrainingModalClick={handleEndTrainingModalClick}
+        setWebcamMuted={(show) => setShareWebcam(show)}
+      />
+      <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
+      <EndTrainingModal
+        isOpen={showEndTrainingModal}
+        onClose={() => setShowEndTrainingModal(false)}
+        onEndTraining={() => handleEndTrainingClick()}
+      />
+      <ShareDocumentsModal
+        docs={sharedDocs}
+        trainingId={trainingId}
+        isOpen={isSharedDocModalOpen}
+        onClose={onSharedDocModalClose}
+      />
       <PollModal
         trainingId={trainingId}
         isOpen={isPollModalOpen}
         onClose={onPollModalClose}
         poll={pollToEdit}
       />
+      <WhiteboardModal
+        trainingId={trainingId}
+        isOpen={isWhiteboardModalOpen}
+        onClose={onWhiteboardModalClose}
+        whiteboard={whiteboard}
+        shared={whiteboardShared}
+      />
       <CamInUseModal code={bjnCamInUseError} />
-    </>
+    </Box>
   )
 }
