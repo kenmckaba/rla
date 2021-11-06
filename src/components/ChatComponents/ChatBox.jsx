@@ -17,7 +17,6 @@ export default function ChatBox({ isOpen, messageList, attendees, training, myAt
   const { bjnParticipants } = useBlueJeans()
 
   const onSend = async () => {
-    console.log('saving chat msg', destination, myAttendeeId, training.id, content)
     await addNewChatMessage({
       variables: {
         input: {
@@ -49,6 +48,12 @@ export default function ChatBox({ isOpen, messageList, attendees, training, myAt
       return 'All'
     } else {
       return attendees.find((a) => a.id === id)?.name
+    }
+  }
+
+  const checkForCr = (e) => {
+    if (e.keyCode === 13) {
+      onSend()
     }
   }
 
@@ -90,7 +95,7 @@ export default function ChatBox({ isOpen, messageList, attendees, training, myAt
       </VStack>
       <FormControl isRequired marginBottom="10px">
         <FormLabel>Send to:</FormLabel>
-        <Select onChange={selectDestination}>
+        <Select fontSize="14px" height="30px" onChange={selectDestination}>
           {myAttendeeId !== trainerMsgId && (
             <option value={trainerMsgId} key="0">
               {`${training.trainerName} (trainer)`}
@@ -113,13 +118,15 @@ export default function ChatBox({ isOpen, messageList, attendees, training, myAt
       </FormControl>
       <HStack alignItems="center" width="100%">
         <Input
+          height="32px"
           borderRadius="full"
           bg="#f2f3f5"
           placeholder="Type message here..."
           value={content}
           onChange={handleMessage}
+          onKeyDown={checkForCr}
         />
-        <Button fontSize="14px" onClick={onSend} isDisabled={!content}>
+        <Button size="sm" fontSize="14px" onClick={onSend} isDisabled={!content}>
           Send
         </Button>
       </HStack>

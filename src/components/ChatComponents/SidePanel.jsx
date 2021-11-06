@@ -44,7 +44,14 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel overflowY="auto" padding="0" pb={4} sx={scrollBarStyle}>
-            <Box backgroundColor="white" color="black" paddingLeft="10px" borderBottomRadius="8px">
+            <Box
+              minHeight="60px"
+              backgroundColor="white"
+              color="black"
+              paddingLeft="10px"
+              borderBottomRadius="8px"
+              fontSize="14px"
+            >
               {bjnParticipants.map((p) => {
                 return p.isSelf ? (
                   <Box cursor="pointer" onClick={(e) => handleClick(e, p)}>

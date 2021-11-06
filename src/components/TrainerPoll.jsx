@@ -14,9 +14,10 @@ import {
   Text,
   Spacer,
 } from '@chakra-ui/react'
+import { CopyIcon } from '@chakra-ui/icons'
 import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
-import { updatePoll } from '../graphql/mutations'
+import { createPoll, updatePoll } from '../graphql/mutations'
 import { getPoll } from '../graphql/queries'
 import { onCreatePollResponse, onUpdatePoll } from '../graphql/subscriptions'
 
@@ -33,6 +34,7 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
     variables: { id: pollId },
   })
   const [updateCurrentPoll] = useMutation(gql(updatePoll))
+  const [addNewPoll] = useMutation(gql(createPoll))
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -73,6 +75,21 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
   if (error) {
     console.log('rla-log: Error', error)
     return <p>Error!</p>
+  }
+
+  const duplicate = async (e, poll) => {
+    e.preventDefault()
+    e.stopPropagation()
+    await addNewPoll({
+      variables: {
+        input: {
+          question: poll.question,
+          trainingId: poll.trainingId,
+          type: poll.type,
+          answers: poll.answers,
+        },
+      },
+    })
   }
 
   const startAPoll = (e, p) => {
@@ -136,6 +153,7 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
                   {!poll.startedAt && <EditIcon w={4} h={4} mt="1" onClick={editThisPoll} />}
                 </Flex>
                 <Spacer />
+                <CopyIcon marginRight="5px" marginTop="5px" onClick={(e) => duplicate(e, poll)} />
                 <Button
                   size="xs"
                   fontWeight="bold"

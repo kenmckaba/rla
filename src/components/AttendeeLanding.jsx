@@ -243,12 +243,14 @@ export const AttendeeLanding = ({
     <Box onMouseMove={handleMouseMove} width="100%">
       <HStack alignItems="start" height="100%">
         <BjnMedia shareWebcam={shareWebcam} myAttendeeId={attendeeId} />
-        <SidePanel
-          attendees={attendees}
-          attendeeId={attendeeId}
-          chatMessages={chatMessages}
-          training={training}
-        />
+        {chatIsOpen && (
+          <SidePanel
+            attendees={attendees}
+            attendeeId={attendeeId}
+            chatMessages={chatMessages}
+            training={training}
+          />
+        )}
       </HStack>
       <FloatingRightPanel
         role="student"

@@ -14,10 +14,10 @@ export default function ChatMessage({ senderName, recipientName, children, fromM
       padding={2}
       textAlign={fromMe ? 'right' : 'left'}
     >
-      <Heading fontSize="18px" color="#0d62c5">
+      <Heading fontSize="14px" color="#0d62c5">
         {senderName} to {recipientName}
       </Heading>
-      <Text fontSize="16px" color="#000000">
+      <Text fontSize="14px" color="#000000">
         {children}
       </Text>
     </Flex>
