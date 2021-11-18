@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import { getTraining } from '../graphql/queries'
 import { gql, useQuery, useMutation } from '@apollo/client'
-import { Box, HStack, useDisclosure } from '@chakra-ui/react'
-import { updateTraining } from '../graphql/mutations'
+import { Box, HStack, useDisclosure, Button } from '@chakra-ui/react'
+import { updateAttendee, updateTraining } from '../graphql/mutations'
 import { useState } from 'react'
 import {
   onCreateAttendee,
@@ -29,6 +29,8 @@ import EndTrainingModal from './EndTrainingModal'
 import ShareDocumentsModal from './ShareDocumentsModal'
 import { ChatPanel } from './ChatComponents/ChatPanel'
 import { useHistory } from 'react-router'
+import { useDisconnectedWarning } from './useDisconnectedWarning'
+import OurModal from './OurModal'
 
 export const TrainerInSession = ({
   match: {
@@ -46,6 +48,7 @@ export const TrainerInSession = ({
   const [startedPoll, setStartedPoll] = useState()
   const [startTimeUpdated, setStartTimeUpdated] = useState(false)
   const [shareWebcam, setShareWebcam] = useState(false)
+  const [ended, setEnded] = useState(false)
   const joined = useRef(false)
   const { bjnApi, bjnIsInitialized, bjnCamInUseError } = useBlueJeans()
   const {
@@ -57,6 +60,7 @@ export const TrainerInSession = ({
     variables: { id: trainingId },
   })
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
+  const [updateTheAttendee] = useMutation(gql(updateAttendee))
   const {
     isOpen: isPollModalOpen,
     onOpen: onPollModalOpen,
@@ -73,13 +77,14 @@ export const TrainerInSession = ({
     onClose: onWhiteboardModalClose,
   } = useDisclosure()
   const [showSettingsModal, setShowSettingsModal] = useState(false)
+  const [showEndModal, setShowEndModal] = useState(false)
   const [showEndTrainingModal, setShowEndTrainingModal] = useState(false)
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [hoverFloatingRightPanel, setHoverFloatingRightPanel] = useState(false)
   const [showFloatingRightPanel, setShowFloatingRightPanel] = useState(false)
   const history = useHistory()
-
-  const handleEndTrainingModalClick = () => setShowEndTrainingModal(true)
+  useDisconnectedWarning(ended)
+  const handleEndTrainingModalClick = () => setShowEndModal(true)
 
   /* Mouse Movement Listener */
   const displayTime = 1000 //ms
@@ -156,6 +161,7 @@ export const TrainerInSession = ({
           input: {
             id: training.id,
             startedAt: new Date().toISOString(),
+            endedAt: null,
           },
         },
       })
@@ -177,6 +183,8 @@ export const TrainerInSession = ({
   }, [training, bjnApi, bjnIsInitialized])
 
   const handleEndTrainingClick = () => {
+    setShowEndModal(false)
+    setEnded(true)
     bjnApi.leave(true)
     updateCurrentTraining({
       variables: {
@@ -186,9 +194,7 @@ export const TrainerInSession = ({
         },
       },
     })
-
-    setShowEndTrainingModal(false)
-    history.push('/dashboard')
+    setShowEndTrainingModal(true)
   }
 
   if (error || updateError) {
@@ -209,6 +215,7 @@ export const TrainerInSession = ({
           polls={polls}
           startedPoll={startedPoll}
           updateCurrentTraining={updateCurrentTraining}
+          updateAttendee={updateTheAttendee}
           setPollToEdit={setPollToEdit}
           onPollModalOpen={onPollModalOpen}
         />
@@ -217,7 +224,7 @@ export const TrainerInSession = ({
           <ChatPanel
             messages={chatMessages}
             attendees={attendees}
-            trainingId={trainingId}
+            training={training}
             myAttendeeId={'0'}
           />
         )}
@@ -236,11 +243,7 @@ export const TrainerInSession = ({
         setWebcamMuted={(show) => setShareWebcam(show)}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
-      <EndTrainingModal
-        isOpen={showEndTrainingModal}
-        onClose={() => setShowEndTrainingModal(false)}
-        onEndTraining={() => handleEndTrainingClick()}
-      />
+      <EndTrainingModal isOpen={showEndTrainingModal} onClose={() => history.push('/')} />
       <ShareDocumentsModal
         docs={sharedDocs}
         trainingId={trainingId}
@@ -261,6 +264,12 @@ export const TrainerInSession = ({
         shared={whiteboardShared}
       />
       <CamInUseModal code={bjnCamInUseError} />
+      <OurModal header="End training for all?" isOpen={showEndModal}>
+        <HStack justifyContent="space-around">
+          <Button onClick={handleEndTrainingClick}>End</Button>
+          <Button onClick={() => setShowEndModal(false)}>Cancel</Button>
+        </HStack>
+      </OurModal>
     </Box>
   )
 }

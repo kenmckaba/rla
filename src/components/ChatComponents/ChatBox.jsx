@@ -3,18 +3,20 @@ import { Select, FormControl, FormLabel, Input, Button } from '@chakra-ui/react'
 import ChatMessage from './ChatMessage'
 import { useMutation, gql } from '@apollo/client'
 import { createChatMessage } from '../../graphql/mutations'
-import { useState } from 'react'
-import { useBlueJeans } from '../../bluejeans/useBlueJeans'
+import { useState, useMemo } from 'react'
 
 const trainerMsgId = '0'
 const allMsgId = '1'
 
-export default function ChatBox({ isOpen, messageList, attendees, training, myAttendeeId }) {
+export default function ChatBox({ messageList, attendees, training, myAttendeeId }) {
   const [destination, setDestination] = useState(allMsgId)
-  const [content, setContent] = useState()
+  const [content, setContent] = useState('')
   const [addNewChatMessage] = useMutation(gql(createChatMessage))
 
-  const { bjnParticipants } = useBlueJeans()
+  const messages = useMemo(() => {
+    const temp = [...messageList]
+    return temp.sort((a, b) => (a.timeSent < b.timeSent ? -1 : 1))
+  }, [messageList])
 
   const onSend = async () => {
     await addNewChatMessage({
@@ -70,7 +72,7 @@ export default function ChatBox({ isOpen, messageList, attendees, training, myAt
       justifyContent="end"
     >
       <VStack overflow="auto">
-        {messageList.reduce((acc, message) => {
+        {messages.reduce((acc, message) => {
           if (
             message.toId === allMsgId ||
             message.toId === myAttendeeId ||
@@ -95,17 +97,17 @@ export default function ChatBox({ isOpen, messageList, attendees, training, myAt
       </VStack>
       <FormControl isRequired marginBottom="10px">
         <FormLabel>Send to:</FormLabel>
-        <Select fontSize="14px" height="30px" onChange={selectDestination}>
+        <Select fontSize="14px" defaultValue={allMsgId} height="30px" onChange={selectDestination}>
           {myAttendeeId !== trainerMsgId && (
             <option value={trainerMsgId} key="0">
               {`${training.trainerName} (trainer)`}
             </option>
           )}
-          <option value={allMsgId} key="1" selected>
+          <option value={allMsgId} key="1">
             Everyone
           </option>
           {attendees.reduce((acc, att) => {
-            if (att.id !== myAttendeeId && bjnParticipants.find((p) => p.name === att.name)) {
+            if (att.id !== myAttendeeId && att.joinedTime && !att.leftTime) {
               acc.push(
                 <option value={att.id} key={att.id}>
                   {att.name}

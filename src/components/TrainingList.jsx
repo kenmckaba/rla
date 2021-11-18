@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useQuery, gql, useMutation, useLazyQuery } from '@apollo/client'
-import { listTrainings, getTraining } from '../graphql/queries'
+import { useQuery, gql, useMutation } from '@apollo/client'
+import { listTrainings } from '../graphql/queries'
 import {
   TabList,
   Tab,
@@ -46,8 +46,6 @@ export const TrainingList = () => {
   const [deleteTheTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
-  const [getCurrentTraining, { data: trainingData }] = useLazyQuery(gql(getTraining))
-  const [trainingList, setTraininglist] = useState()
 
   const handleShowParticipantsModal = (training) => {
     setCurrentTraining(training)
@@ -59,36 +57,9 @@ export const TrainingList = () => {
   useEffect(() => {
     if (trainingListData) {
       const tr = trainingListData.listTrainings.items.filter((t) => t.title !== '<temp>')
-      setTrainings([])
-      setTraininglist(tr)
-      // tr.forEach((t) => {
-      //   getCurrentTraining({ variables: { id: t.id } })
-      // })
-      // setTrainings(tr)
+      setTrainings(tr)
     }
-  }, [trainingListData, getCurrentTraining])
-
-  useEffect(() => {
-    if (trainingList) {
-      const first = trainingList[0]
-      if (first) {
-        getCurrentTraining({ variables: { id: first.id } })
-      }
-    }
-  }, [trainingList, getCurrentTraining])
-
-  useEffect(() => {
-    if (trainingData) {
-      const tr = trainingData.getTraining
-      setTrainings((prev) => {
-        const result = [...prev, tr]
-        return result
-      })
-      setTraininglist((prev) => {
-        return prev.slice(1)
-      })
-    }
-  }, [trainingData])
+  }, [trainingListData])
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -103,15 +74,6 @@ export const TrainingList = () => {
     }
   }, [subscribeToMore])
 
-  if (error) {
-    console.error('rla-log: error', error)
-    return <p>An error occurred</p>
-  }
-
-  if (loading) {
-    return <p>Please wait...</p>
-  }
-
   const handleTrainingClick = async (training) => {
     setCurrentTraining(training)
     setNewTraining(false)
@@ -120,13 +82,15 @@ export const TrainingList = () => {
 
   const onNewTraining = async () => {
     setNewTraining(true)
+    const now = new Date()
+    const scheduledTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12, 0, 0) // noon tomorrow
     const result = await addTraining({
       variables: {
         input: {
           trainerName: '',
           title: '<temp>',
           meetingId: '',
-          scheduledTime: new Date().toISOString(),
+          scheduledTime,
           moderatorPasscode: '',
           participantPasscode: '',
         },
@@ -153,9 +117,12 @@ export const TrainingList = () => {
         </Tr>
       )
     }
-    const selected = trainings.filter((training) => {
-      return past === !!training.startedAt
-    })
+    const selected = trainings
+      .filter((training) => {
+        return past === !!training.startedAt
+      })
+      .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1))
+
     if (selected?.length === 0) {
       return (
         <Tr>
@@ -176,7 +143,6 @@ export const TrainingList = () => {
           setTrainingHovered(-1)
         }}
         cursor="pointer"
-        onClick={() => handleTrainingClick(training)}
       >
         <Flex
           borderRadius="5px"
@@ -279,6 +245,23 @@ export const TrainingList = () => {
     ))
   }
 
+  const PastTrainings = () => {
+    return Trainings({ past: true })
+  }
+
+  const FutureTrainings = () => {
+    return Trainings({ past: false })
+  }
+
+  if (error) {
+    console.error('rla-log: error', error)
+    return <p>An error occurred</p>
+  }
+
+  if (loading) {
+    return <p>Please wait...</p>
+  }
+
   const ListTable = ({ children }) => {
     return (
       <Table variant="unstyled">
@@ -366,10 +349,10 @@ export const TrainingList = () => {
             </Flex>
             <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
               <TabPanel p={0} m={0}>
-                <ListTable>{Trainings({ past: false })}</ListTable>
+                <ListTable>{FutureTrainings()}</ListTable>
               </TabPanel>
               <TabPanel p={0} m={0}>
-                <ListTable>{Trainings({ past: true })}</ListTable>
+                <ListTable>{PastTrainings()}</ListTable>
               </TabPanel>
             </TabPanels>
           </Tabs>

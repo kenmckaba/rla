@@ -3,11 +3,12 @@ import { Table, Tr, Th, Td, Tbody, Thead, Button, Flex, useDisclosure } from '@c
 import { AddIcon } from '@chakra-ui/icons'
 import { PollModal } from './PollModal'
 
-export const Polls = ({ trainingId, polls }) => {
+export const Polls = ({ trainingId, polls, saveTraining }) => {
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const [currentPoll, setCurrentPoll] = useState()
 
   const addPoll = () => {
+    saveTraining()
     setCurrentPoll(null)
     onModalOpen()
   }

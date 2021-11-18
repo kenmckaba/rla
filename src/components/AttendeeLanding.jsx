@@ -1,7 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { getAttendee, getSharedDoc, getTraining } from '../graphql/queries'
-import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
-import { Box, Button, Flex, useDisclosure, Link, HStack } from '@chakra-ui/react'
+import { getAttendee, getSharedDoc } from '../graphql/queries'
+import { gql, useMutation, useQuery } from '@apollo/client'
+import {
+  Box,
+  Button,
+  Flex,
+  useDisclosure,
+  Link,
+  HStack,
+  Modal,
+  ModalHeader,
+  ModalContent,
+  ModalBody,
+} from '@chakra-ui/react'
 import { createPollResponse, updateAttendee } from '../graphql/mutations'
 import { buildSubscription } from 'aws-appsync'
 import {
@@ -20,6 +31,7 @@ import OurModal from './OurModal'
 import { SharedDocs } from './SharedDocs'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { SidePanel } from './ChatComponents/SidePanel'
+import { useDisconnectedWarning } from './useDisconnectedWarning'
 
 export const AttendeeLanding = ({
   match: {
@@ -34,8 +46,7 @@ export const AttendeeLanding = ({
   } = useQuery(gql(getAttendee), {
     variables: { id: attendeeId },
   })
-  const [getCurrentTraining, { data: trainingData }] = useLazyQuery(gql(getTraining))
-  const { bjnApi, bjnIsInitialized, bjnConnectionState, bjnCamInUseError } = useBlueJeans()
+  const { bjnApi, bjnIsInitialized, bjnCamInUseError } = useBlueJeans()
   const [attendee, setAttendee] = useState()
   const joined = useRef(false)
   const updatingJoinedTime = useRef(false)
@@ -73,10 +84,14 @@ export const AttendeeLanding = ({
   const displayTime = 1000 //ms
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
   const [listener, setListener] = useState()
+  const [showLeaveModal, setShowLeaveModal] = useState(false)
   const [rightPanelAnimationEnd, setRightPanelAnimationEnd] = useState(true)
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [attendees, setAttendees] = useState([])
   const [shareWebcam, setShareWebcam] = useState(false)
+  const [hasLeftOrEnded, setHasLeftOrEnded] = useState(false)
+
+  useDisconnectedWarning(hasLeftOrEnded)
 
   const handleMouseMove = async () => {
     setShowFloatingRightPanel(true)
@@ -102,7 +117,7 @@ export const AttendeeLanding = ({
         subscribeToMore(buildSubscription(gql(onUpdateAttendee), gql(getAttendee))),
         subscribeToMore(buildSubscription(gql(onUpdateTraining), gql(getAttendee))),
         subscribeToMore(buildSubscription(gql(onUpdateSharedDoc), gql(getSharedDoc))),
-        subscribeToMore(buildSubscription(gql(onCreateChatMessage), gql(getTraining))),
+        subscribeToMore(buildSubscription(gql(onCreateChatMessage), gql(getAttendee))),
       ]
       return () => {
         cleanupFuncs.forEach((func) => func && func())
@@ -118,14 +133,12 @@ export const AttendeeLanding = ({
       setAttendee(att)
       setParticipantName(att.name)
       setHandRaised(att.handRaised)
-      const tr = att.training
-      // have to retrieve training since polls aren't returned from attendee.training because query depth = 2
-      getCurrentTraining({ variables: { id: tr.id } })
     }
-  }, [attendeeData, attendeeId, attendee, getCurrentTraining])
+  }, [attendeeData, attendeeId, attendee])
 
   useEffect(() => {
-    if (bjnConnectionState === 'DISCONNECTED') {
+    if (training && training.endedAt) {
+      setHasLeftOrEnded(true)
       onEndedModalOpen()
       updateCurrentAttendee({
         variables: {
@@ -136,11 +149,11 @@ export const AttendeeLanding = ({
         },
       })
     }
-  }, [bjnConnectionState, attendeeId, onEndedModalOpen, updateCurrentAttendee])
+  }, [training, attendeeId, onEndedModalOpen, updateCurrentAttendee])
 
   useEffect(() => {
-    if (trainingData) {
-      const tr = trainingData.getTraining
+    if (attendee) {
+      const tr = attendee.training
       setTraining(tr)
       const d = tr.sharedDocs.items
       setSharedDocs(d)
@@ -157,7 +170,7 @@ export const AttendeeLanding = ({
         setPollMode('NONE')
       }
     }
-  }, [trainingData])
+  }, [attendee])
 
   useEffect(() => {
     if (attendee && !updatedJoinedTime.current) {
@@ -215,6 +228,8 @@ export const AttendeeLanding = ({
   }
 
   const leaveTraining = () => {
+    setShowLeaveModal(false)
+    setHasLeftOrEnded(true)
     bjnApi.leave(false)
     updateCurrentAttendee({
       variables: {
@@ -225,6 +240,7 @@ export const AttendeeLanding = ({
       },
     })
     setLeft(true)
+    onEndedModalOpen()
   }
 
   const onSubmitPoll = async (response) => {
@@ -261,7 +277,7 @@ export const AttendeeLanding = ({
         handleShareDocumentsModalVisibility={onSharedDocModalOpen}
         showWhiteboard={onWhiteboardModalOpen}
         handleChatVisibility={handleChatVisibility}
-        handleEndTrainingModalClick={leaveTraining}
+        handleEndTrainingModalClick={() => setShowLeaveModal(true)}
         toggleHand={toggleHand}
         handRaised={handRaised}
         setWebcamMuted={(show) => setShareWebcam(show)}
@@ -273,21 +289,24 @@ export const AttendeeLanding = ({
         }, 0)}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
-      <OurModal isOpen={!!currentPoll} header={pollMode === 'POLL' ? 'Quick poll' : 'Poll results'}>
-        <PollChoices pollId={currentPoll?.id} pollMode={pollMode} onSubmit={onSubmitPoll} />
-      </OurModal>
-      <OurModal isOpen={isSharedDocModalOpen} header="Shared documents">
-        <Box>
-          <SharedDocs
-            trainingId={training.id}
-            sharedDocs={sharedDocs}
-            trainerMode={false}
-            isModal
-          />
+      <Modal variant="noCapture" trapFocus={false} isOpen={!!currentPoll} scrollBehavior="inside">
+        <ModalContent color="darkKnight.700">
+          <ModalHeader>{pollMode === 'POLL' ? 'Quick poll' : 'Poll results'}</ModalHeader>
+          <ModalBody>
+            <PollChoices pollId={currentPoll?.id} pollMode={pollMode} onSubmit={onSubmitPoll} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+      <OurModal
+        isOpen={isSharedDocModalOpen}
+        header="Shared documents"
+        footer={
           <Button float="right" marginTop="10px" onClick={onSharedDocModalClose}>
             Done
           </Button>
-        </Box>
+        }
+      >
+        <SharedDocs trainingId={training.id} sharedDocs={sharedDocs} trainerMode={false} isModal />
       </OurModal>
       <OurModal
         isOpen={isWhiteboardModalOpen}
@@ -310,6 +329,12 @@ export const AttendeeLanding = ({
         <Flex justifyContent="center">Thanks for attending!</Flex>
       </OurModal>
       <CamInUseModal code={bjnCamInUseError} />
+      <OurModal header="Leave training?" isOpen={showLeaveModal}>
+        <HStack justifyContent="space-around">
+          <Button onClick={leaveTraining}>Leave</Button>
+          <Button onClick={() => setShowLeaveModal(false)}>Cancel</Button>
+        </HStack>
+      </OurModal>
     </Box>
   )
 }

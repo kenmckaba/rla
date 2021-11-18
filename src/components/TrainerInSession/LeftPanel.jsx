@@ -21,6 +21,7 @@ export default function LeftPanel({
   updateCurrentTraining,
   setPollToEdit,
   onPollModalOpen,
+  updateAttendee,
 }) {
   const Polls = useMemo(() => {
     const startPoll = (poll) => {
@@ -61,6 +62,17 @@ export default function LeftPanel({
     onPollModalOpen()
   }
 
+  const lowerHand = (attendeeId) => {
+    updateAttendee({
+      variables: {
+        input: {
+          id: attendeeId,
+          handRaised: false,
+        },
+      },
+    })
+  }
+
   return (
     <>
       <VStack
@@ -81,7 +93,11 @@ export default function LeftPanel({
           <Text opacity="0.5">{training.description}</Text>
         </Box>
         <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
-          <ClassRoster attendees={attendees} paddingBottom="2" />
+          <ClassRoster
+            attendees={attendees}
+            paddingBottom="2"
+            lowerHand={(attendee) => lowerHand(attendee)}
+          />
         </Box>
 
         <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">

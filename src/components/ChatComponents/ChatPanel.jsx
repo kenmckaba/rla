@@ -1,5 +1,4 @@
 import { Text } from '@chakra-ui/layout'
-import Chat from './Chat'
 import {
   Accordion,
   AccordionButton,
@@ -8,8 +7,9 @@ import {
   AccordionPanel,
 } from '@chakra-ui/accordion'
 import { scrollBarStyle } from '../../theme/components/scrollbar'
+import ChatBox from './ChatBox'
 
-export const ChatPanel = ({ messages, attendees, trainingId, myAttendeeId }) => {
+export const ChatPanel = ({ messages, attendees, training, myAttendeeId }) => {
   return (
     <Accordion width="600px" defaultIndex={0} allowToggle>
       <AccordionItem p={0} m={0} border="none">
@@ -20,10 +20,10 @@ export const ChatPanel = ({ messages, attendees, trainingId, myAttendeeId }) => 
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel overflowY="auto" padding="0" pb={4} sx={scrollBarStyle}>
-          <Chat
-            messages={messages}
+          <ChatBox
+            messageList={messages}
             attendees={attendees}
-            trainingId={trainingId}
+            training={training}
             myAttendeeId={myAttendeeId}
           />
         </AccordionPanel>

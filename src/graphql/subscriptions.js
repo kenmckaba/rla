@@ -111,87 +111,6 @@ export const onCreateChatMessageByTrainingId = /* GraphQL */ `
       fromId
       toId
       trainingId
-      training {
-        id
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -300,28 +219,6 @@ export const onCreateTraining = /* GraphQL */ `
           fromId
           toId
           trainingId
-          training {
-            id
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            createdAt
-            updatedAt
-          }
           createdAt
           updatedAt
         }
@@ -476,28 +373,6 @@ export const onUpdateTraining = /* GraphQL */ `
           fromId
           toId
           trainingId
-          training {
-            id
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            createdAt
-            updatedAt
-          }
           createdAt
           updatedAt
         }
@@ -652,28 +527,6 @@ export const onDeleteTraining = /* GraphQL */ `
           fromId
           toId
           trainingId
-          training {
-            id
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            createdAt
-            updatedAt
-          }
           createdAt
           updatedAt
         }
@@ -1700,6 +1553,42 @@ export const onDeletePoll = /* GraphQL */ `
     }
   }
 `;
+export const onCreateStoredPoll = /* GraphQL */ `
+  subscription OnCreateStoredPoll {
+    onCreateStoredPoll {
+      id
+      question
+      type
+      answers
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateStoredPoll = /* GraphQL */ `
+  subscription OnUpdateStoredPoll {
+    onUpdateStoredPoll {
+      id
+      question
+      type
+      answers
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteStoredPoll = /* GraphQL */ `
+  subscription OnDeleteStoredPoll {
+    onDeleteStoredPoll {
+      id
+      question
+      type
+      answers
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreatePollResponse = /* GraphQL */ `
   subscription OnCreatePollResponse {
     onCreatePollResponse {
@@ -1913,87 +1802,6 @@ export const onCreateChatMessage = /* GraphQL */ `
       fromId
       toId
       trainingId
-      training {
-        id
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -2008,87 +1816,6 @@ export const onUpdateChatMessage = /* GraphQL */ `
       fromId
       toId
       trainingId
-      training {
-        id
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -2103,87 +1830,6 @@ export const onDeleteChatMessage = /* GraphQL */ `
       fromId
       toId
       trainingId
-      training {
-        id
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }

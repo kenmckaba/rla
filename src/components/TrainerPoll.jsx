@@ -1,5 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { EditIcon } from '@chakra-ui/icons'
+import { EditIcon, CopyIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -14,16 +14,16 @@ import {
   Text,
   Spacer,
 } from '@chakra-ui/react'
-import { CopyIcon } from '@chakra-ui/icons'
 import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
 import { createPoll, updatePoll } from '../graphql/mutations'
 import { getPoll } from '../graphql/queries'
 import { onCreatePollResponse, onUpdatePoll } from '../graphql/subscriptions'
+import { usePollResponses } from './usePollResponses'
 
 export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPoll }) => {
   const [poll, setPoll] = useState()
-  const [responseCounts, setResponseCounts] = useState({})
+  const responseCounts = usePollResponses(poll)
 
   const {
     data: pollData,
@@ -57,14 +57,6 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
     if (pollData) {
       const p = pollData.getPoll
       setPoll(p)
-      const counts = p.responses.items.reduce((acc, resp) => {
-        if (acc[resp.response] === undefined) {
-          acc[resp.response] = 0
-        }
-        acc[resp.response] += 1
-        return acc
-      }, {})
-      setResponseCounts(counts)
     }
   }, [pollData])
 
@@ -149,11 +141,12 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
                   >
                     {poll.question}
                   </Text>
-
-                  {!poll.startedAt && <EditIcon w={4} h={4} mt="1" onClick={editThisPoll} />}
                 </Flex>
                 <Spacer />
-                <CopyIcon marginRight="5px" marginTop="5px" onClick={(e) => duplicate(e, poll)} />
+                {!poll.startedAt && (
+                  <EditIcon w={4} h={4} marginTop="3px" marginRight="5px" onClick={editThisPoll} />
+                )}
+                <CopyIcon marginRight="5px" marginTop="3px" onClick={(e) => duplicate(e, poll)} />
                 <Button
                   size="xs"
                   fontWeight="bold"

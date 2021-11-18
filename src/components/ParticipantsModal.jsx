@@ -7,23 +7,14 @@ import AddAttendeeModal from './AddAttendeeModal'
 
 const AttendeeItem = ({ attendee }) => (
   <HStack>
-    <Avatar
-      key={attendee.id}
-      size="md"
-      name={attendee.name}
-      color="white"
-      bg="#0D62C5"
-    />
+    <Avatar key={attendee.id} size="md" name={attendee.name} color="white" bg="#0D62C5" />
 
     <VStack spacing="0">
       <Text color="#444444" fontSize="2xl" height="28px">
         {attendee.name}
       </Text>
 
-      <Text height="18px">
-        {attendee.email}
-      </Text>
-
+      <Text height="18px">{attendee.email}</Text>
     </VStack>
   </HStack>
 )
@@ -35,15 +26,22 @@ export default function ParticipantsModal({ isOpen, onClose, training }) {
 
   return (
     <>
-      <Modal variant="primary-transparent" isOpen={isOpen} onClose={onClose} scrollBehavior="inside">
+      <Modal
+        variant="primary-transparent"
+        isOpen={isOpen}
+        onClose={onClose}
+        scrollBehavior="inside"
+      >
         <ModalOverlay />
         <ModalContent paddingBottom="8" paddingTop="4">
           <ModalHeader color="darkKnight.700">
             {`${attendees.length} ${attendees.length === 1 ? 'Participant' : 'Participants'}`}
           </ModalHeader>
-          <ModalBody color="darkKnight.700" >
+          <ModalBody color="darkKnight.700">
             <VStack align="flex-start" spacing="8" marginBottom="8">
-              {attendees.map(attendee => <AttendeeItem attendee={attendee} />)}
+              {attendees.map((attendee) => (
+                <AttendeeItem key={attendee.id} attendee={attendee} />
+              ))}
             </VStack>
             <Button
               size="sm"

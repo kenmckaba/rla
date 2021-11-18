@@ -11,12 +11,13 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { getPoll } from '../graphql/queries'
+import { usePollResponses } from './usePollResponses'
 
 export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
   const [value, setValue] = useState()
   const [poll, setPoll] = useState()
   const [disabled, setDisabled] = useState(false)
-  const [responseCounts, setResponseCounts] = useState({})
+  const responseCounts = usePollResponses(poll)
 
   const {
     data: pollData,
@@ -27,17 +28,10 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
   })
 
   useEffect(() => {
+    // duplicated in trainerpoll, make a custom hook
     if (pollData) {
       const p = pollData.getPoll
       setPoll(p)
-      const counts = p.responses.items.reduce((acc, resp) => {
-        if (acc[resp.response] === undefined) {
-          acc[resp.response] = 0
-        }
-        acc[resp.response] += 1
-        return acc
-      }, {})
-      setResponseCounts(counts)
     }
   }, [pollData])
 
@@ -93,10 +87,14 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
           <CheckboxGroup onChange={setValue} value={value}>
             <VStack alignItems="baseline">
               {poll.answers.map((answer) => {
-                return (
+                return pollMode === 'POLL' ? (
                   <Checkbox key={answer} value={answer} isDisabled={disabled}>
                     {answer}
                   </Checkbox>
+                ) : (
+                  <Box key={answer}>
+                    {answer} {answerCount(answer)}
+                  </Box>
                 )
               })}
             </VStack>

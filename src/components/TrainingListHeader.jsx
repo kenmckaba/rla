@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { H1Heading } from './shared/Heading'
 import { Auth } from 'aws-amplify'
-import { Button } from '@chakra-ui/button'
+import { Button, HStack, Box } from '@chakra-ui/react'
 import OurModal from './OurModal'
-import { HStack } from '@chakra-ui/layout'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { EmailListForm } from './EmailListForm'
+import { PollsCatalog } from './PollsCatalog'
 
 export default function TrainingListHeader({ trainings }) {
   const [userName, setUserName] = useState()
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen: isEmailsOpen, onOpen: onEmailsOpen, onClose: onEmailsClose } = useDisclosure()
+  const { isOpen: isPollsOpen, onOpen: onPollsOpen, onClose: onPollsClose } = useDisclosure()
   useEffect(() => {
     Auth.currentUserInfo().then((info) => {
       setUserName(info?.username)
@@ -48,23 +49,27 @@ export default function TrainingListHeader({ trainings }) {
   }
 
   return (
-    <>
-      <HStack justifyContent="space-between">
-        <H1Heading mb="24">
-          Good afternoon {userName}.
-          <br />
-          {nextTrainingOfToday() === 0
-            ? 'You don\'t have any meetings today'
-            : 'Your next meeting is scheduled at ' + nextTrainingOfToday()}
-        </H1Heading>
-        <Button size="xs" onClick={onOpen}>
+    <Box marginBottom="20px">
+      <H1Heading>
+        Good afternoon {userName}.
+        <br />
+        {nextTrainingOfToday() === 0
+          ? 'You don\'t have any meetings today'
+          : 'Your next meeting is scheduled at ' + nextTrainingOfToday()}
+      </H1Heading>
+      <HStack mb="25px">
+        <Button size="xs" onClick={onEmailsOpen}>
           Manage email lists
+        </Button>
+        <Button size="xs" onClick={onPollsOpen}>
+          Manage polls catalog
         </Button>
       </HStack>
 
-      <OurModal isOpen={isOpen} header="Manage email lists">
-        <EmailListForm onClose={onClose} />
+      <OurModal isOpen={isEmailsOpen} header="Manage email lists">
+        <EmailListForm onClose={onEmailsClose} />
       </OurModal>
-    </>
+      <PollsCatalog isOpen={isPollsOpen} onClose={onPollsClose} />
+    </Box>
   )
 }

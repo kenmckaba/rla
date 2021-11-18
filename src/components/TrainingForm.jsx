@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   Input,
   Select,
@@ -16,8 +16,8 @@ import {
   useClipboard,
   Spinner,
 } from '@chakra-ui/react'
-import { getTraining, listStudentGroups, listStudents } from '../graphql/queries'
-import { useMutation, gql, useQuery, useLazyQuery } from '@apollo/client'
+import { getTraining, listStudentGroups } from '../graphql/queries'
+import { useMutation, gql, useQuery } from '@apollo/client'
 import { updateTraining } from '../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
 import { AttendeeForm } from './AttendeeForm'
@@ -38,6 +38,7 @@ import { SharedDocs } from './SharedDocs'
 import { AccordionItemCustom } from './AccordionItemCustom'
 import OurModal from './OurModal'
 import { sendRegistrationEmails } from '../utils/sendRegistrationEmails'
+import { EmailSelection } from './EmailSelection'
 
 export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [training, setTraining] = useState()
@@ -46,7 +47,8 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [description, setDescription] = useState('')
   const [trainerName, setTrainerName] = useState('')
   const [trainerEmail, setTrainerEmail] = useState('')
-  const [scheduledTime, setScheduledTime] = useState(new Date())
+  const [scheduledDate, setScheduledDate] = useState()
+  const [scheduledTime, setScheduledTime] = useState()
   const [registrationUrl] = useState(`${window.location.origin}/registration/${trainingId}`)
   const [meetingId, setMeetingId] = useState('950585018')
   const [moderatorPasscode, setModeratorPasscode] = useState('1599')
@@ -55,10 +57,11 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [polls, setPolls] = useState([])
   const [sharedDocs, setSharedDocs] = useState([])
   const [whiteboardUrl, setWhiteboard] = useState('')
-  const [maxAttendees, setMaxAttendees] = useState(25)
+  const [maxAttendees, setMaxAttendees] = useState('25')
   const [currentAttendee, setCurrentAttendee] = useState()
   const [selectedEmailGroup, setSelectedEmailGroup] = useState()
-  const sendingEmails = useRef(false)
+  const [selectedStudents, setSelectedStudents] = useState([])
+
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
   const {
     data: trainingData,
@@ -69,8 +72,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     variables: { id: trainingId },
   })
   const { data: groupListData } = useQuery(gql(listStudentGroups))
-
-  const [getEmailAttendees, { data: emailAttendeesData }] = useLazyQuery(gql(listStudents))
 
   const {
     isOpen: isNewattendeeModalOpen,
@@ -89,6 +90,37 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   } = useDisclosure()
   const { onCopy } = useClipboard(registrationUrl)
 
+  const Times = useMemo(() => {
+    const ampm = ['AM', 'PM']
+    const result = []
+    let key = 0
+    let ampmIndex = 0
+    let hour = 1
+    while (ampmIndex < ampm.length) {
+      while (true) {
+        if (hour === 12) {
+          ampmIndex += 1
+          if (ampmIndex === ampm.length) {
+            break
+          }
+        }
+        if (hour === 13) {
+          hour = 1
+        }
+        for (let minutes = 0; minutes < 60; minutes += 15) {
+          result.push(
+            <option key={key}>{`${hour}:${minutes.toString().padStart(2, '0')} ${
+              ampm[ampmIndex]
+            }`}</option>,
+          )
+          key++
+        }
+        hour += 1
+      }
+    }
+    return result
+  }, [])
+
   useEffect(() => {
     if (trainingData) {
       const tr = trainingData.getTraining
@@ -97,7 +129,14 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
       setDescription((prev) => tr.description || prev)
       setTrainerName(tr.trainerName || '')
       setTrainerEmail(tr.trainerEmail)
-      setScheduledTime(new Date(tr.scheduledTime))
+      setScheduledDate(new Date(tr.scheduledTime))
+      setScheduledTime(() => {
+        const date = new Date(tr.scheduledTime).toLocaleTimeString()
+        const strs = date.split(':')
+        const hrs = strs[0]
+        const mins = strs[1]
+        return `${hrs}:${mins} ${date.substr(-2, 2)}`
+      })
       setMaxAttendees(tr.maxAttendees || 25)
       setMeetingId((prev) => tr.meetingId || prev)
       setModeratorPasscode((prev) => tr.moderatorPasscode || prev)
@@ -108,22 +147,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
       setWhiteboard((prev) => tr.whiteboardUrl || prev)
     }
   }, [trainingData])
-
-  useEffect(() => {
-    const getEmailList = async () => {
-      if (emailAttendeesData && !sendingEmails.current) {
-        sendingEmails.current = true // this can be called multiple times
-        // todo: should filter in graphql
-        const students = emailAttendeesData.listStudents.items.filter(
-          (s) => s.groupId === selectedEmailGroup,
-        )
-        await sendRegistrationEmails(training, students)
-        onWaitModalClose()
-        onClose()
-      }
-    }
-    getEmailList()
-  }, [emailAttendeesData, selectedEmailGroup, training, onClose, onWaitModalClose])
 
   useEffect(() => {
     if (groupListData) {
@@ -178,7 +201,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   }
 
   const onChangeScheduledFor = (value) => {
-    setScheduledTime(value)
+    setScheduledDate(value)
   }
 
   const onChangeModeratorPasscode = (event) => {
@@ -198,6 +221,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   }
 
   const mutationVars = () => {
+    const time = fixDate()
     return {
       variables: {
         input: {
@@ -207,7 +231,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           trainerEmail,
           title,
           meetingId,
-          scheduledTime: scheduledTime.toISOString(),
+          scheduledTime: time.toISOString(),
           maxAttendees,
           moderatorPasscode,
           participantPasscode,
@@ -218,14 +242,36 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     }
   }
 
+  const fixDate = () => {
+    const first = scheduledTime.split(':')
+    const minutesAmpm = first[1].split(' ')
+    let hour = Number(first[0])
+    const min = Number(minutesAmpm[0])
+    const ampm = minutesAmpm[1]
+    if (ampm === 'PM' && hour < 12) {
+      hour += 12
+    }
+    const theDate = new Date(
+      scheduledDate.getFullYear(),
+      scheduledDate.getMonth(),
+      scheduledDate.getDate(),
+      hour,
+      min,
+      0,
+    )
+    return theDate
+  }
+
   const sendRegEmails = async () => {
-    onWaitModalOpen()
-    getEmailAttendees()
     onEmailsModalClose()
-    updateCurrentTraining(mutationVars())
+    onWaitModalOpen()
+    await sendRegistrationEmails(training, selectedStudents)
+    onWaitModalClose()
+    onClose()
   }
 
   const handleSubmit = async () => {
+    await updateCurrentTraining(mutationVars())
     onEmailsModalOpen()
   }
 
@@ -263,13 +309,19 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     onDelete(trainingId)
   }
 
-  const openRegPage = (e) => {
+  const startTraining = (e) => {
     updateCurrentTraining(mutationVars()) // save in case they try to join
     window.open(`/trainerInSession/${trainingId}`)
   }
 
   const setEmailGroup = (e) => {
-    setSelectedEmailGroup(e.target.value)
+    const id = e.target.value
+    const group = emailGroupList.find((g) => g.id === id)
+    setSelectedEmailGroup(group)
+  }
+
+  const onChangeTime = (e) => {
+    setScheduledTime(e.target.value)
   }
 
   const missingFields = () => {
@@ -312,14 +364,19 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         </HStack>
         <HStack>
           <FormControl isRequired>
-            <FormLabel>Date & Time</FormLabel>
+            <FormLabel>Date</FormLabel>
             <DatePicker
               fontSize="12"
-              selected={scheduledTime}
-              onChange={(date) => onChangeScheduledFor(date)}
-              showTimeSelect
-              dateFormat="Pp"
+              selected={scheduledDate}
+              onChange={onChangeScheduledFor}
+              dateFormat="MMM d, yyyy"
             />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Time</FormLabel>
+            <Select fontSize="12px" height="25px" onChange={onChangeTime} value={scheduledTime}>
+              {Times}
+            </Select>
           </FormControl>
           <FormControl>
             <FormLabel>Max attendees</FormLabel>
@@ -382,7 +439,11 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             <AttendeeList attendees={attendees} updateAttendee={handleOpenAttendee} />
           </AccordionItemCustom>
           <AccordionItemCustom title="Polls">
-            <Polls trainingId={trainingId} polls={polls} />
+            <Polls
+              trainingId={trainingId}
+              saveTraining={() => updateCurrentTraining(mutationVars())}
+              polls={polls}
+            />
           </AccordionItemCustom>
           <AccordionItemCustom title="Shared documents">
             <SharedDocs trainingId={trainingId} sharedDocs={sharedDocs} trainerMode={true} />
@@ -390,11 +451,11 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           <AccordionItemCustom title="BlueJeans meeting">
             <HStack mt="3">
               <FormControl isRequired>
-                <FormLabel>BlueJeans meeting ID</FormLabel>
+                <FormLabel margin="0">BlueJeans meeting ID</FormLabel>
                 <Input fontSize="12" value={meetingId} onChange={onChangeMeetingId} h="24px" />
               </FormControl>
               <FormControl isRequired>
-                <FormLabel>Moderator passcode</FormLabel>
+                <FormLabel margin="0">Moderator passcode</FormLabel>
                 <Input
                   fontSize="12"
                   value={moderatorPasscode}
@@ -403,7 +464,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 />
               </FormControl>
               <FormControl isRequired>
-                <FormLabel>Participant passcode</FormLabel>
+                <FormLabel margin="0">Participant passcode</FormLabel>
                 <Input
                   fontSize="12"
                   value={participantPasscode}
@@ -421,8 +482,8 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         size="sm"
         as="a"
         variant="outline"
-        onClick={openRegPage}
-        isDisabled={missingFields()}
+        onClick={startTraining}
+        isDisabled={missingFields}
       >
         Start
       </Button>
@@ -460,6 +521,16 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         header={<Center>Send registration invitation emails?</Center>}
         isOpen={isEmailsModalOpen}
         onClose={onEmailsModalClose}
+        footer={
+          <Center marginTop="15px">
+            <Button isDisabled={!selectedStudents.length} onClick={sendRegEmails}>
+              Send emails
+            </Button>
+            <Button marginLeft="10px" onClick={handleSave}>
+              Skip
+            </Button>
+          </Center>
+        }
       >
         {emailGroupList?.length ? (
           <Select placeholder="Select email group" onChange={setEmailGroup}>
@@ -475,16 +546,14 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             })}
           </Select>
         ) : (
-          <Box>*No email groups defined*</Box>
+          <Box>*No email groups saved*</Box>
         )}
-        <Center marginTop="15px">
-          <Button isDisabled={!selectedEmailGroup} onClick={sendRegEmails}>
-            Send emails
-          </Button>
-          <Button marginLeft="10px" onClick={handleSave}>
-            Skip
-          </Button>
-        </Center>
+        {selectedEmailGroup && (
+          <EmailSelection
+            students={selectedEmailGroup.students.items}
+            onSelectedStudents={setSelectedStudents}
+          />
+        )}
       </OurModal>
       <OurModal header="Sending emails" isOpen={isWaitModalOpen}>
         <Center>

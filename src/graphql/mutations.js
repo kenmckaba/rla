@@ -116,28 +116,6 @@ export const createTraining = /* GraphQL */ `
           fromId
           toId
           trainingId
-          training {
-            id
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            createdAt
-            updatedAt
-          }
           createdAt
           updatedAt
         }
@@ -295,28 +273,6 @@ export const updateTraining = /* GraphQL */ `
           fromId
           toId
           trainingId
-          training {
-            id
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            createdAt
-            updatedAt
-          }
           createdAt
           updatedAt
         }
@@ -474,28 +430,6 @@ export const deleteTraining = /* GraphQL */ `
           fromId
           toId
           trainingId
-          training {
-            id
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            createdAt
-            updatedAt
-          }
           createdAt
           updatedAt
         }
@@ -1549,6 +1483,51 @@ export const deletePoll = /* GraphQL */ `
     }
   }
 `;
+export const createStoredPoll = /* GraphQL */ `
+  mutation CreateStoredPoll(
+    $input: CreateStoredPollInput!
+    $condition: ModelStoredPollConditionInput
+  ) {
+    createStoredPoll(input: $input, condition: $condition) {
+      id
+      question
+      type
+      answers
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateStoredPoll = /* GraphQL */ `
+  mutation UpdateStoredPoll(
+    $input: UpdateStoredPollInput!
+    $condition: ModelStoredPollConditionInput
+  ) {
+    updateStoredPoll(input: $input, condition: $condition) {
+      id
+      question
+      type
+      answers
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteStoredPoll = /* GraphQL */ `
+  mutation DeleteStoredPoll(
+    $input: DeleteStoredPollInput!
+    $condition: ModelStoredPollConditionInput
+  ) {
+    deleteStoredPoll(input: $input, condition: $condition) {
+      id
+      question
+      type
+      answers
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createPollResponse = /* GraphQL */ `
   mutation CreatePollResponse(
     $input: CreatePollResponseInput!
@@ -1774,87 +1753,6 @@ export const createChatMessage = /* GraphQL */ `
       fromId
       toId
       trainingId
-      training {
-        id
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -1872,87 +1770,6 @@ export const updateChatMessage = /* GraphQL */ `
       fromId
       toId
       trainingId
-      training {
-        id
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -1970,87 +1787,6 @@ export const deleteChatMessage = /* GraphQL */ `
       fromId
       toId
       trainingId
-      training {
-        id
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }

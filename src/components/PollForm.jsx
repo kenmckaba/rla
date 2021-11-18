@@ -9,30 +9,20 @@ import {
   RadioGroup,
   Radio,
   Flex,
+  Textarea,
 } from '@chakra-ui/react'
-import { useMutation, gql } from '@apollo/client'
-import { createPoll, updatePoll } from '../graphql/mutations'
 import { AddIcon } from '@chakra-ui/icons'
+import OurModal from './OurModal'
+import { useStoredPolls } from './useStoredPolls'
 
 const SingleChoice = 'SINGLECHOICE'
 const MultiChoice = 'MULTICHOICE'
 
-export const PollForm = ({ trainingId, onClose, poll }) => {
+export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
+  const [catalogModalOpen, setCatalogModalOpen] = useState(false)
   const [question, setQuestion] = useState(poll?.question || '')
   const [answers, setAnswers] = useState(poll?.answers || ['', ''])
   const [type, setType] = useState(poll?.type || SingleChoice)
-
-  const [addNewPoll, { error }] = useMutation(gql(createPoll))
-  const [updateCurrentPoll, { error: updateError }] = useMutation(gql(updatePoll))
-
-  if (error || updateError) {
-    console.error('rla-log: error', error, updateError)
-    return <p>Error!</p>
-  }
-
-  if (!answers) {
-    return <p>Please wait...</p>
-  }
 
   const onChangeQuestion = (event) => {
     setQuestion(event.target.value)
@@ -47,32 +37,8 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
       return acc
     }, [])
 
-    if (poll?.id) {
-      updateCurrentPoll({
-        variables: {
-          input: {
-            id: poll.id,
-            question,
-            trainingId,
-            type,
-            answers: ans,
-          },
-        },
-      })
-      onClose()
-    } else {
-      await addNewPoll({
-        variables: {
-          input: {
-            question,
-            trainingId,
-            type,
-            answers: ans,
-          },
-        },
-      })
-      onClose()
-    }
+    onSave({ pollId: poll?.id, question, type, answers: ans })
+    onClose()
   }
 
   const onChangeAnswer = (index, e) => {
@@ -86,18 +52,42 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
   const addAnswer = () => {
     setAnswers((prev) => [...prev, ''])
   }
+
   const handleCancel = () => {
     onClose()
   }
 
+  const chooseStoredPoll = (poll) => {
+    console.log('poll', poll)
+    setQuestion(poll.question)
+    setAnswers(poll.answers)
+    setType(poll.type)
+  }
+
+  const storedPolls = useStoredPolls(chooseStoredPoll)
+
   return (
     <>
-      <Box>
+      <Box backgroundColor="aliceblue">
+        {showCatalog && (
+          <Flex justifyContent="right">
+            <Button
+              size="xs"
+              variant="outline"
+              height="15px"
+              paddingLeft="3px"
+              paddingRight="3px"
+              onClick={() => setCatalogModalOpen(true)}
+            >
+              Choose from polls catalog
+            </Button>
+          </Flex>
+        )}
         <FormControl pb={1} isRequired>
           <FormLabel fontWeight="bold" textTransform="uppercase">
             Question
           </FormLabel>
-          <Input variant="filled" type="text" value={question} onChange={onChangeQuestion} />
+          <Textarea variant="filled" type="text" value={question} onChange={onChangeQuestion} />
         </FormControl>
         <FormControl pb={1} isRequired>
           <FormLabel fontWeight="bold" textTransform="uppercase">
@@ -156,7 +146,7 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
           </Box>
         </FormControl>
       </Box>
-      <HStack float="right" mt="3" mb="3">
+      <HStack float="right" mt="3" mb="3" width="100%" justifyContent="space-between">
         <Button size="md" onClick={handleSubmit}>
           Save
         </Button>
@@ -164,6 +154,13 @@ export const PollForm = ({ trainingId, onClose, poll }) => {
           Cancel
         </Button>
       </HStack>
+      <OurModal
+        isOpen={catalogModalOpen}
+        header="Choose poll to copy"
+        footer={<Button onClick={() => setCatalogModalOpen(false)}>OK</Button>}
+      >
+        {storedPolls}
+      </OurModal>
     </>
   )
 }

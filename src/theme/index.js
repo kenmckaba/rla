@@ -187,7 +187,20 @@ const config = {
       },
     },
     Button,
-    // Input,
+    Modal: {
+      variants: {
+        noCapture: {
+          parts: ['dialog, dialogContainer'],
+          dialog: {
+            pointerEvents: 'auto',
+          },
+          dialogContainer: {
+            pointerEvents: 'none',
+          },
+        },
+      },
+    },
+    Input,
   },
 }
 

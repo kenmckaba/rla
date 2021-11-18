@@ -5,14 +5,14 @@ import {
   AccordionItem,
   AccordionPanel,
 } from '@chakra-ui/accordion'
-import { Box, HStack, Text } from '@chakra-ui/layout'
+import { Box, Text } from '@chakra-ui/layout'
 import { useBlueJeans } from '../../bluejeans/useBlueJeans'
 import { scrollBarStyle } from '../../theme/components/scrollbar'
 import OurModal from '../OurModal'
 import { useState } from 'react'
-import Chat from './Chat'
 import { Button, Input } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
+import ChatBox from './ChatBox'
 
 export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => {
   const { bjnApi, bjnParticipants } = useBlueJeans()
@@ -55,12 +55,12 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
               {bjnParticipants.map((p) => {
                 return p.isSelf ? (
                   <Box cursor="pointer" onClick={(e) => handleClick(e, p)}>
-                    {p.name + ' (me)'} {p.isModerator && ' (Trainer)'}
+                    {p.name + ' (me)'} {p.isModerator && ' (trainer)'}
                     <EditIcon marginLeft="5px" />
                   </Box>
                 ) : (
                   <Box>
-                    {p.name} {p.isModerator && ' (Trainer)'}
+                    {p.name} {p.isModerator && ' (trainer)'}
                   </Box>
                 )
               })}
@@ -75,8 +75,8 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel overflowY="auto" padding="0" pb={4} sx={scrollBarStyle}>
-            <Chat
-              messages={chatMessages}
+            <ChatBox
+              messageList={chatMessages}
               attendees={attendees}
               training={training}
               myAttendeeId={attendeeId}
@@ -84,16 +84,21 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-      <OurModal isOpen={!!currentParticipant} header="Change your name">
+      <OurModal
+        isOpen={!!currentParticipant}
+        header="Change your name"
+        footer={
+          <>
+            <Button width="100%" marginRight="20px" onClick={handleNewName}>
+              Save
+            </Button>
+            <Button variant="outline" onClick={() => setCurrentParticipant(null)}>
+              Cancel
+            </Button>
+          </>
+        }
+      >
         <Input type="text" onChange={editNewName} value={newName} />
-        <HStack marginTop="10px">
-          <Button width="100%" marginRight="20px" onClick={handleNewName}>
-            Save
-          </Button>
-          <Button variant="outline" onClick={() => setCurrentParticipant(null)}>
-            Cancel
-          </Button>
-        </HStack>
       </OurModal>
     </>
   )

@@ -100,28 +100,6 @@ export const getTraining = /* GraphQL */ `
           fromId
           toId
           trainingId
-          training {
-            id
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            createdAt
-            updatedAt
-          }
           createdAt
           updatedAt
         }
@@ -795,6 +773,37 @@ export const listPolls = /* GraphQL */ `
     }
   }
 `;
+export const getStoredPoll = /* GraphQL */ `
+  query GetStoredPoll($id: ID!) {
+    getStoredPoll(id: $id) {
+      id
+      question
+      type
+      answers
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listStoredPolls = /* GraphQL */ `
+  query ListStoredPolls(
+    $filter: ModelStoredPollFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStoredPolls(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        question
+        type
+        answers
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getPollResponse = /* GraphQL */ `
   query GetPollResponse($id: ID!) {
     getPollResponse(id: $id) {
@@ -927,87 +936,6 @@ export const getChatMessage = /* GraphQL */ `
       fromId
       toId
       trainingId
-      training {
-        id
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }
@@ -1027,40 +955,6 @@ export const listChatMessages = /* GraphQL */ `
         fromId
         toId
         trainingId
-        training {
-          id
-          trainerId
-          title
-          description
-          trainerName
-          trainerEmail
-          registrationUrl
-          maxAttendees
-          meetingId
-          moderatorPasscode
-          participantPasscode
-          scheduledTime
-          startedAt
-          endedAt
-          pollMode
-          currentPollId
-          whiteboardUrl
-          whiteboardShared
-          attendees {
-            nextToken
-          }
-          chatMessages {
-            nextToken
-          }
-          polls {
-            nextToken
-          }
-          sharedDocs {
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }
