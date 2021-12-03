@@ -15,7 +15,7 @@ export default function Background({ children }) {
       >
         <H3Heading>Remote Learning Platform</H3Heading>
       </Flex>
-      <Flex padding="1em" flex="1">
+      <Flex padding="1em" flex="1" height="91%">
         {children}
       </Flex>
     </Flex>

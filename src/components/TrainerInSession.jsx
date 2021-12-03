@@ -21,7 +21,6 @@ import { PollModal } from './PollModal'
 import { WhiteboardModal } from './WhiteboardModal'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
 import { BjnMedia } from './BjnMedia'
-import { CamInUseModal } from './CamInUseModal'
 import LeftPanel from './TrainerInSession/LeftPanel'
 import FloatingRightPanel from './TrainerInSession/FloatingRightPanel'
 import SettingsModal from './SettingsModal'
@@ -29,8 +28,9 @@ import EndTrainingModal from './EndTrainingModal'
 import ShareDocumentsModal from './ShareDocumentsModal'
 import { ChatPanel } from './ChatComponents/ChatPanel'
 import { useHistory } from 'react-router'
-import { useDisconnectedWarning } from './useDisconnectedWarning'
 import OurModal from './OurModal'
+import { BreakoutForm } from './BreakoutForm'
+import { useDisconnectedWarning } from './useDisconnectedWarning'
 
 export const TrainerInSession = ({
   match: {
@@ -50,7 +50,7 @@ export const TrainerInSession = ({
   const [shareWebcam, setShareWebcam] = useState(false)
   const [ended, setEnded] = useState(false)
   const joined = useRef(false)
-  const { bjnApi, bjnIsInitialized, bjnCamInUseError } = useBlueJeans()
+  const { bjnApi, bjnIsInitialized } = useBlueJeans()
   const {
     data: trainingData,
     error,
@@ -82,6 +82,7 @@ export const TrainerInSession = ({
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [hoverFloatingRightPanel, setHoverFloatingRightPanel] = useState(false)
   const [showFloatingRightPanel, setShowFloatingRightPanel] = useState(false)
+  const [showBreakoutModal, setShowBreakoutModal] = useState(false)
   const history = useHistory()
   useDisconnectedWarning(ended)
   const handleEndTrainingModalClick = () => setShowEndModal(true)
@@ -173,6 +174,7 @@ export const TrainerInSession = ({
       if (training && bjnIsInitialized && !joined.current) {
         joined.current = true
         try {
+          bjnApi.requestAllPermissions()
           await bjnApi.join(training.meetingId, training.moderatorPasscode, training.trainerName)
         } catch (e) {
           console.error('rla-log: error joining', e)
@@ -185,7 +187,7 @@ export const TrainerInSession = ({
   const handleEndTrainingClick = () => {
     setShowEndModal(false)
     setEnded(true)
-    bjnApi.leave(true)
+    bjnApi.endMeeting()
     updateCurrentTraining({
       variables: {
         input: {
@@ -207,7 +209,7 @@ export const TrainerInSession = ({
   }
 
   return (
-    <Box flex="1" width="100%" onMouseMove={handleMouseMove}>
+    <Box flex="1" width="100%" height="100%" onMouseMove={handleMouseMove}>
       <HStack align="left" height="100%">
         <LeftPanel
           training={training}
@@ -218,6 +220,7 @@ export const TrainerInSession = ({
           updateAttendee={updateTheAttendee}
           setPollToEdit={setPollToEdit}
           onPollModalOpen={onPollModalOpen}
+          onManageBreakouts={() => setShowBreakoutModal(true)}
         />
         <BjnMedia shareWebcam={shareWebcam} myAttendeeId={null} />
         {chatIsOpen && (
@@ -243,6 +246,9 @@ export const TrainerInSession = ({
         setWebcamMuted={(show) => setShareWebcam(show)}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
+      <OurModal header="Manage breakout" isOpen={showBreakoutModal}>
+        <BreakoutForm training={training} onClose={() => setShowBreakoutModal(false)} />
+      </OurModal>
       <EndTrainingModal isOpen={showEndTrainingModal} onClose={() => history.push('/')} />
       <ShareDocumentsModal
         docs={sharedDocs}
@@ -263,7 +269,6 @@ export const TrainerInSession = ({
         whiteboard={whiteboard}
         shared={whiteboardShared}
       />
-      <CamInUseModal code={bjnCamInUseError} />
       <OurModal header="End training for all?" isOpen={showEndModal}>
         <HStack justifyContent="space-around">
           <Button onClick={handleEndTrainingClick}>End</Button>

@@ -19,6 +19,16 @@ export const authenticateBJN = async () => {
 }
 
 export const createMeeting = async (title, description, start, end, timezone) => {
+  if (!userId) {
+    try {
+      const authResult = await authenticateBJN()
+      console.log(authResult)
+    } catch (e) {
+      console.error('Cant authenticate', e)
+      throw e
+    }
+  }
+
   const result = await fetch(
     `https://api.bluejeans.com/v1/user/${userId}/scheduled_meeting?personal_meeting=false&email=false`,
     {
@@ -29,11 +39,11 @@ export const createMeeting = async (title, description, start, end, timezone) =>
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
-        title: 'test',
-        description: 'descr',
-        start: 1628556300000,
-        end: 1628559900000,
-        timezone: 'US/Pacific',
+        title,
+        description,
+        start,
+        end,
+        timezone,
         endPointType: 'WEB_APP',
         endPointVersion: '2.10',
         attendees: [],

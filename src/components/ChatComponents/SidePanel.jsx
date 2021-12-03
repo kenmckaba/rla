@@ -52,14 +52,14 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
               borderBottomRadius="8px"
               fontSize="14px"
             >
-              {bjnParticipants.map((p) => {
+              {bjnParticipants.map((p, index) => {
                 return p.isSelf ? (
-                  <Box cursor="pointer" onClick={(e) => handleClick(e, p)}>
+                  <Box key={index} cursor="pointer" onClick={(e) => handleClick(e, p)}>
                     {p.name + ' (me)'} {p.isModerator && ' (trainer)'}
                     <EditIcon marginLeft="5px" />
                   </Box>
                 ) : (
-                  <Box>
+                  <Box key={index}>
                     {p.name} {p.isModerator && ' (trainer)'}
                   </Box>
                 )

@@ -22,6 +22,7 @@ export default function LeftPanel({
   setPollToEdit,
   onPollModalOpen,
   updateAttendee,
+  onManageBreakouts,
 }) {
   const Polls = useMemo(() => {
     const startPoll = (poll) => {
@@ -84,7 +85,7 @@ export default function LeftPanel({
         width="250px"
         px="2"
         py="2"
-        minWidth="400px"
+        minWidth="300px"
       >
         <Box paddingBottom="4">
           <Heading fontSize="1.25em" fontWeight="bold" textTransform="capitalize" mb="2">
@@ -92,6 +93,7 @@ export default function LeftPanel({
           </Heading>
           <Text opacity="0.5">{training.description}</Text>
         </Box>
+        <Button onClick={onManageBreakouts}>Mananage breakouts</Button>
         <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
           <ClassRoster
             attendees={attendees}

@@ -15,7 +15,7 @@ export default function ChatBox({ messageList, attendees, training, myAttendeeId
 
   const messages = useMemo(() => {
     const temp = [...messageList]
-    return temp.sort((a, b) => (a.timeSent < b.timeSent ? -1 : 1))
+    return temp.sort((a, b) => (a.timeSent > b.timeSent ? -1 : 1))
   }, [messageList])
 
   const onSend = async () => {
@@ -71,30 +71,6 @@ export default function ChatBox({ messageList, attendees, training, myAttendeeId
       padding={2}
       justifyContent="end"
     >
-      <VStack overflow="auto">
-        {messages.reduce((acc, message) => {
-          if (
-            message.toId === allMsgId ||
-            message.toId === myAttendeeId ||
-            message.fromId === myAttendeeId
-          ) {
-            let recipientName = idToName(message.toId)
-            let senderName = idToName(message.fromId)
-            acc.push(
-              <ChatMessage
-                key={count++}
-                senderName={senderName}
-                recipientName={recipientName}
-                type={message.type}
-                fromMe={message.fromId === myAttendeeId}
-              >
-                {message.content}
-              </ChatMessage>,
-            )
-          }
-          return acc
-        }, [])}
-      </VStack>
       <FormControl isRequired marginBottom="10px">
         <FormLabel>Send to:</FormLabel>
         <Select fontSize="14px" defaultValue={allMsgId} height="30px" onChange={selectDestination}>
@@ -132,6 +108,30 @@ export default function ChatBox({ messageList, attendees, training, myAttendeeId
           Send
         </Button>
       </HStack>
+      <VStack overflow="auto">
+        {messages.reduce((acc, message) => {
+          if (
+            message.toId === allMsgId ||
+            message.toId === myAttendeeId ||
+            message.fromId === myAttendeeId
+          ) {
+            let recipientName = idToName(message.toId)
+            let senderName = idToName(message.fromId)
+            acc.push(
+              <ChatMessage
+                key={count++}
+                senderName={senderName}
+                recipientName={recipientName}
+                type={message.type}
+                fromMe={message.fromId === myAttendeeId}
+              >
+                {message.content}
+              </ChatMessage>,
+            )
+          }
+          return acc
+        }, [])}
+      </VStack>
     </Flex>
   )
 }

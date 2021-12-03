@@ -34,6 +34,7 @@ export const getTraining = /* GraphQL */ `
   query GetTraining($id: ID!) {
     getTraining(id: $id) {
       id
+      type
       trainerId
       title
       description
@@ -51,6 +52,7 @@ export const getTraining = /* GraphQL */ `
       currentPollId
       whiteboardUrl
       whiteboardShared
+      breakoutInProgress
       attendees {
         items {
           id
@@ -67,6 +69,7 @@ export const getTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            type
             trainerId
             title
             description
@@ -84,9 +87,49 @@ export const getTraining = /* GraphQL */ `
             currentPollId
             whiteboardUrl
             whiteboardShared
+            breakoutInProgress
             createdAt
             updatedAt
           }
+          mainTrainingId
+          mainTraining {
+            id
+            type
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            breakoutInProgress
+            createdAt
+            updatedAt
+          }
+          breakoutRoomId
+          breakoutRoom {
+            id
+            name
+            bluejeansMeetingId
+            bluejeansModeratorPasscode
+            bluejeansParticipantPasscode
+            trainingId
+            breakoutTrainingId
+            createdAt
+            updatedAt
+          }
+          breakoutRoomAttendeeId
+          mainTrainingAttendeeId
           createdAt
           updatedAt
         }
@@ -114,28 +157,6 @@ export const getTraining = /* GraphQL */ `
           trainingId
           startedAt
           stoppedAt
-          training {
-            id
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            createdAt
-            updatedAt
-          }
           responses {
             nextToken
           }
@@ -154,6 +175,7 @@ export const getTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            type
             trainerId
             title
             description
@@ -171,9 +193,51 @@ export const getTraining = /* GraphQL */ `
             currentPollId
             whiteboardUrl
             whiteboardShared
+            breakoutInProgress
             createdAt
             updatedAt
           }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      breakoutRooms {
+        items {
+          id
+          name
+          bluejeansMeetingId
+          bluejeansModeratorPasscode
+          bluejeansParticipantPasscode
+          attendees {
+            nextToken
+          }
+          trainingId
+          training {
+            id
+            type
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            breakoutInProgress
+            createdAt
+            updatedAt
+          }
+          breakoutTrainingId
           createdAt
           updatedAt
         }
@@ -193,6 +257,7 @@ export const listTrainings = /* GraphQL */ `
     listTrainings(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        type
         trainerId
         title
         description
@@ -210,6 +275,7 @@ export const listTrainings = /* GraphQL */ `
         currentPollId
         whiteboardUrl
         whiteboardShared
+        breakoutInProgress
         attendees {
           items {
             id
@@ -224,6 +290,10 @@ export const listTrainings = /* GraphQL */ `
             poseYaw
             poseRole
             trainingId
+            mainTrainingId
+            breakoutRoomId
+            breakoutRoomAttendeeId
+            mainTrainingAttendeeId
             createdAt
             updatedAt
           }
@@ -264,6 +334,20 @@ export const listTrainings = /* GraphQL */ `
             url
             shared
             trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        breakoutRooms {
+          items {
+            id
+            name
+            bluejeansMeetingId
+            bluejeansModeratorPasscode
+            bluejeansParticipantPasscode
+            trainingId
+            breakoutTrainingId
             createdAt
             updatedAt
           }
@@ -293,6 +377,7 @@ export const getAttendee = /* GraphQL */ `
       trainingId
       training {
         id
+        type
         trainerId
         title
         description
@@ -310,6 +395,7 @@ export const getAttendee = /* GraphQL */ `
         currentPollId
         whiteboardUrl
         whiteboardShared
+        breakoutInProgress
         attendees {
           items {
             id
@@ -324,6 +410,10 @@ export const getAttendee = /* GraphQL */ `
             poseYaw
             poseRole
             trainingId
+            mainTrainingId
+            breakoutRoomId
+            breakoutRoomAttendeeId
+            mainTrainingAttendeeId
             createdAt
             updatedAt
           }
@@ -369,9 +459,201 @@ export const getAttendee = /* GraphQL */ `
           }
           nextToken
         }
+        breakoutRooms {
+          items {
+            id
+            name
+            bluejeansMeetingId
+            bluejeansModeratorPasscode
+            bluejeansParticipantPasscode
+            trainingId
+            breakoutTrainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
         createdAt
         updatedAt
       }
+      mainTrainingId
+      mainTraining {
+        id
+        type
+        trainerId
+        title
+        description
+        trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
+        meetingId
+        moderatorPasscode
+        participantPasscode
+        scheduledTime
+        startedAt
+        endedAt
+        pollMode
+        currentPollId
+        whiteboardUrl
+        whiteboardShared
+        breakoutInProgress
+        attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            mainTrainingId
+            breakoutRoomId
+            breakoutRoomAttendeeId
+            mainTrainingAttendeeId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        breakoutRooms {
+          items {
+            id
+            name
+            bluejeansMeetingId
+            bluejeansModeratorPasscode
+            bluejeansParticipantPasscode
+            trainingId
+            breakoutTrainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      breakoutRoomId
+      breakoutRoom {
+        id
+        name
+        bluejeansMeetingId
+        bluejeansModeratorPasscode
+        bluejeansParticipantPasscode
+        attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            mainTrainingId
+            breakoutRoomId
+            breakoutRoomAttendeeId
+            mainTrainingAttendeeId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        trainingId
+        training {
+          id
+          type
+          trainerId
+          title
+          description
+          trainerName
+          trainerEmail
+          registrationUrl
+          maxAttendees
+          meetingId
+          moderatorPasscode
+          participantPasscode
+          scheduledTime
+          startedAt
+          endedAt
+          pollMode
+          currentPollId
+          whiteboardUrl
+          whiteboardShared
+          breakoutInProgress
+          attendees {
+            nextToken
+          }
+          chatMessages {
+            nextToken
+          }
+          polls {
+            nextToken
+          }
+          sharedDocs {
+            nextToken
+          }
+          breakoutRooms {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        breakoutTrainingId
+        createdAt
+        updatedAt
+      }
+      breakoutRoomAttendeeId
+      mainTrainingAttendeeId
       createdAt
       updatedAt
     }
@@ -399,6 +681,7 @@ export const listAttendees = /* GraphQL */ `
         trainingId
         training {
           id
+          type
           trainerId
           title
           description
@@ -416,6 +699,7 @@ export const listAttendees = /* GraphQL */ `
           currentPollId
           whiteboardUrl
           whiteboardShared
+          breakoutInProgress
           attendees {
             nextToken
           }
@@ -428,9 +712,93 @@ export const listAttendees = /* GraphQL */ `
           sharedDocs {
             nextToken
           }
+          breakoutRooms {
+            nextToken
+          }
           createdAt
           updatedAt
         }
+        mainTrainingId
+        mainTraining {
+          id
+          type
+          trainerId
+          title
+          description
+          trainerName
+          trainerEmail
+          registrationUrl
+          maxAttendees
+          meetingId
+          moderatorPasscode
+          participantPasscode
+          scheduledTime
+          startedAt
+          endedAt
+          pollMode
+          currentPollId
+          whiteboardUrl
+          whiteboardShared
+          breakoutInProgress
+          attendees {
+            nextToken
+          }
+          chatMessages {
+            nextToken
+          }
+          polls {
+            nextToken
+          }
+          sharedDocs {
+            nextToken
+          }
+          breakoutRooms {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        breakoutRoomId
+        breakoutRoom {
+          id
+          name
+          bluejeansMeetingId
+          bluejeansModeratorPasscode
+          bluejeansParticipantPasscode
+          attendees {
+            nextToken
+          }
+          trainingId
+          training {
+            id
+            type
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            breakoutInProgress
+            createdAt
+            updatedAt
+          }
+          breakoutTrainingId
+          createdAt
+          updatedAt
+        }
+        breakoutRoomAttendeeId
+        mainTrainingAttendeeId
         createdAt
         updatedAt
       }
@@ -449,6 +817,7 @@ export const getSharedDoc = /* GraphQL */ `
       trainingId
       training {
         id
+        type
         trainerId
         title
         description
@@ -466,6 +835,7 @@ export const getSharedDoc = /* GraphQL */ `
         currentPollId
         whiteboardUrl
         whiteboardShared
+        breakoutInProgress
         attendees {
           items {
             id
@@ -480,6 +850,10 @@ export const getSharedDoc = /* GraphQL */ `
             poseYaw
             poseRole
             trainingId
+            mainTrainingId
+            breakoutRoomId
+            breakoutRoomAttendeeId
+            mainTrainingAttendeeId
             createdAt
             updatedAt
           }
@@ -520,6 +894,20 @@ export const getSharedDoc = /* GraphQL */ `
             url
             shared
             trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        breakoutRooms {
+          items {
+            id
+            name
+            bluejeansMeetingId
+            bluejeansModeratorPasscode
+            bluejeansParticipantPasscode
+            trainingId
+            breakoutTrainingId
             createdAt
             updatedAt
           }
@@ -549,6 +937,7 @@ export const listSharedDocs = /* GraphQL */ `
         trainingId
         training {
           id
+          type
           trainerId
           title
           description
@@ -566,6 +955,7 @@ export const listSharedDocs = /* GraphQL */ `
           currentPollId
           whiteboardUrl
           whiteboardShared
+          breakoutInProgress
           attendees {
             nextToken
           }
@@ -576,6 +966,9 @@ export const listSharedDocs = /* GraphQL */ `
             nextToken
           }
           sharedDocs {
+            nextToken
+          }
+          breakoutRooms {
             nextToken
           }
           createdAt
@@ -598,87 +991,6 @@ export const getPoll = /* GraphQL */ `
       trainingId
       startedAt
       stoppedAt
-      training {
-        id
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       responses {
         items {
           id
@@ -721,40 +1033,6 @@ export const listPolls = /* GraphQL */ `
         trainingId
         startedAt
         stoppedAt
-        training {
-          id
-          trainerId
-          title
-          description
-          trainerName
-          trainerEmail
-          registrationUrl
-          maxAttendees
-          meetingId
-          moderatorPasscode
-          participantPasscode
-          scheduledTime
-          startedAt
-          endedAt
-          pollMode
-          currentPollId
-          whiteboardUrl
-          whiteboardShared
-          attendees {
-            nextToken
-          }
-          chatMessages {
-            nextToken
-          }
-          polls {
-            nextToken
-          }
-          sharedDocs {
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
         responses {
           items {
             id
@@ -819,40 +1097,6 @@ export const getPollResponse = /* GraphQL */ `
         trainingId
         startedAt
         stoppedAt
-        training {
-          id
-          trainerId
-          title
-          description
-          trainerName
-          trainerEmail
-          registrationUrl
-          maxAttendees
-          meetingId
-          moderatorPasscode
-          participantPasscode
-          scheduledTime
-          startedAt
-          endedAt
-          pollMode
-          currentPollId
-          whiteboardUrl
-          whiteboardShared
-          attendees {
-            nextToken
-          }
-          chatMessages {
-            nextToken
-          }
-          polls {
-            nextToken
-          }
-          sharedDocs {
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
         responses {
           items {
             id
@@ -892,28 +1136,6 @@ export const listPollResponses = /* GraphQL */ `
           trainingId
           startedAt
           stoppedAt
-          training {
-            id
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            createdAt
-            updatedAt
-          }
           responses {
             nextToken
           }
@@ -1109,6 +1331,288 @@ export const listEmailContents = /* GraphQL */ `
         joinSubject
         cancelBody
         cancelSubject
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getBreakoutRoom = /* GraphQL */ `
+  query GetBreakoutRoom($id: ID!) {
+    getBreakoutRoom(id: $id) {
+      id
+      name
+      bluejeansMeetingId
+      bluejeansModeratorPasscode
+      bluejeansParticipantPasscode
+      attendees {
+        items {
+          id
+          name
+          email
+          bluejeansName
+          handRaised
+          joinedTime
+          leftTime
+          currentMood
+          posePitch
+          poseYaw
+          poseRole
+          trainingId
+          training {
+            id
+            type
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            breakoutInProgress
+            createdAt
+            updatedAt
+          }
+          mainTrainingId
+          mainTraining {
+            id
+            type
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            breakoutInProgress
+            createdAt
+            updatedAt
+          }
+          breakoutRoomId
+          breakoutRoom {
+            id
+            name
+            bluejeansMeetingId
+            bluejeansModeratorPasscode
+            bluejeansParticipantPasscode
+            trainingId
+            breakoutTrainingId
+            createdAt
+            updatedAt
+          }
+          breakoutRoomAttendeeId
+          mainTrainingAttendeeId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      trainingId
+      training {
+        id
+        type
+        trainerId
+        title
+        description
+        trainerName
+        trainerEmail
+        registrationUrl
+        maxAttendees
+        meetingId
+        moderatorPasscode
+        participantPasscode
+        scheduledTime
+        startedAt
+        endedAt
+        pollMode
+        currentPollId
+        whiteboardUrl
+        whiteboardShared
+        breakoutInProgress
+        attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            mainTrainingId
+            breakoutRoomId
+            breakoutRoomAttendeeId
+            mainTrainingAttendeeId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        chatMessages {
+          items {
+            id
+            content
+            timeSent
+            fromId
+            toId
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        polls {
+          items {
+            id
+            question
+            type
+            answers
+            trainingId
+            startedAt
+            stoppedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        sharedDocs {
+          items {
+            id
+            title
+            type
+            url
+            shared
+            trainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        breakoutRooms {
+          items {
+            id
+            name
+            bluejeansMeetingId
+            bluejeansModeratorPasscode
+            bluejeansParticipantPasscode
+            trainingId
+            breakoutTrainingId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      breakoutTrainingId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listBreakoutRooms = /* GraphQL */ `
+  query ListBreakoutRooms(
+    $filter: ModelBreakoutRoomFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBreakoutRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        bluejeansMeetingId
+        bluejeansModeratorPasscode
+        bluejeansParticipantPasscode
+        attendees {
+          items {
+            id
+            name
+            email
+            bluejeansName
+            handRaised
+            joinedTime
+            leftTime
+            currentMood
+            posePitch
+            poseYaw
+            poseRole
+            trainingId
+            mainTrainingId
+            breakoutRoomId
+            breakoutRoomAttendeeId
+            mainTrainingAttendeeId
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        trainingId
+        training {
+          id
+          type
+          trainerId
+          title
+          description
+          trainerName
+          trainerEmail
+          registrationUrl
+          maxAttendees
+          meetingId
+          moderatorPasscode
+          participantPasscode
+          scheduledTime
+          startedAt
+          endedAt
+          pollMode
+          currentPollId
+          whiteboardUrl
+          whiteboardShared
+          breakoutInProgress
+          attendees {
+            nextToken
+          }
+          chatMessages {
+            nextToken
+          }
+          polls {
+            nextToken
+          }
+          sharedDocs {
+            nextToken
+          }
+          breakoutRooms {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        breakoutTrainingId
         createdAt
         updatedAt
       }

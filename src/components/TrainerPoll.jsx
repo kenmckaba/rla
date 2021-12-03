@@ -13,6 +13,7 @@ import {
   Flex,
   Text,
   Spacer,
+  Tooltip,
 } from '@chakra-ui/react'
 import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
@@ -130,23 +131,35 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
             <AccordionButton padding="0" as="div">
               <Flex width="100%">
                 <Flex fontWeight="500" fontSize="14px" cursor="pointer">
-                  <Text
-                    mt="1"
-                    width="80px"
-                    maxW="80px"
-                    overflow="hidden"
-                    textOverflow="ellipsis"
-                    whiteSpace="nowrap"
-                    mr="2"
-                  >
-                    {poll.question}
-                  </Text>
+                  <Tooltip hasArrow placement="right" label={poll.question}>
+                    <Text
+                      mt="1"
+                      width="80px"
+                      maxW="80px"
+                      overflow="hidden"
+                      textOverflow="ellipsis"
+                      whiteSpace="nowrap"
+                      mr="2"
+                    >
+                      {poll.question}
+                    </Text>
+                  </Tooltip>
                 </Flex>
                 <Spacer />
                 {!poll.startedAt && (
-                  <EditIcon w={4} h={4} marginTop="3px" marginRight="5px" onClick={editThisPoll} />
+                  <Tooltip hasArrow placement="right" label="Edit poll">
+                    <EditIcon
+                      w={4}
+                      h={4}
+                      marginTop="3px"
+                      marginRight="5px"
+                      onClick={editThisPoll}
+                    />
+                  </Tooltip>
                 )}
-                <CopyIcon marginRight="5px" marginTop="3px" onClick={(e) => duplicate(e, poll)} />
+                <Tooltip hasArrow placement="right" label="Duplicate poll">
+                  <CopyIcon marginRight="5px" marginTop="3px" onClick={(e) => duplicate(e, poll)} />
+                </Tooltip>
                 <Button
                   size="xs"
                   fontWeight="bold"

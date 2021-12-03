@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/image",
+      "lambdaFunction": "attendeeimage",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/image"
+    }
+  ],
+  "resourceName": "rlaapi",
+  "apiName": "rlaapi",
+  "functionArns": [
+    {
+      "lambdaFunction": "attendeeimage"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-rlafeature-dev-142223-authRole",
+    "unAuthRoleName": "amplify-rlafeature-dev-142223-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "attendeeimage",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}

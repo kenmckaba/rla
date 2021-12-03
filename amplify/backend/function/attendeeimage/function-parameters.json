@@ -1,0 +1,18 @@
+{
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "graphqlapiidoutput",
+      "environmentVariableName": "GRAPHQLAPIIDOUTPUT"
+    }
+  ],
+  "permissions": {
+    "api": {
+      "rlafeature": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ]
+    }
+  }
+}

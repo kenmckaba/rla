@@ -56,7 +56,7 @@ export const TrainingList = () => {
 
   useEffect(() => {
     if (trainingListData) {
-      const tr = trainingListData.listTrainings.items.filter((t) => t.title !== '<temp>')
+      const tr = trainingListData.listTrainings.items.filter((t) => t.type === 'TRAINING')
       setTrainings(tr)
     }
   }, [trainingListData])
@@ -88,7 +88,8 @@ export const TrainingList = () => {
       variables: {
         input: {
           trainerName: '',
-          title: '<temp>',
+          title: '',
+          type: 'TEMP',
           meetingId: '',
           scheduledTime,
           moderatorPasscode: '',

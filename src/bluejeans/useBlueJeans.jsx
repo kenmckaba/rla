@@ -1,70 +1,81 @@
 import { useState, useEffect } from 'react'
-import { BJNWebRTCSDK } from 'bluejeans-webrtc-sdk'
+import { BJNWebClientSDK } from '@bluejeans/web-client-sdk'
 
 const log = (...args) => {
   console.log.call(null, new Date().toISOString().substr(11, 12), 'rla-log:', ...args)
 }
 
-const webrtcSDK = new BJNWebRTCSDK()
+const webrtcSDK = new BJNWebClientSDK()
 
-webrtcSDK.setLoggingMode('DEBUG')
+webrtcSDK.loggingService.setLoggingMode('DEBUG')
 
 const bjnApi = {
   join: function (meetingId, passcode, name) {
     log('call join', meetingId, passcode, name)
-    return webrtcSDK.join(meetingId, passcode, name)
+    return webrtcSDK.meetingService.joinMeeting(meetingId, passcode, name)
   },
   setName: function (name) {
     log('call setName', name)
-    return webrtcSDK.setName(name)
+    return webrtcSDK.meetingService.setName(name)
   },
   attachLocalVideo: function (ref) {
     log('call attachLocalVideo', ref)
-    return webrtcSDK.attachLocalVideo(ref)
+    return webrtcSDK.meetingService.attachLocalVideo(ref)
   },
   attachRemoteVideo: function (ref) {
     log('call attachRemoteVideo', ref)
-    return webrtcSDK.attachRemoteVideo(ref)
+    return webrtcSDK.meetingService.attachRemoteVideo(ref)
   },
   attachRemoteContent: function (ref) {
     log('call attachRemoteContent', ref)
-    return webrtcSDK.attachRemoteContent(ref)
+    return webrtcSDK.meetingService.attachRemoteContent(ref)
   },
-  leave: function (end) {
-    log('call leave', end)
-    return webrtcSDK.leave(end)
+  endMeeting: function () {
+    log('call endMeeting')
+    return webrtcSDK.meetingService.endMeeting(true)
+  },
+  leave: function () {
+    log('call leave')
+    return webrtcSDK.meetingService.endMeeting(false)
   },
   setVideoMuted: function (val) {
     log('call setVideoMuted', val)
-    return webrtcSDK.setVideoMuted(val)
+    return webrtcSDK.meetingService.setVideoMuted(val)
   },
   setAudioMuted: function (val) {
     log('call setAudioMuted', val)
-    return webrtcSDK.setAudioMuted(val)
+    return webrtcSDK.meetingService.setAudioMuted(val)
   },
   startScreenShare: function () {
     log('call startScreenShare')
-    return webrtcSDK.startScreenShare()
+    return webrtcSDK.meetingService.contentService.startContentShare()
   },
   stopScreenShare: function () {
     log('call stopScreenShare')
-    return webrtcSDK.stopScreenShare()
+    return webrtcSDK.meetingService.contentService.stopContentShare()
   },
   selectCamera: function (val) {
     log('call selectCamera', val)
-    return webrtcSDK.selectCamera(val)
+    return webrtcSDK.videoDeviceService.selectCamera(val)
   },
   selectMicrophone: function (val) {
     log('call selectMicrophone', val)
-    return webrtcSDK.selectMicrophone(val)
+    return webrtcSDK.audioDeviceService.selectMicrophone(val)
+  },
+  selectSpeaker: function (val) {
+    log('call selectSpeaker', val)
+    return webrtcSDK.audioDeviceService.selectSpeaker(val)
   },
   setVideoLayout: function (val) {
     log('call setVideoLayout', val)
-    return webrtcSDK.setVideoLayout(val)
+    return webrtcSDK.meetingService.setVideoLayout(val)
   },
-  setSelfVideoPreviewEnabled: function (val) {
-    log('call setSelfVideoPreviewEnabled', val)
-    return webrtcSDK.setSelfVideoPreviewEnabled(val)
+  requestAllPermissions: () => {
+    log('call requestAllPermissions')
+    return webrtcSDK.permissionService.requestAllPermissions().then(
+      (result) => console.log('requestAllPermissions result', result),
+      (err) => console.log('requestAllPermissions failed', err),
+    )
   },
 }
 
@@ -74,10 +85,10 @@ export const useBlueJeans = () => {
   const [bjnIsInitialized, setBjnIsInitialized] = useState(false)
   const [bjnParticipants, setBjnParticipants] = useState([])
   const [bjnAvailableCameras, setBjnAvailableCameras] = useState()
-  // const [bjnIsScreenShareSupported, setBjnIsScreenShareSupported] = useState()
+  const [bjnIsScreenShareSupported, setBjnIsScreenShareSupported] = useState()
   const [bjnAudioMuted, setBjnAudioMuted] = useState()
   const [bjnAvailableMicrophones, setBjnAvailableMicrophones] = useState()
-  const [bjnMeetingHasEnded, setBjnMeetingHasEnded] = useState()
+  const [bjnMeetingHasEnded /*, setBjnMeetingHasEnded */] = useState(false)
   const [bjnReceivingScreenShare, setBjnReceivingScreenShare] = useState()
   const [bjnSelectedCamera, setBjnSelectedCamera] = useState()
   const [bjnSelectedMicrophone, setBjnSelectedMicrophone] = useState()
@@ -88,18 +99,17 @@ export const useBlueJeans = () => {
   const [bjnVideoMuted, setBjnVideoMuted] = useState(true)
   const [bjnVideoState, setBjnVideoState] = useState()
   const [bjnAvailableSpeakers, setBjnAvailableSpeakers] = useState()
-  const [bjnCamInUseError, setBjnCamInUseError] = useState(0)
+  const [bjnSelfVideoPreviewEnabled, setBjnSelfVideoPreviewEnabled] = useState()
+  const [bjnIsSpeakerSelectionAllowed, setBjnIsSpeakerSelectionAllowed] = useState()
 
-  // const [bjnSelfVideoPreviewEnabled, setBjnSelfVideoPreviewEnabled] = useState()
-  // const [bjnIsSpeakerSelectionAllowed, setBjnIsSpeakerSelectionAllowed] = useState()
-
-  const observe = (key, settingFunc) => {
-    log('state initial', key, webrtcSDK[key])
-    settingFunc(webrtcSDK[key])
+  const observe = (service, key, settingFunc) => {
+    const initial = service[key]
+    log('state initial', key, initial)
+    settingFunc(initial)
     try {
-      webrtcSDK.observe(key, () => {
-        log('state change', key, webrtcSDK[key])
-        settingFunc(webrtcSDK[key])
+      service.observe(key, () => {
+        log('state change', key, service[key])
+        settingFunc(service[key])
       })
     } catch (e) {
       console.error('observe failed', e)
@@ -107,46 +117,53 @@ export const useBlueJeans = () => {
   }
 
   useEffect(() => {
-    webrtcSDK.initialize().then(
-      () => {
-        log('initialized')
-        setBjnIsInitialized(true)
+    log('initializing', bjnIsInitialized)
+    if (!bjnIsInitialized) {
+      log('initialized', bjnIsInitialized)
+      setBjnIsInitialized(true)
 
-        webrtcSDK.observe('connectionState', () => {
-          log('connectionState', webrtcSDK.connectionState)
-          setBjnConnectionState(webrtcSDK.connectionState)
-          setBjnIsConnected(webrtcSDK.connectionState === 'CONNECTED')
-        })
+      webrtcSDK.meetingService.observe('connectionState', () => {
+        log('connectionState', webrtcSDK.meetingService.connectionState)
+        setBjnConnectionState(webrtcSDK.meetingService.connectionState)
+        setBjnIsConnected(webrtcSDK.meetingService.connectionState === 'CONNECTED')
+      })
 
-        observe('participants', setBjnParticipants)
-        observe('availableCameras', setBjnAvailableCameras)
-        observe('audioMuted', setBjnAudioMuted)
-        observe('availableMicrophones', setBjnAvailableMicrophones)
-        observe('meetingHasEnded', setBjnMeetingHasEnded)
-        observe('receivingScreenShare', setBjnReceivingScreenShare)
-        observe('selectedCamera', setBjnSelectedCamera)
-        observe('selectedMicrophone', setBjnSelectedMicrophone)
-        observe('selectedSpeaker', setBjnSelectedSpeaker)
-        observe('selfParticipant', setBjnSelfParticipant)
-        observe('sharingScreen', setBjnSharingScreen)
-        observe('videoLayout', setBjnVideoLayout)
-        observe('videoMuted', setBjnVideoMuted)
-        observe('videoState', setBjnVideoState)
-        observe('availableSpeakers', setBjnAvailableSpeakers)
-        // observe('selfVideoPreviewEnabled', setBjnSelfVideoPreviewEnabled)
+      observe(webrtcSDK.meetingService.participantService, 'participants', setBjnParticipants)
+      observe(webrtcSDK.meetingService.participantService, 'selfParticipant', setBjnSelfParticipant)
+      observe(webrtcSDK.audioDeviceService, 'availableMicrophones', setBjnAvailableMicrophones)
+      observe(webrtcSDK.audioDeviceService, 'selectedMicrophone', setBjnSelectedMicrophone)
+      observe(webrtcSDK.audioDeviceService, 'selectedSpeaker', setBjnSelectedSpeaker)
+      observe(webrtcSDK.audioDeviceService, 'availableSpeakers', setBjnAvailableSpeakers)
+      observe(
+        webrtcSDK.audioDeviceService,
+        'isSpeakerSelectionAllowed',
+        setBjnIsSpeakerSelectionAllowed,
+      )
+      observe(webrtcSDK.videoDeviceService, 'availableCameras', setBjnAvailableCameras)
+      observe(webrtcSDK.videoDeviceService, 'selectedCamera', setBjnSelectedCamera)
+      observe(webrtcSDK.meetingService, 'audioMuted', setBjnAudioMuted)
+      observe(webrtcSDK.meetingService, 'videoLayout', setBjnVideoLayout)
+      observe(webrtcSDK.meetingService, 'videoMuted', setBjnVideoMuted)
+      observe(webrtcSDK.meetingService, 'videoState', setBjnVideoState)
+      observe(webrtcSDK.meetingService, 'selfVideoPreviewEnabled', setBjnSelfVideoPreviewEnabled)
+      // observe('meetingHasEnded', setBjnMeetingHasEnded)
+      observe(
+        webrtcSDK.meetingService.contentService,
+        'receivingContentShare',
+        setBjnReceivingScreenShare,
+      )
+      observe(
+        webrtcSDK.meetingService.contentService,
+        'isContentShareSupported',
+        setBjnIsScreenShareSupported,
+      )
 
-        log('loggingMode', webrtcSDK.loggingMode)
-
-        // throws an exception
-        // observe('isScreenShareSupported', setBjnIsScreenShareSupported)
-        // observe('isSpeakerSelectionAllowed', setBjnIsSpeakerSelectionAllowed)
-      },
-      (error) => {
-        log('error bluejeans initialize', error)
-        setBjnCamInUseError(error.code)
-      },
-    )
-  }, [])
+      webrtcSDK.meetingService.contentService.observe('contentShareState', () => {
+        log('contentShareState', webrtcSDK.meetingService.contentService.contentShareState)
+        setBjnSharingScreen(webrtcSDK.meetingService.contentService.contentShareState === 'started')
+      })
+    }
+  }, [bjnIsInitialized])
 
   const bjnWebcamLayouts = ['FILMSTRIP', 'GALLERY', 'PEOPLE', 'SPEAKER']
 
@@ -172,10 +189,8 @@ export const useBlueJeans = () => {
     bjnVideoState,
     bjnAvailableSpeakers,
     bjnWebcamLayouts,
-    bjnCamInUseError,
-
-    // bjnSelfVideoPreviewEnabled,
-    // bjnIsScreenShareSupported,
-    // bjnIsSpeakerSelectionAllowed,
+    bjnSelfVideoPreviewEnabled,
+    bjnIsScreenShareSupported,
+    bjnIsSpeakerSelectionAllowed,
   }
 }

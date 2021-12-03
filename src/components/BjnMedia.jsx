@@ -86,6 +86,7 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId }) => {
             camsOn
               ? {
                 width: '100%',
+                height: bjnReceivingScreenShare ? 'auto' : '100%',
                 'object-fit': 'contain',
                 'clip-path': bjnReceivingScreenShare ? 'inset(86% 0 0)' : 'none',
                 position: bjnReceivingScreenShare ? 'absolute' : 'relative',

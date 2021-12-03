@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { getAttendee, getSharedDoc } from '../graphql/queries'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import {
@@ -7,6 +7,7 @@ import {
   Flex,
   useDisclosure,
   Link,
+  Center,
   HStack,
   Modal,
   ModalHeader,
@@ -24,7 +25,6 @@ import {
 import { PollChoices } from './PollChoices'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
 import { BjnMedia } from './BjnMedia'
-import { CamInUseModal } from './CamInUseModal'
 import FloatingRightPanel from './TrainerInSession/FloatingRightPanel'
 import SettingsModal from './SettingsModal'
 import OurModal from './OurModal'
@@ -46,7 +46,7 @@ export const AttendeeLanding = ({
   } = useQuery(gql(getAttendee), {
     variables: { id: attendeeId },
   })
-  const { bjnApi, bjnIsInitialized, bjnCamInUseError } = useBlueJeans()
+  const { bjnApi, bjnIsInitialized } = useBlueJeans()
   const [attendee, setAttendee] = useState()
   const joined = useRef(false)
   const updatingJoinedTime = useRef(false)
@@ -67,6 +67,7 @@ export const AttendeeLanding = ({
   const [showFloatingRightPanel, setShowFloatingRightPanel] = useState(false)
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [chatMessages, setChatMessages] = useState([])
+  const [answeredPolls, setAnsweredPolls] = useState([])
 
   const {
     isOpen: isSharedDocModalOpen,
@@ -151,10 +152,27 @@ export const AttendeeLanding = ({
     }
   }, [training, attendeeId, onEndedModalOpen, updateCurrentAttendee])
 
+  const joinTraining = useCallback(
+    async (breakoutTrainingId) => {
+      bjnApi.leave(false) // sometimes doesn't ever resolve
+      window.location.href = `${window.location.origin}/attendee/${breakoutTrainingId}`
+    },
+    [bjnApi],
+  )
+
   useEffect(() => {
     if (attendee) {
       const tr = attendee.training
       setTraining(tr)
+      if (tr.breakoutInProgress) {
+        joinTraining(attendee.breakoutRoomAttendeeId)
+        return
+      }
+
+      if (tr.type === 'BREAKOUT' && !attendee.mainTraining.breakoutInProgress) {
+        joinTraining(attendee.mainTrainingAttendeeId)
+        return
+      }
       const d = tr.sharedDocs.items
       setSharedDocs(d)
       setWhiteboard(tr.whiteboardUrl)
@@ -162,15 +180,17 @@ export const AttendeeLanding = ({
       setChatMessages(tr.chatMessages.items)
       setAttendees(tr.attendees.items)
       if (tr.currentPollId) {
-        const p = tr.polls.items.find((poll) => poll.id === tr.currentPollId)
-        setCurrentPoll(p)
-        setPollMode(tr.pollMode)
+        if (tr.pollMode === 'SHOWRESULTS' || !answeredPolls.includes(tr.currentPollId)) {
+          const p = tr.polls.items.find((poll) => poll.id === tr.currentPollId)
+          setCurrentPoll(p)
+          setPollMode(tr.pollMode)
+        }
       } else {
         setCurrentPoll(null)
         setPollMode('NONE')
       }
     }
-  }, [attendee])
+  }, [attendee, answeredPolls, joinTraining])
 
   useEffect(() => {
     if (attendee && !updatedJoinedTime.current) {
@@ -190,6 +210,7 @@ export const AttendeeLanding = ({
   useEffect(() => {
     if (training && bjnIsInitialized && !joined.current) {
       joined.current = true
+      bjnApi.requestAllPermissions()
       bjnApi.join(training.meetingId, training.participantPasscode, participantName)
     }
   }, [training, participantName, bjnIsInitialized, bjnApi])
@@ -230,7 +251,7 @@ export const AttendeeLanding = ({
   const leaveTraining = () => {
     setShowLeaveModal(false)
     setHasLeftOrEnded(true)
-    bjnApi.leave(false)
+    bjnApi.leave()
     updateCurrentAttendee({
       variables: {
         input: {
@@ -253,10 +274,19 @@ export const AttendeeLanding = ({
         },
       },
     })
+    setTimeout(() => {
+      setAnsweredPolls((prev) => [...prev, currentPoll.id])
+      setCurrentPoll(null)
+      setPollMode('NONE')
+    }, 3000) // hide upon submit
   }
 
   return (
-    <Box onMouseMove={handleMouseMove} width="100%">
+    <Box onMouseMove={handleMouseMove} width="100%" position="relative">
+      <Box position="absolute" width="100%" top="-70px">
+        <Center fontSize="20px">{training.title}</Center>
+        <Center>{training.description}</Center>
+      </Box>
       <HStack alignItems="start" height="100%">
         <BjnMedia shareWebcam={shareWebcam} myAttendeeId={attendeeId} />
         {chatIsOpen && (
@@ -328,7 +358,6 @@ export const AttendeeLanding = ({
       >
         <Flex justifyContent="center">Thanks for attending!</Flex>
       </OurModal>
-      <CamInUseModal code={bjnCamInUseError} />
       <OurModal header="Leave training?" isOpen={showLeaveModal}>
         <HStack justifyContent="space-around">
           <Button onClick={leaveTraining}>Leave</Button>

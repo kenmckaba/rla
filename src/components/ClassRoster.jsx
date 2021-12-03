@@ -56,27 +56,30 @@ export const ClassRoster = ({ attendees, lowerHand, ...props }) => {
       {
         Header: 'Name',
         accessor: 'name',
+        Cell: ({ value }) => (
+          <Tooltip hasArrow placement="right" label={value}>
+            {value}
+          </Tooltip>
+        ),
       },
       {
-        Header: '',
+        Header: 'Joined',
         accessor: 'checkIn',
         sortType: 'basic',
         Cell: ({ value }) => <Center>{value ? <CheckMark /> : <XMark />}</Center>,
       },
       {
-        Header: '',
+        Header: 'Attentive',
         accessor: 'eye',
         Cell: ({ value }) => <Center>{value ? <EyeIcon /> : <EyeIconRed />}</Center>,
       },
       {
-        Header: '',
+        Header: 'Hand raised',
         accessor: 'hand',
         Cell: ({ value }) => {
           return (
             <Box onClick={() => lowerHand(value.attendeeId)}>
-              <Tooltip hasArrow placement="right" label="Lower hand">
-                <Center>{value.raised ? <HandIcon2 /> : <HandIcon />}</Center>
-              </Tooltip>
+              <Center>{value.raised ? <HandIcon2 /> : <HandIcon />}</Center>
             </Box>
           )
         },
@@ -131,12 +134,10 @@ export const ClassRoster = ({ attendees, lowerHand, ...props }) => {
                   <Tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map((column) => (
                       <Th
+                        paddingLeft="5px"
+                        paddingRight="5px"
                         color="white"
-                        cursor={
-                          column.Header === 'Name' || column.Header === 'Check-in'
-                            ? 'pointer !important'
-                            : 'auto !important'
-                        }
+                        cursor="pointer"
                         {...column.getHeaderProps(column.getSortByToggleProps())}
                       >
                         {column.render('Header')}
@@ -163,7 +164,11 @@ export const ClassRoster = ({ attendees, lowerHand, ...props }) => {
                   return (
                     <Tr {...row.getRowProps()}>
                       {row.cells.map((cell) => (
-                        <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
+                        <Td {...cell.getCellProps()}>
+                          {/* <Tooltip hasArrow placement="right" label="test"> */}
+                          <span>{cell.render('Cell')}</span>
+                          {/* </Tooltip> */}
+                        </Td>
                       ))}
                     </Tr>
                   )
