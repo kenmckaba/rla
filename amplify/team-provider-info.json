@@ -240,5 +240,36 @@
         }
       }
     }
+  },
+  "muting": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-muting-155926-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-muting-155926-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-muting-155926-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-muting-155926-deployment",
+      "UnauthRoleName": "amplify-rlafeature-muting-155926-unauthRole",
+      "StackName": "amplify-rlafeature-muting-155926",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-muting-155926/8f7b03a0-5239-11ec-84b7-12831eb0edc3",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "auth": {
+        "rlafeaturead7537a2": {}
+      },
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-muting-155926-deployment",
+          "s3Key": "amplify-builds/attendeeimage-744961447770624f687a-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      }
+    }
   }
 }

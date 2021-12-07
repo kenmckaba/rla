@@ -66,7 +66,7 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
         {poll.type === 'SINGLECHOICE' ? (
           <RadioGroup onChange={setValue} value={value}>
             <VStack alignItems="baseline">
-              {poll.answers.map((answer) => {
+              {poll.answers.map((answer, index) => {
                 if (pollMode === 'POLL') {
                   return (
                     <Radio key={answer} value={answer} isDisabled={disabled}>
@@ -75,6 +75,7 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
                   )
                 } else {
                   return (
+                    // TODO: if (index === poll.correctAnswerIndex) show bold/checkmark or whatever
                     <Box key={answer}>
                       {answer} {answerCount(answer)}
                     </Box>

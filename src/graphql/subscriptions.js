@@ -15,6 +15,12 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
       posePitch
       poseYaw
       poseRole
+      audioUnmuted
+      videoUnmuted
+      audioStateKey
+      videoStateKey
+      audioHardMuted
+      videoHardMuted
       trainingId
       training {
         id
@@ -32,6 +38,10 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -50,6 +60,12 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -79,6 +95,7 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -134,6 +151,10 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -152,6 +173,12 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -181,6 +208,7 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -239,6 +267,12 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -266,6 +300,10 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
           scheduledTime
           startedAt
           endedAt
+          audioHardMuted
+          videoHardMuted
+          audioStateKey
+          videoStateKey
           pollMode
           currentPollId
           whiteboardUrl
@@ -365,6 +403,10 @@ export const onCreateTraining = /* GraphQL */ `
       scheduledTime
       startedAt
       endedAt
+      audioHardMuted
+      videoHardMuted
+      audioStateKey
+      videoStateKey
       pollMode
       currentPollId
       whiteboardUrl
@@ -383,6 +425,12 @@ export const onCreateTraining = /* GraphQL */ `
           posePitch
           poseYaw
           poseRole
+          audioUnmuted
+          videoUnmuted
+          audioStateKey
+          videoStateKey
+          audioHardMuted
+          videoHardMuted
           trainingId
           training {
             id
@@ -400,6 +448,10 @@ export const onCreateTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -425,6 +477,10 @@ export const onCreateTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -471,6 +527,7 @@ export const onCreateTraining = /* GraphQL */ `
           question
           type
           answers
+          correctAnswerIndex
           trainingId
           startedAt
           stoppedAt
@@ -506,6 +563,10 @@ export const onCreateTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -546,6 +607,10 @@ export const onCreateTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -583,6 +648,10 @@ export const onUpdateTraining = /* GraphQL */ `
       scheduledTime
       startedAt
       endedAt
+      audioHardMuted
+      videoHardMuted
+      audioStateKey
+      videoStateKey
       pollMode
       currentPollId
       whiteboardUrl
@@ -601,6 +670,12 @@ export const onUpdateTraining = /* GraphQL */ `
           posePitch
           poseYaw
           poseRole
+          audioUnmuted
+          videoUnmuted
+          audioStateKey
+          videoStateKey
+          audioHardMuted
+          videoHardMuted
           trainingId
           training {
             id
@@ -618,6 +693,10 @@ export const onUpdateTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -643,6 +722,10 @@ export const onUpdateTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -689,6 +772,7 @@ export const onUpdateTraining = /* GraphQL */ `
           question
           type
           answers
+          correctAnswerIndex
           trainingId
           startedAt
           stoppedAt
@@ -724,6 +808,10 @@ export const onUpdateTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -764,6 +852,10 @@ export const onUpdateTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -801,6 +893,10 @@ export const onDeleteTraining = /* GraphQL */ `
       scheduledTime
       startedAt
       endedAt
+      audioHardMuted
+      videoHardMuted
+      audioStateKey
+      videoStateKey
       pollMode
       currentPollId
       whiteboardUrl
@@ -819,6 +915,12 @@ export const onDeleteTraining = /* GraphQL */ `
           posePitch
           poseYaw
           poseRole
+          audioUnmuted
+          videoUnmuted
+          audioStateKey
+          videoStateKey
+          audioHardMuted
+          videoHardMuted
           trainingId
           training {
             id
@@ -836,6 +938,10 @@ export const onDeleteTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -861,6 +967,10 @@ export const onDeleteTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -907,6 +1017,7 @@ export const onDeleteTraining = /* GraphQL */ `
           question
           type
           answers
+          correctAnswerIndex
           trainingId
           startedAt
           stoppedAt
@@ -942,6 +1053,10 @@ export const onDeleteTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -982,6 +1097,10 @@ export const onDeleteTraining = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -1015,6 +1134,12 @@ export const onCreateAttendee = /* GraphQL */ `
       posePitch
       poseYaw
       poseRole
+      audioUnmuted
+      videoUnmuted
+      audioStateKey
+      videoStateKey
+      audioHardMuted
+      videoHardMuted
       trainingId
       training {
         id
@@ -1032,6 +1157,10 @@ export const onCreateAttendee = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -1050,6 +1179,12 @@ export const onCreateAttendee = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -1079,6 +1214,7 @@ export const onCreateAttendee = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -1134,6 +1270,10 @@ export const onCreateAttendee = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -1152,6 +1292,12 @@ export const onCreateAttendee = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -1181,6 +1327,7 @@ export const onCreateAttendee = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -1239,6 +1386,12 @@ export const onCreateAttendee = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -1266,6 +1419,10 @@ export const onCreateAttendee = /* GraphQL */ `
           scheduledTime
           startedAt
           endedAt
+          audioHardMuted
+          videoHardMuted
+          audioStateKey
+          videoStateKey
           pollMode
           currentPollId
           whiteboardUrl
@@ -1314,6 +1471,12 @@ export const onUpdateAttendee = /* GraphQL */ `
       posePitch
       poseYaw
       poseRole
+      audioUnmuted
+      videoUnmuted
+      audioStateKey
+      videoStateKey
+      audioHardMuted
+      videoHardMuted
       trainingId
       training {
         id
@@ -1331,6 +1494,10 @@ export const onUpdateAttendee = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -1349,6 +1516,12 @@ export const onUpdateAttendee = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -1378,6 +1551,7 @@ export const onUpdateAttendee = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -1433,6 +1607,10 @@ export const onUpdateAttendee = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -1451,6 +1629,12 @@ export const onUpdateAttendee = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -1480,6 +1664,7 @@ export const onUpdateAttendee = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -1538,6 +1723,12 @@ export const onUpdateAttendee = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -1565,6 +1756,10 @@ export const onUpdateAttendee = /* GraphQL */ `
           scheduledTime
           startedAt
           endedAt
+          audioHardMuted
+          videoHardMuted
+          audioStateKey
+          videoStateKey
           pollMode
           currentPollId
           whiteboardUrl
@@ -1613,6 +1808,12 @@ export const onDeleteAttendee = /* GraphQL */ `
       posePitch
       poseYaw
       poseRole
+      audioUnmuted
+      videoUnmuted
+      audioStateKey
+      videoStateKey
+      audioHardMuted
+      videoHardMuted
       trainingId
       training {
         id
@@ -1630,6 +1831,10 @@ export const onDeleteAttendee = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -1648,6 +1853,12 @@ export const onDeleteAttendee = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -1677,6 +1888,7 @@ export const onDeleteAttendee = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -1732,6 +1944,10 @@ export const onDeleteAttendee = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -1750,6 +1966,12 @@ export const onDeleteAttendee = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -1779,6 +2001,7 @@ export const onDeleteAttendee = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -1837,6 +2060,12 @@ export const onDeleteAttendee = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -1864,6 +2093,10 @@ export const onDeleteAttendee = /* GraphQL */ `
           scheduledTime
           startedAt
           endedAt
+          audioHardMuted
+          videoHardMuted
+          audioStateKey
+          videoStateKey
           pollMode
           currentPollId
           whiteboardUrl
@@ -1923,6 +2156,10 @@ export const onCreateSharedDoc = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -1941,6 +2178,12 @@ export const onCreateSharedDoc = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -1970,6 +2213,7 @@ export const onCreateSharedDoc = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -2038,6 +2282,10 @@ export const onUpdateSharedDoc = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -2056,6 +2304,12 @@ export const onUpdateSharedDoc = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -2085,6 +2339,7 @@ export const onUpdateSharedDoc = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -2153,6 +2408,10 @@ export const onDeleteSharedDoc = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -2171,6 +2430,12 @@ export const onDeleteSharedDoc = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -2200,6 +2465,7 @@ export const onDeleteSharedDoc = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -2250,6 +2516,7 @@ export const onCreatePoll = /* GraphQL */ `
       question
       type
       answers
+      correctAnswerIndex
       trainingId
       startedAt
       stoppedAt
@@ -2264,6 +2531,7 @@ export const onCreatePoll = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -2287,6 +2555,7 @@ export const onUpdatePoll = /* GraphQL */ `
       question
       type
       answers
+      correctAnswerIndex
       trainingId
       startedAt
       stoppedAt
@@ -2301,6 +2570,7 @@ export const onUpdatePoll = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -2324,6 +2594,7 @@ export const onDeletePoll = /* GraphQL */ `
       question
       type
       answers
+      correctAnswerIndex
       trainingId
       startedAt
       stoppedAt
@@ -2338,6 +2609,7 @@ export const onDeletePoll = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -2402,6 +2674,7 @@ export const onCreatePollResponse = /* GraphQL */ `
         question
         type
         answers
+        correctAnswerIndex
         trainingId
         startedAt
         stoppedAt
@@ -2436,6 +2709,7 @@ export const onUpdatePollResponse = /* GraphQL */ `
         question
         type
         answers
+        correctAnswerIndex
         trainingId
         startedAt
         stoppedAt
@@ -2470,6 +2744,7 @@ export const onDeletePollResponse = /* GraphQL */ `
         question
         type
         answers
+        correctAnswerIndex
         trainingId
         startedAt
         stoppedAt
@@ -2777,6 +3052,12 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
           posePitch
           poseYaw
           poseRole
+          audioUnmuted
+          videoUnmuted
+          audioStateKey
+          videoStateKey
+          audioHardMuted
+          videoHardMuted
           trainingId
           training {
             id
@@ -2794,6 +3075,10 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -2819,6 +3104,10 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -2863,6 +3152,10 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -2881,6 +3174,12 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -2910,6 +3209,7 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -2975,6 +3275,12 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
           posePitch
           poseYaw
           poseRole
+          audioUnmuted
+          videoUnmuted
+          audioStateKey
+          videoStateKey
+          audioHardMuted
+          videoHardMuted
           trainingId
           training {
             id
@@ -2992,6 +3298,10 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -3017,6 +3327,10 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -3061,6 +3375,10 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -3079,6 +3397,12 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -3108,6 +3432,7 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt
@@ -3173,6 +3498,12 @@ export const onDeleteBreakoutRoom = /* GraphQL */ `
           posePitch
           poseYaw
           poseRole
+          audioUnmuted
+          videoUnmuted
+          audioStateKey
+          videoStateKey
+          audioHardMuted
+          videoHardMuted
           trainingId
           training {
             id
@@ -3190,6 +3521,10 @@ export const onDeleteBreakoutRoom = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -3215,6 +3550,10 @@ export const onDeleteBreakoutRoom = /* GraphQL */ `
             scheduledTime
             startedAt
             endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
             pollMode
             currentPollId
             whiteboardUrl
@@ -3259,6 +3598,10 @@ export const onDeleteBreakoutRoom = /* GraphQL */ `
         scheduledTime
         startedAt
         endedAt
+        audioHardMuted
+        videoHardMuted
+        audioStateKey
+        videoStateKey
         pollMode
         currentPollId
         whiteboardUrl
@@ -3277,6 +3620,12 @@ export const onDeleteBreakoutRoom = /* GraphQL */ `
             posePitch
             poseYaw
             poseRole
+            audioUnmuted
+            videoUnmuted
+            audioStateKey
+            videoStateKey
+            audioHardMuted
+            videoHardMuted
             trainingId
             mainTrainingId
             breakoutRoomId
@@ -3306,6 +3655,7 @@ export const onDeleteBreakoutRoom = /* GraphQL */ `
             question
             type
             answers
+            correctAnswerIndex
             trainingId
             startedAt
             stoppedAt

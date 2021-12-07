@@ -4,6 +4,12 @@ enum PollMode {
   SHOWRESULTS
 }
 
+enum TrainingType {
+  TEMP
+  TRAINING
+  BREAKOUT
+}
+
 type Trainer @model {
   id: ID!
   name: String!
@@ -16,6 +22,7 @@ type Training
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
   ) {
   id: ID!
+  type: TrainingType!
   trainerId: ID
   title: String!
   description: String
@@ -29,15 +36,24 @@ type Training
   scheduledTime: AWSDateTime!
   startedAt: AWSDateTime
   endedAt: AWSDateTime
+  # trainer can set these and all attendees will update themselves to that state.
+  # trainer can then set individuals to a new state.
+  audioHardMuted: Boolean
+  videoHardMuted: Boolean
+  # trainer increments these to indicate he changed muted state
+  audioStateKey: Int
+  videoStateKey: Int
   pollMode: PollMode
   currentPollId: ID
   whiteboardUrl: String
   whiteboardShared: Boolean
+  breakoutInProgress: Boolean
   attendees: [Attendee]
     @connection(name: "TrainingAttendees", keyField: "trainingId", sortField: "name")
   chatMessages: [ChatMessage] @connection(keyName: "chatMessageByTrainingId", fields: ["id"])
-  polls: [Poll] @connection(name: "TrainingPolls", keyField: "trainingId")
+  polls: [Poll] @connection(keyName: "byTraining", fields: ["id"])
   sharedDocs: [SharedDoc] @connection(name: "TrainingDocs", keyField: "trainingId")
+  breakoutRooms: [BreakoutRoom] @connection(name: "TrainingBreakoutRooms", keyField: "trainingId")
 }
 
 type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
@@ -52,8 +68,22 @@ type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
   posePitch: Int
   poseYaw: Int
   poseRole: Int
+  # set by attendee, if undefined they are muted, the default for bjn meetings
+  audioUnmuted: Boolean
+  videoUnmuted: Boolean
+  # trainer increments these to indicate he changed muted state
+  audioStateKey: Int
+  videoStateKey: Int
+  audioHardMuted: Boolean
+  videoHardMuted: Boolean
   trainingId: ID!
   training: Training @connection(name: "TrainingAttendees", keyField: "trainingId")
+  mainTrainingId: ID
+  mainTraining: Training @connection(name: "TrainingAttendees", keyField: "mainTrainingId")
+  breakoutRoomId: ID
+  breakoutRoom: BreakoutRoom @connection(name: "BreakoutAttendees", keyField: "breakoutRoomId")
+  breakoutRoomAttendeeId: ID
+  mainTrainingAttendeeId: ID
 }
 
 type SharedDoc
@@ -80,15 +110,16 @@ type Poll
   @model
   @auth(
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
-  ) {
+  )
+  @key(name: "byTraining", fields: ["trainingId"]) {
   id: ID!
   question: String!
   type: PollType!
   answers: [String]
+  correctAnswerIndex: Int
   trainingId: ID!
   startedAt: AWSDateTime
   stoppedAt: AWSDateTime
-  training: Training @connection(name: "TrainingPolls", keyField: "trainingId")
   responses: [PollResponse] @connection(name: "pollPollResponses", keyField: "pollId")
 }
 
@@ -145,6 +176,22 @@ type EmailContent @model @auth(rules: [{ allow: private, provider: iam }]) {
   joinSubject: String!
   cancelBody: String!
   cancelSubject: String!
+}
+
+type BreakoutRoom
+  @model
+  @auth(
+    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
+  ) {
+  id: ID!
+  name: String
+  bluejeansMeetingId: String!
+  bluejeansModeratorPasscode: String!
+  bluejeansParticipantPasscode: String!
+  attendees: [Attendee] @connection(name: "BreakoutAttendees", keyField: "breakoutRoomId")
+  trainingId: ID!
+  training: Training @connection(name: "TrainingBreakoutRooms", keyField: "trainingId")
+  breakoutTrainingId: ID
 }
 
 type Subscription {

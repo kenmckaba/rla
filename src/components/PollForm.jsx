@@ -37,6 +37,7 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
       return acc
     }, [])
 
+    // TODO: add correctAnswerIndex (can be null)
     onSave({ pollId: poll?.id, question, type, answers: ans })
     onClose()
   }
@@ -121,6 +122,8 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
             padding="4px"
           >
             {answers.map((answer, index) => {
+              // TODO: add checkbox or radio to choose correct answer and set poll.correctAnswerIndex
+              // should be able to choose none
               return (
                 <Input
                   key={index}

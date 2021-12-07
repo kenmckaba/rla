@@ -91,6 +91,8 @@ export const AttendeeLanding = ({
   const [attendees, setAttendees] = useState([])
   const [shareWebcam, setShareWebcam] = useState(false)
   const [hasLeftOrEnded, setHasLeftOrEnded] = useState(false)
+  const [trainingAudioStateKey, setTrainingAudioStateKey] = useState(0)
+  const [attendeeAudioStateKey, setAttendeeAudioStateKey] = useState(0)
 
   useDisconnectedWarning(hasLeftOrEnded)
 
@@ -138,6 +140,22 @@ export const AttendeeLanding = ({
   }, [attendeeData, attendeeId, attendee])
 
   useEffect(() => {
+    if (attendee && attendee.audioStateKey !== attendeeAudioStateKey) {
+      bjnApi.setAudioMuted(true)
+      setAttendeeAudioStateKey(attendee.audioStateKey)
+      updateCurrentAttendee({
+        variables: {
+          input: {
+            id: attendee.id,
+            audioHardMuted: attendee.audioHardMuted,
+            audioUnmuted: false,
+          },
+        },
+      })
+    }
+  }, [attendeeAudioStateKey, attendee, bjnApi, updateCurrentAttendee])
+
+  useEffect(() => {
     if (training && training.endedAt) {
       setHasLeftOrEnded(true)
       onEndedModalOpen()
@@ -164,6 +182,7 @@ export const AttendeeLanding = ({
     if (attendee) {
       const tr = attendee.training
       setTraining(tr)
+
       if (tr.breakoutInProgress) {
         joinTraining(attendee.breakoutRoomAttendeeId)
         return
@@ -191,6 +210,22 @@ export const AttendeeLanding = ({
       }
     }
   }, [attendee, answeredPolls, joinTraining])
+
+  useEffect(() => {
+    if (attendee && training && training.audioStateKey !== trainingAudioStateKey) {
+      bjnApi.setAudioMuted(true)
+      setTrainingAudioStateKey(training.audioStateKey)
+      updateCurrentAttendee({
+        variables: {
+          input: {
+            id: attendee.id,
+            audioHardMuted: training.audioHardMuted,
+            audioUnmuted: false,
+          },
+        },
+      })
+    }
+  }, [trainingAudioStateKey, attendee, bjnApi, training, updateCurrentAttendee])
 
   useEffect(() => {
     if (attendee && !updatedJoinedTime.current) {
@@ -281,6 +316,17 @@ export const AttendeeLanding = ({
     }, 3000) // hide upon submit
   }
 
+  const setAudioMute = (muted) => {
+    updateCurrentAttendee({
+      variables: {
+        input: {
+          id: attendeeId,
+          audioUnmuted: !muted,
+        },
+      },
+    })
+  }
+
   return (
     <Box onMouseMove={handleMouseMove} width="100%" position="relative">
       <Box position="absolute" width="100%" top="-70px">
@@ -300,6 +346,8 @@ export const AttendeeLanding = ({
       </HStack>
       <FloatingRightPanel
         role="student"
+        audioHardMuted={attendee.audioHardMuted}
+        setAudioMute={setAudioMute}
         hoverOnPanel={setHoverFloatingRightPanel}
         panelIsVisible={showFloatingRightPanel}
         chatIsVisible={chatIsOpen}

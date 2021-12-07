@@ -78,6 +78,8 @@ export const Registration = ({
           name: attendeeName,
           email: attendeeEmail,
           trainingId,
+          audioStateKey: 1,
+          videoStateKey: 1,
         },
       },
     })

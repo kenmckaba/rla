@@ -41,6 +41,8 @@ const link = ApolloLink.from([
 const client = new ApolloClient({
   link,
   cache: new InMemoryCache(),
+  name: 'rla',
+  version: '0.1',
 })
 
 window.LOG_LEVEL = 'DEBUG'

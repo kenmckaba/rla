@@ -235,6 +235,7 @@ export const TrainerInSession = ({
 
       <FloatingRightPanel
         role="instructor"
+        audioHardMuted={false}
         hoverOnPanel={setHoverFloatingRightPanel}
         panelIsVisible={showFloatingRightPanel}
         chatIsVisible={chatIsOpen}

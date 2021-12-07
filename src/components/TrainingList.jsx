@@ -94,6 +94,8 @@ export const TrainingList = () => {
           scheduledTime,
           moderatorPasscode: '',
           participantPasscode: '',
+          audioStateKey: 1,
+          videoStateKey: 1,
         },
       },
     })

@@ -15,6 +15,7 @@ import {
   Th,
   chakra,
   Tooltip,
+  HStack,
 } from '@chakra-ui/react'
 import { useMemo, useState } from 'react'
 import { scrollBarStyle } from '../theme/components/scrollbar'
@@ -27,32 +28,61 @@ import { ReactComponent as EyeIcon } from '../assets/icons/eye-icon.svg'
 import { ReactComponent as EyeIconRed } from '../assets/icons/eye-icon-red.svg'
 import { ReactComponent as CheckMark } from '../assets/icons/check-mark.svg'
 import { ReactComponent as XMark } from '../assets/icons/x-mark.svg'
+import { MicCamIcon } from './MicCamIcon'
+import { gql, useMutation } from '@apollo/client'
+import { updateAttendee, updateTraining } from '../graphql/mutations'
 
-export const ClassRoster = ({ attendees, lowerHand, ...props }) => {
+export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
   const [anyRaised, setAnyRaised] = useState(false)
+  const [updateCurrentTraining] = useMutation(gql(updateTraining))
+  const [updateCurrentAttendee] = useMutation(gql(updateAttendee))
 
-  const data = useMemo(
-    () =>
-      attendees.map((attendee) => {
-        const attendeePresent = attendee.joinedTime && !attendee.leftTime
-        const attendeeFacingCam = attendee.posePitch < 15 && attendee.poseYaw < 15
+  const data = useMemo(() => {
+    setAnyRaised(false)
+    return attendees.map((attendee) => {
+      const attendeePresent = attendee.joinedTime && !attendee.leftTime
+      const attendeeFacingCam = attendee.posePitch < 15 && attendee.poseYaw < 15
 
-        setAnyRaised(false)
-        if (attendee.handRaised) {
-          setAnyRaised(true)
-        }
-        return {
-          name: attendee.name,
-          checkIn: attendeePresent,
-          eye: attendeeFacingCam,
-          hand: { raised: attendee.handRaised, attendeeId: attendee.id },
-        }
-      }),
-    [attendees],
-  )
+      if (attendee.handRaised) {
+        setAnyRaised(true)
+      }
 
-  const columns = useMemo(
-    () => [
+      return {
+        name: attendee.name,
+        checkIn: attendeePresent,
+        eye: attendeeFacingCam,
+        hand: { raised: attendee.handRaised, attendeeId: attendee.id },
+        attendee,
+      }
+    })
+  }, [attendees])
+
+  const updateTrainingMute = async (state) => {
+    await updateCurrentTraining({
+      variables: {
+        input: {
+          id: training.id,
+          audioHardMuted: state === 'hard',
+          audioStateKey: training.audioStateKey + 1,
+        },
+      },
+    })
+  }
+
+  const columns = useMemo(() => {
+    const updateAttendeeMute = async (attendee, state) => {
+      await updateCurrentAttendee({
+        variables: {
+          input: {
+            id: attendee.id,
+            audioHardMuted: state === 'hard',
+            audioStateKey: attendee.audioStateKey + 1,
+          },
+        },
+      })
+    }
+
+    return [
       {
         Header: 'Name',
         accessor: 'name',
@@ -67,6 +97,21 @@ export const ClassRoster = ({ attendees, lowerHand, ...props }) => {
         accessor: 'checkIn',
         sortType: 'basic',
         Cell: ({ value }) => <Center>{value ? <CheckMark /> : <XMark />}</Center>,
+      },
+      {
+        Header: 'Muted',
+        accessor: 'attendee',
+        sortType: 'basic',
+        Cell: ({ value }) => (
+          <Center>
+            <MicCamIcon
+              hardMuted={value.audioHardMuted}
+              isUnmuted={value.audioUnmuted}
+              isMic={true}
+              onClick={(val) => updateAttendeeMute(value, val)}
+            />
+          </Center>
+        ),
       },
       {
         Header: 'Attentive',
@@ -84,9 +129,8 @@ export const ClassRoster = ({ attendees, lowerHand, ...props }) => {
           )
         },
       },
-    ],
-    [lowerHand],
-  )
+    ]
+  }, [lowerHand, updateCurrentAttendee])
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     { columns, data },
@@ -116,17 +160,23 @@ export const ClassRoster = ({ attendees, lowerHand, ...props }) => {
             fontSize="0.9em"
           >
             Attendees
-            {anyRaised && (
-              <Box onClick={lowerAllHands}>
-                <Tooltip hasArrow placement="right" label="Lower all hands">
-                  <HandIconWhite />
-                </Tooltip>
-              </Box>
-            )}
           </Flex>
           <AccordionIcon />
         </AccordionButton>
+
         <AccordionPanel overflowY="auto" padding="0" sx={scrollBarStyle}>
+          <HStack height="20px" justifyContent="end" marginRight="24px" marginTop="5px">
+            <MicCamIcon
+              hardMuted={training.audioHardMuted}
+              isMic={true}
+              onClick={(val) => updateTrainingMute(val)}
+            />
+            <Box onClick={lowerAllHands}>
+              <Tooltip hasArrow placement="top" label="Lower all hands">
+                <HandIconWhite />
+              </Tooltip>
+            </Box>
+          </HStack>
           {attendees.length !== 0 ? (
             <Table size="sm" width="100%" margin="0" {...getTableProps()}>
               <Thead borderBottom="1px" borderColor="#ffffff">

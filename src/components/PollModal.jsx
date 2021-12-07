@@ -8,6 +8,7 @@ export const PollModal = ({ poll, isOpen, trainingId, onClose }) => {
   const [updateCurrentPoll] = useMutation(gql(updatePoll))
 
   const onSave = async ({ pollId, question, type, answers }) => {
+    // TODO: add correctAnswerIndex to input for both add and update
     if (pollId) {
       await updateCurrentPoll({
         variables: {

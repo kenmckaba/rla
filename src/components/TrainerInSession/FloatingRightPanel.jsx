@@ -38,6 +38,8 @@ const IconWrapper = ({ tooltip, children, backgroundColor, ...props }) => (
 
 export default function FloatingRightPanel({
   role, //'instructor' | 'student'
+  audioHardMuted,
+  setAudioMute,
   chatIsVisible,
   hoverOnPanel,
   panelIsVisible,
@@ -60,7 +62,13 @@ export default function FloatingRightPanel({
   const raiseHandBgColor = handRaised && activeBgColor
 
   const handleMicMute = () => {
-    bjnApi.setAudioMuted(!bjnAudioMuted)
+    const muting = !bjnAudioMuted // toggle
+    if (muting || role !== 'student' || !audioHardMuted) {
+      bjnApi.setAudioMuted(muting)
+      if (setAudioMute) {
+        setAudioMute(muting)
+      }
+    }
   }
 
   const handleCameraMute = () => {
@@ -179,7 +187,7 @@ export default function FloatingRightPanel({
           <IconWrapper
             backgroundColor="#FF4E4E"
             onClick={() => handleEndTrainingModalClick()}
-            tooltip={(role = 'student' ? 'Leave training' : 'End training')}
+            tooltip={role === 'student' ? 'Leave training' : 'End training'}
           >
             <HangupIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>

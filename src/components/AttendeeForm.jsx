@@ -48,6 +48,8 @@ export const AttendeeForm = ({ trainingId, onClose, attendee = emptyAttendee }) 
             name: name,
             email: email,
             trainingId,
+            audioStateKey: 1,
+            videoStateKey: 1,
           },
         },
       })
