@@ -65,11 +65,14 @@ export default function ChatBox({ messageList, attendees, training, myAttendeeId
     <Flex
       flexDirection="column"
       color="black"
+      maxWidth="22vw"
       minHeight="200px"
+      maxHeight="40vh"
       bg="#ffffff"
       borderBottomRadius="8px"
       padding={2}
       justifyContent="end"
+      overflow-y='scroll'
     >
       <FormControl isRequired marginBottom="10px">
         <FormLabel>Send to:</FormLabel>

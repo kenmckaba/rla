@@ -1,4 +1,4 @@
-import { Box, Center, Flex, VStack } from '@chakra-ui/layout'
+import { Box, Center, Flex, HStack, VStack } from '@chakra-ui/layout'
 import { Collapse } from '@chakra-ui/transition'
 import { ReactComponent as MicIcon } from '../../assets/icons/mic-icon.svg'
 import { ReactComponent as MicOffIcon } from '../../assets/icons/mic-off-icon.svg'
@@ -11,13 +11,14 @@ import { ReactComponent as ChatIcon } from '../../assets/icons/chat-icon.svg'
 import { ReactComponent as HangupIcon } from '../../assets/icons/hangup-icon.svg'
 import { ReactComponent as WebcamOffIcon } from '../../assets/icons/webcam-off-icon.svg'
 import { ReactComponent as HandIcon } from '../../assets/icons/hand-icon-2.svg'
+import { ReactComponent as Shadow } from '../../assets/icons/shadow.svg'
 import { Tooltip } from '@chakra-ui/react'
 import { useBlueJeans } from '../../bluejeans/useBlueJeans'
 
 const IconWrapper = ({ tooltip, children, backgroundColor, ...props }) => (
   <Tooltip
     label={tooltip}
-    placement="left"
+    placement="top"
     borderRadius="full"
     paddingY="5px"
     paddingX="10px"
@@ -57,8 +58,8 @@ export default function FloatingRightPanel({
   const activeBgColor = '#bebebe'
   const chatButtonBgColor = chatIsVisible && activeBgColor
   const sharescreenButtonBgColor = bjnSharingScreen && activeBgColor
-  const webcamButtonBgColor = !bjnVideoMuted && '#81272a'
-  const micButtonBgColor = !bjnAudioMuted && '#81272a'
+  const webcamButtonBgColor = !bjnVideoMuted && '#0DC557' || bjnVideoMuted && '#FF4E4E'
+  const micButtonBgColor = !bjnAudioMuted && '#0DC557' || bjnAudioMuted && '#FF4E4E'
   const raiseHandBgColor = handRaised && activeBgColor
 
   const handleMicMute = () => {
@@ -84,21 +85,35 @@ export default function FloatingRightPanel({
     }
   }
 
+  // <Box  p='6' rounded='md' bg='white'>
   return (
-    <Collapse in={panelIsVisible} animateOpacity>
+    <Collapse in={true} animateOpacity>
       <Flex
         position="fixed"
-        right="24px"
-        top="0"
-        height="100%"
+        top="93%"
+        left="33%"
         alignItems="center"
         pointerEvents="none"
+        // boxShadow='dark-lg'
+
       >
-        <VStack spacing={2} justifyContent="center" height="fit-content" pointerEvents="all">
+        <HStack spacing={2}
+          justifyContent="center"
+          height="fit-content"
+          pointerEvents="all"
+          _before={{
+            content: 'url(\'../../assets/icons/shadow.svg\')'
+          }}
+        >
           <IconWrapper
             onClick={handleMicMute}
             backgroundColor={micButtonBgColor}
             tooltip="Microphone"
+            fill='white'
+            _hover={{
+              background: 'white',
+              fill: '#555',
+            }}
           >
             {!bjnAudioMuted ? (
               <MicIcon style={{ height: '100%', widht: '100%' }} />
@@ -111,12 +126,21 @@ export default function FloatingRightPanel({
             onClick={handleCameraMute}
             backgroundColor={webcamButtonBgColor}
             tooltip="Webcam"
+            fill='white'
+            _hover={{
+              background: 'white',
+              fill:'#555'
+            }}
           >
             {!bjnVideoMuted ? (
               <WebcamIcon style={{ height: '100%', widht: '100%' }} />
             ) : (
               <WebcamOffIcon style={{ height: '100%', widht: '100%' }} />
             )}
+          </IconWrapper>
+
+          <IconWrapper onClick={handleSettingsModalVisibility} tooltip="Settings">
+            <SettingsIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>
 
           {role === 'instructor' && (
@@ -154,10 +178,6 @@ export default function FloatingRightPanel({
             )}
           </IconWrapper>
 
-          <IconWrapper onClick={handleSettingsModalVisibility} tooltip="Settings">
-            <SettingsIcon style={{ height: '100%', widht: '100%' }} />
-          </IconWrapper>
-
           <IconWrapper tooltip="Whiteboard" onClick={showWhiteboard}>
             <WhiteboardIcon
               style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }}
@@ -191,7 +211,7 @@ export default function FloatingRightPanel({
           >
             <HangupIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>
-        </VStack>
+        </HStack>
       </Flex>
     </Collapse>
   )

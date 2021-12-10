@@ -1,0 +1,7 @@
+.cell-container :not(:first-child){
+    padding: 0;
+}
+.cell-container :not(:first-child) > span > div{
+    /*background: #32be3f;*/
+    /*border: solid 1px red;*/
+}
