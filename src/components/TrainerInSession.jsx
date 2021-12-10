@@ -236,6 +236,8 @@ export const TrainerInSession = ({
       <FloatingRightPanel
         role="instructor"
         audioHardMuted={false}
+        videoHardMuted={false}
+        setVideoMute={(show) => setShareWebcam(!show)}
         hoverOnPanel={setHoverFloatingRightPanel}
         panelIsVisible={showFloatingRightPanel}
         chatIsVisible={chatIsOpen}
@@ -244,7 +246,6 @@ export const TrainerInSession = ({
         showWhiteboard={onWhiteboardModalOpen}
         handleChatVisibility={() => setChatIsOpen((prev) => !prev)}
         handleEndTrainingModalClick={handleEndTrainingModalClick}
-        setWebcamMuted={(show) => setShareWebcam(show)}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
       <OurModal header="Manage breakout" isOpen={showBreakoutModal}>

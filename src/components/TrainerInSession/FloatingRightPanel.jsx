@@ -39,7 +39,9 @@ const IconWrapper = ({ tooltip, children, backgroundColor, ...props }) => (
 export default function FloatingRightPanel({
   role, //'instructor' | 'student'
   audioHardMuted,
+  videoHardMuted,
   setAudioMute,
+  setVideoMute,
   chatIsVisible,
   hoverOnPanel,
   panelIsVisible,
@@ -51,7 +53,6 @@ export default function FloatingRightPanel({
   toggleHand,
   handRaised,
   sharedDocsCount,
-  setWebcamMuted,
 }) {
   const { bjnApi, bjnVideoMuted, bjnAudioMuted, bjnSharingScreen } = useBlueJeans()
   const activeBgColor = '#bebebe'
@@ -72,8 +73,13 @@ export default function FloatingRightPanel({
   }
 
   const handleCameraMute = () => {
-    bjnApi.setVideoMuted(!bjnVideoMuted)
-    setWebcamMuted(bjnVideoMuted)
+    const muting = !bjnVideoMuted // toggle
+    if (muting || role !== 'student' || !videoHardMuted) {
+      bjnApi.setVideoMuted(muting)
+      if (setVideoMute) {
+        setVideoMute(muting)
+      }
+    }
   }
 
   const handleScreenShare = () => {

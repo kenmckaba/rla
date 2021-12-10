@@ -93,6 +93,8 @@ export const AttendeeLanding = ({
   const [hasLeftOrEnded, setHasLeftOrEnded] = useState(false)
   const [trainingAudioStateKey, setTrainingAudioStateKey] = useState(0)
   const [attendeeAudioStateKey, setAttendeeAudioStateKey] = useState(0)
+  const [trainingVideoStateKey, setTrainingVideoStateKey] = useState(0)
+  const [attendeeVideoStateKey, setAttendeeVideoStateKey] = useState(0)
 
   useDisconnectedWarning(hasLeftOrEnded)
 
@@ -154,6 +156,22 @@ export const AttendeeLanding = ({
       })
     }
   }, [attendeeAudioStateKey, attendee, bjnApi, updateCurrentAttendee])
+
+  useEffect(() => {
+    if (attendee && attendee.videoStateKey !== attendeeVideoStateKey) {
+      bjnApi.setVideoMuted(true)
+      setAttendeeVideoStateKey(attendee.videoStateKey)
+      updateCurrentAttendee({
+        variables: {
+          input: {
+            id: attendee.id,
+            videoHardMuted: attendee.videoHardMuted,
+            videoUnmuted: false,
+          },
+        },
+      })
+    }
+  }, [attendeeVideoStateKey, attendee, bjnApi, updateCurrentAttendee])
 
   useEffect(() => {
     if (training && training.endedAt) {
@@ -226,6 +244,22 @@ export const AttendeeLanding = ({
       })
     }
   }, [trainingAudioStateKey, attendee, bjnApi, training, updateCurrentAttendee])
+
+  useEffect(() => {
+    if (attendee && training && training.videoStateKey !== trainingVideoStateKey) {
+      bjnApi.setVideoMuted(true)
+      setTrainingVideoStateKey(training.videoStateKey)
+      updateCurrentAttendee({
+        variables: {
+          input: {
+            id: attendee.id,
+            videoHardMuted: training.videoHardMuted,
+            videoUnmuted: false,
+          },
+        },
+      })
+    }
+  }, [trainingVideoStateKey, attendee, bjnApi, training, updateCurrentAttendee])
 
   useEffect(() => {
     if (attendee && !updatedJoinedTime.current) {
@@ -327,6 +361,18 @@ export const AttendeeLanding = ({
     })
   }
 
+  const setVideoMute = (muted) => {
+    setShareWebcam(!muted)
+    updateCurrentAttendee({
+      variables: {
+        input: {
+          id: attendeeId,
+          videoUnmuted: !muted,
+        },
+      },
+    })
+  }
+
   return (
     <Box onMouseMove={handleMouseMove} width="100%" position="relative">
       <Box position="absolute" width="100%" top="-70px">
@@ -347,7 +393,9 @@ export const AttendeeLanding = ({
       <FloatingRightPanel
         role="student"
         audioHardMuted={attendee.audioHardMuted}
+        videoHardMuted={attendee.videoHardMuted}
         setAudioMute={setAudioMute}
+        setVideoMute={setVideoMute}
         hoverOnPanel={setHoverFloatingRightPanel}
         panelIsVisible={showFloatingRightPanel}
         chatIsVisible={chatIsOpen}
@@ -358,7 +406,6 @@ export const AttendeeLanding = ({
         handleEndTrainingModalClick={() => setShowLeaveModal(true)}
         toggleHand={toggleHand}
         handRaised={handRaised}
-        setWebcamMuted={(show) => setShareWebcam(show)}
         sharedDocsCount={sharedDocs.reduce((acc, d) => {
           if (d.shared) {
             acc += 1

@@ -52,12 +52,13 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         checkIn: attendeePresent,
         eye: attendeeFacingCam,
         hand: { raised: attendee.handRaised, attendeeId: attendee.id },
-        attendee,
+        attendeeAudio: attendee,
+        attendeeVideo: attendee,
       }
     })
   }, [attendees])
 
-  const updateTrainingMute = async (state) => {
+  const updateAudioTrainingMute = async (state) => {
     await updateCurrentTraining({
       variables: {
         input: {
@@ -69,14 +70,38 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
     })
   }
 
+  const updateVideoTrainingMute = async (state) => {
+    await updateCurrentTraining({
+      variables: {
+        input: {
+          id: training.id,
+          videoHardMuted: state === 'hard',
+          videoStateKey: training.videoStateKey + 1,
+        },
+      },
+    })
+  }
+
   const columns = useMemo(() => {
-    const updateAttendeeMute = async (attendee, state) => {
+    const updateAudioAttendeeMute = async (attendee, state) => {
       await updateCurrentAttendee({
         variables: {
           input: {
             id: attendee.id,
             audioHardMuted: state === 'hard',
             audioStateKey: attendee.audioStateKey + 1,
+          },
+        },
+      })
+    }
+
+    const updateVideoAttendeeMute = async (attendee, state) => {
+      await updateCurrentAttendee({
+        variables: {
+          input: {
+            id: attendee.id,
+            videoHardMuted: state === 'hard',
+            videoStateKey: attendee.videoStateKey + 1,
           },
         },
       })
@@ -99,8 +124,8 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         Cell: ({ value }) => <Center>{value ? <CheckMark /> : <XMark />}</Center>,
       },
       {
-        Header: 'Muted',
-        accessor: 'attendee',
+        Header: 'Audio',
+        accessor: 'attendeeAudio',
         sortType: 'basic',
         Cell: ({ value }) => (
           <Center>
@@ -108,7 +133,22 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
               hardMuted={value.audioHardMuted}
               isUnmuted={value.audioUnmuted}
               isMic={true}
-              onClick={(val) => updateAttendeeMute(value, val)}
+              onClick={(val) => updateAudioAttendeeMute(value, val)}
+            />
+          </Center>
+        ),
+      },
+      {
+        Header: 'Video',
+        accessor: 'attendeeVideo',
+        sortType: 'basic',
+        Cell: ({ value }) => (
+          <Center>
+            <MicCamIcon
+              hardMuted={value.videoHardMuted}
+              isUnmuted={value.videoUnmuted}
+              isMic={false}
+              onClick={(val) => updateVideoAttendeeMute(value, val)}
             />
           </Center>
         ),
@@ -169,7 +209,12 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
             <MicCamIcon
               hardMuted={training.audioHardMuted}
               isMic={true}
-              onClick={(val) => updateTrainingMute(val)}
+              onClick={(val) => updateAudioTrainingMute(val)}
+            />
+            <MicCamIcon
+              hardMuted={training.videoHardMuted}
+              isMic={false}
+              onClick={(val) => updateVideoTrainingMute(val)}
             />
             <Box onClick={lowerAllHands}>
               <Tooltip hasArrow placement="top" label="Lower all hands">
