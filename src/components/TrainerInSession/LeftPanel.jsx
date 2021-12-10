@@ -85,7 +85,7 @@ export default function LeftPanel({
         width="250px"
         px="2"
         py="2"
-        minWidth="300px"
+        minWidth="250px"
       >
         <Box paddingBottom="4">
           <Heading fontSize="1.25em" fontWeight="bold" textTransform="capitalize" mb="2">

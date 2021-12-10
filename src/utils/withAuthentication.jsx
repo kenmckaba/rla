@@ -1,6 +1,7 @@
 import { AmplifyAuthenticator } from '@aws-amplify/ui-react'
 import { Auth } from 'aws-amplify'
 import { Button, Flex } from '@chakra-ui/react'
+import './amplify-styles.css'
 
 export const WithAuthentication = (WrappedComponent) => {
   const logout = async () => {

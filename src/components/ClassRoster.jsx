@@ -27,6 +27,7 @@ import { ReactComponent as EyeIcon } from '../assets/icons/eye-icon.svg'
 import { ReactComponent as EyeIconRed } from '../assets/icons/eye-icon-red.svg'
 import { ReactComponent as CheckMark } from '../assets/icons/check-mark.svg'
 import { ReactComponent as XMark } from '../assets/icons/x-mark.svg'
+import './class-roster.css'
 
 export const ClassRoster = ({ attendees, lowerHand, ...props }) => {
   const [anyRaised, setAnyRaised] = useState(false)
@@ -63,18 +64,15 @@ export const ClassRoster = ({ attendees, lowerHand, ...props }) => {
         ),
       },
       {
-        Header: 'Joined',
         accessor: 'checkIn',
         sortType: 'basic',
         Cell: ({ value }) => <Center>{value ? <CheckMark /> : <XMark />}</Center>,
       },
       {
-        Header: 'Attentive',
         accessor: 'eye',
         Cell: ({ value }) => <Center>{value ? <EyeIcon /> : <EyeIconRed />}</Center>,
       },
       {
-        Header: 'Hand raised',
         accessor: 'hand',
         Cell: ({ value }) => {
           return (
@@ -162,12 +160,10 @@ export const ClassRoster = ({ attendees, lowerHand, ...props }) => {
                 {rows.map((row) => {
                   prepareRow(row)
                   return (
-                    <Tr {...row.getRowProps()}>
+                    <Tr className='cell-container' {...row.getRowProps()}>
                       {row.cells.map((cell) => (
                         <Td {...cell.getCellProps()}>
-                          {/* <Tooltip hasArrow placement="right" label="test"> */}
                           <span>{cell.render('Cell')}</span>
-                          {/* </Tooltip> */}
                         </Td>
                       ))}
                     </Tr>
