@@ -58,7 +58,7 @@ export const createMeeting = async (title, description, start, end, timezone) =>
   return r2
 }
 
-export const getParticipants = async (meetingId) => {
+export const getBjnParticipants = async (meetingId) => {
   await authenticateBJN()
 
   const result = await fetch(
@@ -76,6 +76,27 @@ export const getParticipants = async (meetingId) => {
   console.log(r2)
   // meetingSettings = r2
   return r2
+}
+
+export const muteBjnParticipant = async (meetingId, audio, mute, endpointGuid) => {
+  await authenticateBJN()
+
+  const deviceParam = audio ? 'muteAudio' : 'muteVideo'
+  const muteParam = mute ? 'true' : 'false'
+
+  await fetch(
+    `https://api.bluejeans.com/v1/user/${userId}/live_meetings/${meetingId}/endpoints/${encodeURIComponent(
+      endpointGuid,
+    )}?${deviceParam}=${muteParam}`,
+    {
+      method: 'PUT',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
 }
 
 export const getMeetingSettings = async () => {

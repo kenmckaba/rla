@@ -31,13 +31,11 @@ import { ReactComponent as XMark } from '../assets/icons/x-mark.svg'
 import { MicCamIcon } from './MicCamIcon'
 import { gql, useMutation } from '@apollo/client'
 import { updateAttendee, updateTraining } from '../graphql/mutations'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
 
 export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
   const [anyRaised, setAnyRaised] = useState(false)
   const [updateCurrentTraining] = useMutation(gql(updateTraining))
   const [updateCurrentAttendee] = useMutation(gql(updateAttendee))
-  const { bjnParticipants } = useBlueJeans()
 
   const data = useMemo(() => {
     setAnyRaised(false)
@@ -59,16 +57,6 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
       }
     })
   }, [attendees])
-
-  const bluejeansParticipants = useMemo(() => {
-    const result = bjnParticipants.reduce((acc, part) => {
-      if (!attendees.find((att) => att.name === part.name)) {
-        acc.push(part.name)
-      }
-      return acc
-    }, [])
-    return result
-  }, [bjnParticipants, attendees])
 
   const updateAudioTrainingMute = async (state) => {
     await updateCurrentTraining({
@@ -142,7 +130,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         Cell: ({ value }) => (
           <Center>
             <MicCamIcon
-              hardMuted={value.audioHardMuted}
+              hardMuted={!!value.audioHardMuted}
               isUnmuted={value.audioUnmuted}
               isMic={true}
               onClick={(val) => updateAudioAttendeeMute(value, val)}
@@ -157,7 +145,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         Cell: ({ value }) => (
           <Center>
             <MicCamIcon
-              hardMuted={value.videoHardMuted}
+              hardMuted={!!value.videoHardMuted}
               isUnmuted={value.videoUnmuted}
               isMic={false}
               onClick={(val) => updateVideoAttendeeMute(value, val)}
@@ -219,12 +207,12 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         <AccordionPanel overflowY="auto" padding="0" sx={scrollBarStyle}>
           <HStack height="20px" justifyContent="end" marginRight="24px" marginTop="5px">
             <MicCamIcon
-              hardMuted={training.audioHardMuted}
+              hardMuted={!!training.audioHardMuted}
               isMic={true}
               onClick={(val) => updateAudioTrainingMute(val)}
             />
             <MicCamIcon
-              hardMuted={training.videoHardMuted}
+              hardMuted={!!training.videoHardMuted}
               isMic={false}
               onClick={(val) => updateVideoTrainingMute(val)}
             />
