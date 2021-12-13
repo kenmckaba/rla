@@ -89,7 +89,7 @@ export default function LeftPanel({
     }
 
     const result = bjnParticipants.reduce((acc, part) => {
-      if (!attendees.find((att) => att.name === part.name)) {
+      if (!part.isSelf && !attendees.find((att) => att.name === part.name)) {
         acc.push(
           <Tr>
             <Td>{part.name}</Td>
@@ -112,6 +112,13 @@ export default function LeftPanel({
       }
       return acc
     }, [])
+    if (result.length === 0) {
+      return (
+        <Tr>
+          <Td>*none*</Td>
+        </Tr>
+      )
+    }
     return result
   }, [bjnParticipants, training, attendees])
 
