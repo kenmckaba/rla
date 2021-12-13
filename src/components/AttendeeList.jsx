@@ -1,11 +1,16 @@
 import React from 'react'
-import { Table, Tr, Th, Td, Tbody, Thead, Box, Button, Flex } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { Table, Tr, Th, Td, Tbody, Thead, Box, Button, Flex, IconButton } from '@chakra-ui/react'
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 
-export const AttendeeList = ({ attendees = [], updateAttendee }) => {
+export const AttendeeList = ({ attendees = [], updateAttendee, deleteAttendee }) => {
   const joinAttendee = (e, attendee) => {
     e.stopPropagation()
     window.open(`/attendee/${attendee.id}`)
+  }
+
+  const deleteThisAttendee = (e, attendee) => {
+    e.stopPropagation()
+    deleteAttendee(attendee.id)
   }
 
   return (
@@ -48,6 +53,19 @@ export const AttendeeList = ({ attendees = [], updateAttendee }) => {
                   </Td>
                   <Td fontSize="12" paddingLeft="16px">
                     {attendee.joinedTime ? '✅' : ''}
+                  </Td>
+                  <Td fontSize="12" padding="0">
+                    <IconButton
+                      icon={<DeleteIcon />}
+                      color="lightslategray"
+                      background="white"
+                      float="right"
+                      size="xs"
+                      height="14px"
+                      onClick={(e) => deleteThisAttendee(e, attendee)}
+                    >
+                      Join
+                    </IconButton>
                   </Td>
                   <Td fontSize="12" paddingLeft="16px">
                     <Button

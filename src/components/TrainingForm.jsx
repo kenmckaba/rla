@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { getTraining, listStudentGroups } from '../graphql/queries'
 import { useMutation, gql, useQuery } from '@apollo/client'
-import { updateTraining } from '../graphql/mutations'
+import { deleteAttendee, updateTraining } from '../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
 import { AttendeeForm } from './AttendeeForm'
 import DatePicker from './DatePicker'
@@ -61,8 +61,9 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [currentAttendee, setCurrentAttendee] = useState()
   const [selectedEmailGroup, setSelectedEmailGroup] = useState()
   const [selectedStudents, setSelectedStudents] = useState([])
-
+  const [deleteCurrentAttendee] = useMutation(gql(deleteAttendee))
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
+  const [attendeeToDelete, setAttendeeToDelete] = useState()
   const {
     data: trainingData,
     error,
@@ -72,6 +73,11 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     variables: { id: trainingId },
   })
   const { data: groupListData } = useQuery(gql(listStudentGroups))
+  const {
+    isOpen: isDeleteAttendeeModalOpen,
+    onOpen: onDeleteAttendeeModalOpen,
+    onClose: onDeleteAttendeeModalClose,
+  } = useDisclosure()
 
   const {
     isOpen: isNewattendeeModalOpen,
@@ -291,6 +297,22 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     onNewattendeeModalOpen()
   }
 
+  const onDeleteAnAttendee = (attendeeId) => {
+    setAttendeeToDelete(attendeeId)
+    onDeleteAttendeeModalOpen()
+  }
+
+  const onDeleteTheAttendee = async () => {
+    await deleteCurrentAttendee({
+      variables: {
+        input: {
+          id: attendeeToDelete,
+        },
+      },
+    })
+    onDeleteAttendeeModalClose()
+  }
+
   const onAttendeeClose = (attendee) => {
     if (attendee) {
       const attendeePos = attendees.findIndex((att) => {
@@ -437,7 +459,11 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 </Link>
               </Box>
             </FormControl>
-            <AttendeeList attendees={attendees} updateAttendee={handleOpenAttendee} />
+            <AttendeeList
+              attendees={attendees}
+              updateAttendee={handleOpenAttendee}
+              deleteAttendee={onDeleteAnAttendee}
+            />
           </AccordionItemCustom>
           <AccordionItemCustom title="Polls">
             <Polls
@@ -507,7 +533,18 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           Cancel
         </Button>
       </HStack>
-
+      <OurModal
+        header="Delete attendee?"
+        isOpen={isDeleteAttendeeModalOpen}
+        footer={
+          <Center marginTop="15px">
+            <Button onClick={onDeleteTheAttendee}>Delete</Button>
+            <Button variant="outline" marginLeft="10px" onClick={onDeleteAttendeeModalClose}>
+              Cancel
+            </Button>
+          </Center>
+        }
+      ></OurModal>
       <OurModal
         header={currentAttendee ? 'Attendee' : 'New Attendee'}
         isOpen={isNewattendeeModalOpen}
