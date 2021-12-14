@@ -2725,6 +2725,54 @@ export const deleteStudents = /* GraphQL */ `
     }
   }
 `;
+export const createInvitedStudent = /* GraphQL */ `
+  mutation CreateInvitedStudent(
+    $input: CreateInvitedStudentInput!
+    $condition: ModelInvitedStudentConditionInput
+  ) {
+    createInvitedStudent(input: $input, condition: $condition) {
+      id
+      trainingId
+      timeSent
+      name
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateInvitedStudent = /* GraphQL */ `
+  mutation UpdateInvitedStudent(
+    $input: UpdateInvitedStudentInput!
+    $condition: ModelInvitedStudentConditionInput
+  ) {
+    updateInvitedStudent(input: $input, condition: $condition) {
+      id
+      trainingId
+      timeSent
+      name
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteInvitedStudent = /* GraphQL */ `
+  mutation DeleteInvitedStudent(
+    $input: DeleteInvitedStudentInput!
+    $condition: ModelInvitedStudentConditionInput
+  ) {
+    deleteInvitedStudent(input: $input, condition: $condition) {
+      id
+      trainingId
+      timeSent
+      name
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createEmailContent = /* GraphQL */ `
   mutation CreateEmailContent(
     $input: CreateEmailContentInput!

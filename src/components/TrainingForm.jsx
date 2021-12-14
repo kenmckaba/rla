@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { getTraining, listStudentGroups } from '../graphql/queries'
 import { useMutation, gql, useQuery } from '@apollo/client'
-import { deleteAttendee, updateTraining } from '../graphql/mutations'
+import { deleteAttendee, updateTraining, createInvitedStudent } from '../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
 import { AttendeeForm } from './AttendeeForm'
 import DatePicker from './DatePicker'
@@ -95,6 +95,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     onClose: onWaitModalClose,
   } = useDisclosure()
   const { onCopy } = useClipboard(registrationUrl)
+  const [addAttendeeInvitation] = useMutation(gql(createInvitedStudent))
 
   const Times = useMemo(() => {
     const ampm = ['AM', 'PM']
@@ -269,9 +270,25 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     return theDate
   }
 
+  const addInvitedAttendees = () => {
+    selectedStudents.forEach(async (student) => {
+      await addAttendeeInvitation({
+        variables: {
+          input: {
+            trainingId: trainingId,
+            timeSent: new Date().toISOString(),
+            name: student.name,
+            email: student.email,
+          },
+        },
+      })
+    })
+  }
+
   const sendRegEmails = async () => {
     onEmailsModalClose()
     onWaitModalOpen()
+    await addInvitedAttendees()
     await sendRegistrationEmails(training, selectedStudents)
     onWaitModalClose()
     onClose()

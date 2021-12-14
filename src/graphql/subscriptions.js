@@ -2986,6 +2986,45 @@ export const onDeleteStudents = /* GraphQL */ `
     }
   }
 `;
+export const onCreateInvitedStudent = /* GraphQL */ `
+  subscription OnCreateInvitedStudent {
+    onCreateInvitedStudent {
+      id
+      trainingId
+      timeSent
+      name
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateInvitedStudent = /* GraphQL */ `
+  subscription OnUpdateInvitedStudent {
+    onUpdateInvitedStudent {
+      id
+      trainingId
+      timeSent
+      name
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteInvitedStudent = /* GraphQL */ `
+  subscription OnDeleteInvitedStudent {
+    onDeleteInvitedStudent {
+      id
+      trainingId
+      timeSent
+      name
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateEmailContent = /* GraphQL */ `
   subscription OnCreateEmailContent {
     onCreateEmailContent {

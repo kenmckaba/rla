@@ -1415,6 +1415,39 @@ export const listStudents = /* GraphQL */ `
     }
   }
 `;
+export const getInvitedStudent = /* GraphQL */ `
+  query GetInvitedStudent($id: ID!) {
+    getInvitedStudent(id: $id) {
+      id
+      trainingId
+      timeSent
+      name
+      email
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listInvitedStudents = /* GraphQL */ `
+  query ListInvitedStudents(
+    $filter: ModelInvitedStudentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listInvitedStudents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        trainingId
+        timeSent
+        name
+        email
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getEmailContent = /* GraphQL */ `
   query GetEmailContent($id: ID!) {
     getEmailContent(id: $id) {
