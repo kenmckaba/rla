@@ -71,13 +71,11 @@ export default function LeftPanel({
   const BluejeansParticipants = useMemo(() => {
     const muteParticipant = async (audio, name, mute) => {
       try {
-        console.log(audio ? 'audio' : 'video', name, mute)
         const result = await getBjnParticipants(training.meetingId)
-        console.log(result)
         const { endpointGuid } = result.find((p) => p.name === name)
-        console.log(endpointGuid)
         const muteResult = await muteBjnParticipant(
           training.meetingId,
+          training.moderatorPasscode,
           audio,
           mute === 'mute',
           endpointGuid,

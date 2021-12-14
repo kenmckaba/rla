@@ -1,10 +1,11 @@
 let userId
-let accessToken
+let userAccessToken
+let meetingAccessToken
 // let refreshToken
 // let meetingInfo
 // let meetingSettings
 
-export const authenticateBJN = async () => {
+export const getBjnUserToken = async () => {
   if (!userId) {
     try {
       const result = await fetch('https://api.bluejeans.com/oauth2/token#User', {
@@ -18,7 +19,7 @@ export const authenticateBJN = async () => {
       })
       const r2 = await result.json()
       console.log(r2)
-      accessToken = r2.access_token
+      userAccessToken = r2.access_token
       // refreshToken = r2.refresh_token
       userId = r2.scope.user
     } catch (error) {
@@ -27,8 +28,30 @@ export const authenticateBJN = async () => {
   }
 }
 
+export const getBjnMeetingToken = async (meetingId, passcode) => {
+  if (!meetingAccessToken) {
+    try {
+      const result = await fetch('https://api.bluejeans.com/oauth2/token#Meeting', {
+        method: 'POST',
+        headers: { accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          grant_type: 'meeting_passcode',
+          meetingNumericId: meetingId,
+          meetingPasscode: passcode,
+        }),
+      })
+      const r2 = await result.json()
+      console.log(r2)
+      meetingAccessToken = r2.access_token
+      // refreshToken = r2.refresh_token
+    } catch (error) {
+      console.error('Can\'t authenticate', error)
+    }
+  }
+}
+
 export const createMeeting = async (title, description, start, end, timezone) => {
-  await authenticateBJN()
+  await getBjnUserToken()
 
   const result = await fetch(
     `https://api.bluejeans.com/v1/user/${userId}/scheduled_meeting?personal_meeting=false&email=false`,
@@ -37,7 +60,7 @@ export const createMeeting = async (title, description, start, end, timezone) =>
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${userAccessToken}`,
       },
       body: JSON.stringify({
         title,
@@ -59,7 +82,7 @@ export const createMeeting = async (title, description, start, end, timezone) =>
 }
 
 export const getBjnParticipants = async (meetingId) => {
-  await authenticateBJN()
+  await getBjnUserToken()
 
   const result = await fetch(
     `https://api.bluejeans.com/v1/user/${userId}/live_meetings/${meetingId}/endpoints`,
@@ -68,7 +91,7 @@ export const getBjnParticipants = async (meetingId) => {
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${userAccessToken}`,
       },
     },
   )
@@ -78,8 +101,8 @@ export const getBjnParticipants = async (meetingId) => {
   return r2
 }
 
-export const muteBjnParticipant = async (meetingId, audio, mute, endpointGuid) => {
-  await authenticateBJN()
+export const muteBjnParticipant = async (meetingId, passcode, audio, mute, endpointGuid) => {
+  await getBjnMeetingToken(meetingId, passcode)
 
   const deviceParam = audio ? 'muteAudio' : 'muteVideo'
   const muteParam = mute ? 'true' : 'false'
@@ -93,7 +116,7 @@ export const muteBjnParticipant = async (meetingId, audio, mute, endpointGuid) =
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${meetingAccessToken}`,
       },
     },
   )
@@ -105,7 +128,7 @@ export const getMeetingSettings = async () => {
     headers: {
       accept: 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${userAccessToken}`,
     },
   })
   const r2 = await result.json()
