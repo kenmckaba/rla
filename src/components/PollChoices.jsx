@@ -9,6 +9,7 @@ import {
   Button,
   HStack,
 } from '@chakra-ui/react'
+import { ReactComponent as CheckMark } from '../assets/icons/check-mark.svg'
 import { useEffect, useState } from 'react'
 import { getPoll } from '../graphql/queries'
 import { usePollResponses } from './usePollResponses'
@@ -77,7 +78,8 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
                   return (
                     // TODO: if (index === poll.correctAnswerIndex) show bold/checkmark or whatever
                     <Box key={answer}>
-                      {answer} {answerCount(answer)}
+                      {answer} {answerCount(answer)}{' '}
+                      {poll.correctAnswerIndex === index && <CheckMark />}
                     </Box>
                   )
                 }

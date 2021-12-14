@@ -23,6 +23,7 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
   const [question, setQuestion] = useState(poll?.question || '')
   const [answers, setAnswers] = useState(poll?.answers || ['', ''])
   const [type, setType] = useState(poll?.type || SingleChoice)
+  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(poll?.correctAnswerIndex)
 
   const onChangeQuestion = (event) => {
     setQuestion(event.target.value)
@@ -38,7 +39,7 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
     }, [])
 
     // TODO: add correctAnswerIndex (can be null)
-    onSave({ pollId: poll?.id, question, type, answers: ans })
+    onSave({ pollId: poll?.id, question, type, answers: ans, correctAnswerIndex })
     onClose()
   }
 
@@ -125,15 +126,23 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
               // TODO: add checkbox or radio to choose correct answer and set poll.correctAnswerIndex
               // should be able to choose none
               return (
-                <Input
-                  key={index}
-                  height="24px"
-                  marginBottom="2px"
-                  value={answer}
-                  onChange={(e) => {
-                    onChangeAnswer(index, e)
-                  }}
-                />
+                <>
+                  <Input
+                    key={index}
+                    height="24px"
+                    marginBottom="2px"
+                    value={answer}
+                    onChange={(e) => {
+                      onChangeAnswer(index, e)
+                    }}
+                  />
+                  <Radio
+                    value={correctAnswerIndex === index}
+                    onChange={(index) => {
+                      setCorrectAnswerIndex(index)
+                    }}
+                  />
+                </>
               )
             })}
             <Button

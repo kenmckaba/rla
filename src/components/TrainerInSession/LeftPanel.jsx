@@ -7,11 +7,14 @@ import {
 } from '@chakra-ui/accordion'
 import { Button } from '@chakra-ui/button'
 import { Box, Heading, Text, VStack } from '@chakra-ui/layout'
-import { Table, Tbody, Th, Thead, Tr } from '@chakra-ui/table'
+import { Table, Tbody, Th, Thead, Tr, Td } from '@chakra-ui/table'
 import React, { useMemo } from 'react'
 import { scrollBarStyle } from '../../theme/components/scrollbar'
 import { ClassRoster } from '../ClassRoster'
 import { TrainerPoll } from '../TrainerPoll'
+import { useBlueJeans } from '../../bluejeans/useBlueJeans'
+import { MicCamIcon } from '../MicCamIcon'
+import { getBjnParticipants, muteBjnParticipant } from '../../bluejeans/fetch-api'
 
 export default function LeftPanel({
   training,
@@ -24,6 +27,8 @@ export default function LeftPanel({
   updateAttendee,
   onManageBreakouts,
 }) {
+  const { bjnParticipants } = useBlueJeans()
+
   const Polls = useMemo(() => {
     const startPoll = (poll) => {
       updateCurrentTraining({
@@ -63,6 +68,58 @@ export default function LeftPanel({
     onPollModalOpen()
   }
 
+  const BluejeansParticipants = useMemo(() => {
+    const muteParticipant = async (audio, name, mute) => {
+      try {
+        const result = await getBjnParticipants(training.meetingId)
+        const { endpointGuid } = result.find((p) => p.name === name)
+        const muteResult = await muteBjnParticipant(
+          training.meetingId,
+          training.moderatorPasscode,
+          audio,
+          mute === 'mute',
+          endpointGuid,
+        )
+        console.log(muteResult)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    const result = bjnParticipants.reduce((acc, part) => {
+      if (!part.isSelf && !attendees.find((att) => att.name === part.name)) {
+        acc.push(
+          <Tr>
+            <Td>{part.name}</Td>
+            <Td width="30px">
+              <MicCamIcon
+                isMic={true}
+                isUnmuted={!part.isAudioMuted}
+                onClick={(mute) => muteParticipant(true, part.name, mute)}
+              />
+            </Td>
+            <Td width="187px">
+              <MicCamIcon
+                isMic={false}
+                isUnmuted={!part.isVideoMuted}
+                onClick={(mute) => muteParticipant(false, part.name, mute)}
+              />
+            </Td>
+          </Tr>,
+        )
+      }
+      return acc
+    }, [])
+    if (result.length === 0) {
+      return (
+        <Tr>
+          <Td>*none*</Td>
+        </Tr>
+      )
+    }
+    return result
+  }, [bjnParticipants, training, attendees])
+
   const lowerHand = (attendeeId) => {
     updateAttendee({
       variables: {
@@ -99,6 +156,32 @@ export default function LeftPanel({
             paddingBottom="2"
             lowerHand={(attendee) => lowerHand(attendee)}
           />
+        </Box>
+
+        <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
+          <Accordion allowMultiple width="100%" allowToggle defaultIndex={0}>
+            <AccordionItem p={0} m={0} border="none">
+              <AccordionButton p="2">
+                <Text
+                  marginLeft="2"
+                  flex="1"
+                  textAlign="left"
+                  fontWeight="semibold"
+                  fontSize="0.9em"
+                >
+                  Other meeting participants
+                </Text>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel overflowY="auto" padding="0" pb={4} sx={scrollBarStyle}>
+                <Box>
+                  <Table size="sm" width="100%" margin="0">
+                    <Tbody>{BluejeansParticipants}</Tbody>
+                  </Table>
+                </Box>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </Box>
 
         <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
