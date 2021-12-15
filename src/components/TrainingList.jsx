@@ -35,6 +35,7 @@ import AttendeeAvatar from './AttendeeAvatar'
 import TrainingListHeader from './TrainingListHeader'
 import ParticipantsModal from './ParticipantsModal'
 import { IconButton } from '@chakra-ui/button'
+import FilteredDatePicker from './FilteredDatePicker'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -46,6 +47,10 @@ export const TrainingList = () => {
   const [deleteTheTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
+  const [selectedTrainings, setSelectedTraining] = useState([])
+  const [tabIndex, setTabIndex] = React.useState(0)
 
   const handleShowParticipantsModal = (training) => {
     setCurrentTraining(training)
@@ -73,6 +78,35 @@ export const TrainingList = () => {
       }
     }
   }, [subscribeToMore])
+
+  useEffect(() => {
+    if (startDate) {
+      setSelectedTraining(trainings
+        .filter((training) => {
+          return !!tabIndex === !!training.startedAt
+        })
+        .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1))
+        .filter((training) => {
+          let trainingDate = new Date(training.scheduledTime)
+          trainingDate = new Date(trainingDate.setHours(0,0,0))
+          if (endDate) {
+            if ((trainingDate - startDate) > 0) {
+              return (endDate - trainingDate) > 0
+            }
+            return false
+          }
+          return (startDate - trainingDate) === 0
+        }))
+    }
+
+    else {
+      setSelectedTraining(trainings
+        .filter((training) => {
+          return !!tabIndex === !!training.startedAt
+        })
+        .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1)))
+    }
+  }, [trainings, tabIndex, startDate, endDate])
 
   const handleTrainingClick = async (training) => {
     setCurrentTraining(training)
@@ -112,29 +146,16 @@ export const TrainingList = () => {
     window.open(`/trainerInSession/${trainingId}`)
   }
 
-  const Trainings = ({ past }) => {
-    if (!trainings || trainings.length === 0) {
+  const renderTrainings = () => {
+    if (selectedTrainings?.length === 0) {
       return (
         <Tr>
           <Td>*None*</Td>
         </Tr>
       )
     }
-    const selected = trainings
-      .filter((training) => {
-        return past === !!training.startedAt
-      })
-      .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1))
-
-    if (selected?.length === 0) {
-      return (
-        <Tr>
-          <Td>*None*</Td>
-        </Tr>
-      )
-    }
-
-    return selected.map((training) => (
+    
+    return selectedTrainings.map((training) => (
       <Tr
         height="224px"
         width="1028px"
@@ -248,14 +269,6 @@ export const TrainingList = () => {
     ))
   }
 
-  const PastTrainings = () => {
-    return Trainings({ past: true })
-  }
-
-  const FutureTrainings = () => {
-    return Trainings({ past: false })
-  }
-
   if (error) {
     console.error('rla-log: error', error)
     return <p>An error occurred</p>
@@ -292,7 +305,7 @@ export const TrainingList = () => {
       <TrainingListHeader trainings={trainings} />
       <Box height="100%" width="100%" padding="3px" borderRadius="20px">
         <Flex>
-          <Tabs height="100%" width="81.7%" variant="solid-rounded">
+          <Tabs onChange={(index) => setTabIndex(index)} height="100%" width="81.7%" variant="solid-rounded">
             <Flex>
               <TabList>
                 <Tab
@@ -338,6 +351,7 @@ export const TrainingList = () => {
                 </Tab>
               </TabList>
               <Spacer />
+              <FilteredDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
               <Button
                 variant="primary-transparent"
                 size="sm"
@@ -352,10 +366,10 @@ export const TrainingList = () => {
             </Flex>
             <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
               <TabPanel p={0} m={0}>
-                <ListTable>{FutureTrainings()}</ListTable>
+                <ListTable>{renderTrainings()}</ListTable>
               </TabPanel>
               <TabPanel p={0} m={0}>
-                <ListTable>{PastTrainings()}</ListTable>
+                <ListTable>{renderTrainings()}</ListTable>
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -364,7 +378,6 @@ export const TrainingList = () => {
             isOpen={showParticipantsModal}
             onClose={() => setShowParticipantsModal(false)}
           />
-
           <Modal isOpen={isModalOpen} scrollBehavior="inside">
             <ModalOverlay />
             <ModalContent color="darkKnight.700">
