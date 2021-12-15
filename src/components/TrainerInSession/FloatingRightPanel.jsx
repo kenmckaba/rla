@@ -87,7 +87,7 @@ export default function FloatingRightPanel({
 
   // <Box  p='6' rounded='md' bg='white'>
   return (
-    <Collapse in={true} animateOpacity>
+    <Collapse in={panelIsVisible} animateOpacity>
       <Flex
         position="fixed"
         top="93%"
