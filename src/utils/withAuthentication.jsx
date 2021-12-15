@@ -15,7 +15,14 @@ export const WithAuthentication = (WrappedComponent) => {
   return (props) => (
     <Flex width="100%" flexDirection="column">
       <AmplifyAuthenticator />
-      <Flex position="absolute" top="14px" right="20px" alignItems="center" color="white">
+      <Flex
+        position="absolute" 
+        top="0"
+        right="0"
+        paddingX="2em"
+        paddingY="2em"
+        alignItems="center"
+        color="white">
         <Button marginLeft="5px" size="sm" onClick={logout}>
           Sign out
         </Button>
