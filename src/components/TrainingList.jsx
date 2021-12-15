@@ -18,6 +18,7 @@ import {
   ModalHeader,
   ModalContent,
   ModalBody,
+  ModalFooter,
   useDisclosure,
 } from '@chakra-ui/react'
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
@@ -35,6 +36,7 @@ import AttendeeAvatar from './AttendeeAvatar'
 import TrainingListHeader from './TrainingListHeader'
 import ParticipantsModal from './ParticipantsModal'
 import { IconButton } from '@chakra-ui/button'
+import { InvitedList } from './InvitedList'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -46,6 +48,7 @@ export const TrainingList = () => {
   const [deleteTheTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
+  const [showInvitedModal, setShowInvitedModal] = useState(false)
 
   const handleShowParticipantsModal = (training) => {
     setCurrentTraining(training)
@@ -110,6 +113,11 @@ export const TrainingList = () => {
 
   const openRegPage = (trainingId) => {
     window.open(`/trainerInSession/${trainingId}`)
+  }
+
+  const showInvited = (training) => {
+    setCurrentTraining(training)
+    setShowInvitedModal(true)
   }
 
   const Trainings = ({ past }) => {
@@ -208,9 +216,19 @@ export const TrainingList = () => {
               </Flex>
               <Flex direction="column">
                 <StatLabel>
-                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
-                    ATTENDEES
-                  </StatHelpText>
+                  <HStack>
+                    <StatHelpText fontSize="0.75em" textTransform="uppercase">
+                      ATTENDEES
+                    </StatHelpText>
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      color="lightgrey"
+                      onClick={() => showInvited(training)}
+                    >
+                      Invited
+                    </Button>
+                  </HStack>
                 </StatLabel>
                 <Flex
                   height="24px"
@@ -391,6 +409,18 @@ export const TrainingList = () => {
                   onDelete={handleDelete}
                 />
               </ModalBody>
+            </ModalContent>
+          </Modal>
+          <Modal isOpen={showInvitedModal}>
+            <ModalOverlay />
+            <ModalContent maxWidth="unset" width="600px" color="darkKnight.700">
+              <ModalHeader>Invited students</ModalHeader>
+              <ModalBody>
+                <InvitedList training={currentTraining} />
+              </ModalBody>
+              <ModalFooter>
+                <Button onClick={() => setShowInvitedModal(false)}>Done</Button>
+              </ModalFooter>
             </ModalContent>
           </Modal>
         </Flex>

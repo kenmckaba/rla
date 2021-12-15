@@ -277,7 +277,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           input: {
             trainingId: trainingId,
             timeSent: new Date().toISOString(),
-            name: student.name,
+            name: `${student.firstName} ${student.lastName}`,
             email: student.email,
           },
         },
@@ -336,9 +336,10 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         return att.id === attendee.id
       })
       if (attendeePos === -1) {
-        setAttendees([...attendees, attendee])
+        setAttendees((prev) => [...prev, attendee])
       } else {
-        attendees[attendeePos] = attendee
+        const newAttendees = attendees.slice(attendeePos, attendeePos)
+        setAttendees([...newAttendees, attendee])
       }
     }
     onNewattendeeModalClose()

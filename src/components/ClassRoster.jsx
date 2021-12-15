@@ -218,7 +218,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
             />
             <Box onClick={lowerAllHands}>
               <Tooltip hasArrow placement="top" label="Lower all hands">
-                <HandIconWhite />
+                {anyRaised ? <HandIconWhite /> : <HandIcon />}
               </Tooltip>
             </Box>
           </HStack>
