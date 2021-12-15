@@ -127,10 +127,24 @@ export default function LeftPanel({
                 </Button>
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel overflowY="auto" padding="0" pb={4} sx={scrollBarStyle}>
+              <AccordionPanel
+                overflowY="auto"
+                padding="0"
+                pb={4}
+                sx={scrollBarStyle}
+                minHeight="200px"
+                maxHeight="40vh"
+              >
                 <Box>
-                  <Table size="sm" width="100%" margin="0">
-                    <Thead borderBottom="1px" borderColor="#ffffff">
+                  <Table size="sm" width="100%" margin="0" overflow={'scroll'}>
+                    <Thead
+                      bg="#4c6b99"
+                      borderBottom="1px"
+                      borderColor="#ffffff"
+                      top={0}
+                      position={'sticky'}
+                      zIndex={3}
+                    >
                       <Tr>
                         <Th color="white">Question</Th>
                       </Tr>
