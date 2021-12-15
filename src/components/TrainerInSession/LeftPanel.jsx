@@ -139,8 +139,10 @@ export default function LeftPanel({
         bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
         opacity="85%"
         align="left"
+        width="250px"
         px="2"
         py="2"
+        minWidth="250px"
       >
         <Box paddingBottom="4">
           <Heading fontSize="1.25em" fontWeight="bold" textTransform="capitalize" mb="2">

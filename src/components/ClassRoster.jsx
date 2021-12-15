@@ -31,6 +31,7 @@ import { ReactComponent as XMark } from '../assets/icons/x-mark.svg'
 import { MicCamIcon } from './MicCamIcon'
 import { gql, useMutation } from '@apollo/client'
 import { updateAttendee, updateTraining } from '../graphql/mutations'
+import './class-roster.css'
 
 export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
   const [anyRaised, setAnyRaised] = useState(false)
@@ -118,7 +119,6 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         ),
       },
       {
-        Header: 'Joined',
         accessor: 'checkIn',
         sortType: 'basic',
         Cell: ({ value }) => <Center>{value ? <CheckMark /> : <XMark />}</Center>,
@@ -159,7 +159,6 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         Cell: ({ value }) => <Center>{value ? <EyeIcon /> : <EyeIconRed />}</Center>,
       },
       {
-        Header: 'Hand raised',
         accessor: 'hand',
         Cell: ({ value }) => {
           return (
@@ -257,12 +256,10 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
                 {rows.map((row) => {
                   prepareRow(row)
                   return (
-                    <Tr {...row.getRowProps()}>
+                    <Tr className='cell-container' {...row.getRowProps()}>
                       {row.cells.map((cell) => (
                         <Td {...cell.getCellProps()}>
-                          {/* <Tooltip hasArrow placement="right" label="test"> */}
                           <span>{cell.render('Cell')}</span>
-                          {/* </Tooltip> */}
                         </Td>
                       ))}
                     </Tr>
