@@ -27,11 +27,6 @@ const FilteredDatePicker = ({
     setEndDate(end)
   }
 
-  function handleCalendar() {
-    setIsCalendarOpen(!isCalendarOpen)
-    console.log(32)
-  }
-
   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
     <InputGroup>
       <Input
@@ -113,8 +108,6 @@ const FilteredDatePicker = ({
         selectsRange
         showPopperArrow={showPopperArrow}
         monthsShown={2}
-        onCalendarClose={() => handleCalendar}
-        onCalendarOpen={() => handleCalendar}
         {...props}
       />
     </Box>
