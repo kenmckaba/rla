@@ -5,6 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.4.16",
     "@aws-amplify/ui-react": "^1.2.21",
+    "@bluejeans/web-client-sdk": "../bluejeans-web-client-sdk",
     "@chakra-ui/icons": "^1.0.13",
     "@chakra-ui/react": "^1.6.4",
     "@emotion/react": "^11.4.0",
@@ -18,7 +19,6 @@
     "aws-appsync-auth-link": "^3.0.7",
     "aws-appsync-subscription-link": "^3.0.9",
     "aws-sdk": "^2.1018.0",
-    "@bluejeans/web-client-sdk": "../bluejeans-web-client-sdk",
     "framer-motion": "^4.1.17",
     "graphql": "^15.5.1",
     "prettier-eslint": "^12.0.0",
