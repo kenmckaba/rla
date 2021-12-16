@@ -63,7 +63,7 @@ export default function TrainingListHeader({ trainings }) {
   return (
     <>
       <SunBackground hour={hour}/>
-      <Box marginBottom="20px" paddingTop="125px">
+      <Box paddingBottom="45px" paddingTop="125px">
         <Box display="flex" justifyContent="center">
           <H1Heading>
         Good {`${hour < 12 && 'morning' || hour < 18 && 'afternoon' || 'evening'} ${userName}`}.
@@ -73,7 +73,7 @@ export default function TrainingListHeader({ trainings }) {
               : 'Your next meeting is scheduled at ' + nextTrainingOfToday()}
           </H1Heading>
         </Box>
-        <HStack mb="25px">
+        {/*         <HStack mb="25px">
           <Button size="xs" onClick={onEmailsOpen}>
           Manage email lists
           </Button>
@@ -85,7 +85,8 @@ export default function TrainingListHeader({ trainings }) {
         <OurModal isOpen={isEmailsOpen} header="Manage email lists">
           <EmailListForm onClose={onEmailsClose} />
         </OurModal>
-        <PollsCatalog isOpen={isPollsOpen} onClose={onPollsClose} />
+        <PollsCatalog isOpen={isPollsOpen} onClose={onPollsClose} /> 
+         */}
       </Box>
     </>
   )

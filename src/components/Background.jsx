@@ -5,7 +5,7 @@ const location = window.location.pathname
 
 export default function Background({ children }) {
   return (
-    <Flex height="100vh" flexDirection="column">
+    <Flex minHeight="100vh" flexDirection="column">
       {location === '/' && (
         <Flex
           alignItems="center"

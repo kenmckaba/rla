@@ -15,7 +15,7 @@ export const H3Heading = (props) => {
 
   return (
     // TODO: Check if we can remove color from here
-    <Heading fontSize="2xl" fontWeight="medium" color="white" {...props}>
+    <Heading fontSize="2xl" fontWeight="medium" color="blue.600" {...props}>
       {children}
     </Heading>
   )

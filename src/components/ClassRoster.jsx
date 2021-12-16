@@ -103,7 +103,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         sortType: 'basic',
         Cell: ({ value }) => (
           <Center>
-            <MicCamIcon
+            <MicCamIcon              
               hardMuted={value.audioHardMuted}
               isUnmuted={value.audioUnmuted}
               isMic={true}
@@ -161,7 +161,13 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
           <AccordionIcon />
         </AccordionButton>
 
-        <AccordionPanel overflowY="auto" padding="0" sx={scrollBarStyle}>
+        <AccordionPanel
+          overflowY="auto"
+          padding="0"
+          sx={scrollBarStyle}
+          minHeight="200px"
+          maxHeight="40vh"
+        >
           <HStack height="20px" justifyContent="end" marginRight="24px" marginTop="5px">
             <MicCamIcon
               hardMuted={training.audioHardMuted}
@@ -175,8 +181,15 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
             </Box>
           </HStack>
           {attendees.length !== 0 ? (
-            <Table size="sm" width="100%" margin="0" {...getTableProps()}>
-              <Thead borderBottom="1px" borderColor="#ffffff">
+            <Table size="sm" width="100%" margin="0" overflow={'scroll'} {...getTableProps()}>
+              <Thead
+                bg="#455f8f"
+                borderBottom="1px"
+                borderColor="#ffffff"
+                top={0}
+                position={'sticky'}
+                zIndex={3}
+              >
                 {headerGroups.map((headerGroup) => (
                   <Tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map((column) => (
@@ -209,7 +222,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
                 {rows.map((row) => {
                   prepareRow(row)
                   return (
-                    <Tr className='cell-container' {...row.getRowProps()}>
+                    <Tr className="cell-container" {...row.getRowProps()}>
                       {row.cells.map((cell) => (
                         <Td {...cell.getCellProps()}>
                           <span>{cell.render('Cell')}</span>
