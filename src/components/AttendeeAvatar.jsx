@@ -12,8 +12,9 @@ export default function AttendeeAvatar({ attendee }) {
         key={attendee.id}
         size="xs"
         name={attendee.name}
-        color="white"
-        bg="rgba(255, 255, 255, 0.25)"
+        color="blue.600"
+        fontWeight="bold"
+        bg="rgba(13, 98, 197, 0.1)"
       />
       {showBadge && (
         <Badge

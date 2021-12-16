@@ -170,20 +170,20 @@ export const TrainingList = () => {
       >
         <Flex
           borderRadius="5px"
-          backgroundColor="rgba(255, 255, 255, 0.1)"
+          backgroundColor="rgba(13, 98, 197, 0.1)"
+          color="blue.600"
           direction="column"
           justify="center"
           _hover={{
-            bg: 'rgba(255, 255, 255, 0.3)',
+            bg: 'rgba(13, 98, 197, 0.2)',
           }}
         >
-          <Td marginBottom="6">
-            <Flex justify="flex-start" height="50px">
+          <Td py="30px">
+            <Flex justify="flex-start" minH="34px">
               <Stat marginTop="2">
                 <StatLabel
                   whiteSpace="nowrap"
                   fontSize="2em"
-                  fontWeight="semibold"
                   textTransform="capitalize"
                 >
                   {training.title}
@@ -204,31 +204,31 @@ export const TrainingList = () => {
           <Td paddingBottom="10">
             <HStack display="flex" justifyContent="space-between">
               <Flex direction="column">
-                <StatLabel>
+                <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
                     DATE/TIME
                   </StatHelpText>
                 </StatLabel>
                 <StatLabel>
-                  <StatHelpText fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
+                  <StatHelpText fontSize="0.90em" textTransform="uppercase">
                     {timestampToPrettyTime(training.scheduledTime)}
                   </StatHelpText>
                 </StatLabel>
               </Flex>
               <Flex direction="column">
-                <StatLabel>
+                <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
                     TRAINER NAME
                   </StatHelpText>
                 </StatLabel>
                 <StatLabel>
-                  <StatHelpText fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
+                  <StatHelpText fontSize="0.90em">
                     {training.trainerName}
                   </StatHelpText>
                 </StatLabel>
               </Flex>
               <Flex direction="column">
-                <StatLabel>
+                <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
                     ATTENDEES
                   </StatHelpText>
@@ -303,110 +303,115 @@ export const TrainingList = () => {
   return (
     <>
       <TrainingListHeader trainings={trainings} />
-      <Box height="100%" width="100%" padding="3px" borderRadius="20px">
-        <Flex>
-          <Tabs onChange={(index) => setTabIndex(index)} height="100%" width="81.7%" variant="solid-rounded">
-            <Flex>
-              <TabList>
-                <Tab
-                  textTransform="uppercase"
-                  color="#ffffff"
-                  height="32px"
-                  fontSize="10pt"
-                  paddingInline="26px"
-                  minW="120px"
-                  fontWeight="bold"
-                  borderRadius="full"
-                  bg="rgba(255, 255, 255, 0.1);"
-                  mr="16px"
-                  _focus={{
-                    boxShadow: 'none',
-                  }}
-                  _selected={{
-                    color: 'darkKnight.700',
-                    bg: 'ghost.50',
-                  }}
-                >
+      <Box bgColor="blue.50" height="100%">
+        <Box padding="3px" borderRadius="20px">
+          <Flex>
+            <Tabs onChange={(index) => setTabIndex(index)} height="100%" width="100%" pt="30px" px="32px" variant="solid-rounded">
+              <Flex>
+                <TabList>
+                  <Tab
+                    bg="rgba(13, 98, 197, 0.1)"
+                    borderRadius="full"
+                    color="rgba(13, 98, 197, 0.4)"
+                    fontSize="10pt"
+                    fontWeight="light"
+                    minH="37px"
+                    minW="200px"
+                    mr="16px"
+                    paddingInline="26px"
+                    textTransform="uppercase"
+                    _focus={{
+                      boxShadow: 'none',
+                    }}
+                    _selected={{
+                      color: 'white',
+                      bg: 'blue.600',
+                      fontWeight: 'bold'
+                    }}
+                  >
                   Upcoming trainings
-                </Tab>
-                <Tab
-                  textTransform="uppercase"
-                  color="#ffffff"
-                  height="32px"
-                  fontSize="10pt"
-                  paddingInline="26px"
-                  minW="120px"
-                  fontWeight="bold"
-                  borderRadius="full"
-                  bg="rgba(255, 255, 255, 0.1);"
-                  _focus={{
-                    boxShadow: 'none',
-                  }}
-                  _selected={{
-                    color: 'darkKnight.700',
-                    bg: 'ghost.50',
-                  }}
-                >
+                  </Tab>
+                  <Tab
+                    bg="rgba(13, 98, 197, 0.1)"
+                    borderRadius="full"
+                    color="rgba(13, 98, 197, 0.4)"
+                    fontSize="10pt"
+                    fontWeight="light"
+                    minH="37px"
+                    minW="200px"
+                    mr="16px"
+                    paddingInline="26px"
+                    textTransform="uppercase"
+                    _focus={{
+                      boxShadow: 'none',
+                    }}
+                    _selected={{
+                      color: 'white',
+                      bg: 'blue.600',
+                      fontWeight: 'bold'
+                    }}
+                  >
                   Completed trainings
-                </Tab>
-              </TabList>
-              <Spacer />
-              <FilteredDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
-              <Button
-                variant="primary-transparent"
-                size="sm"
-                leftIcon={<AddIcon />}
-                onClick={onNewTraining}
-                fontSize="10pt"
-                fontWeight="bold"
-                minW="170px"
-              >
+                  </Tab>
+                </TabList>
+                <Spacer />
+                <FilteredDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
+                <Button
+                  variant="light-blue"
+                  size="md"
+                  leftIcon={<AddIcon />}
+                  onClick={onNewTraining}
+                  fontSize="10pt"
+                  fontWeight="bold"
+                  minW="174px"
+                >
                 New training
-              </Button>
-            </Flex>
-            <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
-              <TabPanel p={0} m={0}>
-                <ListTable>{renderTrainings()}</ListTable>
-              </TabPanel>
-              <TabPanel p={0} m={0}>
-                <ListTable>{renderTrainings()}</ListTable>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-          <ParticipantsModal
-            training={currentTraining}
-            isOpen={showParticipantsModal}
-            onClose={() => setShowParticipantsModal(false)}
-          />
-          <Modal isOpen={isModalOpen} scrollBehavior="inside">
-            <ModalOverlay />
-            <ModalContent color="darkKnight.700">
-              <ModalHeader>
-                <Flex>
-                  <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
-                  <Spacer></Spacer>
-                  <Box>
-                    <HStack spacing={2}>
-                      <IconButton
-                        variant="icon-button"
-                        aria-label="Close form"
-                        icon={<CloseIcon boxSize={3} />}
-                        onClick={onModalClose}
-                      />
-                    </HStack>
-                  </Box>
-                </Flex>
-              </ModalHeader>
-              <ModalBody>
-                <TrainingForm
-                  onClose={onModalClose}
-                  trainingId={currentTraining?.id}
-                  onDelete={handleDelete}
-                />
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-        </Flex>
+                </Button>
+              </Flex>
+              <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
+                <TabPanel p={0} m={0}>
+                  <ListTable>{renderTrainings()}</ListTable>
+                </TabPanel>
+                <TabPanel p={0} m={0}>
+                  <ListTable>{renderTrainings()}</ListTable>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+            <ParticipantsModal
+              training={currentTraining}
+              isOpen={showParticipantsModal}
+              onClose={() => setShowParticipantsModal(false)}
+            />
+            <Modal isOpen={isModalOpen} scrollBehavior="inside">
+              <ModalOverlay />
+              <ModalContent color="darkKnight.700">
+                <ModalHeader>
+                  <Flex>
+                    <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
+                    <Spacer></Spacer>
+                    <Box>
+                      <HStack spacing={2}>
+                        <IconButton
+                          variant="icon-button"
+                          aria-label="Close form"
+                          icon={<CloseIcon boxSize={3} />}
+                          onClick={onModalClose}
+                        />
+                      </HStack>
+                    </Box>
+                  </Flex>
+                </ModalHeader>
+                <ModalBody>
+                  <TrainingForm
+                    onClose={onModalClose}
+                    trainingId={currentTraining?.id}
+                    onDelete={handleDelete}
+                  />
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+          </Flex>
+        </Box>
       </Box>
     </>
   )
