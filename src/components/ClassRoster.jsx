@@ -104,7 +104,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         sortType: 'basic',
         Cell: ({ value }) => (
           <Center>
-            <MicCamIcon
+            <MicCamIcon              
               hardMuted={value.audioHardMuted}
               isUnmuted={value.audioUnmuted}
               isMic={true}
