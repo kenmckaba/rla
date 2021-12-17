@@ -83,7 +83,8 @@ export default function LeftPanel({
         opacity="85%"
         align="left"        
         px="2"
-        py="2"        
+        py="2"
+        width="500px"
       >
         <Box paddingBottom="4">
           <Heading fontSize="1.25em" fontWeight="bold" textTransform="capitalize" mb="2">
