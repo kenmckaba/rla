@@ -38,9 +38,10 @@ const FilteredDatePicker = ({
         borderRadius="full"
         color="blue.600"
         fontSize="14px"
+        cursor="pointer"
+        w="100%"
         placeholder={isCalendarOpen ? 'FROM:' : 'SORT BY: LATEST' }
         onClick={onClick} ref={ref} value={value && `FROM: ${new Intl.DateTimeFormat('en-US', {day: 'numeric', month: 'numeric', year: '2-digit'}).format(startDate)}      TO: ${endDate ? new Intl.DateTimeFormat('en-US', {day: 'numeric', month: 'numeric', year: '2-digit'}).format(endDate) : ''}`}
-        w="100%"
         _placeholder={{
           color: 'blue.600'
         }}>
