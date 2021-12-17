@@ -15,7 +15,7 @@ export default function SunBackground({hour}) {
         zIndex="-1"
         overflow="hidden"
       > 
-        <Img src='./images/bg.jpg' alt='Sun' width="100%" marginTop={`${hour < 12 && -600 || hour < 18 && -450 || -2000}`}/>
+        <Img src='./images/bg.jpg' alt='Sun' width="100%" marginTop={`${hour < 12 && -650 || hour < 18 && -450 || -2000}`}/>
       </Box>
     </Flex>
   )
