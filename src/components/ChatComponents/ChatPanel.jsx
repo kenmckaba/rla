@@ -25,6 +25,7 @@ export const ChatPanel = ({ messages, attendees, training, myAttendeeId }) => {
             attendees={attendees}
             training={training}
             myAttendeeId={myAttendeeId}
+            minHeight={'850px'}            
           />
         </AccordionPanel>
       </AccordionItem>
