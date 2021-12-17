@@ -54,3 +54,7 @@
 .react-datepicker__navigation-icon::before {
   border-color: #0d62c5;
 }
+
+.react-datepicker__input-container:focus-within {
+  box-shadow: none;
+}
