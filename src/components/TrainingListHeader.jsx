@@ -65,7 +65,7 @@ export default function TrainingListHeader({ trainings }) {
       <SunBackground hour={hour}/>
       <Box paddingBottom="45px" paddingTop="125px">
         <Box display="flex" justifyContent="center">
-          <H1Heading>
+          <H1Heading textAlign="center">
         Good {`${hour < 12 && 'morning' || hour < 18 && 'afternoon' || 'evening'} ${userName}`}.
             <br />
             {nextTrainingOfToday() === 0

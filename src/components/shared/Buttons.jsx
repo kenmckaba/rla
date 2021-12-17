@@ -4,7 +4,7 @@ import { EditIcon } from '@chakra-ui/icons'
 export const EditButton = ({ children, onClick, icon = <EditIcon />, ...props }) => (
   <Button
     onClick={onClick}
-    variant="secondary-ghost-outline"
+    variant="light-blue"
     leftIcon={icon}
     {...props}
   >

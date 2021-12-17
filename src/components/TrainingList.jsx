@@ -19,6 +19,7 @@ import {
   ModalContent,
   ModalBody,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react'
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
@@ -203,7 +204,7 @@ export const TrainingList = () => {
           </Td>
           <Td paddingBottom="10">
             <HStack display="flex" justifyContent="space-between">
-              <Flex direction="column">
+              <Flex w="25%" direction="column">
                 <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
                     DATE/TIME
@@ -215,7 +216,7 @@ export const TrainingList = () => {
                   </StatHelpText>
                 </StatLabel>
               </Flex>
-              <Flex direction="column">
+              <Flex w="20%" direction="column">
                 <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
                     TRAINER NAME
@@ -227,7 +228,7 @@ export const TrainingList = () => {
                   </StatHelpText>
                 </StatLabel>
               </Flex>
-              <Flex direction="column">
+              <Flex w="25%" direction="column">
                 <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
                     ATTENDEES
@@ -237,9 +238,11 @@ export const TrainingList = () => {
                   height="24px"
                   onClick={() => handleShowParticipantsModal(training, training.attendees)}
                 >
-                  {training?.attendees?.items?.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
-                    <AttendeeAvatar key={attendee.id} attendee={attendee} />
-                  ))}
+                  <HStack spacing={2}>
+                    {training?.attendees?.items?.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
+                      <AttendeeAvatar key={attendee.id} attendee={attendee} />
+                    ))}
+                  </HStack>
                 </Flex>
                 {/* {training.attendees.items.length > MAX_ATTENDEE_ICONS && (
                   <Avatar
@@ -250,7 +253,7 @@ export const TrainingList = () => {
                   />
                 )} */}
               </Flex>
-              <Flex direction="column">
+              <Flex w="30%" direction="column">
                 <StatLabel>
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
                     BLUEJEANS MEETING

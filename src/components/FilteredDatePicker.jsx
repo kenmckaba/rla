@@ -1,9 +1,9 @@
 // https://gist.github.com/baumandm/8665a34bc418574737847f7394f98bd9
 
-import React, { forwardRef, useState} from 'react'
+import React, { forwardRef, useState } from 'react'
 import ReactDatePicker, { CalendarContainer } from 'react-datepicker'
-import { Box, InputGroup, InputRightElement, Input } from '@chakra-ui/react'
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
+import { Box, InputGroup, InputRightElement, Input, HStack, StackDivider } from '@chakra-ui/react'
+import { ChevronDownIcon, ChevronUpIcon, ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import 'react-datepicker/dist/react-datepicker.css'
 import './date-picker.css'
 import './filtered-date-picker.css'
@@ -38,9 +38,10 @@ const FilteredDatePicker = ({
         borderRadius="full"
         color="blue.600"
         fontSize="14px"
+        cursor="pointer"
+        w="100%"
         placeholder={isCalendarOpen ? 'FROM:' : 'SORT BY: LATEST' }
         onClick={onClick} ref={ref} value={value && `FROM: ${new Intl.DateTimeFormat('en-US', {day: 'numeric', month: 'numeric', year: '2-digit'}).format(startDate)}      TO: ${endDate ? new Intl.DateTimeFormat('en-US', {day: 'numeric', month: 'numeric', year: '2-digit'}).format(endDate) : ''}`}
-        w="100%"
         _placeholder={{
           color: 'blue.600'
         }}>
@@ -55,9 +56,9 @@ const FilteredDatePicker = ({
     return (
       <Box pos="relative" top="10px" right="25%">
         <CalendarContainer className={className}>
-          <Box pos="relative">
+          <HStack py={4} align="start" divider={<StackDivider borderColor='gray.200' />} pos="relative">
             {children}
-          </Box>
+          </HStack>
         </CalendarContainer>
       </Box>
     )
@@ -89,13 +90,8 @@ const FilteredDatePicker = ({
               style={customHeaderCount === 1 ? { visibility: 'hidden' } : null}
               onClick={decreaseMonth}
             >
-              <span
-                className={
-                  'react-datepicker__navigation-icon react-datepicker__navigation-icon--previous'
-                }
-              >
-                {'<'}
-              </span>
+              <ChevronLeftIcon h={6} w={6} color="blue.600" className='react-datepicker__navigation-icon react-datepicker__navigation-icon--previous'
+              />
             </button>
             <span className="react-datepicker__current-month">
               {monthDate.toLocaleString('en-US', {
@@ -111,13 +107,8 @@ const FilteredDatePicker = ({
               style={customHeaderCount === 0 ? { visibility: 'hidden' } : null}
               onClick={increaseMonth}
             >
-              <span
-                className={
-                  'react-datepicker__navigation-icon react-datepicker__navigation-icon--next'
-                }
-              >
-                {'>'}
-              </span>
+              <ChevronRightIcon h={6} w={6} color="blue.600" className='react-datepicker__navigation-icon react-datepicker__navigation-icon--next'
+              />
             </button>
           </div>
         )}
