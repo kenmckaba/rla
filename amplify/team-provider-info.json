@@ -271,5 +271,36 @@
         }
       }
     }
+  },
+  "umass": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-umass-171034-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-umass-171034-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-umass-171034-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-umass-171034-deployment",
+      "UnauthRoleName": "amplify-rlafeature-umass-171034-unauthRole",
+      "StackName": "amplify-rlafeature-umass-171034",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-umass-171034/fd814a10-5e0c-11ec-8fbe-0ed99a61ae9b",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "auth": {
+        "rlafeaturead7537a2": {}
+      },
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-umass-171034-deployment",
+          "s3Key": "amplify-builds/attendeeimage-744961447770624f687a-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      }
+    }
   }
 }

@@ -97,7 +97,7 @@ export const AttendeeForm = ({ training, onClose, attendee = emptyAttendee }) =>
           </Checkbox>
         )}
         <Box>
-          <Button size="md" onClick={handleSubmit}>
+          <Button size="md" onClick={handleSubmit} isDisabled={name === '' || email === ''}>
             Save
           </Button>
           <Button size="md" variant="outline" onClick={handleCancel} marginLeft="10px">
