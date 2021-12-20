@@ -161,10 +161,8 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
           <AccordionIcon />
         </AccordionButton>
 
-        <AccordionPanel
-          overflowY="auto"
-          padding="0"
-          sx={scrollBarStyle}
+        <AccordionPanel          
+          padding="0"          
           minHeight="200px"
           maxHeight="40vh"
         >
@@ -181,14 +179,12 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
             </Box>
           </HStack>
           {attendees.length !== 0 ? (
-            <Table size="sm" width="100%" margin="0" overflow={'scroll'} {...getTableProps()}>
+            <Table size="sm" width="100%" margin="0" {...getTableProps()}>
               <Thead
                 bg="#455f8f"
                 borderBottom="1px"
-                borderColor="#ffffff"
-                top={0}
-                position={'sticky'}
-                zIndex={3}
+                borderColor="#ffffff"     
+                display={'table'} width={'100%'} style={{tableLayout:'fixed'}}           
               >
                 {headerGroups.map((headerGroup) => (
                   <Tr {...headerGroup.getHeaderGroupProps()}>
@@ -218,11 +214,11 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
                   </Tr>
                 ))}
               </Thead>
-              <Tbody {...getTableBodyProps()}>
+              <Tbody {...getTableBodyProps()} display={'block'} maxHeight={'200px'} overflowY={'scroll'} sx={scrollBarStyle}>
                 {rows.map((row) => {
                   prepareRow(row)
                   return (
-                    <Tr className="cell-container" {...row.getRowProps()}>
+                    <Tr className="cell-container" {...row.getRowProps()} display={'table'} width={'100%'} style={{tableLayout:'fixed'}} >
                       {row.cells.map((cell) => (
                         <Td {...cell.getCellProps()}>
                           <span>{cell.render('Cell')}</span>
