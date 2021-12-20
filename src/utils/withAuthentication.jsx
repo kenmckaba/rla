@@ -42,7 +42,7 @@ export const WithAuthentication = (WrappedComponent) => {
           paddingY="2em"
           alignItems="center"
           color="white">
-          <Button marginLeft="5px" size="sm" onClick={logout}>
+          <Button zIndex={2} marginLeft="5px" size="sm" onClick={logout}>
           Sign out
           </Button>
         </Flex>
