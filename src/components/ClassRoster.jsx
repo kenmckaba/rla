@@ -98,8 +98,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         sortType: 'basic',
         Cell: ({ value }) => <Center>{value ? <CheckMark /> : <XMark />}</Center>,
       },
-      {
-        Header: 'Muted',
+      {        
         accessor: 'attendee',
         sortType: 'basic',
         Cell: ({ value }) => (
@@ -113,8 +112,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
           </Center>
         ),
       },
-      {
-        Header: 'Attentive',
+      {        
         accessor: 'eye',
         Cell: ({ value }) => <Center>{value ? <EyeIcon /> : <EyeIconRed />}</Center>,
       },
