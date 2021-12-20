@@ -1,5 +1,4 @@
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
-import Background from './components/Background'
 import { TrainingList } from './components/TrainingList'
 import { AttendeeLanding } from './components/AttendeeLanding'
 import theme from './theme/index'
@@ -17,20 +16,18 @@ function App() {
       <ChakraProvider theme={theme}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Fonts />
-        <Background>
-          <BrowserRouter>
-            <Switch>
-              <Route path="/attendee/:attendeeId" component={AttendeeLanding} />
-              <Route
-                path="/trainerInSession/:trainingId"
-                component={WithAuthentication(TrainerInSession)}
-              />
-              <Route path="/registration-update/:attendeeId" component={RegistrationUpdate} />
-              <Route path="/registration/:trainingId" component={Registration} />
-              <Route path="/" component={WithAuthentication(TrainingList)} />
-            </Switch>
-          </BrowserRouter>
-        </Background>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/attendee/:attendeeId" component={AttendeeLanding} />
+            <Route
+              path="/trainerInSession/:trainingId"
+              component={WithAuthentication(TrainerInSession)}
+            />
+            <Route path="/registration-update/:attendeeId" component={RegistrationUpdate} />
+            <Route path="/registration/:trainingId" component={Registration} />
+            <Route path="/" component={WithAuthentication(TrainingList)} />
+          </Switch>
+        </BrowserRouter>
       </ChakraProvider>
     </div>
   )

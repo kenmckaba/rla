@@ -19,7 +19,6 @@ import {
   ModalContent,
   ModalBody,
   useDisclosure,
-  VStack,
 } from '@chakra-ui/react'
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
@@ -37,6 +36,7 @@ import TrainingListHeader from './TrainingListHeader'
 import ParticipantsModal from './ParticipantsModal'
 import { IconButton } from '@chakra-ui/button'
 import FilteredDatePicker from './FilteredDatePicker'
+import Header from './Header'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -304,9 +304,10 @@ export const TrainingList = () => {
   }
 
   return (
-    <>
+    <Box minH="100vh" bgColor="blue.50">
+      <Header />
       <TrainingListHeader trainings={trainings} />
-      <Box bgColor="blue.50" height="100%">
+      <Box height="100%">
         <Box padding="3px" borderRadius="20px">
           <Flex>
             <Tabs onChange={(index) => setTabIndex(index)} height="100%" width="100%" pt="30px" px="32px" variant="solid-rounded">
@@ -416,6 +417,6 @@ export const TrainingList = () => {
           </Flex>
         </Box>
       </Box>
-    </>
+    </Box>
   )
 }
