@@ -14,7 +14,10 @@ export const WithAuthentication = (WrappedComponent) => {
 
   return (props) => (
     <Flex width="100%" flexDirection="column">
-      <AmplifyAuthenticator />
+      <Flex width="100%" flexDirection="row-reverse">
+        <div id='spacer'></div>
+        <AmplifyAuthenticator />
+      </Flex>
       <Flex
         position="absolute" 
         top="0"
