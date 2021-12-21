@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { Hub } from '@aws-amplify/core'
 import { AmplifyAuthenticator } from '@aws-amplify/ui-react'
 import { Auth } from 'aws-amplify'
-import { Box, Button, Flex } from '@chakra-ui/react'
+import { Box, Button, Flex, Image } from '@chakra-ui/react'
+import { H3Heading } from '../components/shared/Heading'
 import './amplify-styles.css'
-
+import Clock from '../components/Clock'
 
 export const WithAuthentication = (WrappedComponent) => {
 
@@ -53,6 +54,19 @@ export const WithAuthentication = (WrappedComponent) => {
   return () => (
     <Box w="100%" h="100%" bgColor="white">
       <Flex width="100%" flexDirection="column" bgGradient="linear(to-br, rgba(238,174,202,.5), rgba(148,187,233,.5))">
+        <Box pos="absolute" w="100%" h="100%" overflow="hidden">
+          <Box>
+            <Image fit="cover" opacity={.3} src='./images/login-bg.jpg' alt='Sun' ml="-800px" mt="-250px"/>
+          </Box>
+        </Box>
+        <Box pos="absolute" mt="96px" ml="165px" w="500px" zIndex="1" >
+          <H3Heading textAlign="center">
+          Welcome to Remote Learning Platform
+          </H3Heading>
+        </Box>
+        <Box pos="absolute" bottom="0" left="0" mb="96px" ml="165px" w="500px" zIndex="1" >
+          <Clock />
+        </Box>
         <Flex width="100%" flexDirection="row-reverse">
           <div id='spacer'></div>
           <AmplifyAuthenticator />
