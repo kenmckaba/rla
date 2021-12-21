@@ -7,10 +7,11 @@ import { useDisclosure } from '@chakra-ui/hooks'
 import { EmailListForm } from './EmailListForm'
 import { PollsCatalog } from './PollsCatalog'
 import SunBackground from './SunBackground'
+import useTodayDate from '../hooks/useTodayDate'
 
 export default function TrainingListHeader({ trainings }) {
   const [userName, setUserName] = useState()
-  const [today, setToday] = useState(new Date())
+  const today = useTodayDate()
 
   const { isOpen: isEmailsOpen, onOpen: onEmailsOpen, onClose: onEmailsClose } = useDisclosure()
   const { isOpen: isPollsOpen, onOpen: onPollsOpen, onClose: onPollsClose } = useDisclosure()
@@ -18,15 +19,6 @@ export default function TrainingListHeader({ trainings }) {
     Auth.currentUserInfo().then((info) => {
       setUserName(info?.username)
     })
-
-    const timerID = setInterval(
-      () => setToday(new Date()),
-      1000
-    )
-
-    return () => {
-      clearInterval(timerID)
-    }
   }, [])
 
   const timestampAsDate = (dt) => new Date(+dt)
