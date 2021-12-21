@@ -55,14 +55,14 @@ export const WithAuthentication = (WrappedComponent) => {
     <Box w="100%" h="100%" bgColor="white">
       <Flex width="100%" flexDirection="column">
         <Box pos="absolute" w="100%" h="100%" overflow="hidden">
-          <Image fit="cover" src='./images/login-bg.png' alt='Background'/>
+          <Image h="100%" w="100%" src='./images/login-bg.png' alt='Background'/>
         </Box>
         <Box pos="absolute" mt="96px" ml="60px" w="700px" zIndex="1" >
           <H3Heading color="white" fontSize="36px" lineHeight="44px" textAlign="center">
           Welcome to <br/> Remote Learning Platform
           </H3Heading>
         </Box>
-        <Box pos="absolute" bottom="0" left="0" mb="96px" ml="165px" w="500px" zIndex="1" >
+        <Box display={{ base: 'none', lg: 'block' }} pos="absolute" bottom="0" left="0" mb="96px" ml="165px" w="500px" zIndex="1" >
           <Clock />
         </Box>
         <Flex width="100%" flexDirection="row-reverse">
