@@ -1,33 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { H1Heading } from './shared/Heading'
 import { Auth } from 'aws-amplify'
-import { Button, HStack, Box } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import OurModal from './OurModal'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { EmailListForm } from './EmailListForm'
 import { PollsCatalog } from './PollsCatalog'
 import SunBackground from './SunBackground'
+import useTodayDate from '../hooks/useTodayDate'
 
 export default function TrainingListHeader({ trainings }) {
   const [userName, setUserName] = useState()
-  const [today, setToday] = useState(new Date())
+  const [hour, setHour] = useState()
+  const today = useTodayDate()
 
-  const { isOpen: isEmailsOpen, onOpen: onEmailsOpen, onClose: onEmailsClose } = useDisclosure()
-  const { isOpen: isPollsOpen, onOpen: onPollsOpen, onClose: onPollsClose } = useDisclosure()
+  /*   const { isOpen: isEmailsOpen, onOpen: onEmailsOpen, onClose: onEmailsClose } = useDisclosure()
+  const { isOpen: isPollsOpen, onOpen: onPollsOpen, onClose: onPollsClose } = useDisclosure() */
+
   useEffect(() => {
     Auth.currentUserInfo().then((info) => {
       setUserName(info?.username)
     })
-
-    const timerID = setInterval(
-      () => setToday(new Date()),
-      1000
-    )
-
-    return () => {
-      clearInterval(timerID)
-    }
   }, [])
+
+  useEffect(() => {
+    setHour(today.getHours())
+  }, [today])
 
   const timestampAsDate = (dt) => new Date(+dt)
   const timestampToTime = (dt) =>
@@ -58,14 +56,12 @@ export default function TrainingListHeader({ trainings }) {
     return 0
   }
 
-  const hour = today.getHours()
-
   return (
     <>
       <SunBackground hour={hour}/>
       <Box paddingBottom="45px" paddingTop="125px">
         <Box display="flex" justifyContent="center">
-          <H1Heading textAlign="center">
+          <H1Heading zIndex="1" textAlign="center">
         Good {`${hour < 12 && 'morning' || hour < 18 && 'afternoon' || 'evening'} ${userName}`}.
             <br />
             {nextTrainingOfToday() === 0
