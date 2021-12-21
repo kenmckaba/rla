@@ -14,9 +14,9 @@ export default function TrainingListHeader({ trainings }) {
   const [hour, setHour] = useState()
   const today = useTodayDate()
 
-  const { isOpen: isEmailsOpen, onOpen: onEmailsOpen, onClose: onEmailsClose } = useDisclosure()
-  const { isOpen: isPollsOpen, onOpen: onPollsOpen, onClose: onPollsClose } = useDisclosure()
-  
+  /*   const { isOpen: isEmailsOpen, onOpen: onEmailsOpen, onClose: onEmailsClose } = useDisclosure()
+  const { isOpen: isPollsOpen, onOpen: onPollsOpen, onClose: onPollsClose } = useDisclosure() */
+
   useEffect(() => {
     Auth.currentUserInfo().then((info) => {
       setUserName(info?.username)
