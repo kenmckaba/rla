@@ -59,9 +59,9 @@ export const WithAuthentication = (WrappedComponent) => {
             <Image fit="cover" opacity={.3} src='./images/login-bg.jpg' alt='Sun' ml="-800px" mt="-250px"/>
           </Box>
         </Box>
-        <Box pos="absolute" mt="96px" ml="165px" w="500px" zIndex="1" >
-          <H3Heading textAlign="center">
-          Welcome to Remote Learning Platform
+        <Box pos="absolute" mt="96px" ml="60px" w="700px" zIndex="1" >
+          <H3Heading color="white" fontSize="36px" lineHeight="44px" textAlign="center">
+          Welcome to <br/> Remote Learning Platform
           </H3Heading>
         </Box>
         <Box pos="absolute" bottom="0" left="0" mb="96px" ml="165px" w="500px" zIndex="1" >
