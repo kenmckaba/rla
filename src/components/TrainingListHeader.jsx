@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { H1Heading } from './shared/Heading'
 import { Auth } from 'aws-amplify'
-import { Button, HStack, Box } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import OurModal from './OurModal'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { EmailListForm } from './EmailListForm'
