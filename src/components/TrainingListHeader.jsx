@@ -11,15 +11,21 @@ import useTodayDate from '../hooks/useTodayDate'
 
 export default function TrainingListHeader({ trainings }) {
   const [userName, setUserName] = useState()
+  const [hour, setHour] = useState()
   const today = useTodayDate()
 
   const { isOpen: isEmailsOpen, onOpen: onEmailsOpen, onClose: onEmailsClose } = useDisclosure()
   const { isOpen: isPollsOpen, onOpen: onPollsOpen, onClose: onPollsClose } = useDisclosure()
+  
   useEffect(() => {
     Auth.currentUserInfo().then((info) => {
       setUserName(info?.username)
     })
   }, [])
+
+  useEffect(() => {
+    setHour(today.getHours())
+  }, [today])
 
   const timestampAsDate = (dt) => new Date(+dt)
   const timestampToTime = (dt) =>
@@ -49,8 +55,6 @@ export default function TrainingListHeader({ trainings }) {
     }
     return 0
   }
-
-  const hour = today.getHours()
 
   return (
     <>
