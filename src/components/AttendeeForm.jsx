@@ -1,18 +1,21 @@
 import React, { useState } from 'react'
-import { Input, Button, FormControl, FormLabel, HStack, Box } from '@chakra-ui/react'
+import { Input, Button, FormControl, FormLabel, HStack, Box, Checkbox } from '@chakra-ui/react'
 import { useMutation, gql } from '@apollo/client'
-import { createAttendee, updateAttendee } from '../graphql/mutations'
+import { createAttendee, createInvitedStudent, updateAttendee } from '../graphql/mutations'
+import { sendJoinEmail } from '../utils/sendJoinEmail'
 
 const emptyAttendee = {
   name: '',
   email: '',
 }
 
-export const AttendeeForm = ({ trainingId, onClose, attendee = emptyAttendee }) => {
+export const AttendeeForm = ({ training, onClose, attendee = emptyAttendee }) => {
   const [name, setName] = useState(attendee.name)
   const [email, setEmail] = useState(attendee.email)
   const [addNewAttendee, { error }] = useMutation(gql(createAttendee))
   const [updateCurrentAttendee, { error: updateError }] = useMutation(gql(updateAttendee))
+  const [sendEmail, setSendEmail] = useState(attendee.name === '')
+  const [addAttendeeInvitation] = useMutation(gql(createInvitedStudent))
 
   if (error || updateError) {
     console.error('rla-log: AttendeeForm', error, updateError)
@@ -36,7 +39,7 @@ export const AttendeeForm = ({ trainingId, onClose, attendee = emptyAttendee }) 
             id: attendee.id,
             name: name,
             email: email,
-            trainingId,
+            trainingId: training.id,
           },
         },
       })
@@ -47,12 +50,25 @@ export const AttendeeForm = ({ trainingId, onClose, attendee = emptyAttendee }) 
           input: {
             name: name,
             email: email,
-            trainingId,
+            trainingId: training.id,
             audioStateKey: 1,
             videoStateKey: 1,
           },
         },
       })
+      await addAttendeeInvitation({
+        variables: {
+          input: {
+            trainingId: training.id,
+            timeSent: new Date().toISOString(),
+            name,
+            email,
+          },
+        },
+      })
+      if (sendEmail) {
+        sendJoinEmail(result.data.createAttendee.id, name, email, training)
+      }
       onClose(result.data.createAttendee)
     }
   }
@@ -74,13 +90,20 @@ export const AttendeeForm = ({ trainingId, onClose, attendee = emptyAttendee }) 
           <Input type="email" value={email} onChange={onChangeEmail} />
         </FormControl>
       </Box>
-      <HStack float="right" mt="3" mb="3">
-        <Button size="md" onClick={handleSubmit}>
-          Save
-        </Button>
-        <Button size="md" variant="outline" onClick={handleCancel}>
-          Cancel
-        </Button>
+      <HStack width="100%" mt="3" mb="3" justifyContent="space-between">
+        {attendee.name === '' && (
+          <Checkbox isChecked={sendEmail} onChange={(e) => setSendEmail(e.target.checked)}>
+            Email join link
+          </Checkbox>
+        )}
+        <Box>
+          <Button size="md" onClick={handleSubmit} isDisabled={name === '' || email === ''}>
+            Save
+          </Button>
+          <Button size="md" variant="outline" onClick={handleCancel} marginLeft="10px">
+            Cancel
+          </Button>
+        </Box>
       </HStack>
     </>
   )

@@ -21,7 +21,6 @@ const AttendeeItem = ({ attendee }) => (
 
 export default function ParticipantsModal({ isOpen, onClose, training }) {
   const [showAddAttendeeModal, setShowAddAttendeeModal] = useState(false)
-  const trainingId = training?.id
   const attendees = training?.attendees?.items || []
 
   return (
@@ -56,7 +55,7 @@ export default function ParticipantsModal({ isOpen, onClose, training }) {
 
       <AddAttendeeModal
         isOpen={showAddAttendeeModal}
-        trainingId={trainingId}
+        training={training}
         onAttendeeClose={() => setShowAddAttendeeModal(false)}
       />
     </>

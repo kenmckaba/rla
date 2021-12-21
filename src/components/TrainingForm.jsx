@@ -567,11 +567,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         header={currentAttendee ? 'Attendee' : 'New Attendee'}
         isOpen={isNewattendeeModalOpen}
       >
-        <AttendeeForm
-          trainingId={trainingId}
-          onClose={onAttendeeClose}
-          attendee={currentAttendee}
-        />
+        <AttendeeForm training={training} onClose={onAttendeeClose} attendee={currentAttendee} />
       </OurModal>
       <OurModal
         header={<Center>Send registration invitation emails?</Center>}
