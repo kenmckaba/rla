@@ -124,7 +124,7 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
   }
 
   return (
-    <Tr>
+    <Tr display={'table'} width={'100%'} style={{tableLayout:'fixed'}} >
       <Td>
         <Accordion padding="0" width="100%" allowToggle key={poll.id}>
           <AccordionItem p={0} m={0} border="none">

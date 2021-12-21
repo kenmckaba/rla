@@ -52,7 +52,7 @@ export default function LeftPanel({
           pollId={poll.id}
           startPoll={startPoll}
           startedPoll={startedPoll}
-          editPoll={() => editPoll(poll)}
+          editPoll={() => editPoll(poll)}          
         />
       )
     })
@@ -79,21 +79,20 @@ export default function LeftPanel({
       <VStack
         pos="relative"
         left="0"
-        bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
-        opacity="85%"
+        bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"        
         align="left"        
-        px="2"
+        px="5"
         py="2"
-        width="500px"
+        width="500px"        
       >
-        <Box paddingBottom="4">
+        <Box paddingBottom="4" paddingTop={'8'}>
           <Heading fontSize="1.25em" fontWeight="bold" textTransform="capitalize" mb="2">
             {training.title}
           </Heading>
           <Text opacity="0.5">{training.description}</Text>
         </Box>
         <Button onClick={onManageBreakouts}>Mananage breakouts</Button>
-        <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
+        <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600" rounded={6}>
           <ClassRoster
             training={training}
             attendees={attendees}
@@ -102,7 +101,7 @@ export default function LeftPanel({
           />
         </Box>
 
-        <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
+        <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600" rounded={6}>
           <Accordion allowMultiple width="100%" allowToggle>
             <AccordionItem p={0} m={0} border="none">
               <AccordionButton p="2">
@@ -126,29 +125,24 @@ export default function LeftPanel({
                 </Button>
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel
-                overflowY="auto"
+              <AccordionPanel                
                 padding="0"
-                pb={4}
-                sx={scrollBarStyle}
+                pb={4}                
                 minHeight="200px"
-                maxHeight="40vh"
+                maxHeight="35vh"
               >
                 <Box>
                   <Table size="sm" width="100%" margin="0" overflow={'scroll'}>
-                    <Thead
-                      bg="#4c6b99"
+                    <Thead                      
                       borderBottom="1px"
                       borderColor="#ffffff"
-                      top={0}
-                      position={'sticky'}
-                      zIndex={3}
+                      display={'table'} width={'100%'} style={{tableLayout:'fixed'}}
                     >
                       <Tr>
                         <Th color="white">Question</Th>
                       </Tr>
                     </Thead>
-                    <Tbody>{Polls}</Tbody>
+                    <Tbody display={'block'} maxHeight={'310px'} overflowY={'scroll'} sx={scrollBarStyle}>{Polls}</Tbody>
                   </Table>
                 </Box>
               </AccordionPanel>
