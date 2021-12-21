@@ -22,7 +22,7 @@ export default function Background({ children }) {
     return () => Hub.remove('auth', updateUser) // cleanup
   }, [])
   return (
-    <Flex minHeight="100vh" flexDirection="column">
+    <Flex minHeight="80vh" flexDirection="column">
       {location === '/' && currentUser && (
         <Flex
           alignItems="center"
@@ -34,7 +34,7 @@ export default function Background({ children }) {
           <H3Heading>Remote Learning Platform</H3Heading>
         </Flex>
       )}
-      <Flex flex="1" height="100%">
+      <Flex flex="1" height="100vh">
         {children}
       </Flex>
     </Flex>

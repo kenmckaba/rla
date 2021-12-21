@@ -11,7 +11,7 @@ import ChatBox from './ChatBox'
 
 export const ChatPanel = ({ messages, attendees, training, myAttendeeId }) => {
   return (
-    <Accordion width="500px" defaultIndex={0} allowToggle paddingTop="70px">
+    <Accordion width="500px" defaultIndex={0} allowToggle>
       <AccordionItem p={0} m={0} border="none">
         <AccordionButton
           p="2"
