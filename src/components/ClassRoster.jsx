@@ -96,13 +96,13 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
       {
         accessor: 'checkIn',
         sortType: 'basic',
-        Cell: ({ value }) => <Center>{value ? <CheckMark /> : <XMark />}</Center>,
+        Cell: ({ value }) => <Center marginRight={3}>{value ? <CheckMark /> : <XMark />}</Center>,
       },
       {        
         accessor: 'attendee',
         sortType: 'basic',
         Cell: ({ value }) => (
-          <Center>
+          <Center marginRight={3}>
             <MicCamIcon              
               hardMuted={value.audioHardMuted}
               isUnmuted={value.audioUnmuted}
@@ -114,14 +114,14 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
       },
       {        
         accessor: 'eye',
-        Cell: ({ value }) => <Center>{value ? <EyeIcon /> : <EyeIconRed />}</Center>,
+        Cell: ({ value }) => <Center marginRight={3}>{value ? <EyeIcon /> : <EyeIconRed />}</Center>,
       },
       {
         accessor: 'hand',
         Cell: ({ value }) => {
           return (
             <Box onClick={() => lowerHand(value.attendeeId)}>
-              <Center>{value.raised ? <HandIcon2 /> : <HandIcon />}</Center>
+              <Center marginRight={3}>{value.raised ? <HandIcon2 /> : <HandIcon />}</Center>
             </Box>
           )
         },
@@ -161,10 +161,8 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
           <AccordionIcon />
         </AccordionButton>
 
-        <AccordionPanel
-          overflowY="auto"
-          padding="0"
-          sx={scrollBarStyle}
+        <AccordionPanel          
+          padding="0"          
           minHeight="200px"
           maxHeight="40vh"
         >
@@ -181,14 +179,11 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
             </Box>
           </HStack>
           {attendees.length !== 0 ? (
-            <Table size="sm" width="100%" margin="0" overflow={'scroll'} {...getTableProps()}>
-              <Thead
-                bg="#455f8f"
+            <Table size="sm" width="100%" margin="0" {...getTableProps()}>
+              <Thead                
                 borderBottom="1px"
-                borderColor="#ffffff"
-                top={0}
-                position={'sticky'}
-                zIndex={3}
+                borderColor="#ffffff"     
+                display={'table'} width={'100%'} style={{tableLayout:'fixed'}}           
               >
                 {headerGroups.map((headerGroup) => (
                   <Tr {...headerGroup.getHeaderGroupProps()}>
@@ -218,14 +213,14 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
                   </Tr>
                 ))}
               </Thead>
-              <Tbody {...getTableBodyProps()}>
+              <Tbody {...getTableBodyProps()} display={'block'} maxHeight={'345px'} overflowY={'scroll'} sx={scrollBarStyle}>
                 {rows.map((row) => {
                   prepareRow(row)
                   return (
-                    <Tr className="cell-container" {...row.getRowProps()}>
+                    <Tr className="cell-container" {...row.getRowProps()} display={'table'} style={{tableLayout:'fixed'}}>
                       {row.cells.map((cell) => (
-                        <Td {...cell.getCellProps()}>
-                          <span>{cell.render('Cell')}</span>
+                        <Td width={'100%'} {...cell.getCellProps()}>
+                          <chakra.span>{cell.render('Cell')}</chakra.span>
                         </Td>
                       ))}
                     </Tr>
