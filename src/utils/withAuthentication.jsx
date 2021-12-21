@@ -53,11 +53,9 @@ export const WithAuthentication = (WrappedComponent) => {
   }
   return () => (
     <Box w="100%" h="100%" bgColor="white">
-      <Flex width="100%" flexDirection="column" bgGradient="linear(to-br, rgba(238,174,202,.5), rgba(148,187,233,.5))">
+      <Flex width="100%" flexDirection="column">
         <Box pos="absolute" w="100%" h="100%" overflow="hidden">
-          <Box>
-            <Image fit="cover" opacity={.3} src='./images/login-bg.jpg' alt='Sun' ml="-800px" mt="-250px"/>
-          </Box>
+          <Image fit="cover" src='./images/login-bg.png' alt='Background'/>
         </Box>
         <Box pos="absolute" mt="96px" ml="60px" w="700px" zIndex="1" >
           <H3Heading color="white" fontSize="36px" lineHeight="44px" textAlign="center">
