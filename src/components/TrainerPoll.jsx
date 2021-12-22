@@ -131,7 +131,7 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
             <AccordionButton padding="0" as="div">
               <Flex width="100%">
                 <Flex fontWeight="500" fontSize="14px" cursor="pointer">
-                  <Tooltip hasArrow placement="right" label={poll.question}>
+                  <Tooltip hasArrow placement="top" label={poll.question}>
                     <Text
                       mt="1"
                       width="80px"

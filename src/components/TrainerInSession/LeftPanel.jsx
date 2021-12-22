@@ -85,8 +85,8 @@ export default function LeftPanel({
         py="2"
         width="500px"        
       >
-        <Box paddingBottom="4" paddingTop={'8'}>
-          <Heading fontSize="1.25em" fontWeight="bold" textTransform="capitalize" mb="2">
+        <Box paddingBottom="4" paddingTop="8">
+          <Heading fontSize="1.25em" fontWeight="bold" textTransform="capitalize">
             {training.title}
           </Heading>
           <Text opacity="0.5">{training.description}</Text>
@@ -129,7 +129,7 @@ export default function LeftPanel({
                 padding="0"
                 pb={4}                
                 minHeight="200px"
-                maxHeight="35vh"
+                maxHeight="30vh"
               >
                 <Box>
                   <Table size="sm" width="100%" margin="0" overflow={'scroll'}>
@@ -142,7 +142,7 @@ export default function LeftPanel({
                         <Th color="white">Question</Th>
                       </Tr>
                     </Thead>
-                    <Tbody display={'block'} maxHeight={'310px'} overflowY={'scroll'} sx={scrollBarStyle}>{Polls}</Tbody>
+                    <Tbody display={'block'} maxHeight={'25vh'} overflowY={'scroll'} sx={scrollBarStyle}>{Polls}</Tbody>
                   </Table>
                 </Box>
               </AccordionPanel>

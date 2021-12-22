@@ -88,7 +88,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         Header: 'Name',
         accessor: 'name',
         Cell: ({ value }) => (
-          <Tooltip hasArrow placement="right" label={value}>
+          <Tooltip hasArrow placement="top" label={value}>
             {value}
           </Tooltip>
         ),
@@ -102,19 +102,25 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         accessor: 'attendee',
         sortType: 'basic',
         Cell: ({ value }) => (
-          <Center marginRight={3}>
-            <MicCamIcon              
-              hardMuted={value.audioHardMuted}
-              isUnmuted={value.audioUnmuted}
-              isMic={true}
-              onClick={(val) => updateAttendeeMute(value, val)}
-            />
-          </Center>
+          <Tooltip hasArrow placement="top" label="Mute">
+            <Center marginRight={3}>
+              <MicCamIcon
+                hardMuted={value.audioHardMuted}
+                isUnmuted={value.audioUnmuted}
+                isMic={true}
+                onClick={(val) => updateAttendeeMute(value, val)}
+              />
+            </Center>
+          </Tooltip>
         ),
       },
       {        
         accessor: 'eye',
-        Cell: ({ value }) => <Center marginRight={3}>{value ? <EyeIcon /> : <EyeIconRed />}</Center>,
+        Cell: ({ value }) => (
+          <Tooltip hasArrow placement="top" label={value}>
+            <Center marginRight={3}>{value ? <EyeIcon /> : <EyeIconRed />}</Center>
+          </Tooltip>
+        ),
       },
       {
         accessor: 'hand',
@@ -164,7 +170,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         <AccordionPanel          
           padding="0"          
           minHeight="200px"
-          maxHeight="40vh"
+          maxHeight="53vh"
         >
           <HStack height="20px" justifyContent="end" marginRight="24px" marginTop="5px">
             <MicCamIcon
@@ -213,7 +219,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
                   </Tr>
                 ))}
               </Thead>
-              <Tbody {...getTableBodyProps()} display={'block'} maxHeight={'345px'} overflowY={'scroll'} sx={scrollBarStyle}>
+              <Tbody {...getTableBodyProps()} display={'block'} maxHeight={'43vh'} overflowY={'scroll'} sx={scrollBarStyle}>
                 {rows.map((row) => {
                   prepareRow(row)
                   return (
