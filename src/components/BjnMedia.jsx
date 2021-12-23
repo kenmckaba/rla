@@ -51,12 +51,13 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId }) => {
   return (
     <Flex
       width="100%"
-      height="100%"
+      height="98vh"
       background="#396AA1"
       borderRadius="16px"
       padding="10px"
       justifyContent="center"
       position="relative"
+      margin="10px"
     >
       {/* have to keep videos in the dom so the ref doesn't change, so use display: none */}
       <VStack
