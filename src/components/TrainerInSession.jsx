@@ -229,6 +229,7 @@ export const TrainerInSession = ({
             attendees={attendees}
             training={training}
             myAttendeeId={'0'} 
+            paddingTop='75px'
           />
         )}
       </HStack>

@@ -9,9 +9,9 @@ import {
 import { scrollBarStyle } from '../../theme/components/scrollbar'
 import ChatBox from './ChatBox'
 
-export const ChatPanel = ({ messages, attendees, training, myAttendeeId }) => {
+export const ChatPanel = ({ messages, attendees, training, myAttendeeId, paddingTop='0px' }) => {
   return (
-    <Accordion width="500px" defaultIndex={0} allowToggle>
+    <Accordion width="500px" paddingTop={paddingTop} defaultIndex={0} allowToggle>
       <AccordionItem p={0} m={0} border="none">
         <AccordionButton
           p="2"
