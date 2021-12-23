@@ -83,7 +83,8 @@ export default function LeftPanel({
         align="left"        
         px="5"
         py="2"
-        width="500px"        
+        width="500px"   
+        height={'100vh'}     
       >
         <Box paddingBottom="4" paddingTop="8">
           <Heading fontSize="1.25em" fontWeight="bold" textTransform="capitalize">
