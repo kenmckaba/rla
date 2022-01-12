@@ -214,6 +214,19 @@ const Button = {
         bg: 'darkKnight.200',
       },
     },
+    'light-blue': {
+      bg: 'rgba(13, 98, 197, 0.1)',
+      color: 'blue.600',
+      _hover: {
+        bg: 'rgba(13, 98, 197, 0.2)',
+      },
+      _active: {
+        bg: 'rgba(13, 98, 197, 0.3)',
+      },
+      _focus: {
+        bg: 'rgba(13, 98, 197, 0.4)',
+      },
+    },
   },
   defaultProps: {
     colorScheme: 'blue',

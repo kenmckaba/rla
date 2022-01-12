@@ -16,7 +16,6 @@ export const TrainingToolbar = ({ startTraining, editTraining, deleteTraining })
         <EditButton
           margin="5px"
           width="100px"
-          border="1px solid #FFFFFF"
           borderRadius="full"
           size="xs"
           onClick={(e) => eatEvent(e, deleteTraining)}
@@ -27,7 +26,6 @@ export const TrainingToolbar = ({ startTraining, editTraining, deleteTraining })
         <EditButton
           margin="5px"
           width="100px"
-          border="1px solid #FFFFFF"
           borderRadius="full"
           size="xs"
           onClick={(e) => eatEvent(e, editTraining)}
@@ -37,7 +35,6 @@ export const TrainingToolbar = ({ startTraining, editTraining, deleteTraining })
         <Button
           margin="5px"
           width="100px"
-          border="1px solid #FFFFFF"
           borderRadius="full"
           onClick={(e) => eatEvent(e, startTraining)}
           variant="primary-trueblue"

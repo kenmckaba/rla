@@ -13,14 +13,12 @@ const config = {
     global: {
       body: {
         color: 'white',
-        minHeight: '100vh',
-        bgGradient: 'linear(to-b, #284A83, #396AA1)',
       },
     },
   },
   colors: {
     blue: {
-      50: '#f5f9fb',
+      50: '#f0f7ff',
       100: '#dff1fc',
       200: '#bbddf9',
       300: '#8dbcef',

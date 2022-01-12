@@ -1,0 +1,61 @@
+.react-datepicker__input-container {
+  padding: 0;
+  border: none;
+}
+
+.react-datepicker__header {
+  background: #fff;
+  border: none;
+  padding: 0;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: #0d62c5;
+  font-family: 'Proxima Nova';
+  font-size: 12px;
+  width: 2rem;
+  line-height: 2rem;
+}
+
+.react-datepicker__day {
+  color: #ADADAD;
+  margin: 2px 0;
+  border-radius: 0;
+  width: 2.3rem;
+  line-height: 2.3rem;
+}
+
+.react-datepicker__day--in-range,
+.react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range)
+ {
+  background-color: rgba(13, 98, 197,.1);
+}
+
+.react-datepicker__day--keyboard-selected {
+  background: none;
+}
+.react-datepicker__day--range-start{
+  background: linear-gradient(to right, white 0%, rgba(13, 98, 197,.1)50%)
+}
+
+.react-datepicker__day--range-end {
+  background: linear-gradient(to left, white 0%, rgba(13, 98, 197,.1)50%)
+}
+
+.react-datepicker__month-container {
+  width: 300px;
+}
+
+.react-datepicker__navigation--previous, .react-datepicker__navigation--next {
+  height: inherit;
+  top: 4px;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #0d62c5;
+}
+
+.react-datepicker__input-container:focus-within {
+  box-shadow: none;
+}

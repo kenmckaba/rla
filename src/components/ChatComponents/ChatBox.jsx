@@ -8,7 +8,15 @@ import { useState, useMemo } from 'react'
 const trainerMsgId = '0'
 const allMsgId = '1'
 
-export default function ChatBox({ messageList, attendees, training, myAttendeeId }) {
+export default function ChatBox({
+  messageList,
+  attendees,
+  training,
+  myAttendeeId,
+  maxWidth = '22vw',
+  minHeight = '200px',
+  maxHeight = '40vh',
+}) {
   const [destination, setDestination] = useState(allMsgId)
   const [content, setContent] = useState('')
   const [addNewChatMessage] = useMutation(gql(createChatMessage))
@@ -65,16 +73,16 @@ export default function ChatBox({ messageList, attendees, training, myAttendeeId
     <Flex
       flexDirection="column"
       color="black"
-      maxWidth="22vw"
-      minHeight="200px"
-      maxHeight="40vh"
+      maxWidth={maxWidth}
+      minHeight={minHeight}
+      maxHeight={maxHeight}
       bg="#ffffff"
       borderBottomRadius="8px"
       padding={2}
-      justifyContent="end"
-      overflow-y='scroll'
+      justifyContent="start"
+      overflow-y="scroll"
     >
-      <FormControl isRequired marginBottom="10px">
+      <FormControl isRequired marginBottom="10px" >
         <FormLabel>Send to:</FormLabel>
         <Select fontSize="14px" defaultValue={allMsgId} height="30px" onChange={selectDestination}>
           {myAttendeeId !== trainerMsgId && (

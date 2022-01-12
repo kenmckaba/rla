@@ -228,7 +228,8 @@ export const TrainerInSession = ({
             messages={chatMessages}
             attendees={attendees}
             training={training}
-            myAttendeeId={'0'}
+            myAttendeeId={'0'} 
+            paddingTop='75px'
           />
         )}
       </HStack>

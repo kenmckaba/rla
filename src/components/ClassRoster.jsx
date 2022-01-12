@@ -113,7 +113,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         Header: 'Name',
         accessor: 'name',
         Cell: ({ value }) => (
-          <Tooltip hasArrow placement="right" label={value}>
+          <Tooltip hasArrow placement="top" label={value}>
             {value}
           </Tooltip>
         ),
@@ -121,7 +121,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
       {
         accessor: 'checkIn',
         sortType: 'basic',
-        Cell: ({ value }) => <Center>{value ? <CheckMark /> : <XMark />}</Center>,
+        Cell: ({ value }) => <Center marginRight={3}>{value ? <CheckMark /> : <XMark />}</Center>,
       },
       {
         Header: 'Audio',
@@ -153,17 +153,20 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
           </Center>
         ),
       },
-      {
-        Header: 'Attentive',
+      {        
         accessor: 'eye',
-        Cell: ({ value }) => <Center>{value ? <EyeIcon /> : <EyeIconRed />}</Center>,
+        Cell: ({ value }) => (
+          <Tooltip hasArrow placement="top" label={value}>
+            <Center marginRight={3}>{value ? <EyeIcon /> : <EyeIconRed />}</Center>
+          </Tooltip>
+        ),
       },
       {
         accessor: 'hand',
         Cell: ({ value }) => {
           return (
             <Box onClick={() => lowerHand(value.attendeeId)}>
-              <Center>{value.raised ? <HandIcon2 /> : <HandIcon />}</Center>
+              <Center marginRight={3}>{value.raised ? <HandIcon2 /> : <HandIcon />}</Center>
             </Box>
           )
         },
@@ -203,7 +206,11 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
           <AccordionIcon />
         </AccordionButton>
 
-        <AccordionPanel overflowY="auto" padding="0" sx={scrollBarStyle}>
+        <AccordionPanel          
+          padding="0"          
+          minHeight="200px"
+          maxHeight="53vh"
+        >
           <HStack height="20px" justifyContent="end" marginRight="24px" marginTop="5px">
             <MicCamIcon
               hardMuted={!!training.audioHardMuted}
@@ -223,7 +230,11 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
           </HStack>
           {attendees.length !== 0 ? (
             <Table size="sm" width="100%" margin="0" {...getTableProps()}>
-              <Thead borderBottom="1px" borderColor="#ffffff">
+              <Thead                
+                borderBottom="1px"
+                borderColor="#ffffff"     
+                display={'table'} width={'100%'} style={{tableLayout:'fixed'}}           
+              >
                 {headerGroups.map((headerGroup) => (
                   <Tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map((column) => (
@@ -252,14 +263,14 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
                   </Tr>
                 ))}
               </Thead>
-              <Tbody {...getTableBodyProps()}>
+              <Tbody {...getTableBodyProps()} display={'block'} maxHeight={'43vh'} overflowY={'scroll'} sx={scrollBarStyle}>
                 {rows.map((row) => {
                   prepareRow(row)
                   return (
-                    <Tr className='cell-container' {...row.getRowProps()}>
+                    <Tr className="cell-container" {...row.getRowProps()} display={'table'} style={{tableLayout:'fixed'}}>
                       {row.cells.map((cell) => (
-                        <Td {...cell.getCellProps()}>
-                          <span>{cell.render('Cell')}</span>
+                        <Td width={'100%'} {...cell.getCellProps()}>
+                          <chakra.span>{cell.render('Cell')}</chakra.span>
                         </Td>
                       ))}
                     </Tr>

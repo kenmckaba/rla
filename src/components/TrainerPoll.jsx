@@ -124,14 +124,14 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
   }
 
   return (
-    <Tr>
+    <Tr display={'table'} width={'100%'} style={{tableLayout:'fixed'}} >
       <Td>
         <Accordion padding="0" width="100%" allowToggle key={poll.id}>
           <AccordionItem p={0} m={0} border="none">
             <AccordionButton padding="0" as="div">
               <Flex width="100%">
                 <Flex fontWeight="500" fontSize="14px" cursor="pointer">
-                  <Tooltip hasArrow placement="right" label={poll.question}>
+                  <Tooltip hasArrow placement="top" label={poll.question}>
                     <Text
                       mt="1"
                       width="80px"
