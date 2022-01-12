@@ -1,11 +1,13 @@
-/*:root {*/
-/*    --amplify-primary-color: #0D62C5;*/
-/*    --amplify-primary-tint: #FFF;*/
-/*    --amplify-primary-shade: #FFF;*/
-/*    --amplify-background-color: rgba(255,255,255,0.1);*/
-/*}*/
+:root {
+    /*--amplify-primary-color: #0D62C5;*/
+    /*--amplify-primary-tint: #FFF;*/
+    /*--amplify-primary-shade: #FFF;*/
+    /*--amplify-background-color: rgba(255,255,255,0.1);*/
+}
 
-
+#spacer {
+    width: 10vw;
+}
 
 /*:root {*/
 /*    !* Typography *!*/

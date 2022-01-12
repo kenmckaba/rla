@@ -37,6 +37,8 @@ import TrainingListHeader from './TrainingListHeader'
 import ParticipantsModal from './ParticipantsModal'
 import { IconButton } from '@chakra-ui/button'
 import { InvitedList } from './InvitedList'
+import FilteredDatePicker from './FilteredDatePicker'
+import Header from './Header'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -49,6 +51,10 @@ export const TrainingList = () => {
   const [trainingHovered, setTrainingHovered] = useState(-1)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
   const [showInvitedModal, setShowInvitedModal] = useState(false)
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
+  const [selectedTrainings, setSelectedTraining] = useState([])
+  const [tabIndex, setTabIndex] = React.useState(0)
 
   const handleShowParticipantsModal = (training) => {
     setCurrentTraining(training)
@@ -76,6 +82,35 @@ export const TrainingList = () => {
       }
     }
   }, [subscribeToMore])
+
+  useEffect(() => {
+    if (startDate) {
+      setSelectedTraining(trainings
+        .filter((training) => {
+          return !!tabIndex === !!training.startedAt
+        })
+        .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1))
+        .filter((training) => {
+          let trainingDate = new Date(training.scheduledTime)
+          trainingDate = new Date(trainingDate.setHours(0,0,0))
+          if (endDate) {
+            if ((trainingDate - startDate) > 0) {
+              return (endDate - trainingDate) > 0
+            }
+            return false
+          }
+          return (startDate - trainingDate) === 0
+        }))
+    }
+
+    else {
+      setSelectedTraining(trainings
+        .filter((training) => {
+          return !!tabIndex === !!training.startedAt
+        })
+        .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1)))
+    }
+  }, [trainings, tabIndex, startDate, endDate])
 
   const handleTrainingClick = async (training) => {
     setCurrentTraining(training)
@@ -120,29 +155,16 @@ export const TrainingList = () => {
     setShowInvitedModal(true)
   }
 
-  const Trainings = ({ past }) => {
-    if (!trainings || trainings.length === 0) {
+  const renderTrainings = () => {
+    if (selectedTrainings?.length === 0) {
       return (
         <Tr>
           <Td>*None*</Td>
         </Tr>
       )
     }
-    const selected = trainings
-      .filter((training) => {
-        return past === !!training.startedAt
-      })
-      .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1))
-
-    if (selected?.length === 0) {
-      return (
-        <Tr>
-          <Td>*None*</Td>
-        </Tr>
-      )
-    }
-
-    return selected.map((training) => (
+    
+    return selectedTrainings.map((training) => (
       <Tr
         height="224px"
         width="1028px"
@@ -157,20 +179,20 @@ export const TrainingList = () => {
       >
         <Flex
           borderRadius="5px"
-          backgroundColor="rgba(255, 255, 255, 0.1)"
+          backgroundColor="rgba(13, 98, 197, 0.1)"
+          color="blue.600"
           direction="column"
           justify="center"
           _hover={{
-            bg: 'rgba(255, 255, 255, 0.3)',
+            bg: 'rgba(13, 98, 197, 0.2)',
           }}
         >
-          <Td marginBottom="6">
-            <Flex justify="flex-start" height="50px">
+          <Td py="30px">
+            <Flex justify="flex-start" minH="34px">
               <Stat marginTop="2">
                 <StatLabel
                   whiteSpace="nowrap"
                   fontSize="2em"
-                  fontWeight="semibold"
                   textTransform="capitalize"
                 >
                   {training.title}
@@ -190,32 +212,32 @@ export const TrainingList = () => {
           </Td>
           <Td paddingBottom="10">
             <HStack display="flex" justifyContent="space-between">
-              <Flex direction="column">
-                <StatLabel>
+              <Flex w="25%" direction="column">
+                <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
                     DATE/TIME
                   </StatHelpText>
                 </StatLabel>
                 <StatLabel>
-                  <StatHelpText fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
+                  <StatHelpText fontSize="0.90em" textTransform="uppercase">
                     {timestampToPrettyTime(training.scheduledTime)}
                   </StatHelpText>
                 </StatLabel>
               </Flex>
-              <Flex direction="column">
-                <StatLabel>
+              <Flex w="20%" direction="column">
+                <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
                     TRAINER NAME
                   </StatHelpText>
                 </StatLabel>
                 <StatLabel>
-                  <StatHelpText fontSize="0.90em" fontWeight="bold" textTransform="uppercase">
+                  <StatHelpText fontSize="0.90em">
                     {training.trainerName}
                   </StatHelpText>
                 </StatLabel>
               </Flex>
-              <Flex direction="column">
-                <StatLabel>
+              <Flex w="25% direction="column">
+                <StatLabel mb="1">
                   <HStack>
                     <StatHelpText fontSize="0.75em" textTransform="uppercase">
                       ATTENDEES
@@ -234,20 +256,14 @@ export const TrainingList = () => {
                   height="24px"
                   onClick={() => handleShowParticipantsModal(training, training.attendees)}
                 >
-                  {training?.attendees?.items?.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
-                    <AttendeeAvatar key={attendee.id} attendee={attendee} />
-                  ))}
+                  <HStack spacing={2}>
+                    {training?.attendees?.items?.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
+                      <AttendeeAvatar key={attendee.id} attendee={attendee} />
+                    ))}
+                  </HStack>
                 </Flex>
-                {/* {training.attendees.items.length > MAX_ATTENDEE_ICONS && (
-                  <Avatar
-                    getInitials={(name) => name}
-                    name={`+${training.attendees.items.length - MAX_ATTENDEE_ICONS}`}
-                    color="white"
-                    bg="rgba(255, 255, 255, 0.1)"
-                  />
-                )} */}
               </Flex>
-              <Flex direction="column">
+              <Flex w="30%" direction="column">
                 <StatLabel>
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
                     BLUEJEANS MEETING
@@ -264,14 +280,6 @@ export const TrainingList = () => {
         </Flex>
       </Tr>
     ))
-  }
-
-  const PastTrainings = () => {
-    return Trainings({ past: true })
-  }
-
-  const FutureTrainings = () => {
-    return Trainings({ past: false })
   }
 
   if (error) {
@@ -306,74 +314,80 @@ export const TrainingList = () => {
   }
 
   return (
-    <>
+    <Box minH="100vh" bgColor="blue.50">
+      <Header />
       <TrainingListHeader trainings={trainings} />
-      <Box height="100%" width="100%" padding="3px" borderRadius="20px">
-        <Flex>
-          <Tabs height="100%" width="81.7%" variant="solid-rounded">
-            <Flex>
-              <TabList>
-                <Tab
-                  textTransform="uppercase"
-                  color="#ffffff"
-                  height="32px"
-                  fontSize="10pt"
-                  paddingInline="26px"
-                  minW="120px"
-                  fontWeight="bold"
-                  borderRadius="full"
-                  bg="rgba(255, 255, 255, 0.1);"
-                  mr="16px"
-                  _focus={{
-                    boxShadow: 'none',
-                  }}
-                  _selected={{
-                    color: 'darkKnight.700',
-                    bg: 'ghost.50',
-                  }}
-                >
+      <Box height="100%">
+        <Box padding="3px" borderRadius="20px">
+          <Flex>
+            <Tabs onChange={(index) => setTabIndex(index)} height="100%" width="100%" pt="30px" px="32px" variant="solid-rounded">
+              <Flex>
+                <TabList>
+                  <Tab
+                    bg="rgba(13, 98, 197, 0.1)"
+                    borderRadius="full"
+                    color="rgba(13, 98, 197, 0.4)"
+                    fontSize="10pt"
+                    fontWeight="light"
+                    minH="37px"
+                    minW="200px"
+                    mr="16px"
+                    paddingInline="26px"
+                    textTransform="uppercase"
+                    _focus={{
+                      boxShadow: 'none',
+                    }}
+                    _selected={{
+                      color: 'white',
+                      bg: 'blue.600',
+                      fontWeight: 'bold'
+                    }}
+                  >
                   Upcoming trainings
-                </Tab>
-                <Tab
-                  textTransform="uppercase"
-                  color="#ffffff"
-                  height="32px"
-                  fontSize="10pt"
-                  paddingInline="26px"
-                  minW="120px"
-                  fontWeight="bold"
-                  borderRadius="full"
-                  bg="rgba(255, 255, 255, 0.1);"
-                  _focus={{
-                    boxShadow: 'none',
-                  }}
-                  _selected={{
-                    color: 'darkKnight.700',
-                    bg: 'ghost.50',
-                  }}
-                >
+                  </Tab>
+                  <Tab
+                    bg="rgba(13, 98, 197, 0.1)"
+                    borderRadius="full"
+                    color="rgba(13, 98, 197, 0.4)"
+                    fontSize="10pt"
+                    fontWeight="light"
+                    minH="37px"
+                    minW="200px"
+                    mr="16px"
+                    paddingInline="26px"
+                    textTransform="uppercase"
+                    _focus={{
+                      boxShadow: 'none',
+                    }}
+                    _selected={{
+                      color: 'white',
+                      bg: 'blue.600',
+                      fontWeight: 'bold'
+                    }}
+                  >
                   Completed trainings
-                </Tab>
-              </TabList>
-              <Spacer />
-              <Button
-                variant="primary-transparent"
-                size="sm"
-                leftIcon={<AddIcon />}
-                onClick={onNewTraining}
-                fontSize="10pt"
-                fontWeight="bold"
-                minW="170px"
-              >
+                  </Tab>
+                </TabList>
+                <Spacer />
+                <FilteredDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
+                <Button
+                  variant="light-blue"
+                  size="md"
+                  leftIcon={<AddIcon />}
+                  onClick={onNewTraining}
+                  fontSize="10pt"
+                  fontWeight="bold"
+                  minW="174px"
+                >
                 New training
               </Button>
             </Flex>
             <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
               <TabPanel p={0} m={0}>
-                <ListTable>{FutureTrainings()}</ListTable>
+                <ListTable>{renderTrainings()}</ListTable>
               </TabPanel>
               <TabPanel p={0} m={0}>
-                <ListTable>{PastTrainings()}</ListTable>
+                <ListTable>{renderTrainings()}</ListTable>
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -382,7 +396,6 @@ export const TrainingList = () => {
             isOpen={showParticipantsModal}
             onClose={() => setShowParticipantsModal(false)}
           />
-
           <Modal isOpen={isModalOpen} scrollBehavior="inside">
             <ModalOverlay />
             <ModalContent color="darkKnight.700">
@@ -425,6 +438,6 @@ export const TrainingList = () => {
           </Modal>
         </Flex>
       </Box>
-    </>
+    </Box>
   )
 }

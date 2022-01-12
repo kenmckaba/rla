@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react'
 import React from 'react'
-import { Img } from '@chakra-ui/react'
+import { Image } from '@chakra-ui/react'
 
 export default function SunBackground({hour}) {
   return (
@@ -12,10 +12,9 @@ export default function SunBackground({hour}) {
         left="0%"
         width="100%"
         height="380px"
-        zIndex="-1"
         overflow="hidden"
       > 
-        <Img src='./images/bg.jpg' alt='Sun' width="100%" marginTop={`${hour < 12 && -600 || hour < 18 && -300 || -2000}`}/>
+        <Image src='./images/bg.jpg' alt='Sun' width="100%" marginTop={`${hour < 12 && -650 || hour < 18 && -450 || -2000}`}/>
       </Box>
     </Flex>
   )
