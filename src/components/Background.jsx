@@ -1,14 +1,29 @@
 import { Flex } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { Hub } from '@aws-amplify/core'
+import { AmplifyAuthenticator } from '@aws-amplify/ui-react'
+import { Auth } from 'aws-amplify'
 import { H3Heading } from './shared/Heading'
 const location = window.location.pathname
 
-// TODO: We need a flag or something to know if the user is logged in, in oder to hide/show the title bar and log out button
-
 export default function Background({ children }) {
+  const [currentUser, setCurrentUser] = useState({})
+  useEffect(() => {
+    let updateUser = async () => {
+      try {
+        let user = await Auth.currentAuthenticatedUser()
+        setCurrentUser(user)
+      } catch {
+        setCurrentUser(null)
+      }
+    }
+    Hub.listen('auth', updateUser) // listen for login/signup events
+    updateUser() // check manually the first time because we won't get a Hub event
+    return () => Hub.remove('auth', updateUser) // cleanup
+  }, [])
   return (
-    <Flex flexDirection="column">
-      {location === '/' && (
+    <Flex minHeight="80vh" flexDirection="column">
+      {location === '/' && currentUser && (
         <Flex
           alignItems="center"
           justifyContent="space-between"
@@ -19,7 +34,7 @@ export default function Background({ children }) {
           <H3Heading>Remote Learning Platform</H3Heading>
         </Flex>
       )}
-      <Flex flex="1" height="100%">
+      <Flex flex="1" height="100vh">
         {children}
       </Flex>
     </Flex>

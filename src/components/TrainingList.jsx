@@ -85,30 +85,32 @@ export const TrainingList = () => {
 
   useEffect(() => {
     if (startDate) {
-      setSelectedTraining(trainings
-        .filter((training) => {
-          return !!tabIndex === !!training.startedAt
-        })
-        .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1))
-        .filter((training) => {
-          let trainingDate = new Date(training.scheduledTime)
-          trainingDate = new Date(trainingDate.setHours(0,0,0))
-          if (endDate) {
-            if ((trainingDate - startDate) > 0) {
-              return (endDate - trainingDate) > 0
+      setSelectedTraining(
+        trainings
+          .filter((training) => {
+            return !!tabIndex === !!training.startedAt
+          })
+          .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1))
+          .filter((training) => {
+            let trainingDate = new Date(training.scheduledTime)
+            trainingDate = new Date(trainingDate.setHours(0, 0, 0))
+            if (endDate) {
+              if (trainingDate - startDate > 0) {
+                return endDate - trainingDate > 0
+              }
+              return false
             }
-            return false
-          }
-          return (startDate - trainingDate) === 0
-        }))
-    }
-
-    else {
-      setSelectedTraining(trainings
-        .filter((training) => {
-          return !!tabIndex === !!training.startedAt
-        })
-        .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1)))
+            return startDate - trainingDate === 0
+          }),
+      )
+    } else {
+      setSelectedTraining(
+        trainings
+          .filter((training) => {
+            return !!tabIndex === !!training.startedAt
+          })
+          .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1)),
+      )
     }
   }, [trainings, tabIndex, startDate, endDate])
 
@@ -163,7 +165,7 @@ export const TrainingList = () => {
         </Tr>
       )
     }
-    
+
     return selectedTrainings.map((training) => (
       <Tr
         height="224px"
@@ -190,11 +192,7 @@ export const TrainingList = () => {
           <Td py="30px">
             <Flex justify="flex-start" minH="34px">
               <Stat marginTop="2">
-                <StatLabel
-                  whiteSpace="nowrap"
-                  fontSize="2em"
-                  textTransform="capitalize"
-                >
+                <StatLabel whiteSpace="nowrap" fontSize="2em" textTransform="capitalize">
                   {training.title}
                 </StatLabel>
               </Stat>
@@ -231,12 +229,10 @@ export const TrainingList = () => {
                   </StatHelpText>
                 </StatLabel>
                 <StatLabel>
-                  <StatHelpText fontSize="0.90em">
-                    {training.trainerName}
-                  </StatHelpText>
+                  <StatHelpText fontSize="0.90em">{training.trainerName}</StatHelpText>
                 </StatLabel>
               </Flex>
-              <Flex w="25% direction="column">
+              <Flex w="25%" direction="column">
                 <StatLabel mb="1">
                   <HStack>
                     <StatHelpText fontSize="0.75em" textTransform="uppercase">
@@ -320,7 +316,14 @@ export const TrainingList = () => {
       <Box height="100%">
         <Box padding="3px" borderRadius="20px">
           <Flex>
-            <Tabs onChange={(index) => setTabIndex(index)} height="100%" width="100%" pt="30px" px="32px" variant="solid-rounded">
+            <Tabs
+              onChange={(index) => setTabIndex(index)}
+              height="100%"
+              width="100%"
+              pt="30px"
+              px="32px"
+              variant="solid-rounded"
+            >
               <Flex>
                 <TabList>
                   <Tab
@@ -340,10 +343,10 @@ export const TrainingList = () => {
                     _selected={{
                       color: 'white',
                       bg: 'blue.600',
-                      fontWeight: 'bold'
+                      fontWeight: 'bold',
                     }}
                   >
-                  Upcoming trainings
+                    Upcoming trainings
                   </Tab>
                   <Tab
                     bg="rgba(13, 98, 197, 0.1)"
@@ -362,14 +365,19 @@ export const TrainingList = () => {
                     _selected={{
                       color: 'white',
                       bg: 'blue.600',
-                      fontWeight: 'bold'
+                      fontWeight: 'bold',
                     }}
                   >
-                  Completed trainings
+                    Completed trainings
                   </Tab>
                 </TabList>
                 <Spacer />
-                <FilteredDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
+                <FilteredDatePicker
+                  startDate={startDate}
+                  endDate={endDate}
+                  setStartDate={setStartDate}
+                  setEndDate={setEndDate}
+                />
                 <Button
                   variant="light-blue"
                   size="md"
@@ -379,64 +387,66 @@ export const TrainingList = () => {
                   fontWeight="bold"
                   minW="174px"
                 >
-                New training
-              </Button>
-            </Flex>
-            <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
-              <TabPanel p={0} m={0}>
-                <ListTable>{renderTrainings()}</ListTable>
-              </TabPanel>
-              <TabPanel p={0} m={0}>
-                <ListTable>{renderTrainings()}</ListTable>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-          <ParticipantsModal
-            training={currentTraining}
-            isOpen={showParticipantsModal}
-            onClose={() => setShowParticipantsModal(false)}
-          />
-          <Modal isOpen={isModalOpen} scrollBehavior="inside">
-            <ModalOverlay />
-            <ModalContent color="darkKnight.700">
-              <ModalHeader>
-                <Flex>
-                  <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
-                  <Spacer></Spacer>
-                  <Box>
-                    <HStack spacing={2}>
-                      <IconButton
-                        variant="icon-button"
-                        aria-label="Close form"
-                        icon={<CloseIcon boxSize={3} />}
-                        onClick={onModalClose}
-                      />
-                    </HStack>
-                  </Box>
-                </Flex>
-              </ModalHeader>
-              <ModalBody>
-                <TrainingForm
-                  onClose={onModalClose}
-                  trainingId={currentTraining?.id}
-                  onDelete={handleDelete}
-                />
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-          <Modal isOpen={showInvitedModal}>
-            <ModalOverlay />
-            <ModalContent maxWidth="unset" width="600px" color="darkKnight.700">
-              <ModalHeader>Invited students</ModalHeader>
-              <ModalBody>
-                <InvitedList training={currentTraining} />
-              </ModalBody>
-              <ModalFooter>
-                <Button onClick={() => setShowInvitedModal(false)}>Done</Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-        </Flex>
+                  New training
+                </Button>
+              </Flex>
+              <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
+                <TabPanel p={0} m={0}>
+                  <ListTable>{renderTrainings()}</ListTable>
+                </TabPanel>
+                <TabPanel p={0} m={0}>
+                  <ListTable>{renderTrainings()}</ListTable>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+            <ParticipantsModal
+              training={currentTraining}
+              isOpen={showParticipantsModal}
+              onClose={() => setShowParticipantsModal(false)}
+            />
+
+            <Modal isOpen={isModalOpen} scrollBehavior="inside">
+              <ModalOverlay />
+              <ModalContent color="darkKnight.700">
+                <ModalHeader>
+                  <Flex>
+                    <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
+                    <Spacer></Spacer>
+                    <Box>
+                      <HStack spacing={2}>
+                        <IconButton
+                          variant="icon-button"
+                          aria-label="Close form"
+                          icon={<CloseIcon boxSize={3} />}
+                          onClick={onModalClose}
+                        />
+                      </HStack>
+                    </Box>
+                  </Flex>
+                </ModalHeader>
+                <ModalBody>
+                  <TrainingForm
+                    onClose={onModalClose}
+                    trainingId={currentTraining?.id}
+                    onDelete={handleDelete}
+                  />
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+            <Modal isOpen={showInvitedModal}>
+              <ModalOverlay />
+              <ModalContent maxWidth="unset" width="600px" color="darkKnight.700">
+                <ModalHeader>Invited students</ModalHeader>
+                <ModalBody>
+                  <InvitedList training={currentTraining} />
+                </ModalBody>
+                <ModalFooter>
+                  <Button onClick={() => setShowInvitedModal(false)}>Done</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+          </Flex>
+        </Box>
       </Box>
     </Box>
   )

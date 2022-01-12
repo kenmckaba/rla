@@ -1,8 +1,8 @@
 :root {
-    /*--amplify-primary-color: #0D62C5;*/
-    /*--amplify-primary-tint: #FFF;*/
-    /*--amplify-primary-shade: #FFF;*/
-    /*--amplify-background-color: rgba(255,255,255,0.1);*/
+    --amplify-primary-color: #0D62C5;
+    --amplify-primary-tint: #FFF;
+    --amplify-primary-shade: #FFF;
+    --amplify-background-color: rgba(240,250,250,0.25);
 }
 
 #spacer {
