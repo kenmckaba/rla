@@ -35,7 +35,7 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
 
   return (
     <>
-      <Accordion height="100%" isOpen allowMultiple width="340px" allowToggle defaultIndex={[0, 1]}>
+      <Accordion height="100%" isOpen allowMultiple width="40vw" allowToggle defaultIndex={[0, 1]}>
         <AccordionItem p={0} m={0} border="none" isOpen>
           <AccordionButton
             p="2"
@@ -90,6 +90,7 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
               attendees={attendees}
               training={training}
               myAttendeeId={attendeeId}
+              minHeight='80vh'
             />
           </AccordionPanel>
         </AccordionItem>

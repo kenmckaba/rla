@@ -13,7 +13,7 @@ export default function ChatBox({
   attendees,
   training,
   myAttendeeId,
-  maxWidth = '22vw',
+  maxWidth = '100%',
   minHeight = '200px',
   maxHeight = '40vh',
 }) {
