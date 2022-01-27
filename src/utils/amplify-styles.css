@@ -5,15 +5,6 @@
     --amplify-background-color: rgba(240,250,250,0.8);
 }
 
-amplify-authenticator {
-    margin-top: 0em;
-    padding-top: 0em;
-}
-
-#spacer {
-    width: 60vw;
-}
-
 /*:root {*/
 /*    !* Typography *!*/
 /*    --amplify-font-family: 'Amazon Ember', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;*/
@@ -54,24 +45,3 @@ amplify-authenticator {
 /*    --amplify-blue: #099ac8;*/
 /*}*/
 
-.multi-background{
-    height: 100%;
-    width: 100%;
-    background-image:
-            /*url('bg-login2.svg');*/
-    /*linear-gradient(217deg, rgba(255, 198, 157 ,.98), rgba(255, 198, 157, 0) 70.71%),*/
-    /*linear-gradient(127deg, rgba(76, 159, 255, .98), rgba(76, 159, 255, 0) 70.71%),*/
-    /*linear-gradient(336deg, rgba(255, 218, 147, .98), rgba(255, 218, 147, 0) 70.71%),*/
-    url('shutterstock_1642992973.jpg');
-    background-repeat: no-repeat, no-repeat;
-    /* background-position: center,
-    center, center, center,
-    calc(100% - 35vw) 100%; */
-    background-position: center;
-    background-attachment: fixed;
-
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
