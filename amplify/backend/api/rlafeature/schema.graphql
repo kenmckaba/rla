@@ -168,6 +168,14 @@ type Students
   email: String!
 }
 
+type InvitedStudent @model @auth(rules: [{ allow: private, provider: iam }]) {
+  id: ID!
+  trainingId: ID!
+  timeSent: AWSDateTime
+  name: String
+  email: String
+}
+
 type EmailContent @model @auth(rules: [{ allow: private, provider: iam }]) {
   id: ID!
   registrationBody: String!
