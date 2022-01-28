@@ -69,20 +69,6 @@ export default function TrainingListHeader({ trainings }) {
               : 'Your next meeting is scheduled at ' + nextTrainingOfToday()}
           </H1Heading>
         </Box>
-        {/*         <HStack mb="25px">
-          <Button size="xs" onClick={onEmailsOpen}>
-          Manage email lists
-          </Button>
-          <Button size="xs" onClick={onPollsOpen}>
-          Manage polls catalog
-          </Button>
-        </HStack>
-
-        <OurModal isOpen={isEmailsOpen} header="Manage email lists">
-          <EmailListForm onClose={onEmailsClose} />
-        </OurModal>
-        <PollsCatalog isOpen={isPollsOpen} onClose={onPollsClose} /> 
-         */}
       </Box>
     </>
   )
