@@ -89,7 +89,7 @@ export const TrainingList = () => {
         .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1))
         .filter((training) => {
           let trainingDate = new Date(training.scheduledTime)
-          trainingDate = new Date(trainingDate.setHours(0,0,0))
+          trainingDate = new Date(trainingDate.setHours(0,0,1))
           if (endDate) {
             if ((trainingDate - startDate) > 0) {
               return (endDate - trainingDate) > 0
