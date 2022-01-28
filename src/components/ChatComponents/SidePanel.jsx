@@ -39,7 +39,7 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
         <AccordionItem p={0} m={0} border="none" isOpen>
           <AccordionButton
             p="2"
-            bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
+            background='#1061c4'
             _hover={'bgColor: #284A83'}
             boxShadow={'2xl'}
           >
@@ -75,7 +75,7 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
         <AccordionItem p={0} m={0} border="none" isOpen>
           <AccordionButton
             p="2"
-            bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
+            background='#1061c4'
             _hover={'bgColor: #284A83'}
             boxShadow={'2xl'}
           >

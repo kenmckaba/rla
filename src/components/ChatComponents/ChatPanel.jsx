@@ -15,7 +15,6 @@ export const ChatPanel = ({ messages, attendees, training, myAttendeeId, padding
       <AccordionItem p={0} m={0} border="none">
         <AccordionButton
           p="2"
-          bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
           _hover={'bgColor: #284A83'}
           boxShadow={'2xl'}
         >
