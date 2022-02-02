@@ -90,7 +90,7 @@ export const Registration = ({
   }
 
   return (
-    <Flex w="100%" h="100%" direction="column">
+    <Flex w="100vw" h="100vh" direction="column" bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"    >
       <Box w="100%" h="100%">
         <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
           <VStack
@@ -132,6 +132,9 @@ export const Registration = ({
                     variant="filled"
                     fontSize="0.75em"
                     placeholder="Type your name here"
+                    color={'blue.900'}
+                    _focus={{backgroundColor: 'white',}}
+                    _placeholder={{ color: 'blue.700' }}
                     value={attendeeName}
                     onChange={onChangeAttendeeName}
                     h="8"
@@ -145,6 +148,9 @@ export const Registration = ({
                     variant="filled"
                     fontSize="0.75em"
                     placeholder="Type your email here"
+                    color={'blue.900'}
+                    _focus={{backgroundColor: 'white',}}
+                    _placeholder={{ color: 'blue.700' }}
                     value={attendeeEmail}
                     onChange={onChangeAttendeeEmail}
                     h="8"

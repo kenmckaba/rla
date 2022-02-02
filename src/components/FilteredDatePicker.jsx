@@ -14,7 +14,7 @@ const FilteredDatePicker = ({
   endDate,
   setStartDate,
   setEndDate,
-  isClearable = false,
+  setDisabledTabs,
   showPopperArrow = false,
   ...props
 }) => {
@@ -23,6 +23,7 @@ const FilteredDatePicker = ({
 
   const onChange = (dates) => {
     const [start, end] = dates
+    !start && !end ? setDisabledTabs(false) : setDisabledTabs(true)
     setStartDate(start)
     end ? setEndDate(end.setHours(23,59,59)) : setEndDate(null)
   }

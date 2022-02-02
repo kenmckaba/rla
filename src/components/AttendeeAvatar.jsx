@@ -1,5 +1,5 @@
 import { Avatar } from '@chakra-ui/avatar'
-import { Tooltip } from '@chakra-ui/react'
+import { background, Tooltip } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
 export default function AttendeeAvatar({ attendee }) {
@@ -11,7 +11,7 @@ export default function AttendeeAvatar({ attendee }) {
         name={attendee.name}
         color="blue.600"
         fontWeight="bold"
-        bg="rgba(13, 98, 197, 0.1)"
+        bg="rgba(255, 255, 255, 0.8)"
       />
     </Tooltip>
   )

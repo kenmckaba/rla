@@ -1,13 +1,11 @@
-import { Flex } from '@chakra-ui/react'
 import React from 'react'
-import { Image } from '@chakra-ui/react'
-// import './sun.css'
+import { Flex, Image} from '@chakra-ui/react'
 export default function SunBackground({hour}) {
   return (
     <Flex>
-      <Image mt='-35em' mb='-18em'
+      <Image 
         src={`${hour < 12 && './images/image_part_001.jpeg' || hour < 18 && './images/image_part_002.jpeg' || './images/image_part_003.jpeg'}`}
-        alt='Sun' width="100%" />
+        mt={'-6em'} mb={'-10em'} height={'15em'} alt='Sun' width="100%"/>
     </Flex>
-  )
+  ) 
 }

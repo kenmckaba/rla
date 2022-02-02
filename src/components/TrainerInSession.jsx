@@ -209,7 +209,12 @@ export const TrainerInSession = ({
   }
 
   return (
-    <Box flex="1" width="100%" height="100%" onMouseMove={handleMouseMove}>
+    <Box flex="1" 
+      width="100%" 
+      height="100%"
+      overflowY={'hidden'}
+      bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"
+      onMouseMove={handleMouseMove}>
       <HStack align="left" height="100%">
         <LeftPanel
           training={training}
@@ -229,7 +234,6 @@ export const TrainerInSession = ({
             attendees={attendees}
             training={training}
             myAttendeeId={'0'} 
-            paddingTop='75px'
           />
         )}
       </HStack>

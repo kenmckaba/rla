@@ -170,7 +170,6 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         <AccordionPanel          
           padding="0"          
           minHeight="200px"
-          maxHeight="53vh"
         >
           <HStack height="20px" justifyContent="end" marginRight="24px" marginTop="5px">
             <MicCamIcon
@@ -219,7 +218,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
                   </Tr>
                 ))}
               </Thead>
-              <Tbody {...getTableBodyProps()} display={'block'} maxHeight={'43vh'} overflowY={'scroll'} sx={scrollBarStyle}>
+              <Tbody {...getTableBodyProps()} display={'block'} sx={scrollBarStyle}>
                 {rows.map((row) => {
                   prepareRow(row)
                   return (

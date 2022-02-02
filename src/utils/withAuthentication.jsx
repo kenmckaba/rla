@@ -9,7 +9,8 @@ import './amplify-styles.css'
 export const WithAuthentication = (WrappedComponent) => {
   
   const [currentUser, setCurrentUser] = useState({})
-
+  const location = window.location.pathname
+  
   const logout = async () => {
     try {
       await Auth.signOut()
@@ -42,9 +43,11 @@ export const WithAuthentication = (WrappedComponent) => {
           paddingY="2em"
           alignItems="center"
           color="white">
-          <Button zIndex={3} marginLeft="5px" size="sm" onClick={logout}>
-          Sign out
-          </Button>
+          { location === '/' && currentUser &&
+            <Button zIndex={3} marginLeft="5px" size="sm" onClick={logout}>
+            Sign out
+            </Button>
+          }
         </Flex>
         <WrappedComponent {...props} />
       </Flex>
@@ -54,17 +57,23 @@ export const WithAuthentication = (WrappedComponent) => {
     <Stack minH={'99.99vh'} direction={{ base: 'column', md: 'row' }} maxH='99.99vh' overflow={{ base: 'scroll', md: 'hidden' }} >
       <Flex px={8} align={'center'} justify={'center'}>
         <Stack w={'full'} maxW={'md'}>
-          <H3Heading color="black" fontSize="2.5em" textAlign="center" mb='0'>
+          <H3Heading color="black" fontSize="2.5em" textAlign="center" mb='0' zIndex='2'>
             Welcome to Remote Learning Platform
           </H3Heading>
           <AmplifySignIn />
         </Stack>
       </Flex>
-      <Flex >
+      <Flex padding={'20px'} 
+        paddingLeft={'10px'}
+        marginInlineStart={[0, '0vw !important']}
+      >
         <Image
           alt={'Login Image'}
           objectFit={'cover'}
           src={'./images/shutterstock_1642992973.jpg'}
+          borderRadius={'50px'}
+          border='solid 10px white'
+          boxShadow={'20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff'}
         />
       </Flex>
     </Stack>

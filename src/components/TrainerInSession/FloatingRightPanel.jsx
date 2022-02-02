@@ -93,19 +93,13 @@ export default function FloatingRightPanel({
         top="93%"
         left="33%"
         alignItems="center"
-        pointerEvents="none"
-        // boxShadow='dark-lg'
-
-      >
+        pointerEvents="none">
         <HStack spacing={2}
           justifyContent="center"
           height="fit-content"
-          pointerEvents="all"
-          _before={{
-            content: 'url(\'../../assets/icons/shadow.svg\')'
-          }}
-        >
+          pointerEvents="all">
           <IconWrapper
+            boxShadow={'dark-lg'}
             onClick={handleMicMute}
             backgroundColor={micButtonBgColor}
             tooltip="Microphone"
@@ -113,16 +107,15 @@ export default function FloatingRightPanel({
             _hover={{
               background: 'white',
               fill: '#555',
-            }}
-          >
+            }}>
             {!bjnAudioMuted ? (
               <MicIcon style={{ height: '100%', widht: '100%' }} />
             ) : (
               <MicOffIcon style={{ height: '100%', widht: '100%' }} />
             )}
           </IconWrapper>
-
           <IconWrapper
+            boxShadow={'dark-lg'}
             onClick={handleCameraMute}
             backgroundColor={webcamButtonBgColor}
             tooltip="Webcam"
@@ -130,34 +123,32 @@ export default function FloatingRightPanel({
             _hover={{
               background: 'white',
               fill:'#555'
-            }}
-          >
+            }}>
             {!bjnVideoMuted ? (
               <WebcamIcon style={{ height: '100%', widht: '100%' }} />
             ) : (
               <WebcamOffIcon style={{ height: '100%', widht: '100%' }} />
             )}
           </IconWrapper>
-
-          <IconWrapper onClick={handleSettingsModalVisibility} tooltip="Settings">
+          <IconWrapper
+            boxShadow={'dark-lg'}
+            onClick={handleSettingsModalVisibility} tooltip="Settings">
             <SettingsIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>
-
           {role === 'instructor' && (
             <IconWrapper
+              boxShadow={'dark-lg'}
               onClick={handleScreenShare}
               backgroundColor={sharescreenButtonBgColor}
-              tooltip="Share your screen"
-            >
+              tooltip="Share your screen">
               <SharescreenIcon style={{ height: '100%', widht: '100%' }} />
             </IconWrapper>
           )}
-
           <IconWrapper
+            boxShadow={'dark-lg'}
             onClick={handleShareDocumentsModalVisibility}
             tooltip="Shared documents"
-            position="relative"
-          >
+            position="relative">
             <ShareDocumentsIcon style={{ height: '100%', widht: '100%' }} />
             {!!sharedDocsCount && (
               <Box
@@ -171,14 +162,15 @@ export default function FloatingRightPanel({
                 left="24px"
                 paddingTop="1px"
                 fontSize="12px"
-                textAlign="center"
-              >
+                textAlign="center">
                 {sharedDocsCount}
               </Box>
             )}
           </IconWrapper>
-
-          <IconWrapper tooltip="Whiteboard" onClick={showWhiteboard}>
+          <IconWrapper
+            boxShadow={'dark-lg'}
+            tooltip="Whiteboard" 
+            onClick={showWhiteboard}>
             <WhiteboardIcon
               style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }}
             />
@@ -186,6 +178,7 @@ export default function FloatingRightPanel({
 
           {role === 'student' && (
             <IconWrapper
+              boxShadow={'dark-lg'}
               tooltip="Raise hand"
               backgroundColor={raiseHandBgColor}
               onClick={toggleHand}
@@ -197,6 +190,7 @@ export default function FloatingRightPanel({
           )}
 
           <IconWrapper
+            boxShadow={'dark-lg'}
             onClick={() => handleChatVisibility()}
             backgroundColor={chatButtonBgColor}
             tooltip="Chat"
@@ -205,6 +199,7 @@ export default function FloatingRightPanel({
           </IconWrapper>
 
           <IconWrapper
+            boxShadow={'dark-lg'}
             backgroundColor="#FF4E4E"
             onClick={() => handleEndTrainingModalClick()}
             tooltip={role === 'student' ? 'Leave training' : 'End training'}

@@ -51,7 +51,8 @@ export const TrainingList = () => {
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
   const [selectedTrainings, setSelectedTraining] = useState([])
-  const [tabIndex, setTabIndex] = React.useState(0)
+  const [tabIndex, setTabIndex] = useState(0)
+  const [disabledTabs, setDisabledTabs] = useState(false)
 
   const handleShowParticipantsModal = (training) => {
     setCurrentTraining(training)
@@ -81,12 +82,10 @@ export const TrainingList = () => {
   }, [subscribeToMore])
 
   useEffect(() => {
-    if (startDate) {
+    if (startDate && endDate) {
+      setDisabledTabs(true)
       setSelectedTraining(trainings
-        .filter((training) => {
-          return !!tabIndex === !!training.startedAt
-        })
-        .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1))
+        .sort((first, second) => (first.scheduledTime > second.scheduledTime ? -1 : 1))
         .filter((training) => {
           let trainingDate = new Date(training.scheduledTime)
           trainingDate = new Date(trainingDate.setHours(0,0,1))
@@ -146,12 +145,64 @@ export const TrainingList = () => {
   const openRegPage = (trainingId) => {
     window.open(`/trainerInSession/${trainingId}`)
   }
-
+  const clearDates = () => {setStartDate(null);  setEndDate(null); setDisabledTabs(false)}
   const renderTrainings = () => {
     if (selectedTrainings?.length === 0) {
       return (
-        <Tr>
-          <Td>*None*</Td>
+        <Tr
+          height="224px"
+          width="1028px"
+          cursor="pointer"
+          onClick={onNewTraining}
+        >
+          <Flex
+            borderRadius="20px"
+            backgroundColor="#396AA1"
+            color="rgba(255,255,255, 0.9)"
+            direction="column"
+            justify="center"
+            transition="0.3s"
+            _hover={{
+              backgroundColor: 'rgba(255,255,255, 0.9)',
+              color: 'blue.600',
+            }}
+          >
+            <Td py="30px">
+              <Flex justify="flex-start" minH="10em">
+                <Stat marginTop="2em">
+                  <StatLabel
+                    whiteSpace="nowrap"
+                    fontSize="3em"
+                    textTransform="capitalize"
+                  >
+                    No Meetings in this category
+                  </StatLabel>
+                  <StatHelpText fontSize="0.90em" textTransform="uppercase">
+                    <Button
+                      // variant="light-blue"
+                      bg="white"
+                      border="solid 2px"
+                      borderColor="blue.6oh no, yea, 00"
+                      color="blue.600"
+                      size="lg"
+                      leftIcon={<AddIcon />}
+                      onClick={onNewTraining}
+                      fontSize="10pt"
+                      fontWeight="bold"
+                      minW="174px"
+                      mt='3em'
+                      _hover={{
+                        backgroundColor: 'rgba(255,255,255, 0.9)',
+                        color: 'blue.600',
+                      }}
+                    >
+                      Create a new training
+                    </Button>
+                  </StatHelpText>
+                </Stat>
+              </Flex>
+            </Td>
+          </Flex>
         </Tr>
       )
     }
@@ -171,12 +222,14 @@ export const TrainingList = () => {
       >
         <Flex
           borderRadius="5px"
-          backgroundColor="rgba(13, 98, 197, 0.1)"
-          color="blue.600"
+          backgroundColor="#396AA1"
+          color="rgba(255,255,255, 0.9)"
           direction="column"
           justify="center"
+          transition="all 0.3s ease"
           _hover={{
-            bg: 'rgba(13, 98, 197, 0.2)',
+            backgroundColor: 'rgba(255,255,255, 0.9)',
+            color: 'blue.600',
           }}
         >
           <Td py="30px">
@@ -284,27 +337,13 @@ export const TrainingList = () => {
   const ListTable = ({ children }) => {
     return (
       <Table variant="unstyled">
-        {/* <Thead borderBottom="2px" borderColor="rgba(255, 255, 255, 0.2)">
-          <Tr>
-            <Th fontWeight="thin" width="25%" color="white">
-              Title
-            </Th>
-            <Th fontWeight="thin" width="25%" color="white">
-              Attendee
-            </Th>
-            <Th fontWeight="thin" width="35%" />
-            <Th fontWeight="thin" width="15%" color="white">
-              <Icon as={IoIosCalendar} boxSize="1.5em" />
-            </Th>
-          </Tr>
-        </Thead> */}
         <Tbody>{children}</Tbody>
       </Table>
     )
   }
 
   return (
-    <Box minH="100vh" bgColor="blue.50">
+    <Box minH="100vh" bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);">
       <Header />
       <TrainingListHeader trainings={trainings} />
       <Box height="100%">
@@ -314,9 +353,9 @@ export const TrainingList = () => {
               <Flex>
                 <TabList>
                   <Tab
-                    bg="rgba(13, 98, 197, 0.1)"
+                    bg="darkPalette.4blur"
                     borderRadius="full"
-                    color="rgba(13, 98, 197, 0.4)"
+                    color="white"
                     fontSize="10pt"
                     fontWeight="light"
                     minH="37px"
@@ -324,6 +363,7 @@ export const TrainingList = () => {
                     mr="16px"
                     paddingInline="26px"
                     textTransform="uppercase"
+                    isDisabled={disabledTabs}
                     _focus={{
                       boxShadow: 'none',
                     }}
@@ -331,14 +371,21 @@ export const TrainingList = () => {
                       color: 'white',
                       bg: 'blue.600',
                       fontWeight: 'bold'
+                    }}
+                    _disabled={{
+                      color: 'white.500',
+                      bg: 'white.300',
+                      fontWeight: 'bold',
+                      cursor: 'not-allowed',
+                      pointerEvents: 'all !important'
                     }}
                   >
                   Upcoming trainings
                   </Tab>
                   <Tab
-                    bg="rgba(13, 98, 197, 0.1)"
+                    bg="darkPalette.4blur"
                     borderRadius="full"
-                    color="rgba(13, 98, 197, 0.4)"
+                    color="white"
                     fontSize="10pt"
                     fontWeight="light"
                     minH="37px"
@@ -346,6 +393,7 @@ export const TrainingList = () => {
                     mr="16px"
                     paddingInline="26px"
                     textTransform="uppercase"
+                    isDisabled={disabledTabs}
                     _focus={{
                       boxShadow: 'none',
                     }}
@@ -353,15 +401,43 @@ export const TrainingList = () => {
                       color: 'white',
                       bg: 'blue.600',
                       fontWeight: 'bold'
+                    }}
+                    _disabled={{
+                      color: 'white.500',
+                      bg: 'white.300',
+                      fontWeight: 'bold',
+                      cursor: 'not-allowed',
+                      pointerEvents: 'all !important',
                     }}
                   >
                   Completed trainings
                   </Tab>
                 </TabList>
                 <Spacer />
-                <FilteredDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
+                <FilteredDatePicker startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate} setDisabledTabs={setDisabledTabs}/>
+                
+                {disabledTabs && <Button
+                  variant="light-blue"
+                  backgroundColor="#FF4E4E"
+                  color="white"
+                  size="md"
+                  leftIcon={<CloseIcon />}
+                  onClick={clearDates}
+                  fontSize="10pt"
+                  fontWeight="bold"
+                  minW="174px"
+                  mr={'2'}
+                  _hover={{
+                    backgroundColor: 'white',
+                    color: '#FF4E4E'
+                  }}
+                >
+                  Clear Dates
+                </Button>}
                 <Button
                   variant="light-blue"
+                  backgroundColor="rgba(13, 98, 197, 1)"
+                  color="white"
                   size="md"
                   leftIcon={<AddIcon />}
                   onClick={onNewTraining}
@@ -373,6 +449,9 @@ export const TrainingList = () => {
                 </Button>
               </Flex>
               <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
+                <TabPanel p={0} m={0}>
+                  <ListTable>{renderTrainings()}</ListTable>
+                </TabPanel>
                 <TabPanel p={0} m={0}>
                   <ListTable>{renderTrainings()}</ListTable>
                 </TabPanel>
