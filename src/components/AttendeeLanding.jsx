@@ -326,15 +326,14 @@ export const AttendeeLanding = ({
       },
     })
   }
-
+  // boxShadow={'dark-lg'}
   return (
-    <Box onMouseMove={handleMouseMove} width="100%" position="relative">
-      <Box position="absolute" width="100%" top="-70px">
-        <Center fontSize="20px">{training.title}</Center>
-        <Center>{training.description}</Center>
-      </Box>
+    <Box onMouseMove={handleMouseMove}
+      width="100%" height={'99.99vh'}
+      position="relative"
+      bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);">
       <HStack alignItems="start" height="100%">
-        <BjnMedia shareWebcam={shareWebcam} myAttendeeId={attendeeId} />
+        <BjnMedia shareWebcam={shareWebcam} myAttendeeId={attendeeId} marginLeft={true} training={training} marginRight={!chatIsOpen}/>
         {chatIsOpen && (
           <SidePanel
             attendees={attendees}

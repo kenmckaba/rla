@@ -10,8 +10,7 @@ import { ReactComponent as WhiteboardIcon } from '../../assets/icons/whiteboard-
 import { ReactComponent as ChatIcon } from '../../assets/icons/chat-icon.svg'
 import { ReactComponent as HangupIcon } from '../../assets/icons/hangup-icon.svg'
 import { ReactComponent as WebcamOffIcon } from '../../assets/icons/webcam-off-icon.svg'
-import { ReactComponent as HandIcon } from '../../assets/icons/hand-icon-2.svg'
-import { ReactComponent as Shadow } from '../../assets/icons/shadow.svg'
+import { ReactComponent as HandIcon } from '../../assets/icons/hand-icon-3.svg'
 import { Tooltip } from '@chakra-ui/react'
 import { useBlueJeans } from '../../bluejeans/useBlueJeans'
 
@@ -87,11 +86,18 @@ export default function FloatingRightPanel({
 
   // <Box  p='6' rounded='md' bg='white'>
   return (
-    <Collapse in={panelIsVisible} animateOpacity>
+    <Collapse in={true} animateOpacity>
       <Flex
         position="fixed"
-        top="93%"
-        left="33%"
+        top={{
+          '2xl': 'calc(99.99vh - 7vh)',
+          xl: 'calc(99.99vh - 10vh)',
+          md: 'calc(99.99vh - 10vh)',
+          sm: 'calc(99.99vh - 10vh)',
+        }}
+        width={'100%'}
+        // left="33%"
+        justifyContent={'center'}
         alignItems="center"
         pointerEvents="none">
         <HStack spacing={2}
@@ -184,7 +190,7 @@ export default function FloatingRightPanel({
               onClick={toggleHand}
             >
               <HandIcon
-                style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }}
+                // style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }}
               />
             </IconWrapper>
           )}

@@ -72,7 +72,7 @@ export const WithAuthentication = (WrappedComponent) => {
           objectFit={'cover'}
           src={'./images/shutterstock_1642992973.jpg'}
           borderRadius={'50px'}
-          border='solid 10px white'
+          // border='solid 10px white'
           boxShadow={'20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff'}
         />
       </Flex>
