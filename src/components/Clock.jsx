@@ -14,10 +14,10 @@ function Clock() {
 
   return(
     <>
-      <H1Heading fontSize="150px" lineHeight="183px" textAlign="center">
+      <H1Heading fontSize="10em" lineHeight="183px" textAlign="center">
         {time}
       </H1Heading>
-      <H3Heading color="white" fontSize="48px" lineHeight="58px" textAlign="center">
+      <H3Heading color="white" fontSize="3.3em" lineHeight="58px" textAlign="center">
         {date}
       </H3Heading>
     </>

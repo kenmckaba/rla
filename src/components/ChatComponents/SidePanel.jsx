@@ -35,26 +35,30 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
 
   return (
     <>
-      <Accordion height="100%" isOpen allowMultiple width="340px" allowToggle defaultIndex={[0, 1]}>
-        <AccordionItem p={0} m={0} border="none" isOpen>
+      <Accordion height="100%" isOpen allowMultiple width="40vw" allowToggle defaultIndex={[0, 1]}>
+        <AccordionItem p={0} mt={2.5} border="none" isOpen>
           <AccordionButton
             p="2"
-            bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
             _hover={'bgColor: #284A83'}
+            bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"
             boxShadow={'2xl'}
+            borderRadius={'10px 10px 0 0'}
           >
             <Text marginLeft="2" flex="1" textAlign="left" fontWeight="semibold" fontSize="0.9em">
               Attendees
             </Text>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel overflowY="auto" padding="0" pb={4} sx={scrollBarStyle}>
+          <AccordionPanel 
+            overflowY="auto" 
+            padding="0" 
+            pb={4} h={'15vh'}
+            backgroundColor="white"
+            borderBottomRadius="8px">
             <Box
               minHeight="60px"
-              backgroundColor="white"
               color="black"
               paddingLeft="10px"
-              borderBottomRadius="8px"
               fontSize="14px"
             >
               {bjnParticipants.map((p, index) => {
@@ -72,24 +76,32 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
             </Box>
           </AccordionPanel>
         </AccordionItem>
-        <AccordionItem p={0} m={0} border="none" isOpen>
+        <AccordionItem p={0} m={0} mt={1} border="none" isOpen>
           <AccordionButton
             p="2"
-            bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"
             _hover={'bgColor: #284A83'}
+            bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"
             boxShadow={'2xl'}
+            borderRadius={'10px 10px 0 0'}
           >
             <Text marginLeft="2" flex="1" textAlign="left" fontWeight="semibold" fontSize="0.9em">
               Chat
             </Text>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel overflowY="auto" padding="0" pb={4} sx={scrollBarStyle}>
+          <AccordionPanel overflowY="auto" padding="0" pb={4}>
             <ChatBox
               messageList={chatMessages}
               attendees={attendees}
               training={training}
               myAttendeeId={attendeeId}
+              minHeight={'60vh'}
+              maxHeight={{
+                '2xl': 'calc(100vh - 24vh)',
+                xl: 'calc(100vh - 27vh)',
+                md: 'calc(100vh - 35vh)',
+                sm: 'calc(100vh - 40vh)'
+              }}
             />
           </AccordionPanel>
         </AccordionItem>

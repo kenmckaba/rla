@@ -33,7 +33,7 @@ import { gql, useMutation } from '@apollo/client'
 import { updateAttendee, updateTraining } from '../graphql/mutations'
 import './class-roster.css'
 
-export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
+export const ClassRoster = ({ training, attendees }) => {
   const [anyRaised, setAnyRaised] = useState(false)
   const [updateCurrentTraining] = useMutation(gql(updateTraining))
   const [updateCurrentAttendee] = useMutation(gql(updateAttendee))
@@ -83,6 +83,17 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
     })
   }
 
+  const lowerHand = (attendeeId) => {
+    updateAttendee({
+      variables: {
+        input: {
+          id: attendeeId,
+          handRaised: false,
+        },
+      },
+    })
+  }
+
   const columns = useMemo(() => {
     const updateAudioAttendeeMute = async (attendee, state) => {
       await updateCurrentAttendee({
@@ -110,7 +121,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
 
     return [
       {
-        Header: 'Name',
+        Header: '',
         accessor: 'name',
         Cell: ({ value }) => (
           <Tooltip hasArrow placement="top" label={value}>
@@ -121,10 +132,14 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
       {
         accessor: 'checkIn',
         sortType: 'basic',
-        Cell: ({ value }) => <Center marginRight={3}>{value ? <CheckMark /> : <XMark />}</Center>,
+        Cell: ({ value }) => (
+          <Tooltip hasArrow placement="top" label={value ? 'Present' : 'Absent'}>
+            <Center marginRight={3}>{value ? <CheckMark /> : <XMark />}</Center>
+          </Tooltip>
+        ),
       },
       {
-        Header: 'Audio',
+        Header: '',
         accessor: 'attendeeAudio',
         sortType: 'basic',
         Cell: ({ value }) => (
@@ -139,7 +154,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         ),
       },
       {
-        Header: 'Video',
+        Header: '',
         accessor: 'attendeeVideo',
         sortType: 'basic',
         Cell: ({ value }) => (
@@ -154,10 +169,10 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         ),
       },
       {
-        Header: 'Attentive',
+        Header: '',
         accessor: 'eye',
         Cell: ({ value }) => (
-          <Tooltip hasArrow placement="top" label={value}>
+          <Tooltip hasArrow placement="top" label={value ? 'Attentive' : 'Not attentive'}>
             <Center marginRight={3}>{value ? <EyeIcon /> : <EyeIconRed />}</Center>
           </Tooltip>
         ),
@@ -167,13 +182,15 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
         Cell: ({ value }) => {
           return (
             <Box onClick={() => lowerHand(value.attendeeId)}>
-              <Center marginRight={3}>{value.raised ? <HandIcon2 /> : <HandIcon />}</Center>
+              <Tooltip hasArrow placement="top" label={value.raised ? 'Lower hand' : 'Not raised'}>
+                <Center marginRight={3}>{value.raised ? <HandIcon2 /> : <HandIcon />}</Center>
+              </Tooltip>
             </Box>
           )
         },
       },
     ]
-  }, [lowerHand, updateCurrentAttendee])
+  }, [updateCurrentAttendee])
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     { columns, data },
@@ -207,11 +224,7 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
           <AccordionIcon />
         </AccordionButton>
 
-        <AccordionPanel          
-          padding="0"          
-          minHeight="200px"
-          maxHeight="53vh"
-        >
+        <AccordionPanel padding="0" minHeight="200px">
           <HStack height="20px" justifyContent="end" marginRight="24px" marginTop="5px">
             <MicCamIcon
               hardMuted={!!training.audioHardMuted}
@@ -231,10 +244,12 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
           </HStack>
           {attendees.length !== 0 ? (
             <Table size="sm" width="100%" margin="0" {...getTableProps()}>
-              <Thead                
+              {/* <Thead
                 borderBottom="1px"
-                borderColor="#ffffff"     
-                display={'table'} width={'100%'} style={{tableLayout:'fixed'}}           
+                borderColor="#ffffff"
+                display={'table'}
+                width={'100%'}
+                style={{ tableLayout: 'fixed' }}
               >
                 {headerGroups.map((headerGroup) => (
                   <Tr {...headerGroup.getHeaderGroupProps()}>
@@ -263,12 +278,23 @@ export const ClassRoster = ({ training, attendees, lowerHand, ...props }) => {
                     ))}
                   </Tr>
                 ))}
-              </Thead>
-              <Tbody {...getTableBodyProps()} display={'block'} maxHeight={'43vh'} overflowY={'scroll'} sx={scrollBarStyle}>
+              </Thead> */}
+              <Tbody
+                borderTop="1px"
+                marginTop="5px"
+                {...getTableBodyProps()}
+                display={'block'}
+                sx={scrollBarStyle}
+              >
                 {rows.map((row) => {
                   prepareRow(row)
                   return (
-                    <Tr className="cell-container" {...row.getRowProps()} display={'table'} style={{tableLayout:'fixed'}}>
+                    <Tr
+                      className="cell-container"
+                      {...row.getRowProps()}
+                      display={'table'}
+                      style={{ tableLayout: 'fixed' }}
+                    >
                       {row.cells.map((cell) => (
                         <Td width={'100%'} {...cell.getCellProps()}>
                           <chakra.span>{cell.render('Cell')}</chakra.span>

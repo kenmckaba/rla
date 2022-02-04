@@ -55,6 +55,7 @@ export const MicCamIcon = ({ hardMuted, isUnmuted, isMic, onClick }) => {
           maxHeight="22px"
           width="22px"
           minWidth="22px"
+          marginTop={!isMic && '8px'}
         />
       </Tooltip>
       <Portal>

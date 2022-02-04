@@ -57,7 +57,7 @@ export default function LeftPanel({
           pollId={poll.id}
           startPoll={startPoll}
           startedPoll={startedPoll}
-          editPoll={() => editPoll(poll)}          
+          editPoll={() => editPoll(poll)}
         />
       )
     })
@@ -120,120 +120,108 @@ export default function LeftPanel({
     return result
   }, [bjnParticipants, training, attendees])
 
-  const lowerHand = (attendeeId) => {
-    updateAttendee({
-      variables: {
-        input: {
-          id: attendeeId,
-          handRaised: false,
-        },
-      },
-    })
-  }
-
   return (
-    <>
-      <VStack
-        pos="relative"
-        left="0"
-        bgGradient="linear(to-b, #284A83 0%, #396AA1 100%, #396AA1 100%)"        
-        align="left"        
-        px="5"
-        py="2"
-        width="500px"   
-        height={'100vh'}     
+    <VStack
+      pos="relative"
+      left="0"
+      bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"
+      align="left"
+      px="3"
+      width="500px"
+      height={'100vh'}
+      overflow="scroll"
+    >
+      <Box paddingBottom="4" paddingTop="8">
+        <Heading fontSize="1.25em" fontWeight="bold" textTransform="capitalize">
+          {training.title}
+        </Heading>
+        <Text opacity="0.5">{training.description}</Text>
+      </Box>
+      <Button onClick={onManageBreakouts}>Mananage breakouts</Button>
+      <Box
+        bg="rgba(255, 255, 255, 0.1)"
+        align="start"
+        borderRadius="sm"
+        fontWeight="600"
+        rounded={6}
       >
-        <Box paddingBottom="4" paddingTop="8">
-          <Heading fontSize="1.25em" fontWeight="bold" textTransform="capitalize">
-            {training.title}
-          </Heading>
-          <Text opacity="0.5">{training.description}</Text>
-        </Box>
-        <Button onClick={onManageBreakouts}>Mananage breakouts</Button>
-        <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600" rounded={6}>
-          <ClassRoster
-            training={training}
-            attendees={attendees}
-            paddingBottom="2"
-            lowerHand={(attendee) => lowerHand(attendee)}
-          />
-        </Box>
+        <ClassRoster training={training} attendees={attendees} paddingBottom="2" />
+      </Box>
 
-        <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
-          <Accordion allowMultiple width="100%" allowToggle defaultIndex={0}>
-            <AccordionItem p={0} m={0} border="none">
-              <AccordionButton p="2">
-                <Text
-                  marginLeft="2"
-                  flex="1"
-                  textAlign="left"
-                  fontWeight="semibold"
-                  fontSize="0.9em"
-                >
-                  Other meeting participants
-                </Text>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel overflowY="auto" padding="0" pb={4} sx={scrollBarStyle}>
-                <Box>
-                  <Table size="sm" width="100%" margin="0">
-                    <Tbody>{BluejeansParticipants}</Tbody>
-                  </Table>
-                </Box>
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
-        </Box>
+      <Box
+        bg="rgba(255, 255, 255, 0.1)"
+        align="start"
+        borderRadius="sm"
+        fontWeight="600"
+        rounded={6}
+      >
+        <Accordion allowMultiple width="100%" allowToggle defaultIndex={0}>
+          <AccordionItem p={0} m={0} border="none">
+            <AccordionButton p="2">
+              <Text marginLeft="2" flex="1" textAlign="left" fontWeight="semibold" fontSize="0.9em">
+                Other meeting participants
+              </Text>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel overflowY="auto" padding="0" pb={4} sx={scrollBarStyle}>
+              <Box>
+                <Table size="sm" width="100%" margin="0">
+                  <Tbody>{BluejeansParticipants}</Tbody>
+                </Table>
+              </Box>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </Box>
 
-        <Box bg="rgba(255, 255, 255, 0.1)" align="start" borderRadius="sm" fontWeight="600">
-          <Accordion allowMultiple width="100%" allowToggle>
-            <AccordionItem p={0} m={0} border="none">
-              <AccordionButton p="2">
-                <Text
-                  marginLeft="2"
-                  flex="1"
-                  textAlign="left"
-                  fontWeight="semibold"
-                  fontSize="0.9em"
-                >
-                  Polls
-                </Text>
-                <Button
-                  size="xs"
-                  paddingX="4"
-                  marginRight="4"
-                  variant="primary-trueblue"
-                  onClick={(e) => onAddPollClick(e)}
-                >
-                  + Add
-                </Button>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel                
-                padding="0"
-                pb={4}                
-                minHeight="200px"
-                maxHeight="30vh"
+      <Box
+        bg="rgba(255, 255, 255, 0.1)"
+        align="start"
+        borderRadius="sm"
+        fontWeight="600"
+        rounded={6}
+      >
+        <Accordion allowMultiple width="100%" allowToggle>
+          <AccordionItem p={0} m={0} border="none">
+            <AccordionButton p="2">
+              <Text marginLeft="2" flex="1" textAlign="left" fontWeight="semibold" fontSize="0.9em">
+                Polls
+              </Text>
+              <Button
+                size="xs"
+                paddingX="4"
+                marginRight="4"
+                variant="primary-trueblue"
+                onClick={(e) => onAddPollClick(e)}
               >
-                <Box>
-                  <Table size="sm" width="100%" margin="0" overflow={'scroll'}>
-                    <Thead                      
-                      borderBottom="1px"
-                      borderColor="#ffffff"
-                      display={'table'} width={'100%'} style={{tableLayout:'fixed'}}
-                    >
-                      <Tr>
-                        <Th color="white">Question</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody display={'block'} maxHeight={'25vh'} overflowY={'scroll'} sx={scrollBarStyle}>{Polls}</Tbody>
-                  </Table>
-                </Box>
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
-        </Box>
-      </VStack>
-    </>
+                + Add
+              </Button>
+              <AccordionIcon />
+            </AccordionButton>
+
+            <AccordionPanel padding="0" pb={4} minHeight="200px">
+              <Box>
+                <Table size="sm" width="100%" margin="0">
+                  <Thead
+                    borderBottom="1px"
+                    borderColor="#ffffff"
+                    display={'table'}
+                    width={'100%'}
+                    style={{ tableLayout: 'fixed' }}
+                  >
+                    <Tr>
+                      <Th color="white">Question</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody display={'block'} sx={scrollBarStyle}>
+                    {Polls}
+                  </Tbody>
+                </Table>
+              </Box>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </Box>
+    </VStack>
   )
 }

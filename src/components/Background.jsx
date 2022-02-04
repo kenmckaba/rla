@@ -1,7 +1,6 @@
 import { Flex } from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
 import { Hub } from '@aws-amplify/core'
-import { AmplifyAuthenticator } from '@aws-amplify/ui-react'
 import { Auth } from 'aws-amplify'
 import { H3Heading } from './shared/Heading'
 const location = window.location.pathname

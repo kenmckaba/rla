@@ -2,6 +2,10 @@
   padding: 0;
   border: none;
 }
+.react-datepicker__close-icon::after {
+  content: url('../assets/icons/x-mark.svg') !important;
+  padding-top: 0.4em;
+}
 
 .react-datepicker__header {
   background: #fff;

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { Hub } from '@aws-amplify/core'
-import { AmplifyAuthenticator } from '@aws-amplify/ui-react'
+import { AmplifyAuthenticator, AmplifySignIn  } from '@aws-amplify/ui-react'
 import { Auth } from 'aws-amplify'
-import { Box, Button, Flex, Image } from '@chakra-ui/react'
 import { H3Heading } from '../components/shared/Heading'
+import { Button, Flex, Stack, Image } from '@chakra-ui/react'
 import './amplify-styles.css'
-import Clock from '../components/Clock'
 
 export const WithAuthentication = (WrappedComponent) => {
-
+  
   const [currentUser, setCurrentUser] = useState({})
-
+  const location = window.location.pathname
+  
   const logout = async () => {
     try {
       await Auth.signOut()
@@ -43,33 +43,39 @@ export const WithAuthentication = (WrappedComponent) => {
           paddingY="2em"
           alignItems="center"
           color="white">
-          <Button zIndex={3} marginLeft="5px" size="sm" onClick={logout}>
-          Sign out
-          </Button>
+          { location === '/' && currentUser &&
+            <Button zIndex={3} marginLeft="5px" size="sm" onClick={logout}>
+            Sign out
+            </Button>
+          }
         </Flex>
         <WrappedComponent {...props} />
       </Flex>
     )
   }
   return () => (
-    <Box w="100%" h="100%" bgColor="white">
-      <Flex width="100%" flexDirection="column">
-        <Box pos="absolute" w="100%" h="100%" overflow="hidden">
-          <Image h="100%" w="100%" src='./images/login-bg.png' alt='Background'/>
-        </Box>
-        <Box pos="absolute" mt="96px" ml="60px" w="700px" zIndex="1" >
-          <H3Heading color="white" fontSize="36px" lineHeight="44px" textAlign="center">
-          Welcome to <br/> Remote Learning Platform
+    <Stack minH={'99.99vh'} direction={{ base: 'column', md: 'row' }} maxH='99.99vh' overflow={{ base: 'scroll', md: 'hidden' }} >
+      <Flex px={8} align={'center'} justify={'center'}>
+        <Stack w={'full'} maxW={'md'}>
+          <H3Heading color="black" fontSize="2.5em" textAlign="center" mb='0' zIndex='2'>
+            Welcome to Remote Learning Platform
           </H3Heading>
-        </Box>
-        <Box display={{ base: 'none', lg: 'block' }} pos="absolute" bottom="0" left="0" mb="96px" ml="165px" w="500px" zIndex="1" >
-          <Clock />
-        </Box>
-        <Flex width="100%" flexDirection="row-reverse">
-          <div id='spacer'></div>
-          <AmplifyAuthenticator />
-        </Flex>
+          <AmplifySignIn />
+        </Stack>
       </Flex>
-    </Box>
+      <Flex padding={'20px'} 
+        paddingLeft={'10px'}
+        marginInlineStart={[0, '0vw !important']}
+      >
+        <Image
+          alt={'Login Image'}
+          objectFit={'cover'}
+          src={'./images/shutterstock_1642992973.jpg'}
+          borderRadius={'50px'}
+          // border='solid 10px white'
+          boxShadow={'20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff'}
+        />
+      </Flex>
+    </Stack>
   )
 }

@@ -14,7 +14,7 @@ const FilteredDatePicker = ({
   endDate,
   setStartDate,
   setEndDate,
-  isClearable = false,
+  setDisabledTabs,
   showPopperArrow = false,
   ...props
 }) => {
@@ -23,8 +23,9 @@ const FilteredDatePicker = ({
 
   const onChange = (dates) => {
     const [start, end] = dates
+    !start && !end ? setDisabledTabs(false) : setDisabledTabs(true)
     setStartDate(start)
-    setEndDate(end)
+    end ? setEndDate(end.setHours(23,59,59)) : setEndDate(null)
   }
 
   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
@@ -46,10 +47,11 @@ const FilteredDatePicker = ({
           color: 'blue.600'
         }}>
       </Input>
-      <InputRightElement pointerEvents='none' mr="12px" children={
+      <InputRightElement pointerEvents='none' mr="1.5em" children={
         isCalendarOpen ? <ChevronUpIcon w="6" h="6" color='blue.600' /> : <ChevronDownIcon w="6" h="6" color='blue.600' />
       } />
     </InputGroup>
+    
   ))
 
   const MyContainer = ({ className, children }) => {
@@ -115,7 +117,7 @@ const FilteredDatePicker = ({
         renderDayContents={renderDayContents}
         selected={selectedDate}
         onChange={onChange}
-        isClearable={isClearable}
+        isClearable={startDate}
         startDate={startDate}
         endDate={endDate}
         selectsRange

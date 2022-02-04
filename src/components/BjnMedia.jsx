@@ -1,9 +1,9 @@
-import { Center, Flex, VStack, Wrap, WrapItem, Select } from '@chakra-ui/react'
+import { Center, Flex, VStack, Wrap, WrapItem, Select, Box } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
 import { MyCamera } from './MyCamera'
 
-export const BjnMedia = ({ shareWebcam, myAttendeeId }) => {
+export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, training }) => {
   const {
     bjnApi,
     bjnIsConnected,
@@ -51,14 +51,24 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId }) => {
   return (
     <Flex
       width="100%"
-      height="98vh"
+      height="95.5vh"
       background="#396AA1"
       borderRadius="16px"
-      padding="10px"
       justifyContent="center"
-      position="relative"
-      margin="10px"
+      mt={[0, '1vh !important']}
+      ml={marginLeft ? [0, '0.5vw !important'] : ''}
+      mr={marginRight ? [0, '0.5vw !important'] : ''}
     >
+      {training && <Box position="absolute" width="100%"
+        transition="0.3s"
+        _hover={{backgroundColor: 'transparent', color: 'transparent'}}>
+        <Center fontSize="20px" mb={'-2'}>
+          {training.title}
+        </Center>
+        <Center>
+          {training.description}
+        </Center>
+      </Box> }     
       {/* have to keep videos in the dom so the ref doesn't change, so use display: none */}
       <VStack
         justifyContent="center"
