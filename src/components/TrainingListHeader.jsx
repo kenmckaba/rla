@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { H1Heading } from './shared/Heading'
 import { Auth } from 'aws-amplify'
-import { Box, Button, HStack, VStack } from '@chakra-ui/react'
+import { 
+  Box, 
+  VStack,
+  IconButton, 
+  Flex, 
+  Menu, 
+  MenuButton, 
+  MenuItem, 
+  MenuDivider, 
+  MenuList, 
+  MenuGroup
+} from '@chakra-ui/react'
+import { HamburgerIcon } from '@chakra-ui/icons'
 import SunBackground from './SunBackground'
 import useTodayDate from '../hooks/useTodayDate'
 import OurModal from './OurModal'
@@ -13,6 +25,15 @@ export default function TrainingListHeader({ trainings }) {
   const [userName, setUserName] = useState()
   const [hour, setHour] = useState()
   const today = useTodayDate()
+  const location = window.location.pathname
+  
+  const logout = async () => {
+    try {
+      await Auth.signOut()
+    } catch (error) {
+      console.log('error signing out: ', error)
+    }
+  }
   const capitalize = (string) => {
     return string ? string.charAt(0).toUpperCase() + string.slice(1) : ''
   }
@@ -65,6 +86,37 @@ export default function TrainingListHeader({ trainings }) {
   return (
     <>
       <SunBackground hour={hour} />
+      <Flex
+        position="absolute" 
+        top="-1.5"
+        right="0"
+        paddingX="2em"
+        paddingY="2em"
+        alignItems="center"
+        color="white"
+        zIndex={5}>
+        { location === '/' && userName &&
+        <Menu>
+          <MenuButton
+            as={IconButton}
+            aria-label='Options'
+            title='Options'
+            icon={<HamburgerIcon />}
+            bgGradient="linear-gradient(30deg, #283683 0%, #396AA1 100%, #283683 100%)"
+          />
+          <MenuList bgGradient="linear-gradient(0deg, #283683 0%, #396AA1 100%, #283683 100%)">
+            <MenuGroup title='Manage tools'>
+              <MenuItem _focus={{color:'#283683', bg:'white'}} onClick={onEmailsOpen}>Manage email lists</MenuItem>
+              <MenuItem _focus={{color:'#283683', bg:'white'}} onClick={onPollsOpen}>Manage polls catalog</MenuItem>
+            </MenuGroup>
+            <MenuDivider />
+            <MenuGroup>
+              <MenuItem _focus={{bg:'#FF4E4E'}} onClick={logout}>Sign Out</MenuItem>
+            </MenuGroup>
+          </MenuList>
+        </Menu>
+        }
+      </Flex>
       <Box paddingBottom={{ '2xl': '1em', md: '2em', sm: '2.5em' }}>
         <VStack justifyContent="center" alignItems="center">
           <H1Heading zIndex="1" textAlign="center">
@@ -77,15 +129,6 @@ export default function TrainingListHeader({ trainings }) {
               ? 'You don\'t have any meetings today'
               : 'Your next meeting is scheduled at ' + nextTrainingOfToday()}
           </H1Heading>
-          <HStack mb="25px">
-            <Button size="xs" onClick={onEmailsOpen}>
-              Manage email lists
-            </Button>
-            <Button size="xs" onClick={onPollsOpen}>
-              Manage polls catalog
-            </Button>
-          </HStack>
-
           <OurModal isOpen={isEmailsOpen} header="Manage email lists">
             <EmailListForm onClose={onEmailsClose} />
           </OurModal>

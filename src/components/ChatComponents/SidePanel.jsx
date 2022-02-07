@@ -35,7 +35,8 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
 
   return (
     <>
-      <Accordion height="100%" isOpen allowMultiple width="40vw" allowToggle defaultIndex={[0, 1]}>
+      {/* @Ken this Accordion item declares the widht of the 'student view' chat and attendees panels */}
+      <Accordion height="100%" isOpen allowMultiple width="33vw" allowToggle defaultIndex={[0, 1]}>
         <AccordionItem p={0} mt={2.5} border="none" isOpen>
           <AccordionButton
             p="2"

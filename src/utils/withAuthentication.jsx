@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Hub } from '@aws-amplify/core'
-import { AmplifyAuthenticator, AmplifySignIn  } from '@aws-amplify/ui-react'
+import { AmplifySignIn  } from '@aws-amplify/ui-react'
 import { Auth } from 'aws-amplify'
 import { H3Heading } from '../components/shared/Heading'
-import { Button, Flex, Stack, Image } from '@chakra-ui/react'
+import { Flex, Stack, Image } from '@chakra-ui/react'
 import './amplify-styles.css'
 
 export const WithAuthentication = (WrappedComponent) => {
   
   const [currentUser, setCurrentUser] = useState({})
-  const location = window.location.pathname
-  
-  const logout = async () => {
-    try {
-      await Auth.signOut()
-    } catch (error) {
-      console.log('error signing out: ', error)
-    }
-  }
 
   useEffect(() => {
     let updateUser = async () => {
@@ -35,20 +26,6 @@ export const WithAuthentication = (WrappedComponent) => {
   if (currentUser) {
     return (props) => (
       <Flex width="100%" flexDirection="column">
-        <Flex
-          position="absolute" 
-          top="0"
-          right="0"
-          paddingX="2em"
-          paddingY="2em"
-          alignItems="center"
-          color="white">
-          { location === '/' && currentUser &&
-            <Button zIndex={3} marginLeft="5px" size="sm" onClick={logout}>
-            Sign out
-            </Button>
-          }
-        </Flex>
         <WrappedComponent {...props} />
       </Flex>
     )
@@ -72,7 +49,6 @@ export const WithAuthentication = (WrappedComponent) => {
           objectFit={'cover'}
           src={'./images/shutterstock_1642992973.jpg'}
           borderRadius={'50px'}
-          // border='solid 10px white'
           boxShadow={'20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff'}
         />
       </Flex>
