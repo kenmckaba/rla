@@ -22,7 +22,7 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
   const [catalogModalOpen, setCatalogModalOpen] = useState(false)
   const [question, setQuestion] = useState(poll?.question || '')
   const [answers, setAnswers] = useState(poll?.answers || ['', ''])
-  const [type, setType] = useState(poll?.type || SingleChoice)
+  const [pollType, setPollType] = useState(poll?.type || SingleChoice)
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(poll?.correctAnswerIndex)
 
   const onChangeQuestion = (event) => {
@@ -39,7 +39,7 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
     }, [])
 
     // TODO: add correctAnswerIndex (can be null)
-    onSave({ pollId: poll?.id, question, type, answers: ans, correctAnswerIndex })
+    onSave({ pollId: poll?.id, question, type: pollType, answers: ans, correctAnswerIndex })
     onClose()
   }
 
@@ -63,9 +63,12 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
     console.log('poll', poll)
     setQuestion(poll.question)
     setAnswers(poll.answers)
-    setType(poll.type)
+    setPollType(poll.type)
   }
 
+  const setChecked = (val) => {
+    setCorrectAnswerIndex(val)
+  }
   const storedPolls = useStoredPolls(chooseStoredPoll)
 
   return (
@@ -102,7 +105,7 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
             borderRadius="4px"
             height="36px"
           >
-            <RadioGroup onChange={setType} value={type}>
+            <RadioGroup onChange={setPollType} value={pollType}>
               <HStack direction="row">
                 <Radio value={SingleChoice}>Single choice</Radio>
                 <Radio value={MultiChoice}>Multiple choice</Radio>
@@ -122,29 +125,27 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
             height="fit-content"
             padding="4px"
           >
-            {answers.map((answer, index) => {
-              // TODO: add checkbox or radio to choose correct answer and set poll.correctAnswerIndex
-              // should be able to choose none
-              return (
-                <>
-                  <Input
-                    key={index}
-                    height="24px"
-                    marginBottom="2px"
-                    value={answer}
-                    onChange={(e) => {
-                      onChangeAnswer(index, e)
-                    }}
-                  />
-                  <Radio
-                    value={correctAnswerIndex === index}
-                    onChange={(index) => {
-                      setCorrectAnswerIndex(index)
-                    }}
-                  />
-                </>
-              )
-            })}
+            <RadioGroup onChange={setChecked} name="correctAnswer" value={correctAnswerIndex}>
+              {answers.map((answer, index) => {
+                // TODO: add checkbox or radio to choose correct answer and set poll.correctAnswerIndex
+                // should be able to choose none
+                return (
+                  <HStack>
+                    <Input
+                      key={index}
+                      height="24px"
+                      marginBottom="2px"
+                      value={answer}
+                      onChange={(e) => {
+                        onChangeAnswer(index, e)
+                      }}
+                    />
+                    <Radio value={index} name="correctAnswer" />
+                  </HStack>
+                )
+              })}
+            </RadioGroup>
+
             <Button
               minW="128px"
               onClick={addAnswer}
