@@ -8,6 +8,7 @@ import {
   Checkbox,
   Button,
   HStack,
+  Flex,
 } from '@chakra-ui/react'
 import { ReactComponent as CheckMark } from '../assets/icons/check-mark.svg'
 import { useEffect, useState } from 'react'
@@ -77,10 +78,14 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
                 } else {
                   return (
                     // TODO: if (index === poll.correctAnswerIndex) show bold/checkmark or whatever
-                    <Box key={answer}>
-                      {answer} {answerCount(answer)}{' '}
-                      {poll.correctAnswerIndex === index && <CheckMark />}
-                    </Box>
+                    <Flex id="@ken hstack" key={answer}>
+                      {answer} {answerCount(answer)}
+                      {poll.correctAnswerIndex === index && (
+                        <Box marginLeft="10px" marginTop="3px">
+                          <CheckMark />
+                        </Box>
+                      )}
+                    </Flex>
                   )
                 }
               })}

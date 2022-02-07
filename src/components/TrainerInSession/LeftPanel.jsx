@@ -65,6 +65,7 @@ export default function LeftPanel({
 
   const onAddPollClick = (event, poll) => {
     event.stopPropagation()
+    setPollToEdit(null)
     onPollModalOpen()
   }
 
