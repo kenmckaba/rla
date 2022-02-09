@@ -1,5 +1,5 @@
 import { Flex, HStack, VStack } from '@chakra-ui/layout'
-import { Select, FormControl, FormLabel, Input, Button } from '@chakra-ui/react'
+import { Select, FormControl, FormLabel, Input, Button, Box } from '@chakra-ui/react'
 import ChatMessage from './ChatMessage'
 import { useMutation, gql } from '@apollo/client'
 import { createChatMessage } from '../../graphql/mutations'
@@ -82,44 +82,7 @@ export default function ChatBox({
       justifyContent="start"
       overflow-y="scroll"
     >
-      <FormControl isRequired marginBottom="10px" >
-        <FormLabel>Send to:</FormLabel>
-        <Select fontSize="14px" defaultValue={allMsgId} height="30px" onChange={selectDestination}>
-          {myAttendeeId !== trainerMsgId && (
-            <option value={trainerMsgId} key="0">
-              {`${training.trainerName} (trainer)`}
-            </option>
-          )}
-          <option value={allMsgId} key="1">
-            Everyone
-          </option>
-          {attendees.reduce((acc, att) => {
-            if (att.id !== myAttendeeId && att.joinedTime && !att.leftTime) {
-              acc.push(
-                <option value={att.id} key={att.id}>
-                  {att.name}
-                </option>,
-              )
-            }
-            return acc
-          }, [])}
-        </Select>
-      </FormControl>
-      <HStack alignItems="center" width="100%">
-        <Input
-          height="32px"
-          borderRadius="full"
-          bg="#f2f3f5"
-          placeholder="Type message here..."
-          value={content}
-          onChange={handleMessage}
-          onKeyDown={checkForCr}
-        />
-        <Button size="sm" fontSize="14px" onClick={onSend} isDisabled={!content}>
-          Send
-        </Button>
-      </HStack>
-      <VStack overflow="auto">
+      <VStack overflow="auto" flexDirection="column-reverse">
         {messages.reduce((acc, message) => {
           if (
             message.toId === allMsgId ||
@@ -143,6 +106,55 @@ export default function ChatBox({
           return acc
         }, [])}
       </VStack>
+      <Box
+        backgroundColor="aliceblue"
+        padding="3px"
+        borderRadius="18px"
+        border="2px solid #396aa175"
+      >
+        <FormControl isRequired marginBottom="10px">
+          <FormLabel margin="1px">Send to:</FormLabel>
+          <Select
+            fontSize="14px"
+            defaultValue={allMsgId}
+            height="30px"
+            onChange={selectDestination}
+          >
+            {myAttendeeId !== trainerMsgId && (
+              <option value={trainerMsgId} key="0">
+                {`${training.trainerName} (trainer)`}
+              </option>
+            )}
+            <option value={allMsgId} key="1">
+              Everyone
+            </option>
+            {attendees.reduce((acc, att) => {
+              if (att.id !== myAttendeeId && att.joinedTime && !att.leftTime) {
+                acc.push(
+                  <option value={att.id} key={att.id}>
+                    {att.name}
+                  </option>,
+                )
+              }
+              return acc
+            }, [])}
+          </Select>
+        </FormControl>
+        <HStack alignItems="center" width="100%">
+          <Input
+            height="32px"
+            borderRadius="full"
+            bg="#f2f3f5"
+            placeholder="Type message here..."
+            value={content}
+            onChange={handleMessage}
+            onKeyDown={checkForCr}
+          />
+          <Button size="sm" fontSize="14px" onClick={onSend} isDisabled={!content}>
+            Send
+          </Button>
+        </HStack>
+      </Box>
     </Flex>
   )
 }

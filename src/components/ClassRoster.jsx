@@ -11,15 +11,13 @@ import {
   Center,
   Tr,
   Td,
-  Thead,
-  Th,
   chakra,
   Tooltip,
   HStack,
 } from '@chakra-ui/react'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { scrollBarStyle } from '../theme/components/scrollbar'
-import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
+// import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
 import { useTable, useSortBy } from 'react-table'
 import { ReactComponent as HandIcon } from '../assets/icons/hand-icon.svg'
 import { ReactComponent as HandIconWhite } from '../assets/icons/hand-icon-white.svg'
@@ -83,16 +81,19 @@ export const ClassRoster = ({ training, attendees }) => {
     })
   }
 
-  const lowerHand = (attendeeId) => {
-    updateCurrentAttendee({
-      variables: {
-        input: {
-          id: attendeeId,
-          handRaised: false,
+  const lowerHand = useCallback(
+    (attendeeId) => {
+      updateCurrentAttendee({
+        variables: {
+          input: {
+            id: attendeeId,
+            handRaised: false,
+          },
         },
-      },
-    })
-  }
+      })
+    },
+    [updateCurrentAttendee],
+  )
 
   const columns = useMemo(() => {
     const updateAudioAttendeeMute = async (attendee, state) => {
@@ -190,7 +191,7 @@ export const ClassRoster = ({ training, attendees }) => {
         },
       },
     ]
-  }, [updateCurrentAttendee])
+  }, [lowerHand, updateCurrentAttendee])
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     { columns, data },
