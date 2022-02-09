@@ -84,7 +84,7 @@ export const ClassRoster = ({ training, attendees }) => {
   }
 
   const lowerHand = (attendeeId) => {
-    updateAttendee({
+    updateCurrentAttendee({
       variables: {
         input: {
           id: attendeeId,
