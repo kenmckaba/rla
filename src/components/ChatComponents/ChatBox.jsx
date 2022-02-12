@@ -111,6 +111,7 @@ export default function ChatBox({
         padding="3px"
         borderRadius="18px"
         border="2px solid #396aa175"
+        marginTop="10px"
       >
         <FormControl isRequired marginBottom="10px">
           <FormLabel margin="1px">Send to:</FormLabel>

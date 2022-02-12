@@ -31,6 +31,7 @@ import { SharedDocs } from './SharedDocs'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { SidePanel } from './ChatComponents/SidePanel'
 import { useDisconnectedWarning } from './useDisconnectedWarning'
+import { CamInUseModal } from './CamInUseModal'
 
 export const AttendeeLanding = ({
   match: {
@@ -48,6 +49,7 @@ export const AttendeeLanding = ({
   const { bjnApi, bjnIsInitialized } = useBlueJeans()
   const [attendee, setAttendee] = useState()
   const joined = useRef(false)
+  const [joinErrorCode, setJoinErrorCode] = useState()
   const updatingJoinedTime = useRef(false)
   const updatedJoinedTime = useRef(false)
   const [left, setLeft] = useState(false)
@@ -276,12 +278,25 @@ export const AttendeeLanding = ({
   }, [attendee, updateCurrentAttendee])
 
   useEffect(() => {
-    if (training && bjnIsInitialized && !joined.current) {
-      joined.current = true
-      bjnApi.requestAllPermissions()
-      bjnApi.join(training.meetingId, training.participantPasscode, participantName)
+    const joinMeeting = async () => {
+      if (training?.meetingId && bjnIsInitialized && !joined.current) {
+        try {
+          await bjnApi.requestAllPermissions()
+          await bjnApi.join(training.meetingId, training.participantPasscode, participantName)
+        } catch (error) {
+          setJoinErrorCode(error.code)
+        }
+        joined.current = true
+      }
     }
-  }, [training, participantName, bjnIsInitialized, bjnApi])
+    joinMeeting()
+  }, [
+    training?.meetingId,
+    training?.participantPasscode,
+    participantName,
+    bjnIsInitialized,
+    bjnApi,
+  ])
 
   const Whiteboard = whiteboardShared ? (
     <Box marginLeft="20px">
@@ -466,6 +481,7 @@ export const AttendeeLanding = ({
           <Button onClick={() => setShowLeaveModal(false)}>Cancel</Button>
         </HStack>
       </OurModal>
+      <CamInUseModal code={joinErrorCode} />
     </Box>
   )
 }

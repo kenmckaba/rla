@@ -61,9 +61,12 @@ export const MyCamera = ({ myAttendeeId }) => {
 
       const startFaceCapture = () => {
         const grabScreen = async () => {
-          const result = await webcamCapture(localVideoRef.current, myAttendeeId)
-          if (result) {
-            setFaceStats(result)
+          if (localVideoRef.current) {
+            // undefined if image is black, e.g. webcam covered
+            const result = await webcamCapture(localVideoRef.current, myAttendeeId)
+            if (result) {
+              setFaceStats(result)
+            }
           }
         }
         if (!faceCaptureInterval.current) {
@@ -87,8 +90,8 @@ export const MyCamera = ({ myAttendeeId }) => {
   const collapse = () => {
     setIsOpen(!isOpen)
   }
-  // @Ken by changing these values (bottom/right) you can reposition the users camera, 
-  //      if needed you can also change those to top/left which could make it easier 
+  // @Ken by changing these values (bottom/right) you can reposition the users camera,
+  //      if needed you can also change those to top/left which could make it easier
   //      to move depending on the desired position
   return (
     <Box position="absolute" bottom="0.25em" right="28em" width="200px">

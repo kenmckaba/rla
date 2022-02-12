@@ -31,6 +31,7 @@ import { useHistory } from 'react-router'
 import OurModal from './OurModal'
 import { BreakoutForm } from './BreakoutForm'
 import { useDisconnectedWarning } from './useDisconnectedWarning'
+import { CamInUseModal } from './CamInUseModal'
 
 export const TrainerInSession = ({
   match: {
@@ -49,6 +50,7 @@ export const TrainerInSession = ({
   const [startTimeUpdated, setStartTimeUpdated] = useState(false)
   const [shareWebcam, setShareWebcam] = useState(false)
   const [ended, setEnded] = useState(false)
+  const [joinErrorCode, setJoinErrorCode] = useState()
   const joined = useRef(false)
   const { bjnApi, bjnIsInitialized } = useBlueJeans()
   const {
@@ -174,10 +176,11 @@ export const TrainerInSession = ({
       if (training && bjnIsInitialized && !joined.current) {
         joined.current = true
         try {
-          bjnApi.requestAllPermissions()
+          await bjnApi.requestAllPermissions()
           await bjnApi.join(training.meetingId, training.moderatorPasscode, training.trainerName)
         } catch (e) {
           console.error('rla-log: error joining', e)
+          setJoinErrorCode(e.code)
         }
       }
     }
@@ -209,12 +212,14 @@ export const TrainerInSession = ({
   }
 
   return (
-    <Box flex="1" 
-      width="100%" 
+    <Box
+      flex="1"
+      width="100%"
       height="100%"
       overflowY={'hidden'}
       bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"
-      onMouseMove={handleMouseMove}>
+      onMouseMove={handleMouseMove}
+    >
       <HStack align="left" height="100%">
         <LeftPanel
           training={training}
@@ -233,7 +238,7 @@ export const TrainerInSession = ({
             messages={chatMessages}
             attendees={attendees}
             training={training}
-            myAttendeeId={'0'} 
+            myAttendeeId={'0'}
           />
         )}
       </HStack>
@@ -282,6 +287,7 @@ export const TrainerInSession = ({
           <Button onClick={() => setShowEndModal(false)}>Cancel</Button>
         </HStack>
       </OurModal>
+      <CamInUseModal code={joinErrorCode} />
     </Box>
   )
 }

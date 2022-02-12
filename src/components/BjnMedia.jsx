@@ -12,15 +12,15 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
     bjnVideoState,
     bjnVideoLayout,
   } = useBlueJeans()
-  const [camsOn, setCamsOn] = useState(false)
+  const [camsOn, setCamsOn] = useState(true)
   const [lastVideoLayout, setLastVideoLayout] = useState('GALLERY')
-  const [showMedia, setShowMedia] = useState(false)
+  const [showMedia, setShowMedia] = useState(true)
   const remoteVideoRef = useRef(null)
   const remoteContentRef = useRef(null)
 
-  useEffect(() => {
-    setCamsOn(bjnVideoState === 'ACTIVE')
-  }, [bjnVideoState])
+  // useEffect(() => {
+  //   setCamsOn(bjnVideoState === 'ACTIVE')
+  // }, [bjnVideoState])
 
   useEffect(() => {
     if (bjnIsConnected) {
@@ -29,10 +29,10 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
     }
   }, [bjnIsConnected, bjnApi])
 
-  useEffect(() => {
-    const show = (bjnReceivingScreenShare || camsOn) && bjnIsConnected
-    setShowMedia(show)
-  }, [bjnReceivingScreenShare, camsOn, bjnIsConnected])
+  // useEffect(() => {
+  //   const show = (bjnReceivingScreenShare || camsOn) && bjnIsConnected
+  //   setShowMedia(show)
+  // }, [bjnReceivingScreenShare, camsOn, bjnIsConnected])
 
   useEffect(() => {
     if (camsOn && bjnReceivingScreenShare) {
@@ -59,16 +59,19 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
       ml={marginLeft ? [0, '0.5vw !important'] : ''}
       mr={marginRight ? [0, '0.5vw !important'] : ''}
     >
-      {training && <Box position="absolute" width="100%"
-        transition="0.3s"
-        _hover={{backgroundColor: 'transparent', color: 'transparent'}}>
-        <Center fontSize="20px" mb={'-2'}>
-          {training.title}
-        </Center>
-        <Center>
-          {training.description}
-        </Center>
-      </Box> }     
+      {training && (
+        <Box
+          position="absolute"
+          width="100%"
+          transition="0.3s"
+          _hover={{ backgroundColor: 'transparent', color: 'transparent' }}
+        >
+          <Center fontSize="20px" mb={'-2'}>
+            {training.title}
+          </Center>
+          <Center>{training.description}</Center>
+        </Box>
+      )}
       {/* have to keep videos in the dom so the ref doesn't change, so use display: none */}
       <VStack
         justifyContent="center"
@@ -91,20 +94,14 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
               : { display: 'none' }
           }
         />
-        <video
+        <div
           ref={remoteVideoRef}
-          style={
-            camsOn
-              ? {
-                width: '100%',
-                height: bjnReceivingScreenShare ? 'auto' : '100%',
-                'object-fit': 'contain',
-                'clip-path': bjnReceivingScreenShare ? 'inset(86% 0 0)' : 'none',
-                position: bjnReceivingScreenShare ? 'absolute' : 'relative',
-                bottom: 0,
-              }
-              : { display: 'none' }
-          }
+          style={{
+            width: '100%',
+            height: '100%',
+            position: 'relative',
+            bottom: 0,
+          }}
         />
         {camsOn && !bjnReceivingScreenShare && (
           <Select
@@ -119,7 +116,7 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
             color="darkKnight.700"
             backgroundColor="grey"
           >
-            {['GALLERY', 'PEOPLE', 'SPEAKER'].map((layout, index) => {
+            {['GALLERY', 'PEOPLE', 'SPEAKER', 'FILMSTRIP'].map((layout, index) => {
               return <option key={index}>{layout}</option>
             })}
           </Select>

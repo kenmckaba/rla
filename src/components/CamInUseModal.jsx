@@ -8,11 +8,14 @@ import {
   Center,
 } from '@chakra-ui/react'
 
+const camInUseCode = 'CAM_IN_USE'
+const camMicUnavailableCode = 'CAM_MIC_UNAVAILABLE'
+
 export const CamInUseModal = ({ code }) => {
   const message = () => {
-    if (code === 6004) {
+    if (code === camInUseCode) {
       return <Center>Your camera is in use by another app.</Center>
-    } else if (code === 6005) {
+    } else if (code === camMicUnavailableCode) {
       return <Center>Access to your microphone and camera was denied.</Center>
     } else {
       return <Center>Unknown BlueJeans error</Center>
@@ -20,13 +23,13 @@ export const CamInUseModal = ({ code }) => {
   }
 
   const instructions = () => {
-    if (code === 6004) {
+    if (code === camInUseCode) {
       return (
         <Center>
           Please close the app or release the microphone and camera and refresh this page.
         </Center>
       )
-    } else if (code === 6005) {
+    } else if (code === camMicUnavailableCode) {
       return <Center>Please allow access to your microphone &amp; camera.</Center>
     } else {
       return <Center>BlueJeans error code: {code}</Center>
