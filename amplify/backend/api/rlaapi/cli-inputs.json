@@ -6,6 +6,13 @@
         "setting": "open"
       },
       "lambdaFunction": "attendeeimage"
+    },
+    "/trainings": {
+      "name": "/trainings",
+      "lambdaFunction": "attendeeimage",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

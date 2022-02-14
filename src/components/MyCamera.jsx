@@ -62,7 +62,6 @@ export const MyCamera = ({ myAttendeeId }) => {
       const startFaceCapture = () => {
         const grabScreen = async () => {
           if (localVideoRef.current) {
-            // undefined if image is black, e.g. webcam covered
             const result = await webcamCapture(localVideoRef.current, myAttendeeId)
             if (result) {
               setFaceStats(result)

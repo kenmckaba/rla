@@ -67,120 +67,6 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
-            breakoutRoomId
-            breakoutRoomAttendeeId
-            mainTrainingAttendeeId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            correctAnswerIndex
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        breakoutRooms {
-          items {
-            id
-            name
-            bluejeansMeetingId
-            bluejeansModeratorPasscode
-            bluejeansParticipantPasscode
-            trainingId
-            breakoutTrainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      mainTrainingId
-      mainTraining {
-        id
-        type
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        audioHardMuted
-        videoHardMuted
-        audioStateKey
-        videoStateKey
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        breakoutInProgress
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            audioUnmuted
-            videoUnmuted
-            audioStateKey
-            videoStateKey
-            audioHardMuted
-            videoHardMuted
-            trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -274,7 +160,6 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -433,35 +318,6 @@ export const onCreateTraining = /* GraphQL */ `
           videoHardMuted
           trainingId
           training {
-            id
-            type
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            audioHardMuted
-            videoHardMuted
-            audioStateKey
-            videoStateKey
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            breakoutInProgress
-            createdAt
-            updatedAt
-          }
-          mainTrainingId
-          mainTraining {
             id
             type
             trainerId
@@ -705,35 +561,6 @@ export const onUpdateTraining = /* GraphQL */ `
             createdAt
             updatedAt
           }
-          mainTrainingId
-          mainTraining {
-            id
-            type
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            audioHardMuted
-            videoHardMuted
-            audioStateKey
-            videoStateKey
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            breakoutInProgress
-            createdAt
-            updatedAt
-          }
           breakoutRoomId
           breakoutRoom {
             id
@@ -923,35 +750,6 @@ export const onDeleteTraining = /* GraphQL */ `
           videoHardMuted
           trainingId
           training {
-            id
-            type
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            audioHardMuted
-            videoHardMuted
-            audioStateKey
-            videoStateKey
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            breakoutInProgress
-            createdAt
-            updatedAt
-          }
-          mainTrainingId
-          mainTraining {
             id
             type
             trainerId
@@ -1186,120 +984,6 @@ export const onCreateAttendee = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
-            breakoutRoomId
-            breakoutRoomAttendeeId
-            mainTrainingAttendeeId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            correctAnswerIndex
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        breakoutRooms {
-          items {
-            id
-            name
-            bluejeansMeetingId
-            bluejeansModeratorPasscode
-            bluejeansParticipantPasscode
-            trainingId
-            breakoutTrainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      mainTrainingId
-      mainTraining {
-        id
-        type
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        audioHardMuted
-        videoHardMuted
-        audioStateKey
-        videoStateKey
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        breakoutInProgress
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            audioUnmuted
-            videoUnmuted
-            audioStateKey
-            videoStateKey
-            audioHardMuted
-            videoHardMuted
-            trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -1393,7 +1077,6 @@ export const onCreateAttendee = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -1523,120 +1206,6 @@ export const onUpdateAttendee = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
-            breakoutRoomId
-            breakoutRoomAttendeeId
-            mainTrainingAttendeeId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            correctAnswerIndex
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        breakoutRooms {
-          items {
-            id
-            name
-            bluejeansMeetingId
-            bluejeansModeratorPasscode
-            bluejeansParticipantPasscode
-            trainingId
-            breakoutTrainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      mainTrainingId
-      mainTraining {
-        id
-        type
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        audioHardMuted
-        videoHardMuted
-        audioStateKey
-        videoStateKey
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        breakoutInProgress
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            audioUnmuted
-            videoUnmuted
-            audioStateKey
-            videoStateKey
-            audioHardMuted
-            videoHardMuted
-            trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -1730,7 +1299,6 @@ export const onUpdateAttendee = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -1860,120 +1428,6 @@ export const onDeleteAttendee = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
-            breakoutRoomId
-            breakoutRoomAttendeeId
-            mainTrainingAttendeeId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            correctAnswerIndex
-            trainingId
-            startedAt
-            stoppedAt
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        breakoutRooms {
-          items {
-            id
-            name
-            bluejeansMeetingId
-            bluejeansModeratorPasscode
-            bluejeansParticipantPasscode
-            trainingId
-            breakoutTrainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      mainTrainingId
-      mainTraining {
-        id
-        type
-        trainerId
-        title
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        audioHardMuted
-        videoHardMuted
-        audioStateKey
-        videoStateKey
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        breakoutInProgress
-        attendees {
-          items {
-            id
-            name
-            email
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            audioUnmuted
-            videoUnmuted
-            audioStateKey
-            videoStateKey
-            audioHardMuted
-            videoHardMuted
-            trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -2067,7 +1521,6 @@ export const onDeleteAttendee = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -2185,7 +1638,6 @@ export const onCreateSharedDoc = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -2311,7 +1763,6 @@ export const onUpdateSharedDoc = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -2437,7 +1888,6 @@ export const onDeleteSharedDoc = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -3126,35 +2576,6 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
             createdAt
             updatedAt
           }
-          mainTrainingId
-          mainTraining {
-            id
-            type
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            audioHardMuted
-            videoHardMuted
-            audioStateKey
-            videoStateKey
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            breakoutInProgress
-            createdAt
-            updatedAt
-          }
           breakoutRoomId
           breakoutRoom {
             id
@@ -3220,7 +2641,6 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -3349,35 +2769,6 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
             createdAt
             updatedAt
           }
-          mainTrainingId
-          mainTraining {
-            id
-            type
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            audioHardMuted
-            videoHardMuted
-            audioStateKey
-            videoStateKey
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            breakoutInProgress
-            createdAt
-            updatedAt
-          }
           breakoutRoomId
           breakoutRoom {
             id
@@ -3443,7 +2834,6 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId
@@ -3572,35 +2962,6 @@ export const onDeleteBreakoutRoom = /* GraphQL */ `
             createdAt
             updatedAt
           }
-          mainTrainingId
-          mainTraining {
-            id
-            type
-            trainerId
-            title
-            description
-            trainerName
-            trainerEmail
-            registrationUrl
-            maxAttendees
-            meetingId
-            moderatorPasscode
-            participantPasscode
-            scheduledTime
-            startedAt
-            endedAt
-            audioHardMuted
-            videoHardMuted
-            audioStateKey
-            videoStateKey
-            pollMode
-            currentPollId
-            whiteboardUrl
-            whiteboardShared
-            breakoutInProgress
-            createdAt
-            updatedAt
-          }
           breakoutRoomId
           breakoutRoom {
             id
@@ -3666,7 +3027,6 @@ export const onDeleteBreakoutRoom = /* GraphQL */ `
             audioHardMuted
             videoHardMuted
             trainingId
-            mainTrainingId
             breakoutRoomId
             breakoutRoomAttendeeId
             mainTrainingAttendeeId

@@ -79,7 +79,7 @@ export default function ChatBox({
       bg="#ffffff"
       borderBottomRadius="8px"
       padding={2}
-      justifyContent="start"
+      justifyContent="end"
       overflow-y="scroll"
     >
       <VStack overflow="auto" flexDirection="column-reverse">

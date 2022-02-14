@@ -3,7 +3,7 @@
 	API_RLAFEATURE_GRAPHQLAPIIDOUTPUT
 	ENV
 	REGION
-Amplify Params - DO NOT EDIT *//* Amplify Params - DO NOT EDIT
+Amplify Params - DO NOT EDIT */ /* Amplify Params - DO NOT EDIT
 	API_RLAFEATURE_GRAPHQLAPIENDPOINTOUTPUT
 	API_RLAFEATURE_GRAPHQLAPIIDOUTPUT
 	API_RLAFEATURE_GRAPHQLAPIKEYOUTPUT
@@ -34,7 +34,7 @@ const urlParse = require('url').URL
 
 const AWS = require('aws-sdk')
 const rekognition = new AWS.Rekognition({ region: 'us-east-1' })
-// const dynamodb = new AWS.DynamoDB()
+// var dynamodb = new AWS.DynamoDB()
 const docClient = new AWS.DynamoDB.DocumentClient()
 
 // declare a new express app
@@ -49,38 +49,36 @@ app.use(function (req, res, next) {
   next()
 })
 
-const updateAttendee2 = async (attendeeId, emotions, pose) => {
+const {
+  API_RLAFEATURE_GRAPHQLAPIENDPOINTOUTPUT: url,
+  API_RLAFEATURE_GRAPHQLAPIKEYOUTPUT: apiKey,
+  AWS_REGION: region,
+  API_RLAFEATURE_GRAPHQLAPIIDOUTPUT: graphqlApi,
+  ENV: env,
+} = process.env
+
+// todo: following appears to update DB ok, but causes weird graphql problems on attendee page
+// eslint-disable-next-line no-unused-vars
+const updateAttendeeGraphQL = async (attendeeId, emotions, pose) => {
   const posePitch = Math.round(Math.abs(pose.Pitch))
   const poseYaw = Math.round(Math.abs(pose.Yaw))
-  const poseRoll = Math.round(Math.abs(pose.Roll))
-  console.log('updateAttendee2 2', attendeeId, emotions, posePitch, poseYaw)
-  const {
-    API_RLAFEATURE_GRAPHQLAPIENDPOINTOUTPUT: url,
-    API_RLAFEATURE_GRAPHQLAPIKEYOUTPUT: apiKey,
-    AWS_REGION: region,
-  } = process.env
+  const poseRole = Math.round(Math.abs(pose.Roll))
+  console.log('updateAttendeeGraphQL', attendeeId, emotions, posePitch, poseYaw, poseRole)
 
-  // const updateAttendee = gql`
-  //   mutation UpdateAttendee($attendeeId: ID!, $attendeeDetails: UserInput!) {
-  //     updateAttendee(attendeeId: $attendeeId, attendeeDetails: $attendeeDetails) {
-  //       attendeeId
-  //       currentMood
-  //       posePitch
-  //       poseYaw
-  //     }
-  //   }
-  // `
+  // returned values appear to be required,
+  // otherwise anyone subscribing to updateAttendee gets missing required value errors
   const updateAttendee = gql`
-    mutation UpdateAttendee($attendeeId: ID!, $attendeeDetails: UserInput!) {
-      updateAttendee(attendeeId: $attendeeId, attendeeDetails: $attendeeDetails) {
-        attendeeId
-        currentMood
-        posePitch
-        poseYaw
+    mutation UpdateAttendee($input: UpdateAttendeeInput!, $condition: ModelAttendeeConditionInput) {
+      updateAttendee(input: $input, condition: $condition) {
+        id
+        name
+        createdAt
+        updatedAt
+        trainingId
+        email
       }
     }
   `
-
   const data = {
     query: print(updateAttendee),
     variables: {
@@ -89,7 +87,7 @@ const updateAttendee2 = async (attendeeId, emotions, pose) => {
         currentMood: emotions,
         posePitch,
         poseYaw,
-        poseRoll,
+        poseRole,
       },
     },
   }
@@ -105,62 +103,19 @@ const updateAttendee2 = async (attendeeId, emotions, pose) => {
   let signer = new AWS.Signers.V4(req, 'appsync', true)
   signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate())
 
+  console.log('@ken req', req)
   const result = await axios({
     url,
     method: 'post',
     data: req.body,
     headers: req.headers,
   })
-  console.log('graphQl result', result?.data?.errors)
-}
-
-const updateAttendee0 = async (attendeeId, emotions, pose) => {
-  // const promise1 = new Promise(async (resolve, reject) => {
-  //   dynamodb.listTables({}, function(err, data) {
-  //     if (err) {
-  //       console.log('listTables error', err)
-  //       resolve()
-  //     } else {
-  //       console.log(data)
-  //       resolve()
-  //     }
-  //   })
-  // })
-  // await promise1
-
-  const env = process.env.ENV
-  const appId = process.env.API_RLAFEATURE_GRAPHQLAPIIDOUTPUT
-
-  const pitch = Math.round(Math.abs(pose.Pitch))
-  const yaw = Math.round(Math.abs(pose.Yaw))
-  const roll = Math.round(Math.abs(pose.Roll))
-
-  var params = {
-    TableName: `Attendee-${appId}-${env}`,
-    Key: { id: attendeeId },
-    UpdateExpression: 'set currentMood=:e, posePitch=:p, poseYaw=:y, poseRoll=:r',
-    ExpressionAttributeValues: {
-      ':e': emotions,
-      ':p': pitch,
-      ':y': yaw,
-      ':r': roll,
-    },
-    ReturnValues: 'UPDATED_NEW',
+  if (result?.data?.errors) {
+    console.log('ERROR!!', result.data.errors)
+    return { success: false, errors: JSON.stringify(result.data.errors) }
   }
-
-  console.log('updateAttendee', attendeeId, emotions, pose, params)
-
-  const promise = new Promise(async (resolve, reject) => {
-    docClient.update(params, function (err, data) {
-      if (err) {
-        resolve({ succeded: false, err })
-      } else {
-        resolve({ succeded: true, data })
-      }
-    })
-  })
-  const result = await promise
-  console.log('update result', result)
+  console.log('graphQl result', result, result?.data, result?.data?.data, result?.data?.errors)
+  return { success: true, result: result?.data?.data?.updateAttendee }
 }
 
 app.post('/image', async function (req, res) {
@@ -179,14 +134,150 @@ app.post('/image', async function (req, res) {
     console.log('result', result)
     console.log('process.env', process.env)
     const { FaceDetails } = result
+    if (!FaceDetails.length) {
+      throw new Error('No face detected')
+    }
     const { Pose, Emotions } = FaceDetails[0]
     console.log('facedetails', Pose, Emotions[0])
-    // await updateAttendee2(attendeeId, Emotions[0].Type, Pose)
-    // console.log('SUCCESS')
+
+    // todo: following appears to update DB ok, but causes weird graphql problems on attendee page
+    // await updateAttendeeGraphQL(attendeeId, Emotions[0].Type, Pose)
+    console.log('SUCCESS', { Pose, Emotions })
     res.json({ success: true, Pose, Emotions: Emotions[0].Type })
   } catch (err) {
-    console.log('ERROR', err)
+    console.log('ERROR', typeof err, err)
     res.json({ success: false, err })
+  }
+})
+
+// this returns 403
+// const getTrainingsGraphQL = async () => {
+//   const listTrainingsX = /* GraphQL */ `
+//     query ListTrainings($filter: ModelTrainingFilterInput, $limit: Int, $nextToken: String) {
+//       listTrainings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+//         items {
+//           id
+//           title
+//           description
+//           trainerName
+//           trainerEmail
+//           registrationUrl
+//           maxAttendees
+//           meetingId
+//           moderatorPasscode
+//           participantPasscode
+//           scheduledTime
+//           startedAt
+//           endedAt
+//           whiteboardUrl
+//           attendees {
+//             items {
+//               id
+//               name
+//               email
+//             }
+//           }
+//           polls {
+//             items {
+//               id
+//               question
+//               type
+//               answers
+//               correctAnswerIndex
+//               startedAt
+//               stoppedAt
+//             }
+//           }
+//           sharedDocs {
+//             items {
+//               id
+//               title
+//               type
+//               url
+//             }
+//           }
+//         }
+//       }
+//     }
+//   `
+//   const listTrainings = gql`
+//     query MyQuery {
+//       listTrainings {
+//         items {
+//           id
+//           title
+//         }
+//       }
+//     }
+//   `
+
+//   let req2 = new AWS.HttpRequest(url, region)
+//   req2.method = 'POST'
+//   req2.path = '/graphql'
+//   req2.headers.host = new urlParse(url).hostname.toString()
+//   req2.headers['x-api-key'] = apiKey
+//   req2.headers['Content-Type'] = 'multipart/form-data'
+//   req2.body = JSON.stringify({ query: print(listTrainings) })
+
+//   let signer = new AWS.Signers.V4(req2, 'appsync', true)
+//   signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate())
+
+//   console.log('@ken req2', req2)
+
+//   const result = await axios({
+//     url,
+//     path: req2.path,
+//     data: req2.body,
+//     headers: req2.headers,
+//   })
+//   console.log('graphQL result xxx', result, result?.data, result?.data?.errors)
+//   const tables = await dynamodb.listTables({}).promise()
+//   console.log('tables', tables)
+// }
+
+app.get('/trainings', async function (req, res) {
+  console.log('/trainings req')
+  console.log('env', process.env)
+  console.log('queryParams', req.query)
+
+  const TableName = `Training-${graphqlApi}-${env}`
+  var params = { TableName }
+
+  console.log('scan', params)
+  console.log('keys', Object.keys(req.query))
+  try {
+    const result = await docClient.scan(params).promise()
+    let trainings = result.Items
+
+    if (req.query.id) {
+      // ?id=xxx
+      trainings = trainings.filter((tr) => tr.id === req.query.id)
+    } else if (Object.keys(req.query).includes('next')) {
+      // ?next
+      trainings = trainings.reduce((acc, tr) => {
+        const last = acc[0]
+        console.log('reduce', tr.startedAt, tr.scheduledTime, acc)
+        if (!tr.startedAt && (!last || tr.scheduledTime < last.scheduledTime)) {
+          return [tr]
+        }
+        return acc
+      }, [])
+    } else if (Object.keys(req.query).includes('today')) {
+      // ?today
+      const today = new Date().toISOString().substr(0, 10)
+      trainings = trainings.reduce((acc, tr) => {
+        const scheduledDate = tr.scheduledTime.substr(0, 10)
+        console.log('reduce', scheduledDate, today, acc)
+        if (scheduledDate === today && !tr.endedAt) {
+          acc.push(tr)
+        }
+        return acc
+      }, [])
+    }
+    console.log('trainings', trainings)
+    res.json({ success: true, params: req.query, trainings })
+  } catch (err) {
+    console.log('Unable to query. Error:', JSON.stringify(err, null, 2))
   }
 })
 

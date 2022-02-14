@@ -12,6 +12,7 @@ import {
   ModalHeader,
   ModalContent,
   ModalBody,
+  Center,
 } from '@chakra-ui/react'
 import { createPollResponse, updateAttendee } from '../graphql/mutations'
 import { buildSubscription } from 'aws-appsync'
@@ -207,7 +208,7 @@ export const AttendeeLanding = ({
         return
       }
 
-      if (tr.type === 'BREAKOUT' && !attendee.mainTraining.breakoutInProgress) {
+      if (tr.type === 'BREAKOUT' && !attendee.breakoutRoom.training.breakoutInProgress) {
         joinTraining(attendee.mainTrainingAttendeeId)
         return
       }

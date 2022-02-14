@@ -110,7 +110,7 @@ export const BreakoutForm = ({ onClose, training }) => {
               name: attendee.name,
               email: attendee.email,
               trainingId: breakoutTrainingId,
-              mainTrainingId: training.id,
+              // mainTrainingId: training.id,
               mainTrainingAttendeeId: attendee.id,
             },
           },

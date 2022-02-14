@@ -8,6 +8,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { TrainerInSession } from './components/TrainerInSession'
 import { Registration } from './components/Registration'
 import { RegistrationUpdate } from './components/RegistrationUpdate'
+import { Authenticate } from './components/Authenticate'
 import { WithAuthentication } from './utils/withAuthentication'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Fonts />
         <BrowserRouter>
           <Switch>
+            <Route path="/auth" component={Authenticate} />
             <Route path="/attendee/:attendeeId" component={AttendeeLanding} />
             <Route
               path="/trainerInSession/:trainingId"

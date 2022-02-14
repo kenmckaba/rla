@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { Hub } from '@aws-amplify/core'
-import { AmplifySignIn  } from '@aws-amplify/ui-react'
+import { AmplifySignIn, AmplifySignUp } from '@aws-amplify/ui-react'
 import { Auth } from 'aws-amplify'
 import { H3Heading } from '../components/shared/Heading'
 import { Flex, Stack, Image } from '@chakra-ui/react'
 import './amplify-styles.css'
 
 export const WithAuthentication = (WrappedComponent) => {
-  
   const [currentUser, setCurrentUser] = useState({})
 
   useEffect(() => {
-    let updateUser = async () => {
+    let updateUser = async (data) => {
       try {
         let user = await Auth.currentAuthenticatedUser()
         setCurrentUser(user)
@@ -23,6 +22,20 @@ export const WithAuthentication = (WrappedComponent) => {
     updateUser() // check manually the first time because we won't get a Hub event
     return () => Hub.remove('auth', updateUser) // cleanup
   }, [])
+
+  // useEffect(() => {
+  //   Hub.listen('auth', (data) => {
+  //     const { payload } = data
+  //     console.log('A new auth event has happened: ', data)
+  //     if (payload.event === 'signIn') {
+  //       console.log('a user has signed in!')
+  //     }
+  //     if (payload.event === 'signOut') {
+  //       console.log('a user has signed out!')
+  //     }
+  //   })
+  // }, [])
+
   if (currentUser) {
     return (props) => (
       <Flex width="100%" flexDirection="column">
@@ -31,19 +44,21 @@ export const WithAuthentication = (WrappedComponent) => {
     )
   }
   return () => (
-    <Stack minH={'99.99vh'} direction={{ base: 'column', md: 'row' }} maxH='99.99vh' overflow={{ base: 'scroll', md: 'hidden' }} >
+    <Stack
+      minH={'99.99vh'}
+      direction={{ base: 'column', md: 'row' }}
+      maxH="99.99vh"
+      overflow={{ base: 'scroll', md: 'hidden' }}
+    >
       <Flex px={8} align={'center'} justify={'center'}>
         <Stack w={'full'} maxW={'md'}>
-          <H3Heading color="black" fontSize="2.5em" textAlign="center" mb='0' zIndex='2'>
+          <H3Heading color="black" fontSize="2.5em" textAlign="center" mb="0" zIndex="2">
             Welcome to Remote Learning Platform
           </H3Heading>
           <AmplifySignIn />
         </Stack>
       </Flex>
-      <Flex padding={'20px'} 
-        paddingLeft={'10px'}
-        marginInlineStart={[0, '0vw !important']}
-      >
+      <Flex padding={'20px'} paddingLeft={'10px'} marginInlineStart={[0, '0vw !important']}>
         <Image
           alt={'Login Image'}
           objectFit={'cover'}

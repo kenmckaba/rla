@@ -116,7 +116,7 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
             color="darkKnight.700"
             backgroundColor="grey"
           >
-            {['GALLERY', 'PEOPLE', 'SPEAKER', 'FILMSTRIP'].map((layout, index) => {
+            {['GALLERY', 'PEOPLE', 'SPEAKER'].map((layout, index) => {
               return <option key={index}>{layout}</option>
             })}
           </Select>

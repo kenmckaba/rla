@@ -78,8 +78,8 @@ type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
   videoHardMuted: Boolean
   trainingId: ID!
   training: Training @connection(name: "TrainingAttendees", keyField: "trainingId")
-  mainTrainingId: ID
-  mainTraining: Training @connection(name: "TrainingAttendees", keyField: "mainTrainingId")
+  # mainTrainingId: ID
+  # mainTraining: Training @connection(name: "TrainingAttendees", keyField: "mainTrainingId")
   breakoutRoomId: ID
   breakoutRoom: BreakoutRoom @connection(name: "BreakoutAttendees", keyField: "breakoutRoomId")
   breakoutRoomAttendeeId: ID

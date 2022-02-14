@@ -50,18 +50,15 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
             </Text>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel 
-            overflowY="auto" 
-            padding="0" 
-            pb={4} h={'15vh'}
+          <AccordionPanel
+            overflowY="auto"
+            padding="0"
+            pb={4}
+            h={'15vh'}
             backgroundColor="white"
-            borderBottomRadius="8px">
-            <Box
-              minHeight="60px"
-              color="black"
-              paddingLeft="10px"
-              fontSize="14px"
-            >
+            borderBottomRadius="8px"
+          >
+            <Box minHeight="60px" color="black" paddingLeft="10px" fontSize="14px">
               {bjnParticipants.map((p, index) => {
                 return p.isSelf ? (
                   <Box key={index} cursor="pointer" onClick={(e) => handleClick(e, p)}>
@@ -101,7 +98,7 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
                 '2xl': 'calc(100vh - 24vh)',
                 xl: 'calc(100vh - 27vh)',
                 md: 'calc(100vh - 35vh)',
-                sm: 'calc(100vh - 40vh)'
+                sm: 'calc(100vh - 40vh)',
               }}
             />
           </AccordionPanel>

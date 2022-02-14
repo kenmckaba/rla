@@ -383,4 +383,4 @@ Outputs:
         - appSecret
     Condition: ShouldOutputAppClientSecrets
 Description: >-
-  {"createdOn":"Windows","createdBy":"Amplify","createdWith":"7.6.15","stackType":"auth-Cognito","metadata":{}}
+  {"createdOn":"Windows","createdBy":"Amplify","createdWith":"7.6.19","stackType":"auth-Cognito","metadata":{}}
