@@ -229,7 +229,7 @@
       "function": {
         "attendeeimage": {
           "deploymentBucketName": "amplify-rlafeature-test-144413-deployment",
-          "s3Key": "amplify-builds/attendeeimage-744961447770624f687a-build.zip",
+          "s3Key": "amplify-builds/attendeeimage-35754259454336637030-build.zip",
           "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
         }
       },
