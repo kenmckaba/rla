@@ -491,7 +491,12 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             />
           </AccordionItemCustom>
           <AccordionItemCustom title="Shared documents">
-            <SharedDocs trainingId={trainingId} sharedDocs={sharedDocs} trainerMode={true} />
+            <SharedDocs
+              trainingId={trainingId}
+              sharedDocs={sharedDocs}
+              trainerMode={true}
+              saveTraining={() => updateCurrentTraining(mutationVars())}
+            />
           </AccordionItemCustom>
           <AccordionItemCustom title="BlueJeans meeting">
             <HStack mt="3">

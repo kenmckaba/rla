@@ -5,12 +5,13 @@ import { SharedDocModal } from './SharedDocModal'
 import { updateSharedDoc } from '../graphql/mutations'
 import { gql, useMutation } from '@apollo/client'
 
-export const SharedDocs = ({ trainingId, sharedDocs, trainerMode }) => {
+export const SharedDocs = ({ trainingId, sharedDocs, trainerMode, saveTraining }) => {
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const [currentSharedDoc, setCurrentSharedDoc] = useState()
   const [updateCurrentSharedDoc] = useMutation(gql(updateSharedDoc))
 
   const addSharedDoc = () => {
+    saveTraining()
     setCurrentSharedDoc(null)
     onModalOpen()
   }
