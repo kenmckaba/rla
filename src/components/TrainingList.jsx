@@ -39,6 +39,7 @@ import { IconButton } from '@chakra-ui/button'
 import { InvitedList } from './InvitedList'
 import FilteredDatePicker from './FilteredDatePicker'
 import Header from './Header'
+import { TrainingReportModal } from './reports/TrainingReportModal'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -51,6 +52,7 @@ export const TrainingList = () => {
   const [trainingHovered, setTrainingHovered] = useState(-1)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
   const [showInvitedModal, setShowInvitedModal] = useState(false)
+  const [showReportModal, setShowReportModal] = useState(false)
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
   const [selectedTrainings, setSelectedTraining] = useState([])
@@ -154,6 +156,11 @@ export const TrainingList = () => {
   const showInvited = (training) => {
     setCurrentTraining(training)
     setShowInvitedModal(true)
+  }
+
+  const showReport = (training) => {
+    setCurrentTraining(training)
+    setShowReportModal(true)
   }
 
   const clearDates = () => {
@@ -294,6 +301,14 @@ export const TrainingList = () => {
                       onClick={() => showInvited(training)}
                     >
                       Invited
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      color="lightgrey"
+                      onClick={() => showReport(training)}
+                    >
+                      Report
                     </Button>
                   </HStack>
                 </StatLabel>
@@ -523,6 +538,11 @@ export const TrainingList = () => {
                 </ModalFooter>
               </ModalContent>
             </Modal>
+            <TrainingReportModal
+              training={currentTraining}
+              isOpen={showReportModal}
+              onClose={() => setShowReportModal(false)}
+            />
           </Flex>
         </Box>
       </Box>
