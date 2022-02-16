@@ -115,8 +115,9 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
         </FormControl>
         <FormControl pb={1} isRequired>
           <FormLabel fontWeight="bold" textTransform="uppercase">
-            Answers
+            Options
           </FormLabel>
+          <FormLabel fontWeight="bold">Select the correct answer from the options below</FormLabel>
           <Box
             justifyContent="center"
             alignItems="center"
@@ -154,7 +155,7 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
               variant="primary-trueblue"
               borderRadius="6px"
             >
-              Add an answer
+              Add an option
             </Button>
           </Box>
         </FormControl>
