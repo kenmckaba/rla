@@ -7,7 +7,8 @@ export default function ChatMessage({ senderName, recipientName, children, fromM
       flexDirection="column"
       justifyContent="center"
       bg="#f2f3f5"
-      minHeight="50px"
+      // minHeight="50px"
+      height="60%"
       width="90%"
       alignSelf={fromMe ? 'flex-end' : 'flex-start'}
       mt="4"
