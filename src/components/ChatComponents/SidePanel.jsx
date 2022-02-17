@@ -54,7 +54,6 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
             overflowY="auto"
             padding="0"
             pb={4}
-            h={'15vh'}
             backgroundColor="white"
             borderBottomRadius="8px"
           >
@@ -93,13 +92,7 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
               attendees={attendees}
               training={training}
               myAttendeeId={attendeeId}
-              minHeight={'60vh'}
-              maxHeight={{
-                '2xl': 'calc(100vh - 24vh)',
-                xl: 'calc(100vh - 27vh)',
-                md: 'calc(100vh - 35vh)',
-                sm: 'calc(100vh - 40vh)',
-              }}
+              ht="calc(100vh - 183px)"
             />
           </AccordionPanel>
         </AccordionItem>
