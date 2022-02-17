@@ -14,8 +14,7 @@ export default function ChatBox({
   training,
   myAttendeeId,
   maxWidth = '100%',
-  minHeight = '200px',
-  maxHeight = '40vh',
+  ht,
 }) {
   const [destination, setDestination] = useState(allMsgId)
   const [content, setContent] = useState('')
@@ -74,13 +73,12 @@ export default function ChatBox({
       flexDirection="column"
       color="black"
       maxWidth={maxWidth}
-      minHeight={minHeight}
-      maxHeight={maxHeight}
       bg="#ffffff"
       borderBottomRadius="8px"
       padding={2}
       justifyContent="end"
       overflow-y="scroll"
+      height={ht}
     >
       <VStack overflow="auto" flexDirection="column-reverse">
         {messages.reduce((acc, message) => {
