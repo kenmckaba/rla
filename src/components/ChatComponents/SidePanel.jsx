@@ -54,6 +54,7 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
             overflowY="auto"
             padding="0"
             pb={4}
+            h="105px"
             backgroundColor="white"
             borderBottomRadius="8px"
           >
@@ -92,7 +93,7 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
               attendees={attendees}
               training={training}
               myAttendeeId={attendeeId}
-              ht="calc(100vh - 183px)"
+              ht="calc(100vh - 204px)"
             />
           </AccordionPanel>
         </AccordionItem>
