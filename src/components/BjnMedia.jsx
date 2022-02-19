@@ -1,7 +1,27 @@
 import { Center, Flex, VStack, Wrap, WrapItem, Select, Box } from '@chakra-ui/react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
 import { MyCamera } from './MyCamera'
+import './bjn-media.css'
+
+const calcVideoSize = (count) => {
+  switch (count) {
+  case 1:
+    return '100%'
+  case 2:
+  case 3:
+  case 4:
+    return '50%'
+  case 5:
+  case 6:
+  case 7:
+  case 8:
+  case 9:
+    return '33.33%'
+  default:
+    return '25%'
+  }
+}
 
 export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, training }) => {
   const {
@@ -18,21 +38,48 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
   const remoteVideoRef = useRef(null)
   const remoteContentRef = useRef(null)
 
-  // useEffect(() => {
-  //   setCamsOn(bjnVideoState === 'ACTIVE')
-  // }, [bjnVideoState])
+  useEffect(() => {
+    setCamsOn(bjnVideoState === 'ACTIVE')
+  }, [bjnVideoState])
+
+  const trackVideoSizes = useCallback(() => {
+    const videosElems = remoteVideoRef.current.querySelectorAll('[class^="Videos"]')
+    console.log('trackVideoSizes children', videosElems.length)
+
+    if (!videosElems || !videosElems.length) {
+      console.log('retrying trackVideoSizes')
+      setTimeout(trackVideoSizes, 1000)
+      return
+    }
+    const videoElem = videosElems[0]
+
+    var observer = new MutationObserver(function (mutations) {
+      const vids = videoElem.querySelectorAll('[class^="ThumbnailVideo"]')
+      if (vids.length === 0) {
+        return
+      }
+      const newSize = calcVideoSize(vids.length)
+      console.log('trackVideoSizes vids.length', vids.length, newSize)
+      vids.forEach((vid) => {
+        vid.style.height = newSize
+        vid.style.width = newSize
+      })
+    })
+    observer.observe(videoElem, { childList: true })
+  }, [])
 
   useEffect(() => {
     if (bjnIsConnected) {
       bjnApi.attachRemoteContent(remoteContentRef.current)
       bjnApi.attachRemoteVideo(remoteVideoRef.current)
+      trackVideoSizes()
     }
-  }, [bjnIsConnected, bjnApi])
+  }, [bjnIsConnected, bjnApi, trackVideoSizes])
 
-  // useEffect(() => {
-  //   const show = (bjnReceivingScreenShare || camsOn) && bjnIsConnected
-  //   setShowMedia(show)
-  // }, [bjnReceivingScreenShare, camsOn, bjnIsConnected])
+  useEffect(() => {
+    const show = (bjnReceivingScreenShare || camsOn) && bjnIsConnected
+    setShowMedia(show)
+  }, [bjnReceivingScreenShare, camsOn, bjnIsConnected])
 
   useEffect(() => {
     if (camsOn && bjnReceivingScreenShare) {

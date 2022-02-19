@@ -483,6 +483,17 @@ export const AttendeeLanding = ({
         </HStack>
       </OurModal>
       <CamInUseModal code={joinErrorCode} />
+      <Button
+        onClick={() => bjnApi.sendLogs()}
+        variant="link"
+        position="absolute"
+        top="10px"
+        left="10px"
+        size="xs"
+        color="white"
+      >
+        Upload logs
+      </Button>
     </Box>
   )
 }
