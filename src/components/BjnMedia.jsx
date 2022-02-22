@@ -1,5 +1,5 @@
 import { Center, Flex, VStack, Wrap, WrapItem, Select, Box } from '@chakra-ui/react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
 import { MyCamera } from './MyCamera'
 import './bjn-media.css'
@@ -23,6 +23,47 @@ const calcVideoSize = (count) => {
   }
 }
 
+const fixVidSizes = (videoElem) => {
+  const vids = videoElem.querySelectorAll('[class^="ThumbnailVideo"]')
+  console.log('trackVideoSizes fixSizes vids', vids.length)
+  if (vids.length === 0) {
+    return
+  }
+  const newSize = calcVideoSize(vids.length)
+  console.log('trackVideoSizes vids.length', vids.length, newSize)
+  vids.forEach((vid) => {
+    vid.style.height = newSize
+    vid.style.width = newSize
+  })
+}
+
+const findVids = (remoteVideoDiv) => {
+  console.log('trackVideoSizes remoteVideoDiv', remoteVideoDiv)
+  const videosElems = remoteVideoDiv.querySelectorAll('[class^="Videos"]')
+  console.log('trackVideoSizes children', videosElems.length)
+  if (videosElems.length) {
+    const videoElem = videosElems[0]
+    fixVidSizes(videoElem)
+  }
+}
+
+let lastDivObserver
+
+const trackVideoSizes = (remoteVideoDiv) => {
+  console.log('trackVideoSizes', remoteVideoDiv)
+  if (lastDivObserver) {
+    lastDivObserver.disconnect()
+    lastDivObserver = null
+  }
+  findVids(remoteVideoDiv)
+  var observer = new MutationObserver((mutations) => {
+    console.log('trackVideoSizes mutations', mutations)
+    findVids(remoteVideoDiv)
+  })
+  observer.observe(remoteVideoDiv, { childList: true, subtree: true })
+  lastDivObserver = observer
+}
+
 export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, training }) => {
   const {
     bjnApi,
@@ -42,39 +83,18 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
     setCamsOn(bjnVideoState === 'ACTIVE')
   }, [bjnVideoState])
 
-  const trackVideoSizes = useCallback(() => {
-    const videosElems = remoteVideoRef.current.querySelectorAll('[class^="Videos"]')
-    console.log('trackVideoSizes children', videosElems.length)
-
-    if (!videosElems || !videosElems.length) {
-      console.log('retrying trackVideoSizes')
-      setTimeout(trackVideoSizes, 1000)
-      return
-    }
-    const videoElem = videosElems[0]
-
-    var observer = new MutationObserver(function (mutations) {
-      const vids = videoElem.querySelectorAll('[class^="ThumbnailVideo"]')
-      if (vids.length === 0) {
-        return
-      }
-      const newSize = calcVideoSize(vids.length)
-      console.log('trackVideoSizes vids.length', vids.length, newSize)
-      vids.forEach((vid) => {
-        vid.style.height = newSize
-        vid.style.width = newSize
-      })
-    })
-    observer.observe(videoElem, { childList: true })
-  }, [])
-
   useEffect(() => {
     if (bjnIsConnected) {
       bjnApi.attachRemoteContent(remoteContentRef.current)
       bjnApi.attachRemoteVideo(remoteVideoRef.current)
-      trackVideoSizes()
+      trackVideoSizes(remoteVideoRef.current)
     }
-  }, [bjnIsConnected, bjnApi, trackVideoSizes])
+    return () => {
+      if (lastDivObserver) {
+        lastDivObserver.disconnect()
+      }
+    }
+  }, [bjnIsConnected, bjnApi])
 
   useEffect(() => {
     const show = (bjnReceivingScreenShare || camsOn) && bjnIsConnected
