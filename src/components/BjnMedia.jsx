@@ -170,7 +170,7 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
             bottom: 0,
           }}
         />
-        {camsOn && !bjnReceivingScreenShare && (
+        {/* {camsOn && !bjnReceivingScreenShare && (
           <Select
             size="xs"
             onChange={setLayout}
@@ -187,7 +187,7 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
               return <option key={index}>{layout}</option>
             })}
           </Select>
-        )}
+        )} */}
       </VStack>
 
       {!showMedia && (

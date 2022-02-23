@@ -32,6 +32,7 @@ import OurModal from './OurModal'
 import { BreakoutForm } from './BreakoutForm'
 import { useDisconnectedWarning } from './useDisconnectedWarning'
 import { CamInUseModal } from './CamInUseModal'
+import { ConfirmationModal } from './ConfirmationModal'
 
 export const TrainerInSession = ({
   match: {
@@ -80,6 +81,7 @@ export const TrainerInSession = ({
   } = useDisclosure()
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [showEndModal, setShowEndModal] = useState(false)
+  const [confirmSendLogs, setConfirmSendLogs] = useState(false)
   const [showEndTrainingModal, setShowEndTrainingModal] = useState(false)
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [hoverFloatingRightPanel, setHoverFloatingRightPanel] = useState(false)
@@ -176,7 +178,7 @@ export const TrainerInSession = ({
       if (training && bjnIsInitialized && !joined.current) {
         joined.current = true
         try {
-          await bjnApi.requestAllPermissions()
+          // await bjnApi.requestAllPermissions()
           await bjnApi.join(training.meetingId, training.moderatorPasscode, training.trainerName)
         } catch (e) {
           console.error('rla-log: error joining', e)
@@ -287,7 +289,29 @@ export const TrainerInSession = ({
           <Button onClick={() => setShowEndModal(false)}>Cancel</Button>
         </HStack>
       </OurModal>
+      <ConfirmationModal
+        headerMsg="Upload debug logs?"
+        okLabel="Upload"
+        msg="If you had a technical problem, please press 'Send' and notify us of your problem."
+        isOpen={confirmSendLogs}
+        onCancel={() => setConfirmSendLogs(false)}
+        onOk={() => {
+          bjnApi.sendLogs()
+          setConfirmSendLogs(false)
+        }}
+      />
       <CamInUseModal code={joinErrorCode} />
+      <Button
+        onClick={() => setConfirmSendLogs(true)}
+        variant="link"
+        position="absolute"
+        top="10px"
+        left="10px"
+        size="xs"
+        color="darkgrey"
+      >
+        Upload logs
+      </Button>
     </Box>
   )
 }
