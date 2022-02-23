@@ -70,6 +70,8 @@ export const AttendeeLanding = ({
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [chatMessages, setChatMessages] = useState([])
   const [answeredPolls, setAnsweredPolls] = useState([])
+  const [unreadChatMsgCount, setUnreadMsgCount] = useState(0)
+  const chatMsgCount = useRef(0)
 
   const {
     isOpen: isSharedDocModalOpen,
@@ -230,6 +232,16 @@ export const AttendeeLanding = ({
       }
     }
   }, [attendee, answeredPolls, joinTraining])
+
+  useEffect(() => {
+    const newMsgCount = chatMessages.length
+    if (chatIsOpen) {
+      setUnreadMsgCount(0)
+      chatMsgCount.current = newMsgCount
+    } else {
+      setUnreadMsgCount(newMsgCount - chatMsgCount.current)
+    }
+  }, [chatMessages, chatIsOpen])
 
   useEffect(() => {
     if (attendee && training && training.audioStateKey !== trainingAudioStateKey) {
@@ -435,6 +447,7 @@ export const AttendeeLanding = ({
           }
           return acc
         }, 0)}
+        unreadChatMsgCount={unreadChatMsgCount}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
       <Modal variant="noCapture" trapFocus={false} isOpen={!!currentPoll} scrollBehavior="inside">

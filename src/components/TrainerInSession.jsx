@@ -88,6 +88,8 @@ export const TrainerInSession = ({
   const history = useHistory()
   useDisconnectedWarning(ended)
   const handleEndTrainingModalClick = () => setShowEndModal(true)
+  const [unreadChatMsgCount, setUnreadMsgCount] = useState(0)
+  const chatMsgCount = useRef(0)
 
   /* Mouse Movement Listener */
   const displayTime = 1000 //ms
@@ -134,6 +136,16 @@ export const TrainerInSession = ({
       }
     }
   }, [subscribeToMore])
+
+  useEffect(() => {
+    const newMsgCount = chatMessages.length
+    if (chatIsOpen) {
+      setUnreadMsgCount(0)
+      chatMsgCount.current = newMsgCount
+    } else {
+      setUnreadMsgCount(newMsgCount - chatMsgCount.current)
+    }
+  }, [chatMessages, chatIsOpen])
 
   useEffect(() => {
     if (trainingData?.getTraining && (!training || trainingId === trainingData?.getTraining?.id)) {
@@ -256,6 +268,7 @@ export const TrainerInSession = ({
         showWhiteboard={onWhiteboardModalOpen}
         handleChatVisibility={() => setChatIsOpen((prev) => !prev)}
         handleEndTrainingModalClick={handleEndTrainingModalClick}
+        unreadChatMsgCount={unreadChatMsgCount}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
       <OurModal header="Manage breakout" isOpen={showBreakoutModal}>

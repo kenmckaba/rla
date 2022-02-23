@@ -53,6 +53,7 @@ export default function FloatingRightPanel({
   toggleHand,
   handRaised,
   sharedDocsCount,
+  unreadChatMsgCount,
 }) {
   const { bjnApi, bjnVideoMuted, bjnAudioMuted, bjnSharingScreen } = useBlueJeans()
   const activeBgColor = '#bebebe'
@@ -176,6 +177,7 @@ export default function FloatingRightPanel({
                 position="absolute"
                 top="-4px"
                 left="32px"
+                // right="10px"
                 paddingTop="1px"
                 fontSize="12px"
                 textAlign="center"
@@ -208,8 +210,26 @@ export default function FloatingRightPanel({
             onClick={() => handleChatVisibility()}
             backgroundColor={chatButtonBgColor}
             tooltip="Chat"
+            position="relative"
           >
             <ChatIcon style={{ height: '100%', widht: '100%', marginTop: '6' }} />
+            {!!unreadChatMsgCount && (
+              <Box
+                height="18px"
+                width="18px"
+                background="red"
+                borderRadius="9px"
+                font-size="13px"
+                position="absolute"
+                top="-4px"
+                left="32px"
+                paddingTop="1px"
+                fontSize="12px"
+                textAlign="center"
+              >
+                {unreadChatMsgCount}
+              </Box>
+            )}
           </IconWrapper>
 
           <IconWrapper
