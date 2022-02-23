@@ -32,6 +32,7 @@ import OurModal from './OurModal'
 import { BreakoutForm } from './BreakoutForm'
 import { useDisconnectedWarning } from './useDisconnectedWarning'
 import { CamInUseModal } from './CamInUseModal'
+import { useUnreadMsgCount } from './useUnreadMsgCount'
 
 export const TrainerInSession = ({
   match: {
@@ -88,8 +89,7 @@ export const TrainerInSession = ({
   const history = useHistory()
   useDisconnectedWarning(ended)
   const handleEndTrainingModalClick = () => setShowEndModal(true)
-  const [unreadChatMsgCount, setUnreadMsgCount] = useState(0)
-  const chatMsgCount = useRef(0)
+  const unreadChatMsgCount = useUnreadMsgCount(chatMessages, chatIsOpen)
 
   /* Mouse Movement Listener */
   const displayTime = 1000 //ms
@@ -136,16 +136,6 @@ export const TrainerInSession = ({
       }
     }
   }, [subscribeToMore])
-
-  useEffect(() => {
-    const newMsgCount = chatMessages.length
-    if (chatIsOpen) {
-      setUnreadMsgCount(0)
-      chatMsgCount.current = newMsgCount
-    } else {
-      setUnreadMsgCount(newMsgCount - chatMsgCount.current)
-    }
-  }, [chatMessages, chatIsOpen])
 
   useEffect(() => {
     if (trainingData?.getTraining && (!training || trainingId === trainingData?.getTraining?.id)) {
