@@ -267,6 +267,7 @@ export const TrainerInSession = ({
         trainingId={trainingId}
         isOpen={isSharedDocModalOpen}
         onClose={onSharedDocModalClose}
+        saveTraining={updateCurrentTraining}
       />
       <PollModal
         trainingId={trainingId}

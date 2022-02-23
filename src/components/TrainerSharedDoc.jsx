@@ -25,7 +25,7 @@ export const TrainerSharedDoc = ({ sharedDoc, editSharedDoc }) => {
   }
 
   return (
-    <Box fontWeight="500" fontSize="14px" flex="1" textAlign="left" >
+    <Box fontWeight="500" fontSize="14px" flex="1" textAlign="left">
       <Button
         size="xs"
         marginLeft="3px"
@@ -40,7 +40,9 @@ export const TrainerSharedDoc = ({ sharedDoc, editSharedDoc }) => {
       <Link href={sharedDoc.url} isExternal cursor="pointer">
         {sharedDoc.title}
       </Link>
-      <Text fontWeight="light" display="inline" pl="10px" fontSize="10px" >{sharedDoc.type}</Text> 
+      <Text fontWeight="light" display="inline" pl="10px" fontSize="10px">
+        {sharedDoc.type}
+      </Text>
       <EditIcon w={2} h={2} float="right" mt="6px" onClick={editThisSharedDoc} cursor="pointer" />
     </Box>
   )

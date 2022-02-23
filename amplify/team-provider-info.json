@@ -1,4 +1,35 @@
 {
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-test-144413-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-test-144413-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-test-144413-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-test-144413-deployment",
+      "UnauthRoleName": "amplify-rlafeature-test-144413-unauthRole",
+      "StackName": "amplify-rlafeature-test-144413",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-test-144413/bb4742c0-472e-11ec-b284-120edf13c247",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "auth": {
+        "rlafeaturead7537a2": {}
+      },
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-test-144413-deployment",
+          "s3Key": "amplify-builds/attendeeimage-35754259454336637030-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      }
+    }
+  },
   "whiteboard": {
     "awscloudformation": {
       "AuthRoleName": "amplify-rlafeature-whiteboard-163123-authRole",
@@ -199,37 +230,6 @@
         "attendeeimage": {
           "deploymentBucketName": "amplify-rlafeature-emailstwo-152623-deployment",
           "s3Key": "amplify-builds/attendeeimage-744961447770624f687a-build.zip",
-          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
-        }
-      },
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d1rh5ydrl7drpe",
-          "type": "manual"
-        }
-      }
-    }
-  },
-  "test": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-rlafeature-test-144413-authRole",
-      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-test-144413-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-test-144413-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-rlafeature-test-144413-deployment",
-      "UnauthRoleName": "amplify-rlafeature-test-144413-unauthRole",
-      "StackName": "amplify-rlafeature-test-144413",
-      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-test-144413/bb4742c0-472e-11ec-b284-120edf13c247",
-      "AmplifyAppId": "d1rh5ydrl7drpe"
-    },
-    "categories": {
-      "auth": {
-        "rlafeaturead7537a2": {}
-      },
-      "function": {
-        "attendeeimage": {
-          "deploymentBucketName": "amplify-rlafeature-test-144413-deployment",
-          "s3Key": "amplify-builds/attendeeimage-35754259454336637030-build.zip",
           "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
         }
       },
