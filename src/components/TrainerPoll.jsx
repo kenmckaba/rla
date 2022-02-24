@@ -124,7 +124,7 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
   }
 
   return (
-    <Tr display={'table'} width={'100%'} style={{tableLayout:'fixed'}} >
+    <Tr display={'table'} width={'100%'} style={{ tableLayout: 'fixed' }}>
       <Td>
         <Accordion padding="0" width="100%" allowToggle key={poll.id}>
           <AccordionItem p={0} m={0} border="none">
@@ -145,37 +145,42 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
                     </Text>
                   </Tooltip>
                 </Flex>
-                <Spacer />
-                {!poll.startedAt && (
-                  <Tooltip hasArrow placement="right" label="Edit poll">
-                    <EditIcon
-                      w={4}
-                      h={4}
-                      marginTop="3px"
+                <Flex>
+                  {!poll.startedAt && (
+                    <Tooltip hasArrow placement="right" label="Edit poll">
+                      <EditIcon
+                        w={4}
+                        h={4}
+                        marginTop="3px"
+                        marginRight="5px"
+                        onClick={editThisPoll}
+                      />
+                    </Tooltip>
+                  )}
+                  <Tooltip hasArrow placement="right" label="Duplicate poll">
+                    <CopyIcon
                       marginRight="5px"
-                      onClick={editThisPoll}
+                      marginTop="3px"
+                      onClick={(e) => duplicate(e, poll)}
                     />
                   </Tooltip>
-                )}
-                <Tooltip hasArrow placement="right" label="Duplicate poll">
-                  <CopyIcon marginRight="5px" marginTop="3px" onClick={(e) => duplicate(e, poll)} />
-                </Tooltip>
-                <Button
-                  size="xs"
-                  fontWeight="bold"
-                  minW="80px"
-                  backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'transparent'}
-                  padding="1px"
-                  variant="outline"
-                  color="#7a96b8"
-                  onClick={(e) => {
-                    startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
-                  }}
-                  isDisabled={startedPoll && startedPoll.id !== poll.id}
-                >
-                  {startedPoll?.id === poll.id ? 'Stop' : poll.stoppedAt ? 'Share' : 'Launch'}
-                </Button>
-                <AccordionIcon />
+                  <Button
+                    size="xs"
+                    fontWeight="bold"
+                    minW="60px"
+                    backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'transparent'}
+                    padding="1px"
+                    variant="outline"
+                    color="#7a96b8"
+                    onClick={(e) => {
+                      startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
+                    }}
+                    isDisabled={startedPoll && startedPoll.id !== poll.id}
+                  >
+                    {startedPoll?.id === poll.id ? 'Stop' : poll.stoppedAt ? 'Share' : 'Launch'}
+                  </Button>
+                  <AccordionIcon />
+                </Flex>
               </Flex>
             </AccordionButton>
             <AccordionPanel padding="0" pb={4}>

@@ -18,12 +18,11 @@
   color: #0d62c5;
   font-family: 'Proxima Nova';
   font-size: 12px;
-  width: 2rem;
   line-height: 2rem;
 }
 
 .react-datepicker__day {
-  color: #ADADAD;
+  color: #adadad;
   margin: 2px 0;
   border-radius: 0;
   width: 2.3rem;
@@ -31,27 +30,27 @@
 }
 
 .react-datepicker__day--in-range,
-.react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range)
- {
-  background-color: rgba(13, 98, 197,.1);
+.react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--in-range) {
+  background-color: rgba(13, 98, 197, 0.1);
 }
 
 .react-datepicker__day--keyboard-selected {
   background: none;
 }
-.react-datepicker__day--range-start{
-  background: linear-gradient(to right, white 0%, rgba(13, 98, 197,.1)50%)
+.react-datepicker__day--range-start {
+  background: linear-gradient(to right, white 0%, rgba(13, 98, 197, 0.1) 50%);
 }
 
 .react-datepicker__day--range-end {
-  background: linear-gradient(to left, white 0%, rgba(13, 98, 197,.1)50%)
+  background: linear-gradient(to left, white 0%, rgba(13, 98, 197, 0.1) 50%);
 }
 
 .react-datepicker__month-container {
   width: 300px;
 }
 
-.react-datepicker__navigation--previous, .react-datepicker__navigation--next {
+.react-datepicker__navigation--previous,
+.react-datepicker__navigation--next {
   height: inherit;
   top: 4px;
 }

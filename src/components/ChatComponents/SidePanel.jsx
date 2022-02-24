@@ -36,74 +36,77 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
   return (
     <>
       {/* @Ken this Accordion item declares the widht of the 'student view' chat and attendees panels */}
-      <Accordion height="100%" isOpen allowMultiple width="33vw" allowToggle defaultIndex={[0, 1]}>
-        <AccordionItem p={0} mt={2.5} border="none" isOpen>
-          <AccordionButton
-            p="2"
-            _hover={'bgColor: #284A83'}
-            bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"
-            boxShadow={'2xl'}
-            borderRadius={'10px 10px 0 0'}
-          >
-            <Text marginLeft="2" flex="1" textAlign="left" fontWeight="semibold" fontSize="0.9em">
-              Attendees
-            </Text>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel
-            overflowY="auto"
-            padding="0"
-            pb={4}
-            h={'15vh'}
-            backgroundColor="white"
-            borderBottomRadius="8px"
-          >
-            <Box minHeight="60px" color="black" paddingLeft="10px" fontSize="14px">
-              {bjnParticipants.map((p, index) => {
-                return p.isSelf ? (
-                  <Box key={index} cursor="pointer" onClick={(e) => handleClick(e, p)}>
-                    {p.name + ' (me)'} {p.isModerator && ' (trainer)'}
-                    <EditIcon marginLeft="5px" />
-                  </Box>
-                ) : (
-                  <Box key={index}>
-                    {p.name} {p.isModerator && ' (trainer)'}
-                  </Box>
-                )
-              })}
-            </Box>
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem p={0} m={0} mt={1} border="none" isOpen>
-          <AccordionButton
-            p="2"
-            _hover={'bgColor: #284A83'}
-            bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"
-            boxShadow={'2xl'}
-            borderRadius={'10px 10px 0 0'}
-          >
-            <Text marginLeft="2" flex="1" textAlign="left" fontWeight="semibold" fontSize="0.9em">
-              Chat
-            </Text>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel overflowY="auto" padding="0" pb={4}>
-            <ChatBox
-              messageList={chatMessages}
-              attendees={attendees}
-              training={training}
-              myAttendeeId={attendeeId}
-              minHeight={'60vh'}
-              maxHeight={{
-                '2xl': 'calc(100vh - 24vh)',
-                xl: 'calc(100vh - 27vh)',
-                md: 'calc(100vh - 35vh)',
-                sm: 'calc(100vh - 40vh)',
-              }}
-            />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+      <Box width="270px">
+        <Accordion
+          width="270px"
+          height="100%"
+          isOpen
+          allowMultiple
+          allowToggle
+          defaultIndex={[0, 1]}
+        >
+          <AccordionItem p={0} mt={2.5} border="none" isOpen>
+            <AccordionButton
+              p="2"
+              _hover={'bgColor: #284A83'}
+              bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"
+              boxShadow={'2xl'}
+              borderRadius={'10px 10px 0 0'}
+            >
+              <Text marginLeft="2" flex="1" textAlign="left" fontWeight="semibold" fontSize="0.9em">
+                Attendees
+              </Text>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel
+              overflowY="auto"
+              padding="0"
+              pb={4}
+              h="105px"
+              backgroundColor="white"
+              borderBottomRadius="8px"
+            >
+              <Box minHeight="60px" color="black" paddingLeft="10px" fontSize="14px">
+                {bjnParticipants.map((p, index) => {
+                  return p.isSelf ? (
+                    <Box key={index} cursor="pointer" onClick={(e) => handleClick(e, p)}>
+                      {p.name + ' (me)'} {p.isModerator && ' (trainer)'}
+                      <EditIcon marginLeft="5px" />
+                    </Box>
+                  ) : (
+                    <Box key={index}>
+                      {p.name} {p.isModerator && ' (trainer)'}
+                    </Box>
+                  )
+                })}
+              </Box>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem p={0} m={0} mt={1} border="none" isOpen>
+            <AccordionButton
+              p="2"
+              _hover={'bgColor: #284A83'}
+              bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"
+              boxShadow={'2xl'}
+              borderRadius={'10px 10px 0 0'}
+            >
+              <Text marginLeft="2" flex="1" textAlign="left" fontWeight="semibold" fontSize="0.9em">
+                Chat
+              </Text>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel overflowY="auto" padding="0" pb={4}>
+              <ChatBox
+                messageList={chatMessages}
+                attendees={attendees}
+                training={training}
+                myAttendeeId={attendeeId}
+                ht="calc(100vh - 204px)"
+              />
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </Box>
       <OurModal
         isOpen={!!currentParticipant}
         header="Change your name"

@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
-import { BJNWebClientSDK } from '@bluejeans/web-client-sdk'
+import { BJNWebClientSDK, LoggingMode } from '@bluejeans/web-client-sdk'
 
 const log = (...args) => {
   console.log.call(null, new Date().toISOString().substr(11, 12), 'rla-log:', ...args)
 }
 
-const webrtcSDK = new BJNWebClientSDK()
+const webrtcSDK = new BJNWebClientSDK({
+  saveLogsToLocalStorage: true,
+})
 
-webrtcSDK.loggingService.setLoggingMode('DEBUG')
+webrtcSDK.loggingService.setLoggingMode(LoggingMode.DEBUG)
 
 const bjnApi = {
   join: function (meetingId, passcode, name) {
@@ -76,6 +78,9 @@ const bjnApi = {
       (result) => console.log('requestAllPermissions result', result),
       (err) => console.log('requestAllPermissions failed', err),
     )
+  },
+  sendLogs: () => {
+    webrtcSDK.loggingService.uploadLog('From RLA app', 'kenneth.mckaba@verizon.com')
   },
 }
 

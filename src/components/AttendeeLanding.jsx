@@ -34,6 +34,7 @@ import { SidePanel } from './ChatComponents/SidePanel'
 import { useDisconnectedWarning } from './useDisconnectedWarning'
 import { CamInUseModal } from './CamInUseModal'
 import { useUnreadMsgCount } from './useUnreadMsgCount'
+import { ConfirmationModal } from './ConfirmationModal'
 
 export const AttendeeLanding = ({
   match: {
@@ -91,6 +92,7 @@ export const AttendeeLanding = ({
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
   const [listener, setListener] = useState()
   const [showLeaveModal, setShowLeaveModal] = useState(false)
+  const [confirmSendLogs, setConfirmSendLogs] = useState(false)
   const [rightPanelAnimationEnd, setRightPanelAnimationEnd] = useState(true)
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [attendees, setAttendees] = useState([])
@@ -488,6 +490,28 @@ export const AttendeeLanding = ({
         </HStack>
       </OurModal>
       <CamInUseModal code={joinErrorCode} />
+      <ConfirmationModal
+        headerMsg="Upload debug logs?"
+        okLabel="Upload"
+        msg="If you had a technical problem, please press 'Send' and notify us of your problem."
+        isOpen={confirmSendLogs}
+        onCancel={() => setConfirmSendLogs(false)}
+        onOk={() => {
+          bjnApi.sendLogs()
+          setConfirmSendLogs(false)
+        }}
+      />
+      <Button
+        onClick={() => setConfirmSendLogs(true)}
+        variant="link"
+        position="absolute"
+        top="10px"
+        left="10px"
+        size="xs"
+        color="darkgrey"
+      >
+        Upload logs
+      </Button>
     </Box>
   )
 }

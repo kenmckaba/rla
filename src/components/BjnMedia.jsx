@@ -2,6 +2,55 @@ import { Center, Flex, VStack, Wrap, WrapItem, Select, Box } from '@chakra-ui/re
 import { useEffect, useRef, useState } from 'react'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
 import { MyCamera } from './MyCamera'
+import './bjn-media.css'
+
+const calcVideoSize = (count) => {
+  switch (count) {
+  case 1:
+    return '100%'
+  case 2:
+  case 3:
+  case 4:
+    return '50%'
+  case 5:
+  case 6:
+  case 7:
+  case 8:
+  case 9:
+    return '33.33%'
+  default:
+    return '25%'
+  }
+}
+
+const findVids = (remoteVideoDiv) => {
+  console.log('trackVideoSizes remoteVideoDiv', remoteVideoDiv)
+  const videosElems = remoteVideoDiv.querySelectorAll('[class^="ThumbnailVideo"]')
+  console.log('trackVideoSizes children', videosElems.length)
+  const newSize = calcVideoSize(videosElems.length)
+  console.log('trackVideoSizes vids.length', videosElems.length, newSize)
+  videosElems.forEach((vid) => {
+    vid.style.height = newSize
+    vid.style.width = newSize
+  })
+}
+
+let lastDivObserver
+
+const trackVideoSizes = (remoteVideoDiv) => {
+  console.log('trackVideoSizes', remoteVideoDiv)
+  if (lastDivObserver) {
+    lastDivObserver.disconnect()
+    lastDivObserver = null
+  }
+  findVids(remoteVideoDiv)
+  var observer = new MutationObserver((mutations) => {
+    console.log('trackVideoSizes mutations', mutations)
+    findVids(remoteVideoDiv)
+  })
+  observer.observe(remoteVideoDiv, { childList: true, subtree: true })
+  lastDivObserver = observer
+}
 
 export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, training }) => {
   const {
@@ -18,21 +67,27 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
   const remoteVideoRef = useRef(null)
   const remoteContentRef = useRef(null)
 
-  // useEffect(() => {
-  //   setCamsOn(bjnVideoState === 'ACTIVE')
-  // }, [bjnVideoState])
+  useEffect(() => {
+    setCamsOn(bjnVideoState === 'ACTIVE')
+  }, [bjnVideoState])
 
   useEffect(() => {
     if (bjnIsConnected) {
       bjnApi.attachRemoteContent(remoteContentRef.current)
       bjnApi.attachRemoteVideo(remoteVideoRef.current)
+      trackVideoSizes(remoteVideoRef.current)
+    }
+    return () => {
+      if (lastDivObserver) {
+        lastDivObserver.disconnect()
+      }
     }
   }, [bjnIsConnected, bjnApi])
 
-  // useEffect(() => {
-  //   const show = (bjnReceivingScreenShare || camsOn) && bjnIsConnected
-  //   setShowMedia(show)
-  // }, [bjnReceivingScreenShare, camsOn, bjnIsConnected])
+  useEffect(() => {
+    const show = (bjnReceivingScreenShare || camsOn) && bjnIsConnected
+    setShowMedia(show)
+  }, [bjnReceivingScreenShare, camsOn, bjnIsConnected])
 
   useEffect(() => {
     if (camsOn && bjnReceivingScreenShare) {
@@ -43,10 +98,10 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
     }
   }, [bjnReceivingScreenShare, camsOn, bjnApi, lastVideoLayout])
 
-  const setLayout = (e) => {
-    setLastVideoLayout(e.target.value)
-    bjnApi.setVideoLayout(e.target.value)
-  }
+  // const setLayout = (e) => {
+  //   setLastVideoLayout(e.target.value)
+  //   bjnApi.setVideoLayout(e.target.value)
+  // }
 
   return (
     <Flex
@@ -99,11 +154,11 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
           style={{
             width: '100%',
             height: '100%',
-            position: 'relative',
+            position: 'absolute',
             bottom: 0,
           }}
         />
-        {camsOn && !bjnReceivingScreenShare && (
+        {/* {camsOn && !bjnReceivingScreenShare && (
           <Select
             size="xs"
             onChange={setLayout}
@@ -120,7 +175,7 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
               return <option key={index}>{layout}</option>
             })}
           </Select>
-        )}
+        )} */}
       </VStack>
 
       {!showMedia && (
