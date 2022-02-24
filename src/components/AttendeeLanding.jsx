@@ -33,6 +33,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { SidePanel } from './ChatComponents/SidePanel'
 import { useDisconnectedWarning } from './useDisconnectedWarning'
 import { CamInUseModal } from './CamInUseModal'
+import { useUnreadMsgCount } from './useUnreadMsgCount'
 import { ConfirmationModal } from './ConfirmationModal'
 
 export const AttendeeLanding = ({
@@ -71,6 +72,8 @@ export const AttendeeLanding = ({
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [chatMessages, setChatMessages] = useState([])
   const [answeredPolls, setAnsweredPolls] = useState([])
+  // const [unreadChatMsgCount, setUnreadMsgCount] = useState(0)
+  // const chatMsgCount = useRef(0)
 
   const {
     isOpen: isSharedDocModalOpen,
@@ -99,6 +102,7 @@ export const AttendeeLanding = ({
   const [attendeeAudioStateKey, setAttendeeAudioStateKey] = useState(0)
   const [trainingVideoStateKey, setTrainingVideoStateKey] = useState(0)
   const [attendeeVideoStateKey, setAttendeeVideoStateKey] = useState(0)
+  const unreadChatMsgCount = useUnreadMsgCount(chatMessages, chatIsOpen)
 
   useDisconnectedWarning(hasLeftOrEnded)
 
@@ -437,6 +441,7 @@ export const AttendeeLanding = ({
           }
           return acc
         }, 0)}
+        unreadChatMsgCount={unreadChatMsgCount}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
       <Modal variant="noCapture" trapFocus={false} isOpen={!!currentPoll} scrollBehavior="inside">

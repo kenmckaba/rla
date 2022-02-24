@@ -53,13 +53,14 @@ export default function FloatingRightPanel({
   toggleHand,
   handRaised,
   sharedDocsCount,
+  unreadChatMsgCount,
 }) {
   const { bjnApi, bjnVideoMuted, bjnAudioMuted, bjnSharingScreen } = useBlueJeans()
   const activeBgColor = '#bebebe'
   const chatButtonBgColor = chatIsVisible && activeBgColor
   const sharescreenButtonBgColor = bjnSharingScreen && activeBgColor
-  const webcamButtonBgColor = !bjnVideoMuted && '#0DC557' || bjnVideoMuted && '#FF4E4E'
-  const micButtonBgColor = !bjnAudioMuted && '#0DC557' || bjnAudioMuted && '#FF4E4E'
+  const webcamButtonBgColor = (!bjnVideoMuted && '#0DC557') || (bjnVideoMuted && '#FF4E4E')
+  const micButtonBgColor = (!bjnAudioMuted && '#0DC557') || (bjnAudioMuted && '#FF4E4E')
   const raiseHandBgColor = handRaised && activeBgColor
 
   const handleMicMute = () => {
@@ -105,21 +106,20 @@ export default function FloatingRightPanel({
         // left="33%"
         justifyContent={'center'}
         alignItems="center"
-        pointerEvents="none">
-        <HStack spacing={2}
-          justifyContent="center"
-          height="fit-content"
-          pointerEvents="all">
+        pointerEvents="none"
+      >
+        <HStack spacing={2} justifyContent="center" height="fit-content" pointerEvents="all">
           <IconWrapper
             boxShadow={'dark-lg'}
             onClick={handleMicMute}
             backgroundColor={micButtonBgColor}
             tooltip="Microphone"
-            fill='white'
+            fill="white"
             _hover={{
               background: 'white',
               fill: '#555',
-            }}>
+            }}
+          >
             {!bjnAudioMuted ? (
               <MicIcon style={{ height: '100%', widht: '100%' }} />
             ) : (
@@ -131,11 +131,12 @@ export default function FloatingRightPanel({
             onClick={handleCameraMute}
             backgroundColor={webcamButtonBgColor}
             tooltip="Webcam"
-            fill='white'
+            fill="white"
             _hover={{
               background: 'white',
-              fill:'#555'
-            }}>
+              fill: '#555',
+            }}
+          >
             {!bjnVideoMuted ? (
               <WebcamIcon style={{ height: '100%', widht: '100%' }} />
             ) : (
@@ -144,7 +145,9 @@ export default function FloatingRightPanel({
           </IconWrapper>
           <IconWrapper
             boxShadow={'dark-lg'}
-            onClick={handleSettingsModalVisibility} tooltip="Settings">
+            onClick={handleSettingsModalVisibility}
+            tooltip="Settings"
+          >
             <SettingsIcon style={{ height: '100%', widht: '100%' }} />
           </IconWrapper>
           {role === 'instructor' && (
@@ -152,7 +155,8 @@ export default function FloatingRightPanel({
               boxShadow={'dark-lg'}
               onClick={handleScreenShare}
               backgroundColor={sharescreenButtonBgColor}
-              tooltip="Share your screen">
+              tooltip="Share your screen"
+            >
               <SharescreenIcon style={{ height: '100%', widht: '100%' }} />
             </IconWrapper>
           )}
@@ -160,7 +164,8 @@ export default function FloatingRightPanel({
             boxShadow={'dark-lg'}
             onClick={handleShareDocumentsModalVisibility}
             tooltip="Shared documents"
-            position="relative">
+            position="relative"
+          >
             <ShareDocumentsIcon style={{ height: '100%', widht: '100%' }} />
             {!!sharedDocsCount && (
               <Box
@@ -170,19 +175,18 @@ export default function FloatingRightPanel({
                 borderRadius="9px"
                 font-size="13px"
                 position="absolute"
-                top="24px"
-                left="24px"
+                top="-4px"
+                left="32px"
+                // right="10px"
                 paddingTop="1px"
                 fontSize="12px"
-                textAlign="center">
+                textAlign="center"
+              >
                 {sharedDocsCount}
               </Box>
             )}
           </IconWrapper>
-          <IconWrapper
-            boxShadow={'dark-lg'}
-            tooltip="Whiteboard" 
-            onClick={showWhiteboard}>
+          <IconWrapper boxShadow={'dark-lg'} tooltip="Whiteboard" onClick={showWhiteboard}>
             <WhiteboardIcon
               style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }}
             />
@@ -196,7 +200,7 @@ export default function FloatingRightPanel({
               onClick={toggleHand}
             >
               <HandIcon
-                // style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }}
+              // style={{ height: '100%', widht: '100%', marginBottom: '4', marginLeft: '2' }}
               />
             </IconWrapper>
           )}
@@ -206,8 +210,26 @@ export default function FloatingRightPanel({
             onClick={() => handleChatVisibility()}
             backgroundColor={chatButtonBgColor}
             tooltip="Chat"
+            position="relative"
           >
             <ChatIcon style={{ height: '100%', widht: '100%', marginTop: '6' }} />
+            {!!unreadChatMsgCount && (
+              <Box
+                height="18px"
+                width="18px"
+                background="red"
+                borderRadius="9px"
+                font-size="13px"
+                position="absolute"
+                top="-4px"
+                left="32px"
+                paddingTop="1px"
+                fontSize="12px"
+                textAlign="center"
+              >
+                {unreadChatMsgCount}
+              </Box>
+            )}
           </IconWrapper>
 
           <IconWrapper

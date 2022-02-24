@@ -32,6 +32,7 @@ import OurModal from './OurModal'
 import { BreakoutForm } from './BreakoutForm'
 import { useDisconnectedWarning } from './useDisconnectedWarning'
 import { CamInUseModal } from './CamInUseModal'
+import { useUnreadMsgCount } from './useUnreadMsgCount'
 import { ConfirmationModal } from './ConfirmationModal'
 
 export const TrainerInSession = ({
@@ -90,6 +91,7 @@ export const TrainerInSession = ({
   const history = useHistory()
   useDisconnectedWarning(ended)
   const handleEndTrainingModalClick = () => setShowEndModal(true)
+  const unreadChatMsgCount = useUnreadMsgCount(chatMessages, chatIsOpen)
 
   /* Mouse Movement Listener */
   const displayTime = 1000 //ms
@@ -258,6 +260,7 @@ export const TrainerInSession = ({
         showWhiteboard={onWhiteboardModalOpen}
         handleChatVisibility={() => setChatIsOpen((prev) => !prev)}
         handleEndTrainingModalClick={handleEndTrainingModalClick}
+        unreadChatMsgCount={unreadChatMsgCount}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
       <OurModal header="Manage breakout" isOpen={showBreakoutModal}>
@@ -269,6 +272,7 @@ export const TrainerInSession = ({
         trainingId={trainingId}
         isOpen={isSharedDocModalOpen}
         onClose={onSharedDocModalClose}
+        saveTraining={updateCurrentTraining}
       />
       <PollModal
         trainingId={trainingId}
