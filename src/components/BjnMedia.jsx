@@ -23,28 +23,16 @@ const calcVideoSize = (count) => {
   }
 }
 
-const fixVidSizes = (videoElem) => {
-  const vids = videoElem.querySelectorAll('[class^="ThumbnailVideo"]')
-  console.log('trackVideoSizes fixSizes vids', vids.length)
-  if (vids.length === 0) {
-    return
-  }
-  const newSize = calcVideoSize(vids.length)
-  console.log('trackVideoSizes vids.length', vids.length, newSize)
-  vids.forEach((vid) => {
+const findVids = (remoteVideoDiv) => {
+  console.log('trackVideoSizes remoteVideoDiv', remoteVideoDiv)
+  const videosElems = remoteVideoDiv.querySelectorAll('[class^="ThumbnailVideo"]')
+  console.log('trackVideoSizes children', videosElems.length)
+  const newSize = calcVideoSize(videosElems.length)
+  console.log('trackVideoSizes vids.length', videosElems.length, newSize)
+  videosElems.forEach((vid) => {
     vid.style.height = newSize
     vid.style.width = newSize
   })
-}
-
-const findVids = (remoteVideoDiv) => {
-  console.log('trackVideoSizes remoteVideoDiv', remoteVideoDiv)
-  const videosElems = remoteVideoDiv.querySelectorAll('[class^="Videos"]')
-  console.log('trackVideoSizes children', videosElems.length)
-  if (videosElems.length) {
-    const videoElem = videosElems[0]
-    fixVidSizes(videoElem)
-  }
 }
 
 let lastDivObserver
@@ -110,10 +98,10 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
     }
   }, [bjnReceivingScreenShare, camsOn, bjnApi, lastVideoLayout])
 
-  const setLayout = (e) => {
-    setLastVideoLayout(e.target.value)
-    bjnApi.setVideoLayout(e.target.value)
-  }
+  // const setLayout = (e) => {
+  //   setLastVideoLayout(e.target.value)
+  //   bjnApi.setVideoLayout(e.target.value)
+  // }
 
   return (
     <Flex
@@ -166,7 +154,7 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
           style={{
             width: '100%',
             height: '100%',
-            position: 'relative',
+            position: 'absolute',
             bottom: 0,
           }}
         />
