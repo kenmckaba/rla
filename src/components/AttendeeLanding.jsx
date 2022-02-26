@@ -13,6 +13,8 @@ import {
   ModalContent,
   ModalBody,
   Center,
+  VStack,
+  Text,
 } from '@chakra-ui/react'
 import { createPollResponse, updateAttendee } from '../graphql/mutations'
 import { buildSubscription } from 'aws-appsync'
@@ -35,6 +37,7 @@ import { useDisconnectedWarning } from './useDisconnectedWarning'
 import { CamInUseModal } from './CamInUseModal'
 import { useUnreadMsgCount } from './useUnreadMsgCount'
 import { ConfirmationModal } from './ConfirmationModal'
+import { timestampToPrettyTime } from '../utils/pretty-time'
 
 export const AttendeeLanding = ({
   match: {
@@ -103,6 +106,8 @@ export const AttendeeLanding = ({
   const [trainingVideoStateKey, setTrainingVideoStateKey] = useState(0)
   const [attendeeVideoStateKey, setAttendeeVideoStateKey] = useState(0)
   const unreadChatMsgCount = useUnreadMsgCount(chatMessages, chatIsOpen)
+  const [trainingStarted, setTrainingStarted] = useState(false)
+  const [trainingExpired, setTrainingExpired] = useState(false)
 
   useDisconnectedWarning(hasLeftOrEnded)
 
@@ -208,7 +213,6 @@ export const AttendeeLanding = ({
     if (attendee) {
       const tr = attendee.training
       setTraining(tr)
-
       if (tr.breakoutInProgress) {
         joinTraining(attendee.breakoutRoomAttendeeId)
         return
@@ -217,6 +221,22 @@ export const AttendeeLanding = ({
       if (tr.type === 'BREAKOUT' && !attendee.breakoutRoom.training.breakoutInProgress) {
         joinTraining(attendee.mainTrainingAttendeeId)
         return
+      }
+
+      setTrainingStarted(!!tr.startedAt)
+
+      if (tr.startedAt) {
+        const hrs6ms = 6 * 60 * 60 * 1000 // no meeting should last longer
+        const now = Date.now()
+        const started = new Date(tr.startedAt).getTime()
+        const diff = now - started
+        console.log('@ken times', {
+          now: new Date(now),
+          started: new Date(tr.startedAt),
+          diff: diff / 1000,
+          hrs6: hrs6ms / 1000,
+        })
+        setTrainingExpired(diff > hrs6ms) // 6 hours
       }
       const d = tr.sharedDocs.items
       setSharedDocs(d)
@@ -286,24 +306,18 @@ export const AttendeeLanding = ({
 
   useEffect(() => {
     const joinMeeting = async () => {
-      if (training?.meetingId && bjnIsInitialized && !joined.current) {
+      if (trainingStarted && !trainingExpired && bjnIsInitialized && !joined.current) {
+        joined.current = true
         try {
           await bjnApi.requestAllPermissions()
           await bjnApi.join(training.meetingId, training.participantPasscode, participantName)
         } catch (error) {
           setJoinErrorCode(error.code)
         }
-        joined.current = true
       }
     }
     joinMeeting()
-  }, [
-    training?.meetingId,
-    training?.participantPasscode,
-    participantName,
-    bjnIsInitialized,
-    bjnApi,
-  ])
+  }, [trainingStarted, trainingExpired, training, participantName, bjnIsInitialized, bjnApi])
 
   const Whiteboard = whiteboardShared ? (
     <Box marginLeft="20px">
@@ -490,6 +504,25 @@ export const AttendeeLanding = ({
         </HStack>
       </OurModal>
       <CamInUseModal code={joinErrorCode} />
+      <OurModal header="The training has not yet started" isOpen={!trainingStarted}>
+        <VStack alignItems="start" marginLeft="10px">
+          <Text marginBottom="15px">
+            You will join automatically when it starts or you can return nearer to the scheduled
+            time.
+          </Text>
+          <Text>Scheduled time: {timestampToPrettyTime(training.scheduledTime)}</Text>
+          <Text>Trainer: {training.trainerName}</Text>
+          <Text>Email: {training.trainerEmail}</Text>
+        </VStack>
+      </OurModal>
+      <OurModal header="The training has ended" isOpen={trainingExpired}>
+        <VStack alignItems="start" marginLeft="10px">
+          <Text>Scheduled: {timestampToPrettyTime(training.scheduledTime)}</Text>
+          <Text>Started: {timestampToPrettyTime(training.startedAt)}</Text>
+          <Text>Trainer: {training.trainerName}</Text>
+          <Text>Email: {training.trainerEmail}</Text>
+        </VStack>
+      </OurModal>
       <ConfirmationModal
         headerMsg="Upload debug logs?"
         okLabel="Upload"
