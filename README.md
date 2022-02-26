@@ -34,7 +34,7 @@ You have to make sure your git branch and amplify environment are what you expec
 
 ## amplify commands
 
-- amplify status // shows current state
+- amplify status -v // shows current state with details if the front and backend aren't in sync
 
 ### To create a new env:
 
@@ -48,6 +48,14 @@ You have to make sure your git branch and amplify environment are what you expec
 - amplify checkout env [name]
 - amplify pull
 
-### to depoy
+### to deploy
 
 - amplify publish // generates front end code, does optimized build from local source, pushes it to the server under the current environment
+
+### update emails text
+
+- we use Amazon SES (simple email service)
+- see the /email folder
+- upload email templates using emailTemplateUtil.js
+  - node emailTemplateUtil.js <"create" or "update"> <template file path & name>
+  - e.g. "node emailTemplateUtil.js update ./templates/inviteToRegisterTemplate.json"
