@@ -3,8 +3,8 @@ import { timestampToPrettyTime } from './pretty-time'
 
 const ses = new aws.SES({
   region: 'us-east-1',
-  accessKeyId: 'AKIATZDAET4GTFFPKL35',
-  secretAccessKey: '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',
+  accessKeyId: 'AKIATZDAET4G5MQCWIH6',
+  secretAccessKey: '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',
 })
 
 export const sendJoinEmail = async (attendeeId, name, email, training) => {
