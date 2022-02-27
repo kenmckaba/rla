@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BJNWebClientSDK, LoggingMode } from '@bluejeans/web-client-sdk'
+import { BJNWebClientSDK, LoggingMode, VideoLayout } from '@bluejeans/web-client-sdk'
 
 const log = (...args) => {
   console.log.call(null, new Date().toISOString().substr(11, 12), 'rla-log:', ...args)
@@ -11,7 +11,9 @@ const webrtcSDK = new BJNWebClientSDK({
 
 webrtcSDK.loggingService.setLoggingMode(LoggingMode.DEBUG)
 
-const bjnApi = {
+export const bjnWebcamLayouts = VideoLayout
+
+export const bjnApi = {
   join: function (meetingId, passcode, name) {
     log('call join', meetingId, passcode, name)
     return webrtcSDK.meetingService.joinMeeting(meetingId, passcode, name)
@@ -170,8 +172,6 @@ export const useBlueJeans = () => {
     }
   }, [bjnIsInitialized])
 
-  const bjnWebcamLayouts = ['FILMSTRIP', 'GALLERY', 'PEOPLE', 'SPEAKER']
-
   return {
     // webrtcSDK,
     bjnApi,
@@ -193,7 +193,6 @@ export const useBlueJeans = () => {
     bjnVideoMuted,
     bjnVideoState,
     bjnAvailableSpeakers,
-    bjnWebcamLayouts,
     bjnSelfVideoPreviewEnabled,
     bjnIsScreenShareSupported,
     bjnIsSpeakerSelectionAllowed,

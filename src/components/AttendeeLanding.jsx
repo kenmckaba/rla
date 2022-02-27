@@ -225,7 +225,7 @@ export const AttendeeLanding = ({
 
       setTrainingStarted(!!tr.startedAt)
 
-      if (tr.startedAt) {
+      if (tr.startedAt && !joined.current) {
         const hrs6ms = 6 * 60 * 60 * 1000 // no meeting should last longer
         const now = Date.now()
         const started = new Date(tr.startedAt).getTime()

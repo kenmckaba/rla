@@ -1,6 +1,6 @@
 import { Center, Flex, VStack, Wrap, WrapItem, Select, Box } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans, bjnWebcamLayouts, bjnApi } from '../bluejeans/useBlueJeans'
 import { MyCamera } from './MyCamera'
 import './bjn-media.css'
 
@@ -24,11 +24,9 @@ const calcVideoSize = (count) => {
 }
 
 const findVids = (remoteVideoDiv) => {
-  console.log('trackVideoSizes remoteVideoDiv', remoteVideoDiv)
   const videosElems = remoteVideoDiv.querySelectorAll('[class^="ThumbnailVideo"]')
-  console.log('trackVideoSizes children', videosElems.length)
   const newSize = calcVideoSize(videosElems.length)
-  console.log('trackVideoSizes vids.length', videosElems.length, newSize)
+  console.log('trackVideoSizes findVids  bjnWebcamLayouts vids.length', videosElems.length, newSize)
   videosElems.forEach((vid) => {
     vid.style.height = newSize
     vid.style.width = newSize
@@ -38,23 +36,22 @@ const findVids = (remoteVideoDiv) => {
 let lastDivObserver
 
 const trackVideoSizes = (remoteVideoDiv) => {
-  console.log('trackVideoSizes', remoteVideoDiv)
+  console.log('trackVideoSizes bjnWebcamLayouts', remoteVideoDiv)
   if (lastDivObserver) {
     lastDivObserver.disconnect()
     lastDivObserver = null
   }
-  findVids(remoteVideoDiv)
   var observer = new MutationObserver((mutations) => {
-    console.log('trackVideoSizes mutations', mutations)
+    console.log('trackVideoSizes  videoLayout mutations', mutations)
     findVids(remoteVideoDiv)
   })
   observer.observe(remoteVideoDiv, { childList: true, subtree: true })
+  findVids(remoteVideoDiv)
   lastDivObserver = observer
 }
 
 export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, training }) => {
   const {
-    bjnApi,
     bjnIsConnected,
     bjnReceivingScreenShare,
     bjnParticipants,
@@ -62,10 +59,26 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
     bjnVideoLayout,
   } = useBlueJeans()
   const [camsOn, setCamsOn] = useState(true)
-  const [lastVideoLayout, setLastVideoLayout] = useState('GALLERY')
+  const [lastVideoLayout, setLastVideoLayout] = useState(bjnWebcamLayouts.GALLERY)
   const [showMedia, setShowMedia] = useState(true)
   const remoteVideoRef = useRef(null)
   const remoteContentRef = useRef(null)
+  const [attached, setAttached] = useState(false)
+  const timeoutHandle = useRef(0)
+
+  useEffect(() => {
+    console.log('trackVideoSizes videoLayout attached', attached, bjnVideoLayout, !!lastDivObserver)
+    if (attached) {
+      if (bjnVideoLayout === bjnWebcamLayouts.GALLERY) {
+        console.log('trackVideoSizes videoLayout GALLERY')
+        trackVideoSizes(remoteVideoRef.current)
+      } else if (lastDivObserver) {
+        console.log('trackVideoSizes videoLayout layout', bjnVideoLayout)
+        lastDivObserver.disconnect()
+        lastDivObserver = null
+      }
+    }
+  }, [bjnVideoLayout, attached])
 
   useEffect(() => {
     setCamsOn(bjnVideoState === 'ACTIVE')
@@ -75,28 +88,50 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
     if (bjnIsConnected) {
       bjnApi.attachRemoteContent(remoteContentRef.current)
       bjnApi.attachRemoteVideo(remoteVideoRef.current)
-      trackVideoSizes(remoteVideoRef.current)
+      setAttached(true)
     }
     return () => {
       if (lastDivObserver) {
         lastDivObserver.disconnect()
+        lastDivObserver = null
       }
     }
-  }, [bjnIsConnected, bjnApi])
+  }, [bjnIsConnected])
 
   useEffect(() => {
+    console.log(
+      'trackVideoSizes videoLayout bjnReceivingScreenShare',
+      bjnReceivingScreenShare,
+      camsOn,
+    )
+
     const show = (bjnReceivingScreenShare || camsOn) && bjnIsConnected
     setShowMedia(show)
   }, [bjnReceivingScreenShare, camsOn, bjnIsConnected])
 
   useEffect(() => {
+    console.log('trackv receiving', bjnReceivingScreenShare, camsOn)
     if (camsOn && bjnReceivingScreenShare) {
-      bjnApi.setVideoLayout('FILMSTRIP')
+      console.log('trackv new videoLayout FILMSTRIP')
+      if (timeoutHandle.current) {
+        clearTimeout(timeoutHandle.current)
+        timeoutHandle.current = 0
+      }
+      bjnApi.setVideoLayout(bjnWebcamLayouts.FILMSTRIP)
     }
     if (!bjnReceivingScreenShare) {
-      bjnApi.setVideoLayout(lastVideoLayout)
+      console.log('trackv new videoLayout GALLERY', lastVideoLayout, bjnVideoLayout)
+      bjnApi.setVideoLayout(bjnWebcamLayouts.GALLERY)
+      if (timeoutHandle.current) {
+        clearTimeout(timeoutHandle.current)
+        timeoutHandle.current = 0
+      }
+      timeoutHandle.current = setTimeout(() => {
+        bjnApi.setVideoLayout(bjnWebcamLayouts.GALLERY)
+        timeoutHandle.current = 0
+      }, 3000)
     }
-  }, [bjnReceivingScreenShare, camsOn, bjnApi, lastVideoLayout])
+  }, [bjnReceivingScreenShare, camsOn, lastVideoLayout, bjnVideoLayout])
 
   // const setLayout = (e) => {
   //   setLastVideoLayout(e.target.value)
