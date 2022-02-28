@@ -39,17 +39,18 @@ You have to make sure your git branch and amplify environment are what you expec
 ### To create a new env:
 
 - pull environment you want to copy
-- amplify add env // carry over environment vars
+- amplify add env // accept: carry over environment vars
 - amplify push
 - amplify pull
 
-### to work in an env:
+### to work in a different existing env:
 
-- amplify checkout env [name]
+- amplify env checkout [name]
 - amplify pull
 
 ### to deploy
 
+- checkout branch and switch to desired env
 - amplify publish // generates front end code, does optimized build from local source, pushes it to the server under the current environment
 
 ### update emails text
