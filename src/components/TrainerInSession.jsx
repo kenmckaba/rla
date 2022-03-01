@@ -19,7 +19,7 @@ import {
 import { buildSubscription } from 'aws-appsync'
 import { PollModal } from './PollModal'
 import { WhiteboardModal } from './WhiteboardModal'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans, bjnApi } from '../bluejeans/useBlueJeans'
 import { BjnMedia } from './BjnMedia'
 import LeftPanel from './TrainerInSession/LeftPanel'
 import FloatingRightPanel from './TrainerInSession/FloatingRightPanel'
@@ -54,7 +54,7 @@ export const TrainerInSession = ({
   const [ended, setEnded] = useState(false)
   const [joinErrorCode, setJoinErrorCode] = useState()
   const joined = useRef(false)
-  const { bjnApi, bjnIsInitialized } = useBlueJeans()
+  const { bjnIsInitialized } = useBlueJeans()
   const {
     data: trainingData,
     error,
@@ -189,7 +189,7 @@ export const TrainerInSession = ({
       }
     }
     joinMeeting()
-  }, [training, bjnApi, bjnIsInitialized])
+  }, [training, bjnIsInitialized])
 
   const handleEndTrainingClick = () => {
     setShowEndModal(false)

@@ -2,16 +2,11 @@ import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/layout'
 import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal'
 import { Button } from '@chakra-ui/button'
 import { Selections } from './Selections'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans, bjnApi } from '../bluejeans/useBlueJeans'
 
 export default function SettingsModal({ isOpen, onClose }) {
-  const {
-    bjnApi,
-    bjnAvailableCameras,
-    bjnAvailableMicrophones,
-    bjnSelectedCamera,
-    bjnSelectedMicrophone,
-  } = useBlueJeans()
+  const { bjnAvailableCameras, bjnAvailableMicrophones, bjnSelectedCamera, bjnSelectedMicrophone } =
+    useBlueJeans()
 
   const closeMe = () => {
     onClose()

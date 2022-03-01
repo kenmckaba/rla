@@ -12,7 +12,7 @@ import { ReactComponent as HangupIcon } from '../../assets/icons/hangup-icon.svg
 import { ReactComponent as WebcamOffIcon } from '../../assets/icons/webcam-off-icon.svg'
 import { ReactComponent as HandIcon } from '../../assets/icons/hand-icon-3.svg'
 import { Tooltip } from '@chakra-ui/react'
-import { useBlueJeans } from '../../bluejeans/useBlueJeans'
+import { useBlueJeans, bjnApi } from '../../bluejeans/useBlueJeans'
 
 const IconWrapper = ({ tooltip, children, backgroundColor, ...props }) => (
   <Tooltip
@@ -55,7 +55,7 @@ export default function FloatingRightPanel({
   sharedDocsCount,
   unreadChatMsgCount,
 }) {
-  const { bjnApi, bjnVideoMuted, bjnAudioMuted, bjnSharingScreen } = useBlueJeans()
+  const { bjnVideoMuted, bjnAudioMuted, bjnSharingScreen } = useBlueJeans()
   const activeBgColor = '#bebebe'
   const chatButtonBgColor = chatIsVisible && activeBgColor
   const sharescreenButtonBgColor = bjnSharingScreen && activeBgColor

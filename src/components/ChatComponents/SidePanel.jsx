@@ -6,7 +6,7 @@ import {
   AccordionPanel,
 } from '@chakra-ui/accordion'
 import { Box, Text } from '@chakra-ui/layout'
-import { useBlueJeans } from '../../bluejeans/useBlueJeans'
+import { useBlueJeans, bjnApi } from '../../bluejeans/useBlueJeans'
 import { scrollBarStyle } from '../../theme/components/scrollbar'
 import OurModal from '../OurModal'
 import { useState } from 'react'
@@ -15,7 +15,7 @@ import { EditIcon } from '@chakra-ui/icons'
 import ChatBox from './ChatBox'
 
 export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => {
-  const { bjnApi, bjnParticipants } = useBlueJeans()
+  const { bjnParticipants } = useBlueJeans()
   const [currentParticipant, setCurrentParticipant] = useState()
   const [newName, setNewName] = useState()
 

@@ -25,7 +25,7 @@ import {
   onUpdateTraining,
 } from '../graphql/subscriptions'
 import { PollChoices } from './PollChoices'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans, bjnApi } from '../bluejeans/useBlueJeans'
 import { BjnMedia } from './BjnMedia'
 import FloatingRightPanel from './TrainerInSession/FloatingRightPanel'
 import SettingsModal from './SettingsModal'
@@ -52,7 +52,7 @@ export const AttendeeLanding = ({
   } = useQuery(gql(getAttendee), {
     variables: { id: attendeeId },
   })
-  const { bjnApi, bjnIsInitialized } = useBlueJeans()
+  const { bjnIsInitialized } = useBlueJeans()
   const [attendee, setAttendee] = useState()
   const joined = useRef(false)
   const [joinErrorCode, setJoinErrorCode] = useState()
@@ -168,7 +168,7 @@ export const AttendeeLanding = ({
         },
       })
     }
-  }, [attendeeAudioStateKey, attendee, bjnApi, updateCurrentAttendee])
+  }, [attendeeAudioStateKey, attendee, updateCurrentAttendee])
 
   useEffect(() => {
     if (attendee && attendee.videoStateKey !== attendeeVideoStateKey) {
@@ -184,7 +184,7 @@ export const AttendeeLanding = ({
         },
       })
     }
-  }, [attendeeVideoStateKey, attendee, bjnApi, updateCurrentAttendee])
+  }, [attendeeVideoStateKey, attendee, updateCurrentAttendee])
 
   useEffect(() => {
     if (training && training.endedAt) {
@@ -201,13 +201,10 @@ export const AttendeeLanding = ({
     }
   }, [training, attendeeId, onEndedModalOpen, updateCurrentAttendee])
 
-  const joinTraining = useCallback(
-    async (breakoutTrainingId) => {
-      bjnApi.leave(false) // sometimes doesn't ever resolve
-      window.location.href = `${window.location.origin}/attendee/${breakoutTrainingId}`
-    },
-    [bjnApi],
-  )
+  const joinTraining = useCallback(async (breakoutTrainingId) => {
+    bjnApi.leave(false) // sometimes doesn't ever resolve
+    window.location.href = `${window.location.origin}/attendee/${breakoutTrainingId}`
+  }, [])
 
   useEffect(() => {
     if (attendee) {
@@ -271,7 +268,7 @@ export const AttendeeLanding = ({
         },
       })
     }
-  }, [trainingAudioStateKey, attendee, bjnApi, training, updateCurrentAttendee])
+  }, [trainingAudioStateKey, attendee, training, updateCurrentAttendee])
 
   useEffect(() => {
     if (attendee && training && training.videoStateKey !== trainingVideoStateKey) {
@@ -287,7 +284,7 @@ export const AttendeeLanding = ({
         },
       })
     }
-  }, [trainingVideoStateKey, attendee, bjnApi, training, updateCurrentAttendee])
+  }, [trainingVideoStateKey, attendee, training, updateCurrentAttendee])
 
   useEffect(() => {
     if (attendee && !updatedJoinedTime.current) {
@@ -317,7 +314,7 @@ export const AttendeeLanding = ({
       }
     }
     joinMeeting()
-  }, [trainingStarted, trainingExpired, training, participantName, bjnIsInitialized, bjnApi])
+  }, [trainingStarted, trainingExpired, training, participantName, bjnIsInitialized])
 
   const Whiteboard = whiteboardShared ? (
     <Box marginLeft="20px">
