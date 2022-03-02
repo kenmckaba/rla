@@ -9,7 +9,7 @@ import {
 import { scrollBarStyle } from '../../theme/components/scrollbar'
 import ChatBox from './ChatBox'
 
-export const ChatPanel = ({ messages, attendees, training, myAttendeeId, paddingTop = '0px' }) => {
+export const ChatPanel = ({ attendees, training, myAttendeeId, paddingTop = '0px' }) => {
   return (
     // @ken this Accordion component declares the width for the teachers view of the chat panel
     <Accordion width="450px" paddingTop={'1vh'} defaultIndex={0} allowToggle px="1">
@@ -35,7 +35,6 @@ export const ChatPanel = ({ messages, attendees, training, myAttendeeId, padding
           boxShadow={'2xl'}
         >
           <ChatBox
-            messageList={messages}
             attendees={attendees}
             training={training}
             myAttendeeId={myAttendeeId}

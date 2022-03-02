@@ -78,7 +78,7 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
                 } else {
                   return (
                     // TODO: if (index === poll.correctAnswerIndex) show bold/checkmark or whatever
-                    <Flex id="@ken hstack" key={answer}>
+                    <Flex key={answer}>
                       {answer} {answerCount(answer)}
                       {poll.correctAnswerIndex === index && (
                         <Box marginLeft="10px" marginTop="3px">

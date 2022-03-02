@@ -14,7 +14,7 @@ import { Button, Input } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
 import ChatBox from './ChatBox'
 
-export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => {
+export const SidePanel = ({ attendees, training, attendeeId }) => {
   const { bjnParticipants } = useBlueJeans()
   const [currentParticipant, setCurrentParticipant] = useState()
   const [newName, setNewName] = useState()
@@ -97,7 +97,6 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
             </AccordionButton>
             <AccordionPanel overflowY="auto" padding="0" pb={4}>
               <ChatBox
-                messageList={chatMessages}
                 attendees={attendees}
                 training={training}
                 myAttendeeId={attendeeId}

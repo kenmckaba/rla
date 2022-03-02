@@ -422,12 +422,7 @@ export const AttendeeLanding = ({
           marginRight={!chatIsOpen}
         />
         {chatIsOpen && (
-          <SidePanel
-            attendees={attendees}
-            attendeeId={attendeeId}
-            chatMessages={chatMessages}
-            training={training}
-          />
+          <SidePanel attendees={attendees} attendeeId={attendeeId} training={training} />
         )}
       </HStack>
       <FloatingRightPanel

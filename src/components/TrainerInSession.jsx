@@ -237,14 +237,7 @@ export const TrainerInSession = ({
           onManageBreakouts={() => setShowBreakoutModal(true)}
         />
         <BjnMedia shareWebcam={shareWebcam} myAttendeeId={null} />
-        {chatIsOpen && (
-          <ChatPanel
-            messages={chatMessages}
-            attendees={attendees}
-            training={training}
-            myAttendeeId={'0'}
-          />
-        )}
+        {chatIsOpen && <ChatPanel attendees={attendees} training={training} myAttendeeId={'0'} />}
       </HStack>
 
       <FloatingRightPanel
