@@ -124,7 +124,7 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
   }
 
   return (
-    <Tr display={'table'} width={'100%'} style={{tableLayout:'fixed'}} >
+    <Tr display={'table'} width={'100%'} style={{ tableLayout: 'fixed' }}>
       <Td>
         <Accordion padding="0" width="100%" allowToggle key={poll.id}>
           <AccordionItem p={0} m={0} border="none">
@@ -179,15 +179,26 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
               </Flex>
             </AccordionButton>
             <AccordionPanel padding="0" pb={4}>
-              {poll.answers.map((answer) => {
-                return typeof answer === 'string' ? ( // huh? for some reason, one of the answers is often an answer object, not a string
-                  <Box key={answer} fontWeight="normal" padding="5px">
-                    {answer} {answerCount(answer)}
-                  </Box>
-                ) : (
-                  <Box key={answer} />
-                )
-              })}
+              {poll.type === 'TEXT'
+                ? poll.responses.items.map((response) => {
+                  const resp = response.response[0]
+                  return (
+                    <Tooltip hasArrow placement="top-start" label={resp}>
+                      <Box key={resp} fontWeight="normal" padding="5px">
+                        {resp}
+                      </Box>
+                    </Tooltip>
+                  )
+                })
+                : poll.answers.map((answer) => {
+                  return typeof answer === 'string' ? ( // huh? for some reason, one of the answers is often an answer object, not a string
+                    <Box key={answer} fontWeight="normal" padding="5px">
+                      {answer} {answerCount(answer)}
+                    </Box>
+                  ) : (
+                    <Box key={answer} />
+                  )
+                })}
             </AccordionPanel>
           </AccordionItem>
         </Accordion>

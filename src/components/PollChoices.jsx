@@ -9,6 +9,8 @@ import {
   Button,
   HStack,
   Flex,
+  Input,
+  InputGroup,
 } from '@chakra-ui/react'
 import { ReactComponent as CheckMark } from '../assets/icons/check-mark.svg'
 import { useEffect, useState } from 'react'
@@ -16,10 +18,13 @@ import { getPoll } from '../graphql/queries'
 import { usePollResponses } from './usePollResponses'
 
 export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
-  const [value, setValue] = useState()
+  const [response, setResponse] = useState()
   const [poll, setPoll] = useState()
   const [disabled, setDisabled] = useState(false)
   const responseCounts = usePollResponses(poll)
+  const setAnswer = (answer) => {
+    setResponse(answer)
+  }
 
   const {
     data: pollData,
@@ -48,7 +53,7 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
 
   const submit = () => {
     setDisabled(true)
-    onSubmit(value)
+    onSubmit(response)
   }
 
   const answerCount = (answer) => {
@@ -66,7 +71,7 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
       <Box fontWeight="bold">{poll.question}</Box>
       <Box paddingLeft="10px">
         {poll.type === 'SINGLECHOICE' ? (
-          <RadioGroup onChange={setValue} value={value}>
+          <RadioGroup onChange={setAnswer} value={response}>
             <VStack alignItems="baseline">
               {poll.answers.map((answer, index) => {
                 if (pollMode === 'POLL') {
@@ -91,8 +96,8 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
               })}
             </VStack>
           </RadioGroup>
-        ) : (
-          <CheckboxGroup onChange={setValue} value={value}>
+        ) : poll.type === 'MULTICHOICE' ? (
+          <CheckboxGroup onChange={setAnswer} value={response}>
             <VStack alignItems="baseline">
               {poll.answers.map((answer) => {
                 return pollMode === 'POLL' ? (
@@ -107,11 +112,27 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
               })}
             </VStack>
           </CheckboxGroup>
+        ) : (
+          // <InputGroup onChange={setResponse} value={response}>
+          <VStack alignItems="baseline">
+            {/* <Input placeholder="Type your answer here" size="sm" key={answer} value={answer}>
+                {answer}
+              </Input> */}
+            <Input
+              placeholder="Type your answer here"
+              size="sm"
+              onChange={(event) => {
+                setAnswer(event.target.value)
+              }}
+              value={response}
+            />
+          </VStack>
+          // </InputGroup>
         )}
       </Box>
       {pollMode === 'POLL' && (
         <HStack>
-          <Button size="xs" onClick={submit} isDisabled={disabled || !value}>
+          <Button size="xs" onClick={submit} isDisabled={disabled || !response}>
             Submit
           </Button>
           {disabled && <Box>Thanks for your response!</Box>}

@@ -354,7 +354,7 @@ export const AttendeeLanding = ({
         input: {
           pollId: currentPoll.id,
           attendeeId: attendee.id,
-          response: response,
+          response,
         },
       },
     })

@@ -17,6 +17,7 @@ import { useStoredPolls } from './useStoredPolls'
 
 const SingleChoice = 'SINGLECHOICE'
 const MultiChoice = 'MULTICHOICE'
+const Text = 'TEXT'
 
 export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
   const [catalogModalOpen, setCatalogModalOpen] = useState(false)
@@ -109,56 +110,61 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
               <HStack direction="row">
                 <Radio value={SingleChoice}>Single choice</Radio>
                 <Radio value={MultiChoice}>Multiple choice</Radio>
+                <Radio value={Text}>Free Response</Radio>
               </HStack>
             </RadioGroup>
           </Flex>
         </FormControl>
-        <FormControl pb={1} isRequired>
-          <FormLabel fontWeight="bold" textTransform="uppercase">
-            Options
-          </FormLabel>
-          <FormLabel fontWeight="bold">Select the correct answer from the options below</FormLabel>
-          <Box
-            justifyContent="center"
-            alignItems="center"
-            border="1px solid lightgrey"
-            borderRadius="4px"
-            height="fit-content"
-            padding="4px"
-          >
-            <RadioGroup onChange={setChecked} name="correctAnswer" value={correctAnswerIndex}>
-              {answers.map((answer, index) => {
-                // TODO: add checkbox or radio to choose correct answer and set poll.correctAnswerIndex
-                // should be able to choose none
-                return (
-                  <HStack>
-                    <Input
-                      key={index}
-                      height="24px"
-                      marginBottom="2px"
-                      value={answer}
-                      onChange={(e) => {
-                        onChangeAnswer(index, e)
-                      }}
-                    />
-                    <Radio value={index} name="correctAnswer" />
-                  </HStack>
-                )
-              })}
-            </RadioGroup>
-
-            <Button
-              minW="128px"
-              onClick={addAnswer}
-              size="xs"
-              icon={<AddIcon />}
-              variant="primary-trueblue"
-              borderRadius="6px"
+        {pollType !== 'TEXT' && (
+          <FormControl pb={1} isRequired>
+            <FormLabel fontWeight="bold" textTransform="uppercase">
+              Options
+            </FormLabel>
+            <FormLabel fontWeight="bold">
+              Select the correct answer from the options below
+            </FormLabel>
+            <Box
+              justifyContent="center"
+              alignItems="center"
+              border="1px solid lightgrey"
+              borderRadius="4px"
+              height="fit-content"
+              padding="4px"
             >
-              Add an option
-            </Button>
-          </Box>
-        </FormControl>
+              <RadioGroup onChange={setChecked} name="correctAnswer" value={correctAnswerIndex}>
+                {answers.map((answer, index) => {
+                  // TODO: add checkbox or radio to choose correct answer and set poll.correctAnswerIndex
+                  // should be able to choose none
+                  return (
+                    <HStack>
+                      <Input
+                        key={index}
+                        height="24px"
+                        marginBottom="2px"
+                        value={answer}
+                        onChange={(e) => {
+                          onChangeAnswer(index, e)
+                        }}
+                      />
+                      <Radio value={index} name="correctAnswer" />
+                    </HStack>
+                  )
+                })}
+              </RadioGroup>
+
+              <Button
+                minW="128px"
+                onClick={addAnswer}
+                size="xs"
+                icon={<AddIcon />}
+                variant="primary-trueblue"
+                borderRadius="6px"
+              >
+                Add an option
+              </Button>
+            </Box>
+          </FormControl>
+        )}
       </Box>
       <HStack float="right" mt="3" mb="3" width="100%" justifyContent="space-between">
         <Button size="md" onClick={handleSubmit}>
