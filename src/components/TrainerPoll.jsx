@@ -160,21 +160,27 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
                 <Tooltip hasArrow placement="right" label="Duplicate poll">
                   <CopyIcon marginRight="5px" marginTop="3px" onClick={(e) => duplicate(e, poll)} />
                 </Tooltip>
-                <Button
-                  size="xs"
-                  fontWeight="bold"
-                  minW="80px"
-                  backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'transparent'}
-                  padding="1px"
-                  variant="outline"
-                  color="#7a96b8"
-                  onClick={(e) => {
-                    startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
-                  }}
-                  isDisabled={startedPoll && startedPoll.id !== poll.id}
-                >
-                  {startedPoll?.id === poll.id ? 'Stop' : poll.stoppedAt ? 'Share' : 'Launch'}
-                </Button>
+                {!(poll.type === 'TEXT' && poll.stoppedAt) && (
+                  <Button
+                    size="xs"
+                    fontWeight="bold"
+                    minW="80px"
+                    backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'transparent'}
+                    padding="1px"
+                    variant="outline"
+                    color="#7a96b8"
+                    onClick={(e) => {
+                      startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
+                    }}
+                    isDisabled={startedPoll && startedPoll.id !== poll.id}
+                  >
+                    {startedPoll?.id === poll.id
+                      ? 'Stop'
+                      : poll.stoppedAt && poll.type !== 'TEXT'
+                        ? 'Share'
+                        : 'Launch'}
+                  </Button>
+                )}
                 <AccordionIcon />
               </Flex>
             </AccordionButton>
@@ -182,10 +188,12 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
               {poll.type === 'TEXT'
                 ? poll.responses.items.map((response) => {
                   const resp = response.response[0]
+                  const respOutput = resp
                   return (
                     <Tooltip hasArrow placement="top-start" label={resp}>
                       <Box key={resp} fontWeight="normal" padding="5px">
-                        {resp}
+                        {resp.length > 25 ? resp.substring(0, 25) + '...' : resp}
+                        {/* {resp.substring(0, 25) + '...'} */}
                       </Box>
                     </Tooltip>
                   )

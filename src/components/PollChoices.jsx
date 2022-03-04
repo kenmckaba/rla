@@ -11,6 +11,7 @@ import {
   Flex,
   Input,
   InputGroup,
+  Textarea,
 } from '@chakra-ui/react'
 import { ReactComponent as CheckMark } from '../assets/icons/check-mark.svg'
 import { useEffect, useState } from 'react'
@@ -113,21 +114,16 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
             </VStack>
           </CheckboxGroup>
         ) : (
-          // <InputGroup onChange={setResponse} value={response}>
           <VStack alignItems="baseline">
-            {/* <Input placeholder="Type your answer here" size="sm" key={answer} value={answer}>
-                {answer}
-              </Input> */}
-            <Input
+            <Textarea
               placeholder="Type your answer here"
-              size="sm"
+              w="180%"
               onChange={(event) => {
                 setAnswer(event.target.value)
               }}
               value={response}
             />
           </VStack>
-          // </InputGroup>
         )}
       </Box>
       {pollMode === 'POLL' && (
