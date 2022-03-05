@@ -2080,6 +2080,7 @@ export const onCreateStoredPoll = /* GraphQL */ `
   subscription OnCreateStoredPoll {
     onCreateStoredPoll {
       id
+      tags
       question
       type
       answers
@@ -2092,6 +2093,7 @@ export const onUpdateStoredPoll = /* GraphQL */ `
   subscription OnUpdateStoredPoll {
     onUpdateStoredPoll {
       id
+      tags
       question
       type
       answers
@@ -2104,6 +2106,7 @@ export const onDeleteStoredPoll = /* GraphQL */ `
   subscription OnDeleteStoredPoll {
     onDeleteStoredPoll {
       id
+      tags
       question
       type
       answers
@@ -2444,6 +2447,7 @@ export const onCreateInvitedStudent = /* GraphQL */ `
       timeSent
       name
       email
+      attendeeId
       createdAt
       updatedAt
     }
@@ -2457,6 +2461,7 @@ export const onUpdateInvitedStudent = /* GraphQL */ `
       timeSent
       name
       email
+      attendeeId
       createdAt
       updatedAt
     }
@@ -2470,6 +2475,7 @@ export const onDeleteInvitedStudent = /* GraphQL */ `
       timeSent
       name
       email
+      attendeeId
       createdAt
       updatedAt
     }
