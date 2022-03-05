@@ -1892,6 +1892,7 @@ export const createStoredPoll = /* GraphQL */ `
   ) {
     createStoredPoll(input: $input, condition: $condition) {
       id
+      tags
       question
       type
       answers
@@ -1907,6 +1908,7 @@ export const updateStoredPoll = /* GraphQL */ `
   ) {
     updateStoredPoll(input: $input, condition: $condition) {
       id
+      tags
       question
       type
       answers
@@ -1922,6 +1924,7 @@ export const deleteStoredPoll = /* GraphQL */ `
   ) {
     deleteStoredPoll(input: $input, condition: $condition) {
       id
+      tags
       question
       type
       answers
@@ -2301,6 +2304,7 @@ export const createInvitedStudent = /* GraphQL */ `
       timeSent
       name
       email
+      attendeeId
       createdAt
       updatedAt
     }
@@ -2317,6 +2321,7 @@ export const updateInvitedStudent = /* GraphQL */ `
       timeSent
       name
       email
+      attendeeId
       createdAt
       updatedAt
     }
@@ -2333,6 +2338,7 @@ export const deleteInvitedStudent = /* GraphQL */ `
       timeSent
       name
       email
+      attendeeId
       createdAt
       updatedAt
     }

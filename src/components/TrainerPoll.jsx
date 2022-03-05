@@ -12,7 +12,6 @@ import {
   Td,
   Flex,
   Text,
-  Spacer,
   Tooltip,
 } from '@chakra-ui/react'
 import { buildSubscription } from 'aws-appsync'

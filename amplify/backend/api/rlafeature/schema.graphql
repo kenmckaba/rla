@@ -125,6 +125,7 @@ type Poll
 
 type StoredPoll @model @auth(rules: [{ allow: private, provider: iam }]) {
   id: ID!
+  tags: String
   question: String!
   type: PollType!
   answers: [String]
@@ -174,6 +175,7 @@ type InvitedStudent @model @auth(rules: [{ allow: private, provider: iam }]) {
   timeSent: AWSDateTime
   name: String
   email: String
+  attendeeId: ID
 }
 
 type EmailContent @model @auth(rules: [{ allow: private, provider: iam }]) {
