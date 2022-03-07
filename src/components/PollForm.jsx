@@ -120,9 +120,11 @@ export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
             <FormLabel fontWeight="bold" textTransform="uppercase">
               Options
             </FormLabel>
-            <FormLabel fontWeight="bold">
-              Select the correct answer from the options below
-            </FormLabel>
+            {pollType === 'SINGLECHOICE' && (
+              <FormLabel fontWeight="bold">
+                Select the correct answer from the options below
+              </FormLabel>
+            )}
             <Box
               justifyContent="center"
               alignItems="center"
@@ -146,7 +148,7 @@ export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
                           onChangeAnswer(index, e)
                         }}
                       />
-                      <Radio value={index} name="correctAnswer" />
+                      {pollType === 'SINGLECHOICE' && <Radio value={index} name="correctAnswer" />}
                     </HStack>
                   )
                 })}
