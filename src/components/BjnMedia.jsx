@@ -1,11 +1,61 @@
-import { Center, Flex, VStack, Wrap, WrapItem, Select, Box } from '@chakra-ui/react'
+import { Center, Flex, VStack, Wrap, WrapItem, Box } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans, bjnWebcamLayouts, bjnApi } from '../bluejeans/useBlueJeans'
 import { MyCamera } from './MyCamera'
+import './bjn-media.css'
+
+const calcVideoSize = (count) => {
+  switch (count) {
+  case 1:
+    return '100%'
+  case 2:
+  case 3:
+  case 4:
+    return '50%'
+  case 5:
+  case 6:
+  case 7:
+  case 8:
+  case 9:
+    return '33.33%'
+  default:
+    return '25%'
+  }
+}
+
+const findVids = (remoteVideoDiv) => {
+  const videosElems = remoteVideoDiv.querySelectorAll('[class^="ThumbnailVideo"]')
+  const newSize = calcVideoSize(videosElems.length)
+  console.log('trackVideoSizes findVids  bjnWebcamLayouts vids.length', videosElems.length, newSize)
+  videosElems.forEach((vid) => {
+    vid.style.height = newSize
+    vid.style.width = newSize
+  })
+}
+
+let lastDivObserver
+
+const cancelDivObserver = () => {
+  if (lastDivObserver) {
+    lastDivObserver.disconnect()
+    lastDivObserver = null
+  }
+}
+
+const trackVideoSizes = (remoteVideoDiv) => {
+  console.log('trackVideoSizes bjnWebcamLayouts', remoteVideoDiv)
+  cancelDivObserver()
+  var observer = new MutationObserver((mutations) => {
+    console.log('trackVideoSizes  videoLayout mutations', mutations)
+    findVids(remoteVideoDiv)
+  })
+  lastDivObserver = observer
+  observer.observe(remoteVideoDiv, { childList: true, subtree: true })
+  findVids(remoteVideoDiv)
+}
 
 export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, training }) => {
   const {
-    bjnApi,
     bjnIsConnected,
     bjnReceivingScreenShare,
     bjnParticipants,
@@ -13,40 +63,81 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
     bjnVideoLayout,
   } = useBlueJeans()
   const [camsOn, setCamsOn] = useState(true)
-  const [lastVideoLayout, setLastVideoLayout] = useState('GALLERY')
+  const [lastVideoLayout, setLastVideoLayout] = useState(bjnWebcamLayouts.GALLERY)
   const [showMedia, setShowMedia] = useState(true)
   const remoteVideoRef = useRef(null)
   const remoteContentRef = useRef(null)
+  const [attached, setAttached] = useState(false)
+  const timeoutHandle = useRef(0)
 
-  // useEffect(() => {
-  //   setCamsOn(bjnVideoState === 'ACTIVE')
-  // }, [bjnVideoState])
+  const clearTimeoutHandle = () => {
+    if (timeoutHandle.current) {
+      clearTimeout(timeoutHandle.current)
+      timeoutHandle.current = 0
+    }
+  }
+
+  useEffect(() => {
+    console.log('trackVideoSizes videoLayout attached', attached, bjnVideoLayout, !!lastDivObserver)
+    if (attached) {
+      if (bjnVideoLayout === bjnWebcamLayouts.GALLERY) {
+        console.log('trackVideoSizes videoLayout GALLERY')
+        trackVideoSizes(remoteVideoRef.current)
+      } else {
+        cancelDivObserver()
+      }
+    }
+  }, [bjnVideoLayout, attached])
+
+  useEffect(() => {
+    setCamsOn(bjnVideoState === 'ACTIVE')
+  }, [bjnVideoState])
 
   useEffect(() => {
     if (bjnIsConnected) {
       bjnApi.attachRemoteContent(remoteContentRef.current)
       bjnApi.attachRemoteVideo(remoteVideoRef.current)
+      setAttached(true)
     }
-  }, [bjnIsConnected, bjnApi])
-
-  // useEffect(() => {
-  //   const show = (bjnReceivingScreenShare || camsOn) && bjnIsConnected
-  //   setShowMedia(show)
-  // }, [bjnReceivingScreenShare, camsOn, bjnIsConnected])
+    return cancelDivObserver
+  }, [bjnIsConnected])
 
   useEffect(() => {
+    console.log(
+      'trackVideoSizes videoLayout bjnReceivingScreenShare',
+      bjnReceivingScreenShare,
+      camsOn,
+    )
+
+    const show = (bjnReceivingScreenShare || camsOn) && bjnIsConnected
+    setShowMedia(show)
+  }, [bjnReceivingScreenShare, camsOn, bjnIsConnected])
+
+  useEffect(() => {
+    console.log('trackv receiving', bjnReceivingScreenShare, camsOn)
     if (camsOn && bjnReceivingScreenShare) {
-      bjnApi.setVideoLayout('FILMSTRIP')
+      console.log('trackv new videoLayout FILMSTRIP')
+      clearTimeoutHandle()
+      cancelDivObserver()
+      bjnApi.setVideoLayout(bjnWebcamLayouts.FILMSTRIP)
     }
     if (!bjnReceivingScreenShare) {
-      bjnApi.setVideoLayout(lastVideoLayout)
-    }
-  }, [bjnReceivingScreenShare, camsOn, bjnApi, lastVideoLayout])
+      console.log('trackv new videoLayout GALLERY', lastVideoLayout, bjnVideoLayout)
+      bjnApi.setVideoLayout(bjnWebcamLayouts.GALLERY)
+      clearTimeoutHandle()
 
-  const setLayout = (e) => {
-    setLastVideoLayout(e.target.value)
-    bjnApi.setVideoLayout(e.target.value)
-  }
+      // bug in bjn sdk 1.0.0: setVideoLayout doesn't work for 3 seconds
+      timeoutHandle.current = setTimeout(() => {
+        bjnApi.setVideoLayout(bjnWebcamLayouts.GALLERY)
+        timeoutHandle.current = 0
+      }, 3000)
+    }
+  }, [bjnReceivingScreenShare, camsOn, lastVideoLayout, bjnVideoLayout])
+
+  // const setLayout = (e) => {
+  //   setLastVideoLayout(e.target.value)
+  //   bjnApi.setVideoLayout(e.target.value)
+  // }
 
   return (
     <Flex
@@ -99,11 +190,11 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
           style={{
             width: '100%',
             height: '100%',
-            position: 'relative',
+            position: 'absolute',
             bottom: 0,
           }}
         />
-        {camsOn && !bjnReceivingScreenShare && (
+        {/* {camsOn && !bjnReceivingScreenShare && (
           <Select
             size="xs"
             onChange={setLayout}
@@ -120,7 +211,7 @@ export const BjnMedia = ({ shareWebcam, myAttendeeId, marginLeft, marginRight, t
               return <option key={index}>{layout}</option>
             })}
           </Select>
-        )}
+        )} */}
       </VStack>
 
       {!showMedia && (

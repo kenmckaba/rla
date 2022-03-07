@@ -1,44 +1,71 @@
 import { Flex, HStack, VStack } from '@chakra-ui/layout'
 import { Select, FormControl, FormLabel, Input, Button, Box } from '@chakra-ui/react'
 import ChatMessage from './ChatMessage'
-import { useMutation, gql } from '@apollo/client'
+import { useQuery, useMutation, gql } from '@apollo/client'
 import { createChatMessage } from '../../graphql/mutations'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
+import { listChatMessages } from '../../graphql/queries'
+import { buildSubscription } from 'aws-appsync'
+import { onCreateChatMessage } from '../../graphql/subscriptions'
 
 const trainerMsgId = '0'
 const allMsgId = '1'
 
-export default function ChatBox({
-  messageList,
-  attendees,
-  training,
-  myAttendeeId,
-  maxWidth = '100%',
-  minHeight = '200px',
-  maxHeight = '40vh',
-}) {
+export default function ChatBox({ attendees, training, myAttendeeId, maxWidth = '100%', ht }) {
+  // appears to have less lost msgs if we query here, rather than pass msgs as prop
+  const { data: messagesData, subscribeToMore } = useQuery(gql(listChatMessages), {
+    variables: { filter: { trainingId: { eq: training.id } } },
+  })
+
   const [destination, setDestination] = useState(allMsgId)
   const [content, setContent] = useState('')
   const [addNewChatMessage] = useMutation(gql(createChatMessage))
+  const lastSent = useRef(Promise.resolve)
+  const sendQueue = useRef([])
+
+  useEffect(() => {
+    if (subscribeToMore) {
+      const cleanupFuncs = [
+        subscribeToMore(buildSubscription(gql(onCreateChatMessage), gql(listChatMessages))),
+      ]
+      return () => {
+        cleanupFuncs.forEach((func) => func && func())
+      }
+    }
+  }, [subscribeToMore])
 
   const messages = useMemo(() => {
-    const temp = [...messageList]
-    return temp.sort((a, b) => (a.timeSent > b.timeSent ? -1 : 1))
-  }, [messageList])
+    if (messagesData) {
+      const temp = [...messagesData.listChatMessages.items]
+      return temp.sort((a, b) => (a.timeSent > b.timeSent ? -1 : 1))
+    } else {
+      return []
+    }
+  }, [messagesData])
 
   const onSend = async () => {
-    await addNewChatMessage({
-      variables: {
-        input: {
-          toId: destination,
-          fromId: myAttendeeId,
-          trainingId: training.id,
-          content,
-          timeSent: new Date().toISOString(),
-        },
-      },
-    })
+    if (!content?.length) {
+      return
+    }
+
+    sendQueue.current.push(content)
     setContent('')
+
+    let msg
+    while ((msg = sendQueue.current.shift())) {
+      await lastSent.current
+      lastSent.current = addNewChatMessage({
+        variables: {
+          input: {
+            toId: destination,
+            fromId: myAttendeeId,
+            trainingId: training.id,
+            content: msg,
+            timeSent: new Date().toISOString(),
+          },
+        },
+      })
+    }
   }
 
   const handleMessage = (e) => {
@@ -74,13 +101,12 @@ export default function ChatBox({
       flexDirection="column"
       color="black"
       maxWidth={maxWidth}
-      minHeight={minHeight}
-      maxHeight={maxHeight}
       bg="#ffffff"
       borderBottomRadius="8px"
       padding={2}
       justifyContent="end"
       overflow-y="scroll"
+      height={ht}
     >
       <VStack overflow="auto" flexDirection="column-reverse">
         {messages.reduce((acc, message) => {

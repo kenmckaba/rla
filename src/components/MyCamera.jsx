@@ -3,7 +3,7 @@ import { Collapse } from '@chakra-ui/transition'
 import { useEffect, useRef, useState } from 'react'
 import { ReactComponent as DoubleArrowRightIcon } from '../assets/icons/double-arrow-right.svg'
 import { ReactComponent as DoubleArrowLeftIcon } from '../assets/icons/double-arrow-left.svg'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans, bjnApi } from '../bluejeans/useBlueJeans'
 import { useMutation, gql } from '@apollo/client'
 import { updateAttendee } from '../graphql/mutations'
 import { webcamCapture } from '../utils/webcam-capture'
@@ -28,7 +28,7 @@ const Header = ({ onDisplayClick, isOpen }) => (
 
 export const MyCamera = ({ myAttendeeId }) => {
   const [isOpen, setIsOpen] = useState(true)
-  const { bjnApi, bjnVideoMuted } = useBlueJeans()
+  const { bjnVideoMuted } = useBlueJeans()
   const localVideoRef = useRef(null)
   const faceCaptureInterval = useRef(0)
   const [updateCurrentAttendee] = useMutation(gql(updateAttendee))
@@ -84,7 +84,7 @@ export const MyCamera = ({ myAttendeeId }) => {
 
   useEffect(() => {
     bjnApi.attachLocalVideo(localVideoRef.current)
-  }, [bjnApi])
+  }, [])
 
   const collapse = () => {
     setIsOpen(!isOpen)

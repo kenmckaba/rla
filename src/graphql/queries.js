@@ -977,6 +977,7 @@ export const getStoredPoll = /* GraphQL */ `
   query GetStoredPoll($id: ID!) {
     getStoredPoll(id: $id) {
       id
+      tags
       question
       type
       answers
@@ -994,6 +995,7 @@ export const listStoredPolls = /* GraphQL */ `
     listStoredPolls(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        tags
         question
         type
         answers
@@ -1233,6 +1235,7 @@ export const getInvitedStudent = /* GraphQL */ `
       timeSent
       name
       email
+      attendeeId
       createdAt
       updatedAt
     }
@@ -1251,6 +1254,7 @@ export const listInvitedStudents = /* GraphQL */ `
         timeSent
         name
         email
+        attendeeId
         createdAt
         updatedAt
       }

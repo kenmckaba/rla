@@ -11,7 +11,9 @@ export const SharedDocs = ({ trainingId, sharedDocs, trainerMode, saveTraining }
   const [updateCurrentSharedDoc] = useMutation(gql(updateSharedDoc))
 
   const addSharedDoc = () => {
-    saveTraining()
+    if (saveTraining) {
+      saveTraining()
+    }
     setCurrentSharedDoc(null)
     onModalOpen()
   }

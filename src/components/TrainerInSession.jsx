@@ -19,7 +19,7 @@ import {
 import { buildSubscription } from 'aws-appsync'
 import { PollModal } from './PollModal'
 import { WhiteboardModal } from './WhiteboardModal'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans, bjnApi } from '../bluejeans/useBlueJeans'
 import { BjnMedia } from './BjnMedia'
 import LeftPanel from './TrainerInSession/LeftPanel'
 import FloatingRightPanel from './TrainerInSession/FloatingRightPanel'
@@ -32,6 +32,8 @@ import OurModal from './OurModal'
 import { BreakoutForm } from './BreakoutForm'
 import { useDisconnectedWarning } from './useDisconnectedWarning'
 import { CamInUseModal } from './CamInUseModal'
+import { useUnreadMsgCount } from './useUnreadMsgCount'
+import { ConfirmationModal } from './ConfirmationModal'
 
 export const TrainerInSession = ({
   match: {
@@ -52,7 +54,7 @@ export const TrainerInSession = ({
   const [ended, setEnded] = useState(false)
   const [joinErrorCode, setJoinErrorCode] = useState()
   const joined = useRef(false)
-  const { bjnApi, bjnIsInitialized } = useBlueJeans()
+  const { bjnIsInitialized } = useBlueJeans()
   const {
     data: trainingData,
     error,
@@ -80,6 +82,7 @@ export const TrainerInSession = ({
   } = useDisclosure()
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [showEndModal, setShowEndModal] = useState(false)
+  const [confirmSendLogs, setConfirmSendLogs] = useState(false)
   const [showEndTrainingModal, setShowEndTrainingModal] = useState(false)
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [hoverFloatingRightPanel, setHoverFloatingRightPanel] = useState(false)
@@ -88,6 +91,7 @@ export const TrainerInSession = ({
   const history = useHistory()
   useDisconnectedWarning(ended)
   const handleEndTrainingModalClick = () => setShowEndModal(true)
+  const unreadChatMsgCount = useUnreadMsgCount(chatMessages, chatIsOpen)
 
   /* Mouse Movement Listener */
   const displayTime = 1000 //ms
@@ -176,7 +180,7 @@ export const TrainerInSession = ({
       if (training && bjnIsInitialized && !joined.current) {
         joined.current = true
         try {
-          await bjnApi.requestAllPermissions()
+          // await bjnApi.requestAllPermissions()
           await bjnApi.join(training.meetingId, training.moderatorPasscode, training.trainerName)
         } catch (e) {
           console.error('rla-log: error joining', e)
@@ -185,7 +189,7 @@ export const TrainerInSession = ({
       }
     }
     joinMeeting()
-  }, [training, bjnApi, bjnIsInitialized])
+  }, [training, bjnIsInitialized])
 
   const handleEndTrainingClick = () => {
     setShowEndModal(false)
@@ -233,14 +237,7 @@ export const TrainerInSession = ({
           onManageBreakouts={() => setShowBreakoutModal(true)}
         />
         <BjnMedia shareWebcam={shareWebcam} myAttendeeId={null} />
-        {chatIsOpen && (
-          <ChatPanel
-            messages={chatMessages}
-            attendees={attendees}
-            training={training}
-            myAttendeeId={'0'}
-          />
-        )}
+        {chatIsOpen && <ChatPanel attendees={attendees} training={training} myAttendeeId={'0'} />}
       </HStack>
 
       <FloatingRightPanel
@@ -256,6 +253,7 @@ export const TrainerInSession = ({
         showWhiteboard={onWhiteboardModalOpen}
         handleChatVisibility={() => setChatIsOpen((prev) => !prev)}
         handleEndTrainingModalClick={handleEndTrainingModalClick}
+        unreadChatMsgCount={unreadChatMsgCount}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
       <OurModal header="Manage breakout" isOpen={showBreakoutModal}>
@@ -267,6 +265,7 @@ export const TrainerInSession = ({
         trainingId={trainingId}
         isOpen={isSharedDocModalOpen}
         onClose={onSharedDocModalClose}
+        saveTraining={updateCurrentTraining}
       />
       <PollModal
         trainingId={trainingId}
@@ -287,7 +286,29 @@ export const TrainerInSession = ({
           <Button onClick={() => setShowEndModal(false)}>Cancel</Button>
         </HStack>
       </OurModal>
+      <ConfirmationModal
+        headerMsg="Upload debug logs?"
+        okLabel="Upload"
+        msg="If you had a technical problem, please press 'Send' and notify us of your problem."
+        isOpen={confirmSendLogs}
+        onCancel={() => setConfirmSendLogs(false)}
+        onOk={() => {
+          bjnApi.sendLogs()
+          setConfirmSendLogs(false)
+        }}
+      />
       <CamInUseModal code={joinErrorCode} />
+      <Button
+        onClick={() => setConfirmSendLogs(true)}
+        variant="link"
+        position="absolute"
+        top="10px"
+        left="10px"
+        size="xs"
+        color="darkgrey"
+      >
+        Upload logs
+      </Button>
     </Box>
   )
 }

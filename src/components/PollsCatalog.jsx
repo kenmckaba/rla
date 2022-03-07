@@ -2,18 +2,9 @@ import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
 import { createStoredPoll, updateStoredPoll } from '../graphql/mutations'
 
-import {
-  Modal,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalOverlay,
-  ModalContent,
-} from '@chakra-ui/react'
-import { Button } from '@chakra-ui/button'
 import OurModal from './OurModal'
 import { PollForm } from './PollForm'
-import { useStoredPolls } from './useStoredPolls'
+import { StoredPolls } from './StoredPolls'
 
 export const PollsCatalog = ({ isOpen, onClose }) => {
   const [addNewStoredPoll] = useMutation(gql(createStoredPoll))
@@ -26,7 +17,7 @@ export const PollsCatalog = ({ isOpen, onClose }) => {
     setAddPollModalOpen(true)
   }
 
-  const savePoll = async ({ pollId, question, trainingId, type, answers }) => {
+  const savePoll = async ({ pollId, question, type, answers, tags }) => {
     if (pollId) {
       await editStoredPoll({
         variables: {
@@ -35,6 +26,7 @@ export const PollsCatalog = ({ isOpen, onClose }) => {
             question,
             type,
             answers,
+            tags,
           },
         },
       })
@@ -45,6 +37,7 @@ export const PollsCatalog = ({ isOpen, onClose }) => {
             question,
             type,
             answers,
+            tags,
           },
         },
       })
@@ -56,23 +49,16 @@ export const PollsCatalog = ({ isOpen, onClose }) => {
     setAddPollModalOpen(true)
   }
 
-  const storedPolls = useStoredPolls(editPoll)
-
   return (
     <>
-      <Modal variant="primary-transparent" isOpen={isOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent color="darkKnight.700">
-          <ModalHeader>Manage polls catalog</ModalHeader>
-          <ModalBody>{storedPolls}</ModalBody>
-          <ModalFooter justifyContent="space-around">
-            <Button onClick={addPoll}>Add a poll</Button>
-            <Button onClick={onClose} variant="outline">
-              Done
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <StoredPolls
+        header="Manage polls catalog"
+        onPollClick={editPoll}
+        isOpen={isOpen}
+        onClose={onClose}
+        onAddPoll={addPoll}
+      />
+
       <OurModal header={pollToEdit ? 'Poll' : 'New poll'} isOpen={addPollModalOpen}>
         <PollForm
           poll={pollToEdit}

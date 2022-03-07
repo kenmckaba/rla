@@ -12,22 +12,23 @@ import {
   Textarea,
 } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
-import OurModal from './OurModal'
-import { useStoredPolls } from './useStoredPolls'
-
 const SingleChoice = 'SINGLECHOICE'
 const MultiChoice = 'MULTICHOICE'
 const Text = 'TEXT'
 
-export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
-  const [catalogModalOpen, setCatalogModalOpen] = useState(false)
+export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
   const [question, setQuestion] = useState(poll?.question || '')
+  const [tags, setTags] = useState(poll?.tags || '')
   const [answers, setAnswers] = useState(poll?.answers || ['', ''])
   const [pollType, setPollType] = useState(poll?.type || SingleChoice)
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(poll?.correctAnswerIndex)
 
   const onChangeQuestion = (event) => {
     setQuestion(event.target.value)
+  }
+
+  const onChangeTags = (event) => {
+    setTags(event.target.value)
   }
 
   const handleSubmit = async () => {
@@ -40,7 +41,7 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
     }, [])
 
     // TODO: add correctAnswerIndex (can be null)
-    onSave({ pollId: poll?.id, question, type: pollType, answers: ans, correctAnswerIndex })
+    onSave({ pollId: poll?.id, question, type: pollType, answers: ans, correctAnswerIndex, tags })
     onClose()
   }
 
@@ -60,22 +61,14 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
     onClose()
   }
 
-  const chooseStoredPoll = (poll) => {
-    console.log('poll', poll)
-    setQuestion(poll.question)
-    setAnswers(poll.answers)
-    setPollType(poll.type)
-  }
-
   const setChecked = (val) => {
     setCorrectAnswerIndex(val)
   }
-  const storedPolls = useStoredPolls(chooseStoredPoll)
 
   return (
     <>
       <Box backgroundColor="aliceblue">
-        {showCatalog && (
+        {onShowCatalog ? (
           <Flex justifyContent="right">
             <Button
               size="xs"
@@ -83,11 +76,18 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
               height="15px"
               paddingLeft="3px"
               paddingRight="3px"
-              onClick={() => setCatalogModalOpen(true)}
+              onClick={onShowCatalog}
             >
               Choose from polls catalog
             </Button>
           </Flex>
+        ) : (
+          <FormControl pb={1}>
+            <FormLabel fontWeight="bold" textTransform="uppercase">
+              Tags
+            </FormLabel>
+            <Input variant="filled" type="text" value={tags} onChange={onChangeTags} />
+          </FormControl>
         )}
         <FormControl pb={1} isRequired>
           <FormLabel fontWeight="bold" textTransform="uppercase">
@@ -174,13 +174,6 @@ export const PollForm = ({ poll, onClose, onSave, showCatalog }) => {
           Cancel
         </Button>
       </HStack>
-      <OurModal
-        isOpen={catalogModalOpen}
-        header="Choose poll to copy"
-        footer={<Button onClick={() => setCatalogModalOpen(false)}>OK</Button>}
-      >
-        {storedPolls}
-      </OurModal>
     </>
   )
 }

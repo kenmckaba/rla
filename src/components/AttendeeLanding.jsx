@@ -13,6 +13,8 @@ import {
   ModalContent,
   ModalBody,
   Center,
+  VStack,
+  Text,
 } from '@chakra-ui/react'
 import { createPollResponse, updateAttendee } from '../graphql/mutations'
 import { buildSubscription } from 'aws-appsync'
@@ -23,7 +25,7 @@ import {
   onUpdateTraining,
 } from '../graphql/subscriptions'
 import { PollChoices } from './PollChoices'
-import { useBlueJeans } from '../bluejeans/useBlueJeans'
+import { useBlueJeans, bjnApi } from '../bluejeans/useBlueJeans'
 import { BjnMedia } from './BjnMedia'
 import FloatingRightPanel from './TrainerInSession/FloatingRightPanel'
 import SettingsModal from './SettingsModal'
@@ -33,6 +35,9 @@ import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { SidePanel } from './ChatComponents/SidePanel'
 import { useDisconnectedWarning } from './useDisconnectedWarning'
 import { CamInUseModal } from './CamInUseModal'
+import { useUnreadMsgCount } from './useUnreadMsgCount'
+import { ConfirmationModal } from './ConfirmationModal'
+import { timestampToPrettyTime } from '../utils/pretty-time'
 
 export const AttendeeLanding = ({
   match: {
@@ -47,7 +52,7 @@ export const AttendeeLanding = ({
   } = useQuery(gql(getAttendee), {
     variables: { id: attendeeId },
   })
-  const { bjnApi, bjnIsInitialized } = useBlueJeans()
+  const { bjnIsInitialized } = useBlueJeans()
   const [attendee, setAttendee] = useState()
   const joined = useRef(false)
   const [joinErrorCode, setJoinErrorCode] = useState()
@@ -70,6 +75,8 @@ export const AttendeeLanding = ({
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [chatMessages, setChatMessages] = useState([])
   const [answeredPolls, setAnsweredPolls] = useState([])
+  // const [unreadChatMsgCount, setUnreadMsgCount] = useState(0)
+  // const chatMsgCount = useRef(0)
 
   const {
     isOpen: isSharedDocModalOpen,
@@ -88,6 +95,7 @@ export const AttendeeLanding = ({
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
   const [listener, setListener] = useState()
   const [showLeaveModal, setShowLeaveModal] = useState(false)
+  const [confirmSendLogs, setConfirmSendLogs] = useState(false)
   const [rightPanelAnimationEnd, setRightPanelAnimationEnd] = useState(true)
   const [chatIsOpen, setChatIsOpen] = useState(true)
   const [attendees, setAttendees] = useState([])
@@ -97,6 +105,9 @@ export const AttendeeLanding = ({
   const [attendeeAudioStateKey, setAttendeeAudioStateKey] = useState(0)
   const [trainingVideoStateKey, setTrainingVideoStateKey] = useState(0)
   const [attendeeVideoStateKey, setAttendeeVideoStateKey] = useState(0)
+  const unreadChatMsgCount = useUnreadMsgCount(chatMessages, chatIsOpen)
+  const [trainingStarted, setTrainingStarted] = useState(false)
+  const [trainingExpired, setTrainingExpired] = useState(false)
 
   useDisconnectedWarning(hasLeftOrEnded)
 
@@ -157,7 +168,7 @@ export const AttendeeLanding = ({
         },
       })
     }
-  }, [attendeeAudioStateKey, attendee, bjnApi, updateCurrentAttendee])
+  }, [attendeeAudioStateKey, attendee, updateCurrentAttendee])
 
   useEffect(() => {
     if (attendee && attendee.videoStateKey !== attendeeVideoStateKey) {
@@ -173,7 +184,7 @@ export const AttendeeLanding = ({
         },
       })
     }
-  }, [attendeeVideoStateKey, attendee, bjnApi, updateCurrentAttendee])
+  }, [attendeeVideoStateKey, attendee, updateCurrentAttendee])
 
   useEffect(() => {
     if (training && training.endedAt) {
@@ -190,19 +201,15 @@ export const AttendeeLanding = ({
     }
   }, [training, attendeeId, onEndedModalOpen, updateCurrentAttendee])
 
-  const joinTraining = useCallback(
-    async (breakoutTrainingId) => {
-      bjnApi.leave(false) // sometimes doesn't ever resolve
-      window.location.href = `${window.location.origin}/attendee/${breakoutTrainingId}`
-    },
-    [bjnApi],
-  )
+  const joinTraining = useCallback(async (breakoutTrainingId) => {
+    bjnApi.leave(false) // sometimes doesn't ever resolve
+    window.location.href = `${window.location.origin}/attendee/${breakoutTrainingId}`
+  }, [])
 
   useEffect(() => {
     if (attendee) {
       const tr = attendee.training
       setTraining(tr)
-
       if (tr.breakoutInProgress) {
         joinTraining(attendee.breakoutRoomAttendeeId)
         return
@@ -211,6 +218,22 @@ export const AttendeeLanding = ({
       if (tr.type === 'BREAKOUT' && !attendee.breakoutRoom.training.breakoutInProgress) {
         joinTraining(attendee.mainTrainingAttendeeId)
         return
+      }
+
+      setTrainingStarted(!!tr.startedAt)
+
+      if (tr.startedAt && !joined.current) {
+        const hrs6ms = 6 * 60 * 60 * 1000 // no meeting should last longer
+        const now = Date.now()
+        const started = new Date(tr.startedAt).getTime()
+        const diff = now - started
+        console.log('@ken times', {
+          now: new Date(now),
+          started: new Date(tr.startedAt),
+          diff: diff / 1000,
+          hrs6: hrs6ms / 1000,
+        })
+        setTrainingExpired(diff > hrs6ms) // 6 hours
       }
       const d = tr.sharedDocs.items
       setSharedDocs(d)
@@ -245,7 +268,7 @@ export const AttendeeLanding = ({
         },
       })
     }
-  }, [trainingAudioStateKey, attendee, bjnApi, training, updateCurrentAttendee])
+  }, [trainingAudioStateKey, attendee, training, updateCurrentAttendee])
 
   useEffect(() => {
     if (attendee && training && training.videoStateKey !== trainingVideoStateKey) {
@@ -261,7 +284,7 @@ export const AttendeeLanding = ({
         },
       })
     }
-  }, [trainingVideoStateKey, attendee, bjnApi, training, updateCurrentAttendee])
+  }, [trainingVideoStateKey, attendee, training, updateCurrentAttendee])
 
   useEffect(() => {
     if (attendee && !updatedJoinedTime.current) {
@@ -280,24 +303,18 @@ export const AttendeeLanding = ({
 
   useEffect(() => {
     const joinMeeting = async () => {
-      if (training?.meetingId && bjnIsInitialized && !joined.current) {
+      if (trainingStarted && !trainingExpired && bjnIsInitialized && !joined.current) {
+        joined.current = true
         try {
           await bjnApi.requestAllPermissions()
           await bjnApi.join(training.meetingId, training.participantPasscode, participantName)
         } catch (error) {
           setJoinErrorCode(error.code)
         }
-        joined.current = true
       }
     }
     joinMeeting()
-  }, [
-    training?.meetingId,
-    training?.participantPasscode,
-    participantName,
-    bjnIsInitialized,
-    bjnApi,
-  ])
+  }, [trainingStarted, trainingExpired, training, participantName, bjnIsInitialized])
 
   const Whiteboard = whiteboardShared ? (
     <Box marginLeft="20px">
@@ -405,12 +422,7 @@ export const AttendeeLanding = ({
           marginRight={!chatIsOpen}
         />
         {chatIsOpen && (
-          <SidePanel
-            attendees={attendees}
-            attendeeId={attendeeId}
-            chatMessages={chatMessages}
-            training={training}
-          />
+          <SidePanel attendees={attendees} attendeeId={attendeeId} training={training} />
         )}
       </HStack>
       <FloatingRightPanel
@@ -435,6 +447,7 @@ export const AttendeeLanding = ({
           }
           return acc
         }, 0)}
+        unreadChatMsgCount={unreadChatMsgCount}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
       <Modal variant="noCapture" trapFocus={false} isOpen={!!currentPoll} scrollBehavior="inside">
@@ -483,6 +496,47 @@ export const AttendeeLanding = ({
         </HStack>
       </OurModal>
       <CamInUseModal code={joinErrorCode} />
+      <OurModal header="The training has not yet started" isOpen={!trainingStarted}>
+        <VStack alignItems="start" marginLeft="10px">
+          <Text marginBottom="15px">
+            You will join automatically when it starts or you can return nearer to the scheduled
+            time.
+          </Text>
+          <Text>Scheduled time: {timestampToPrettyTime(training.scheduledTime)}</Text>
+          <Text>Trainer: {training.trainerName}</Text>
+          <Text>Email: {training.trainerEmail}</Text>
+        </VStack>
+      </OurModal>
+      <OurModal header="The training has ended" isOpen={trainingExpired}>
+        <VStack alignItems="start" marginLeft="10px">
+          <Text>Scheduled: {timestampToPrettyTime(training.scheduledTime)}</Text>
+          <Text>Started: {timestampToPrettyTime(training.startedAt)}</Text>
+          <Text>Trainer: {training.trainerName}</Text>
+          <Text>Email: {training.trainerEmail}</Text>
+        </VStack>
+      </OurModal>
+      <ConfirmationModal
+        headerMsg="Upload debug logs?"
+        okLabel="Upload"
+        msg="If you had a technical problem, please press 'Send' and notify us of your problem."
+        isOpen={confirmSendLogs}
+        onCancel={() => setConfirmSendLogs(false)}
+        onOk={() => {
+          bjnApi.sendLogs()
+          setConfirmSendLogs(false)
+        }}
+      />
+      <Button
+        onClick={() => setConfirmSendLogs(true)}
+        variant="link"
+        position="absolute"
+        top="10px"
+        left="10px"
+        size="xs"
+        color="darkgrey"
+      >
+        Upload logs
+      </Button>
     </Box>
   )
 }

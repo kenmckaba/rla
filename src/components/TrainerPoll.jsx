@@ -12,7 +12,6 @@ import {
   Td,
   Flex,
   Text,
-  Spacer,
   Tooltip,
 } from '@chakra-ui/react'
 import { buildSubscription } from 'aws-appsync'
@@ -145,53 +144,58 @@ export const TrainerPoll = ({ pollId, startedPoll, startPoll, sharePoll, editPol
                     </Text>
                   </Tooltip>
                 </Flex>
-                <Spacer />
-                {!poll.startedAt && (
-                  <Tooltip hasArrow placement="right" label="Edit poll">
-                    <EditIcon
-                      w={4}
-                      h={4}
-                      marginTop="3px"
+                <Flex>
+                  {!poll.startedAt && (
+                    <Tooltip hasArrow placement="right" label="Edit poll">
+                      <EditIcon
+                        w={4}
+                        h={4}
+                        marginTop="3px"
+                        marginRight="5px"
+                        onClick={editThisPoll}
+                      />
+                    </Tooltip>
+                  )}
+                  <Tooltip hasArrow placement="right" label="Duplicate poll">
+                    <CopyIcon
                       marginRight="5px"
-                      onClick={editThisPoll}
+                      marginTop="3px"
+                      onClick={(e) => duplicate(e, poll)}
                     />
                   </Tooltip>
-                )}
-                <Tooltip hasArrow placement="right" label="Duplicate poll">
-                  <CopyIcon marginRight="5px" marginTop="3px" onClick={(e) => duplicate(e, poll)} />
-                </Tooltip>
-                {!(poll.type === 'TEXT' && poll.stoppedAt) && (
-                  <Button
-                    size="xs"
-                    fontWeight="bold"
-                    minW="80px"
-                    backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'transparent'}
-                    padding="1px"
-                    variant="outline"
-                    color="#7a96b8"
-                    onClick={(e) => {
-                      startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
-                    }}
-                    isDisabled={startedPoll && startedPoll.id !== poll.id}
-                  >
-                    {startedPoll?.id === poll.id
-                      ? 'Stop'
-                      : poll.stoppedAt && poll.type !== 'TEXT'
-                        ? 'Share'
-                        : 'Launch'}
-                  </Button>
-                )}
-                <AccordionIcon />
+                  {!(poll.type === 'TEXT' && poll.stoppedAt) && (
+                    <Button
+                      size="xs"
+                      fontWeight="bold"
+                      minW="80px"
+                      backgroundColor={startedPoll?.id === poll.id ? 'lightcoral' : 'transparent'}
+                      padding="1px"
+                      variant="outline"
+                      color="#7a96b8"
+                      onClick={(e) => {
+                        startedPoll ? startAPoll(e, null) : startAPoll(e, poll)
+                      }}
+                      isDisabled={startedPoll && startedPoll.id !== poll.id}
+                    >
+                      {startedPoll?.id === poll.id
+                        ? 'Stop'
+                        : poll.stoppedAt && poll.type !== 'TEXT'
+                          ? 'Share'
+                          : 'Launch'}
+                    </Button>
+                  )}
+                  <AccordionIcon />
+                </Flex>
               </Flex>
             </AccordionButton>
             <AccordionPanel padding="0" pb={4}>
               {poll.type === 'TEXT'
                 ? poll.responses.items.map((response) => {
                   const resp = response.response[0]
-                  const respOutput = resp
                   return (
                     <Tooltip hasArrow placement="top-start" label={resp}>
                       <Box key={resp} fontWeight="normal" padding="5px">
+                        {/* Pooja: look up overflow & elipsis */}
                         {resp.length > 25 ? resp.substring(0, 25) + '...' : resp}
                         {/* {resp.substring(0, 25) + '...'} */}
                       </Box>

@@ -1,11 +1,8 @@
 import aws from 'aws-sdk'
 import { timestampToPrettyTime } from './pretty-time'
+import { sesParams } from './ses-params'
 
-const ses = new aws.SES({
-  region: 'us-east-1',
-  accessKeyId: 'AKIATZDAET4GTFFPKL35',
-  secretAccessKey: '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',
-})
+const ses = new aws.SES(sesParams)
 
 // if want to use smtp api:
 // ses-smtp-user.20211101-165231

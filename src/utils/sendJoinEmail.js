@@ -1,11 +1,9 @@
 import aws from 'aws-sdk'
 import { timestampToPrettyTime } from './pretty-time'
 
-const ses = new aws.SES({
-  region: 'us-east-1',
-  accessKeyId: 'AKIATZDAET4GTFFPKL35',
-  secretAccessKey: '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',
-})
+import { sesParams } from './ses-params'
+
+const ses = new aws.SES(sesParams)
 
 export const sendJoinEmail = async (attendeeId, name, email, training) => {
   const template = {

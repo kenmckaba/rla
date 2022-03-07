@@ -27,7 +27,7 @@ import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
 import { createTraining, deleteTraining } from '../graphql/mutations'
-import { Flex, HStack, Spacer, VStack } from '@chakra-ui/layout'
+import { Flex, HStack, Spacer } from '@chakra-ui/layout'
 import { Stat, StatHelpText } from '@chakra-ui/stat'
 import { StatLabel } from '@chakra-ui/stat'
 import { TrainingToolbar } from './TrainingToolbar'
@@ -40,6 +40,8 @@ import { InvitedList } from './InvitedList'
 import FilteredDatePicker from './FilteredDatePicker'
 import Header from './Header'
 import { TrainingReportModal } from './reports/TrainingReportModal'
+import { ConfirmationModal } from './ConfirmationModal'
+import { useDuplicateTraining } from '../utils/useDuplicateTraining'
 
 export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
@@ -58,7 +60,9 @@ export const TrainingList = () => {
   const [selectedTrainings, setSelectedTraining] = useState([])
   const [tabIndex, setTabIndex] = useState(0)
   const [disabledTabs, setDisabledTabs] = useState(false)
-
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
+  const [isConfirmDuplicateModalOpen, setIsConfirmDuplicateModalOpen] = useState(false)
+  const { duplicateTraining } = useDuplicateTraining()
   const handleShowParticipantsModal = (training) => {
     setCurrentTraining(training)
     setShowParticipantsModal(true)
@@ -144,9 +148,19 @@ export const TrainingList = () => {
     onModalOpen()
   }
 
+  const confirmDelete = (training) => {
+    setCurrentTraining(training)
+    setIsConfirmDeleteModalOpen(true)
+  }
+
+  const confirmDuplicate = (training) => {
+    setCurrentTraining(training)
+    setIsConfirmDuplicateModalOpen(true)
+  }
+
   const handleDelete = async (trainingId) => {
     await deleteTheTraining({ variables: { input: { id: trainingId } } })
-    onModalClose()
+    setIsConfirmDeleteModalOpen(false)
   }
 
   const openRegPage = (trainingId) => {
@@ -161,6 +175,13 @@ export const TrainingList = () => {
   const showReport = (training) => {
     setCurrentTraining(training)
     setShowReportModal(true)
+  }
+
+  const doDup = async (training) => {
+    setIsConfirmDuplicateModalOpen(false)
+    const result = await duplicateTraining(training)
+    setCurrentTraining(result.data.createTraining)
+    onModalOpen()
   }
 
   const clearDates = () => {
@@ -259,7 +280,10 @@ export const TrainingList = () => {
                 <TrainingToolbar
                   editTraining={() => handleTrainingClick(training)}
                   startTraining={() => openRegPage(training.id)}
-                  deleteTraining={() => handleDelete(training.id)}
+                  deleteTraining={() => confirmDelete(training)}
+                  trainingReport={() => showReport(training)}
+                  invitedReport={() => showInvited(training)}
+                  duplicateTraining={() => confirmDuplicate(training)}
                 />
               )}
             </Flex>
@@ -290,27 +314,9 @@ export const TrainingList = () => {
               </Flex>
               <Flex w="25%" direction="column">
                 <StatLabel mb="1">
-                  <HStack>
-                    <StatHelpText fontSize="0.75em" textTransform="uppercase">
-                      ATTENDEES
-                    </StatHelpText>
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      color="lightgrey"
-                      onClick={() => showInvited(training)}
-                    >
-                      Invited
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      color="lightgrey"
-                      onClick={() => showReport(training)}
-                    >
-                      Report
-                    </Button>
-                  </HStack>
+                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
+                    ATTENDEES
+                  </StatHelpText>
                 </StatLabel>
                 <Flex
                   height="24px"
@@ -521,7 +527,7 @@ export const TrainingList = () => {
                   <TrainingForm
                     onClose={onModalClose}
                     trainingId={currentTraining?.id}
-                    onDelete={handleDelete}
+                    onDelete={() => confirmDelete(currentTraining)}
                   />
                 </ModalBody>
               </ModalContent>
@@ -542,6 +548,22 @@ export const TrainingList = () => {
               training={currentTraining}
               isOpen={showReportModal}
               onClose={() => setShowReportModal(false)}
+            />
+            <ConfirmationModal
+              headerMsg="Duplicate training?"
+              okLabel="OK"
+              msg={`Training: "${currentTraining?.title}"\n\nMost settings will be copied including Polls and Shared Documents. Be sure to update the scheduled time and other settings.`}
+              isOpen={isConfirmDuplicateModalOpen}
+              onCancel={() => setIsConfirmDuplicateModalOpen(false)}
+              onOk={() => doDup(currentTraining)}
+            />
+            <ConfirmationModal
+              headerMsg="Delete training?"
+              okLabel="Delete"
+              msg={currentTraining?.title}
+              isOpen={isConfirmDeleteModalOpen}
+              onCancel={() => setIsConfirmDeleteModalOpen(false)}
+              onOk={() => handleDelete(currentTraining.id)}
             />
           </Flex>
         </Box>
