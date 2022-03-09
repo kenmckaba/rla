@@ -29,10 +29,6 @@ export const StoredPolls = ({ header, onPollClick, onCopy, isOpen, onClose, onAd
   const { data: storedPollsData, loading, subscribeToMore } = useQuery(gql(listStoredPolls))
 
   useEffect(() => {
-    console.log('@ken')
-  }, [])
-
-  useEffect(() => {
     if (storedPollsData) {
       const all = storedPollsData.listStoredPolls.items
       const filtered = all.filter((p) => {

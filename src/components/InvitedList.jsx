@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import { listInvitedStudents } from '../graphql/queries'
 
 export const InvitedList = ({ training }) => {
-  const { data: invitedData } = useQuery(gql(listInvitedStudents), {
+  const { data: invitedData, loading: invitedLoading } = useQuery(gql(listInvitedStudents), {
+    fetchPolicy: 'cache-and-network',
     variables: { filter: { trainingId: { eq: training?.id } } },
   })
   const [invited, setInvited] = useState([])
@@ -15,6 +16,14 @@ export const InvitedList = ({ training }) => {
     }
   }, [invitedData])
 
+  if (invitedLoading) {
+    return <p>Loading...</p>
+  }
+
+  const toTime = (date) => {
+    return date ? new Date(date).toLocaleString() : '-'
+  }
+
   return (
     <Table size="sm" variant="striped">
       <Thead>
@@ -23,6 +32,8 @@ export const InvitedList = ({ training }) => {
           <Th>Email</Th>
           <Th>Invited</Th>
           <Th>Registered</Th>
+          <Th>Registered as</Th>
+          <Th>Email</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -32,15 +43,14 @@ export const InvitedList = ({ training }) => {
           </Tr>
         ) : (
           invited.map((student) => {
-            const invitedTime = new Date(student.createdAt).toLocaleString()
-            const found = training.attendees.items.find((att) => att.email === student.email)
-            const registeredTime = !found ? '' : new Date(found.createdAt).toLocaleString()
             return (
               <Tr>
                 <Td>{student.name}</Td>
                 <Td>{student.email}</Td>
-                <Td>{invitedTime}</Td>
-                <Td>{registeredTime}</Td>
+                <Td>{toTime(student?.createdAt)}</Td>
+                <Td>{toTime(student?.attendee?.createdAt)}</Td>
+                <Td>{student.attendee?.name || '-'}</Td>
+                <Td>{student.attendee?.email || '-'}</Td>
               </Tr>
             )
           })

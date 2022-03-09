@@ -32,7 +32,7 @@ export const sendRegistrationEmails = async (training, allAttendees) => {
           trainingDateAndTime: timestampToPrettyTime(training.scheduledTime),
           trainerName: training.trainerName,
           trainerEmail: training.trainerEmail,
-          trainingRegistrationUrl: training.registrationUrl,
+          trainingRegistrationUrl: `${training.registrationUrl}/${att.invitationId}`,
         }),
       }
     })

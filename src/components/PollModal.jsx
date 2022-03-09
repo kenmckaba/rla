@@ -45,7 +45,6 @@ export const PollModal = ({ poll, isOpen, trainingId, onClose }) => {
 
   const onCopyPolls = (polls) => {
     polls.forEach(async (poll) => {
-      console.log('@ken poll', poll)
       await addNewPoll({
         variables: {
           input: {

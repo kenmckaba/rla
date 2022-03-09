@@ -2305,6 +2305,116 @@ export const createInvitedStudent = /* GraphQL */ `
       name
       email
       attendeeId
+      attendee {
+        id
+        name
+        email
+        bluejeansName
+        handRaised
+        joinedTime
+        leftTime
+        currentMood
+        posePitch
+        poseYaw
+        poseRole
+        audioUnmuted
+        videoUnmuted
+        audioStateKey
+        videoStateKey
+        audioHardMuted
+        videoHardMuted
+        trainingId
+        training {
+          id
+          type
+          trainerId
+          title
+          description
+          trainerName
+          trainerEmail
+          registrationUrl
+          maxAttendees
+          meetingId
+          moderatorPasscode
+          participantPasscode
+          scheduledTime
+          startedAt
+          endedAt
+          audioHardMuted
+          videoHardMuted
+          audioStateKey
+          videoStateKey
+          pollMode
+          currentPollId
+          whiteboardUrl
+          whiteboardShared
+          breakoutInProgress
+          attendees {
+            nextToken
+          }
+          chatMessages {
+            nextToken
+          }
+          polls {
+            nextToken
+          }
+          sharedDocs {
+            nextToken
+          }
+          breakoutRooms {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        breakoutRoomId
+        breakoutRoom {
+          id
+          name
+          bluejeansMeetingId
+          bluejeansModeratorPasscode
+          bluejeansParticipantPasscode
+          attendees {
+            nextToken
+          }
+          trainingId
+          training {
+            id
+            type
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            breakoutInProgress
+            createdAt
+            updatedAt
+          }
+          breakoutTrainingId
+          createdAt
+          updatedAt
+        }
+        breakoutRoomAttendeeId
+        mainTrainingAttendeeId
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -2322,6 +2432,116 @@ export const updateInvitedStudent = /* GraphQL */ `
       name
       email
       attendeeId
+      attendee {
+        id
+        name
+        email
+        bluejeansName
+        handRaised
+        joinedTime
+        leftTime
+        currentMood
+        posePitch
+        poseYaw
+        poseRole
+        audioUnmuted
+        videoUnmuted
+        audioStateKey
+        videoStateKey
+        audioHardMuted
+        videoHardMuted
+        trainingId
+        training {
+          id
+          type
+          trainerId
+          title
+          description
+          trainerName
+          trainerEmail
+          registrationUrl
+          maxAttendees
+          meetingId
+          moderatorPasscode
+          participantPasscode
+          scheduledTime
+          startedAt
+          endedAt
+          audioHardMuted
+          videoHardMuted
+          audioStateKey
+          videoStateKey
+          pollMode
+          currentPollId
+          whiteboardUrl
+          whiteboardShared
+          breakoutInProgress
+          attendees {
+            nextToken
+          }
+          chatMessages {
+            nextToken
+          }
+          polls {
+            nextToken
+          }
+          sharedDocs {
+            nextToken
+          }
+          breakoutRooms {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        breakoutRoomId
+        breakoutRoom {
+          id
+          name
+          bluejeansMeetingId
+          bluejeansModeratorPasscode
+          bluejeansParticipantPasscode
+          attendees {
+            nextToken
+          }
+          trainingId
+          training {
+            id
+            type
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            breakoutInProgress
+            createdAt
+            updatedAt
+          }
+          breakoutTrainingId
+          createdAt
+          updatedAt
+        }
+        breakoutRoomAttendeeId
+        mainTrainingAttendeeId
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -2339,6 +2559,116 @@ export const deleteInvitedStudent = /* GraphQL */ `
       name
       email
       attendeeId
+      attendee {
+        id
+        name
+        email
+        bluejeansName
+        handRaised
+        joinedTime
+        leftTime
+        currentMood
+        posePitch
+        poseYaw
+        poseRole
+        audioUnmuted
+        videoUnmuted
+        audioStateKey
+        videoStateKey
+        audioHardMuted
+        videoHardMuted
+        trainingId
+        training {
+          id
+          type
+          trainerId
+          title
+          description
+          trainerName
+          trainerEmail
+          registrationUrl
+          maxAttendees
+          meetingId
+          moderatorPasscode
+          participantPasscode
+          scheduledTime
+          startedAt
+          endedAt
+          audioHardMuted
+          videoHardMuted
+          audioStateKey
+          videoStateKey
+          pollMode
+          currentPollId
+          whiteboardUrl
+          whiteboardShared
+          breakoutInProgress
+          attendees {
+            nextToken
+          }
+          chatMessages {
+            nextToken
+          }
+          polls {
+            nextToken
+          }
+          sharedDocs {
+            nextToken
+          }
+          breakoutRooms {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        breakoutRoomId
+        breakoutRoom {
+          id
+          name
+          bluejeansMeetingId
+          bluejeansModeratorPasscode
+          bluejeansParticipantPasscode
+          attendees {
+            nextToken
+          }
+          trainingId
+          training {
+            id
+            type
+            trainerId
+            title
+            description
+            trainerName
+            trainerEmail
+            registrationUrl
+            maxAttendees
+            meetingId
+            moderatorPasscode
+            participantPasscode
+            scheduledTime
+            startedAt
+            endedAt
+            audioHardMuted
+            videoHardMuted
+            audioStateKey
+            videoStateKey
+            pollMode
+            currentPollId
+            whiteboardUrl
+            whiteboardShared
+            breakoutInProgress
+            createdAt
+            updatedAt
+          }
+          breakoutTrainingId
+          createdAt
+          updatedAt
+        }
+        breakoutRoomAttendeeId
+        mainTrainingAttendeeId
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }

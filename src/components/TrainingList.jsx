@@ -532,9 +532,9 @@ export const TrainingList = () => {
                 </ModalBody>
               </ModalContent>
             </Modal>
-            <Modal isOpen={showInvitedModal}>
+            <Modal size="xl" isOpen={showInvitedModal}>
               <ModalOverlay />
-              <ModalContent maxWidth="unset" width="600px" color="darkKnight.700">
+              <ModalContent maxWidth="unset" width="1000px" color="darkKnight.700">
                 <ModalHeader>Invited students</ModalHeader>
                 <ModalBody>
                   <InvitedList training={currentTraining} />

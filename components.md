@@ -41,3 +41,6 @@ TrainingList
     - PollModal
       - PollForm
         - StoredPolls
+- Invitedlist
+- TrainingReportModal
+- ConfirmationModal

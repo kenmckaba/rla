@@ -176,6 +176,7 @@ type InvitedStudent @model @auth(rules: [{ allow: private, provider: iam }]) {
   name: String
   email: String
   attendeeId: ID
+  attendee: Attendee @connection(fields: ["attendeeId"])
 }
 
 type EmailContent @model @auth(rules: [{ allow: private, provider: iam }]) {

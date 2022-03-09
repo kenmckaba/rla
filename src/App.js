@@ -26,7 +26,7 @@ function App() {
               component={WithAuthentication(TrainerInSession)}
             />
             <Route path="/registration-update/:attendeeId" component={RegistrationUpdate} />
-            <Route path="/registration/:trainingId" component={Registration} />
+            <Route path="/registration/:trainingId/:invitedStudentId?" component={Registration} />
             <Route path="/" component={WithAuthentication(TrainingList)} />
           </Switch>
         </BrowserRouter>

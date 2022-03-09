@@ -54,7 +54,6 @@ export const useDuplicateTraining = () => {
       })
     })
 
-    console.log('@ken duplicated', newTraining)
     return tr
   }
 

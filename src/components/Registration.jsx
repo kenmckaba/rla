@@ -21,13 +21,13 @@ import {
 } from '@chakra-ui/react'
 import { getTraining } from '../graphql/queries'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { createAttendee } from '../graphql/mutations'
+import { createAttendee, updateInvitedStudent } from '../graphql/mutations'
 import { timestampToPrettyTime } from '../utils/pretty-time'
 import { sendJoinEmail } from '../utils/sendJoinEmail'
 
 export const Registration = ({
   match: {
-    params: { trainingId },
+    params: { trainingId, invitedStudentId },
   },
 }) => {
   const [training, setTraining] = useState()
@@ -45,6 +45,7 @@ export const Registration = ({
     variables: { id: trainingId },
   })
   const [addNewAttendee] = useMutation(gql(createAttendee))
+  const [updateStudent] = useMutation(gql(updateInvitedStudent))
 
   useEffect(() => {
     if (trainingData && (!training || trainingId === trainingData?.getTraining?.id)) {
@@ -84,13 +85,34 @@ export const Registration = ({
       },
     })
     const id = result.data.createAttendee.id
+
+    if (invitedStudentId) {
+      // so we can connect InvitedStudent <-> attendee.
+      // invitation emails contain the id of the invitation.
+      // if none, they weren't explicitly invited, they went to the reg link,
+      // so there is no InvitedStudent to connect
+      await updateStudent({
+        variables: {
+          input: {
+            id: invitedStudentId,
+            attendeeId: id,
+          },
+        },
+      })
+    }
+
     setAttendeeId(id)
     sendJoinEmail(id, attendeeName, attendeeEmail, training)
     onModalOpen()
   }
 
   return (
-    <Flex w="100vw" h="100vh" direction="column" bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"    >
+    <Flex
+      w="100vw"
+      h="100vh"
+      direction="column"
+      bgGradient="linear-gradient(180deg, #283683 0%, #396AA1 100%, #283683 100%);"
+    >
       <Box w="100%" h="100%">
         <Flex w="100%" h="100%" justifyContent="center" alignItems="center">
           <VStack
@@ -133,7 +155,7 @@ export const Registration = ({
                     fontSize="0.75em"
                     placeholder="Type your name here"
                     color={'blue.900'}
-                    _focus={{backgroundColor: 'white',}}
+                    _focus={{ backgroundColor: 'white' }}
                     _placeholder={{ color: 'blue.700' }}
                     value={attendeeName}
                     onChange={onChangeAttendeeName}
@@ -149,7 +171,7 @@ export const Registration = ({
                     fontSize="0.75em"
                     placeholder="Type your email here"
                     color={'blue.900'}
-                    _focus={{backgroundColor: 'white',}}
+                    _focus={{ backgroundColor: 'white' }}
                     _placeholder={{ color: 'blue.700' }}
                     value={attendeeEmail}
                     onChange={onChangeAttendeeEmail}
