@@ -103,6 +103,7 @@ export default function TrainingListHeader({ trainings }) {
               aria-label="Options"
               title="Options"
               icon={<HamburgerIcon />}
+              borderRadius={'50%'} // remove to keep button a square
               bgGradient="linear-gradient(30deg, #283683 0%, #396AA1 100%, #283683 100%)"
             />
             <MenuList bgGradient="linear-gradient(0deg, #283683 0%, #396AA1 100%, #283683 100%)">

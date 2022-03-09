@@ -57,6 +57,7 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
             h={'15vh'}
             backgroundColor="white"
             borderBottomRadius="8px"
+            sx={scrollBarStyle}
           >
             <Box minHeight="60px" color="black" paddingLeft="10px" fontSize="14px">
               {bjnParticipants.map((p, index) => {
@@ -87,7 +88,7 @@ export const SidePanel = ({ chatMessages, attendees, training, attendeeId }) => 
             </Text>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel overflowY="auto" padding="0" pb={4}>
+          <AccordionPanel overflowY="auto" padding="0" pb={4} sx={scrollBarStyle}>
             <ChatBox
               messageList={chatMessages}
               attendees={attendees}
