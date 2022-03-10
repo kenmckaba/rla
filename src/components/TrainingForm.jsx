@@ -270,9 +270,10 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     return theDate
   }
 
-  const addInvitedAttendees = () => {
-    selectedStudents.forEach(async (student) => {
-      await addAttendeeInvitation({
+  const addInvitedAttendees = async () => {
+    const attList = []
+    for await (const student of selectedStudents) {
+      const result = await addAttendeeInvitation({
         variables: {
           input: {
             trainingId: trainingId,
@@ -282,14 +283,22 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           },
         },
       })
-    })
+
+      attList.push({
+        firstName: student.firstName,
+        lastName: student.lastName,
+        email: student.email,
+        invitationId: result.data.createInvitedStudent.id,
+      })
+    }
+    return attList
   }
 
   const sendRegEmails = async () => {
     onEmailsModalClose()
     onWaitModalOpen()
-    await addInvitedAttendees()
-    await sendRegistrationEmails(training, selectedStudents)
+    const attList = await addInvitedAttendees()
+    await sendRegistrationEmails(training, attList)
     onWaitModalClose()
     onClose()
   }
