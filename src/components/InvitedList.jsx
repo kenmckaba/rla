@@ -1,10 +1,16 @@
 import { gql, useQuery } from '@apollo/client'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
 import { listInvitedStudents } from '../graphql/queries'
+import { onCreateInvitedStudent, onUpdateInvitedStudent } from '../graphql/subscriptions'
 
 export const InvitedList = ({ training }) => {
-  const { data: invitedData, loading: invitedLoading } = useQuery(gql(listInvitedStudents), {
+  const {
+    data: invitedData,
+    loading: invitedLoading,
+    subscribeToMore,
+  } = useQuery(gql(listInvitedStudents), {
     fetchPolicy: 'cache-and-network',
     variables: { filter: { trainingId: { eq: training?.id } } },
   })
@@ -15,6 +21,18 @@ export const InvitedList = ({ training }) => {
       setInvited(invitedData.listInvitedStudents.items)
     }
   }, [invitedData])
+
+  useEffect(() => {
+    if (subscribeToMore) {
+      const cleanupFuncs = [
+        subscribeToMore(buildSubscription(gql(onCreateInvitedStudent), gql(listInvitedStudents))),
+        subscribeToMore(buildSubscription(gql(onUpdateInvitedStudent), gql(listInvitedStudents))),
+      ]
+      return () => {
+        cleanupFuncs.forEach((func) => func && func())
+      }
+    }
+  }, [subscribeToMore])
 
   if (invitedLoading) {
     return <p>Loading...</p>
