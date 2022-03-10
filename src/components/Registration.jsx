@@ -170,7 +170,21 @@ export const Registration = ({
             {isFull ? (
               <Box fontSize="2em">Sorry, the training is full!</Box>
             ) : alreadyRegistered() ? (
-              <Box fontSize="32px">You have already registered for this training!</Box>
+              <>
+                <Box fontSize="32px">You have already registered for this training!</Box>
+                <Box padding="10px">
+                  Use{' '}
+                  <Link
+                    href={`${window.location.origin}/registration-update/${invitedStudent.attendeeId}`}
+                    isExternal
+                    cursor="pointer"
+                    color="blue"
+                  >
+                    this link
+                  </Link>{' '}
+                  to change or delete your registration.
+                </Box>
+              </>
             ) : (
               <Box width="100%">
                 <FormControl>
