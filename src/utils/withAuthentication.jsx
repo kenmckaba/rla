@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Hub } from '@aws-amplify/core'
-import { AmplifySignIn, AmplifySignUp } from '@aws-amplify/ui-react'
+import { AmplifyAuthenticator } from '@aws-amplify/ui-react'
 import { Auth } from 'aws-amplify'
 import { H3Heading } from '../components/shared/Heading'
-import { Flex, Stack, Image } from '@chakra-ui/react'
+import { Flex, Image, VStack, HStack } from '@chakra-ui/react'
 import './amplify-styles.css'
 
 export const WithAuthentication = (WrappedComponent) => {
-  const [currentUser, setCurrentUser] = useState({})
+  const [currentUser, setCurrentUser] = useState()
 
   useEffect(() => {
     let updateUser = async (data) => {
@@ -23,19 +23,6 @@ export const WithAuthentication = (WrappedComponent) => {
     return () => Hub.remove('auth', updateUser) // cleanup
   }, [])
 
-  // useEffect(() => {
-  //   Hub.listen('auth', (data) => {
-  //     const { payload } = data
-  //     console.log('A new auth event has happened: ', data)
-  //     if (payload.event === 'signIn') {
-  //       console.log('a user has signed in!')
-  //     }
-  //     if (payload.event === 'signOut') {
-  //       console.log('a user has signed out!')
-  //     }
-  //   })
-  // }, [])
-
   if (currentUser) {
     return (props) => (
       <Flex width="100%" flexDirection="column">
@@ -43,21 +30,15 @@ export const WithAuthentication = (WrappedComponent) => {
       </Flex>
     )
   }
+
   return () => (
-    <Stack
-      minH={'99.99vh'}
-      direction={{ base: 'column', md: 'row' }}
-      maxH="99.99vh"
-      overflow={{ base: 'scroll', md: 'hidden' }}
-    >
-      <Flex px={8} align={'center'} justify={'center'}>
-        <Stack w={'full'} maxW={'md'}>
-          <H3Heading color="black" fontSize="2.5em" textAlign="center" mb="0" zIndex="2">
-            Welcome to Remote Learning Platform
-          </H3Heading>
-          <AmplifySignIn />
-        </Stack>
-      </Flex>
+    <HStack>
+      <VStack>
+        <H3Heading color="black" fontSize="2.5em" textAlign="center" mb="0" zIndex="2">
+          Welcome to Remote Learning Platform
+        </H3Heading>
+        <AmplifyAuthenticator />
+      </VStack>
       <Flex padding={'20px'} paddingLeft={'10px'} marginInlineStart={[0, '0vw !important']}>
         <Image
           alt={'Login Image'}
@@ -67,6 +48,6 @@ export const WithAuthentication = (WrappedComponent) => {
           boxShadow={'20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff'}
         />
       </Flex>
-    </Stack>
+    </HStack>
   )
 }
