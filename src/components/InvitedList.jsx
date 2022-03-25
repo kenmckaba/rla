@@ -11,8 +11,7 @@ export const InvitedList = ({ training }) => {
     loading: invitedLoading,
     subscribeToMore,
   } = useQuery(gql(listInvitedStudents), {
-    fetchPolicy: 'cache-and-network',
-    variables: { filter: { trainingId: { eq: training?.id } } },
+    variables: { limit: 1000, filter: { trainingId: { eq: training?.id } } },
   })
   const [invited, setInvited] = useState([])
 
