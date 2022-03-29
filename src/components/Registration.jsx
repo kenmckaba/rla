@@ -19,6 +19,8 @@ import {
   StatHelpText,
   HStack,
   FormHelperText,
+  RadioGroup,
+  Radio,
 } from '@chakra-ui/react'
 import { getInvitedStudent, getTraining } from '../graphql/queries'
 import { gql, useMutation, useQuery } from '@apollo/client'
@@ -36,6 +38,7 @@ export const Registration = ({
   const [attendeeId, setAttendeeId] = useState()
   const [attendeeName, setAttendeeName] = useState('')
   const [attendeeEmail, setAttendeeEmail] = useState('')
+  const [classPreference, setClassPreference] = useState('')
   const [isFull, setIsFull] = useState(false)
   const updatedStudent = useRef(false)
 
@@ -86,6 +89,10 @@ export const Registration = ({
 
   const onChangeAttendeeEmail = (event) => {
     setAttendeeEmail(event.target.value)
+  }
+
+  const onChangeClassPreference = (value) => {
+    setClassPreference(value)
   }
 
   const alreadyRegistered = () => {
@@ -221,6 +228,17 @@ export const Registration = ({
                   <FormHelperText color="white">
                     We'll send your join link to this email address.
                   </FormHelperText>
+                </FormControl>
+                <FormControl>
+                  <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                    Class Preference
+                  </FormLabel>
+                  <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
+                    <HStack direction="row">
+                      <Radio value="online">Online</Radio>
+                      <Radio value="inperson">In-Person</Radio>
+                    </HStack>
+                  </RadioGroup>
                 </FormControl>
                 <HStack w="100%" spacing="3" paddingTop="3">
                   <Button w="100%" size="md" variant="secondary-ghost-outline">
