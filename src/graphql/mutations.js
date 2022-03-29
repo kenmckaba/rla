@@ -78,6 +78,7 @@ export const createTraining = /* GraphQL */ `
           id
           name
           email
+          classPreference
           bluejeansName
           handRaised
           joinedTime
@@ -297,6 +298,7 @@ export const updateTraining = /* GraphQL */ `
           id
           name
           email
+          classPreference
           bluejeansName
           handRaised
           joinedTime
@@ -516,6 +518,7 @@ export const deleteTraining = /* GraphQL */ `
           id
           name
           email
+          classPreference
           bluejeansName
           handRaised
           joinedTime
@@ -709,6 +712,7 @@ export const createAttendee = /* GraphQL */ `
       id
       name
       email
+      classPreference
       bluejeansName
       handRaised
       joinedTime
@@ -754,6 +758,7 @@ export const createAttendee = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -847,6 +852,7 @@ export const createAttendee = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -934,6 +940,7 @@ export const updateAttendee = /* GraphQL */ `
       id
       name
       email
+      classPreference
       bluejeansName
       handRaised
       joinedTime
@@ -979,6 +986,7 @@ export const updateAttendee = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -1072,6 +1080,7 @@ export const updateAttendee = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -1159,6 +1168,7 @@ export const deleteAttendee = /* GraphQL */ `
       id
       name
       email
+      classPreference
       bluejeansName
       handRaised
       joinedTime
@@ -1204,6 +1214,7 @@ export const deleteAttendee = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -1297,6 +1308,7 @@ export const deleteAttendee = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -1417,6 +1429,7 @@ export const createSharedDoc = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -1545,6 +1558,7 @@ export const updateSharedDoc = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -1673,6 +1687,7 @@ export const deleteSharedDoc = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -2309,6 +2324,7 @@ export const createInvitedStudent = /* GraphQL */ `
         id
         name
         email
+        classPreference
         bluejeansName
         handRaised
         joinedTime
@@ -2436,6 +2452,7 @@ export const updateInvitedStudent = /* GraphQL */ `
         id
         name
         email
+        classPreference
         bluejeansName
         handRaised
         joinedTime
@@ -2563,6 +2580,7 @@ export const deleteInvitedStudent = /* GraphQL */ `
         id
         name
         email
+        classPreference
         bluejeansName
         handRaised
         joinedTime
@@ -2744,6 +2762,7 @@ export const createBreakoutRoom = /* GraphQL */ `
           id
           name
           email
+          classPreference
           bluejeansName
           handRaised
           joinedTime
@@ -2837,6 +2856,7 @@ export const createBreakoutRoom = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -2940,6 +2960,7 @@ export const updateBreakoutRoom = /* GraphQL */ `
           id
           name
           email
+          classPreference
           bluejeansName
           handRaised
           joinedTime
@@ -3033,6 +3054,7 @@ export const updateBreakoutRoom = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -3136,6 +3158,7 @@ export const deleteBreakoutRoom = /* GraphQL */ `
           id
           name
           email
+          classPreference
           bluejeansName
           handRaised
           joinedTime
@@ -3229,6 +3252,7 @@ export const deleteBreakoutRoom = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime

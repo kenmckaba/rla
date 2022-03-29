@@ -60,6 +60,7 @@ type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
   id: ID!
   name: String!
   email: String!
+  classPreference: String
   bluejeansName: String
   handRaised: Boolean
   joinedTime: AWSDateTime

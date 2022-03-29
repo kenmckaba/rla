@@ -62,6 +62,7 @@ export const getTraining = /* GraphQL */ `
           id
           name
           email
+          classPreference
           bluejeansName
           handRaised
           joinedTime
@@ -283,6 +284,7 @@ export const listTrainings = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -374,6 +376,7 @@ export const getAttendee = /* GraphQL */ `
       id
       name
       email
+      classPreference
       bluejeansName
       handRaised
       joinedTime
@@ -419,6 +422,7 @@ export const getAttendee = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -512,6 +516,7 @@ export const getAttendee = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -601,6 +606,7 @@ export const listAttendees = /* GraphQL */ `
         id
         name
         email
+        classPreference
         bluejeansName
         handRaised
         joinedTime
@@ -750,6 +756,7 @@ export const getSharedDoc = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -1240,6 +1247,7 @@ export const getInvitedStudent = /* GraphQL */ `
         id
         name
         email
+        classPreference
         bluejeansName
         handRaised
         joinedTime
@@ -1369,6 +1377,7 @@ export const listInvitedStudents = /* GraphQL */ `
           id
           name
           email
+          classPreference
           bluejeansName
           handRaised
           joinedTime
@@ -1486,6 +1495,7 @@ export const getBreakoutRoom = /* GraphQL */ `
           id
           name
           email
+          classPreference
           bluejeansName
           handRaised
           joinedTime
@@ -1579,6 +1589,7 @@ export const getBreakoutRoom = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
@@ -1684,6 +1695,7 @@ export const listBreakoutRooms = /* GraphQL */ `
             id
             name
             email
+            classPreference
             bluejeansName
             handRaised
             joinedTime
