@@ -4,6 +4,7 @@ import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
 import { listInvitedStudents } from '../graphql/queries'
 import { onCreateInvitedStudent, onUpdateInvitedStudent } from '../graphql/subscriptions'
+import { ReactComponent as CheckMark } from '../assets/icons/check-mark.svg'
 
 export const InvitedList = ({ training }) => {
   const {
@@ -49,6 +50,8 @@ export const InvitedList = ({ training }) => {
           <Th>Email</Th>
           <Th>Invited</Th>
           <Th>Registered</Th>
+          <Th>Online</Th>
+          <Th>In-Person</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -64,6 +67,10 @@ export const InvitedList = ({ training }) => {
                 <Td>{student.email}</Td>
                 <Td>{toTime(student?.createdAt)}</Td>
                 <Td>{toTime(student?.attendee?.createdAt)}</Td>
+                <Td>{student.attendee?.classPreference === 'online' ? <CheckMark /> : '' || ''}</Td>
+                <Td>
+                  {student.attendee?.classPreference === 'inperson' ? <CheckMark /> : '' || ''}
+                </Td>
               </Tr>
             )
           })

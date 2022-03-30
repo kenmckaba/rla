@@ -109,6 +109,7 @@ export const Registration = ({
           name: attendeeName,
           email: attendeeEmail,
           trainingId,
+          classPreference,
           audioStateKey: 1,
           videoStateKey: 1,
         },
