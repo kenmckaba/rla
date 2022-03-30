@@ -135,7 +135,9 @@ export const Registration = ({
     }
 
     setAttendeeId(id)
-    sendJoinEmail(id, attendeeName, attendeeEmail, training)
+    if (classPreference === 'online') {
+      sendJoinEmail(id, attendeeName, attendeeEmail, training)
+    }
     onModalOpen()
   }
 
