@@ -48,10 +48,10 @@ export const InvitedList = ({ training }) => {
         <Tr>
           <Th>Name</Th>
           <Th>Email</Th>
-          <Th>Invited</Th>
-          <Th>Registered</Th>
           <Th>Online</Th>
           <Th>In-Person</Th>
+          <Th>Invited</Th>
+          <Th>Registered</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -65,12 +65,13 @@ export const InvitedList = ({ training }) => {
               <Tr>
                 <Td>{student.name}</Td>
                 <Td>{student.email}</Td>
-                <Td>{toTime(student?.createdAt)}</Td>
-                <Td>{toTime(student?.attendee?.createdAt)}</Td>
+
                 <Td>{student.attendee?.classPreference === 'online' ? <CheckMark /> : '' || ''}</Td>
                 <Td>
                   {student.attendee?.classPreference === 'inperson' ? <CheckMark /> : '' || ''}
                 </Td>
+                <Td>{toTime(student?.createdAt)}</Td>
+                <Td>{toTime(student?.attendee?.createdAt)}</Td>
               </Tr>
             )
           })
