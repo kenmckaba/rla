@@ -19,10 +19,27 @@ export const InvitedList = ({ training }) => {
   useEffect(() => {
     if (invitedData) {
       const students = [...invitedData.listInvitedStudents.items]
-      const sorted = students.sort((first, second) => {
-        return first.attendee?.classPreference === 'online' ? first : second
+      // const sorted = students.sort((first, second) => {
+      //   return first.attendee?.classPreference === 'online' ? first : second
+      // })
+
+      students.sort((first, second) => {
+        if (first.attendee?.classPreference === second.attendee?.classPreference) {
+          return 0
+        }
+        if (first.attendee?.classPreference === 'online') {
+          return -1
+        } else {
+          if (first.attendee?.classPreference === 'inperson') {
+            return -1
+          }
+          if (!first.attendee) {
+            return 1
+          }
+        }
       })
-      setInvited(sorted)
+
+      setInvited(students)
       // setInvited(invitedData.listInvitedStudents.items)
     }
   }, [invitedData])
