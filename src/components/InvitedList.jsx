@@ -18,7 +18,12 @@ export const InvitedList = ({ training }) => {
 
   useEffect(() => {
     if (invitedData) {
-      setInvited(invitedData.listInvitedStudents.items)
+      const students = [...invitedData.listInvitedStudents.items]
+      const sorted = students.sort((first, second) => {
+        return first.attendee?.classPreference === 'online' ? first : second
+      })
+      setInvited(sorted)
+      // setInvited(invitedData.listInvitedStudents.items)
     }
   }, [invitedData])
 
