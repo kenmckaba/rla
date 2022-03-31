@@ -4,6 +4,7 @@ import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
 import { listInvitedStudents } from '../graphql/queries'
 import { onCreateInvitedStudent, onUpdateInvitedStudent } from '../graphql/subscriptions'
+import { ReactComponent as CheckMark } from '../assets/icons/check-mark.svg'
 
 export const InvitedList = ({ training }) => {
   const {
@@ -17,7 +18,22 @@ export const InvitedList = ({ training }) => {
 
   useEffect(() => {
     if (invitedData) {
-      setInvited(invitedData.listInvitedStudents.items)
+      const students = [...invitedData.listInvitedStudents.items]
+
+      students.sort((first, second) => {
+        if (first.attendee?.classPreference === second.attendee?.classPreference) {
+          return 0
+        }
+        if (
+          first.attendee?.classPreference === 'online' ||
+          first.attendee?.classPreference === 'inperson'
+        ) {
+          return -1
+        }
+        return 1
+      })
+
+      setInvited(students)
     }
   }, [invitedData])
 
@@ -47,10 +63,10 @@ export const InvitedList = ({ training }) => {
         <Tr>
           <Th>Name</Th>
           <Th>Email</Th>
+          <Th>Online</Th>
+          <Th>In-Person</Th>
           <Th>Invited</Th>
           <Th>Registered</Th>
-          <Th>Registered as</Th>
-          <Th>Email</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -64,10 +80,13 @@ export const InvitedList = ({ training }) => {
               <Tr>
                 <Td>{student.name}</Td>
                 <Td>{student.email}</Td>
+
+                <Td>{student.attendee?.classPreference === 'online' ? <CheckMark /> : '' || ''}</Td>
+                <Td>
+                  {student.attendee?.classPreference === 'inperson' ? <CheckMark /> : '' || ''}
+                </Td>
                 <Td>{toTime(student?.createdAt)}</Td>
                 <Td>{toTime(student?.attendee?.createdAt)}</Td>
-                <Td>{student.attendee?.name || '-'}</Td>
-                <Td>{student.attendee?.email || '-'}</Td>
               </Tr>
             )
           })
