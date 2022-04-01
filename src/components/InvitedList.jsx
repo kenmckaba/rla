@@ -21,16 +21,10 @@ export const InvitedList = ({ training }) => {
       const students = [...invitedData.listInvitedStudents.items]
 
       students.sort((first, second) => {
-        if (first.attendee?.classPreference === second.attendee?.classPreference) {
-          return 0
+        if (!second.attendee?.classPreference) {
+          return -1 // first comes 1st
         }
-        if (
-          first.attendee?.classPreference === 'online' ||
-          first.attendee?.classPreference === 'inperson'
-        ) {
-          return -1
-        }
-        return 1
+        return first.attendee?.classPreference === 'online' ? -1 : 1 // if first == undefined or == 'inperson' then second comes 1st
       })
 
       setInvited(students)
