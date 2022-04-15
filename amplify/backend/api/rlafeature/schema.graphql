@@ -117,10 +117,11 @@ type Poll
   question: String!
   type: PollType!
   answers: [String]
-  correctAnswerIndex: Int
+  correctAnswerIndex: Int 
   trainingId: ID!
   startedAt: AWSDateTime
   stoppedAt: AWSDateTime
+  multiAnswerIndexes: [Int]
   responses: [PollResponse] @connection(name: "pollPollResponses", keyField: "pollId")
 }
 

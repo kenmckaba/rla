@@ -164,6 +164,7 @@ export const createTraining = /* GraphQL */ `
           trainingId
           startedAt
           stoppedAt
+          multiAnswerIndexes
           responses {
             nextToken
           }
@@ -384,6 +385,7 @@ export const updateTraining = /* GraphQL */ `
           trainingId
           startedAt
           stoppedAt
+          multiAnswerIndexes
           responses {
             nextToken
           }
@@ -604,6 +606,7 @@ export const deleteTraining = /* GraphQL */ `
           trainingId
           startedAt
           stoppedAt
+          multiAnswerIndexes
           responses {
             nextToken
           }
@@ -805,6 +808,7 @@ export const createAttendee = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -1033,6 +1037,7 @@ export const updateAttendee = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -1261,6 +1266,7 @@ export const deleteAttendee = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -1476,6 +1482,7 @@ export const createSharedDoc = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -1605,6 +1612,7 @@ export const updateSharedDoc = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -1734,6 +1742,7 @@ export const deleteSharedDoc = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -1788,6 +1797,7 @@ export const createPoll = /* GraphQL */ `
       trainingId
       startedAt
       stoppedAt
+      multiAnswerIndexes
       responses {
         items {
           id
@@ -1803,6 +1813,7 @@ export const createPoll = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -1830,6 +1841,7 @@ export const updatePoll = /* GraphQL */ `
       trainingId
       startedAt
       stoppedAt
+      multiAnswerIndexes
       responses {
         items {
           id
@@ -1845,6 +1857,7 @@ export const updatePoll = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -1872,6 +1885,7 @@ export const deletePoll = /* GraphQL */ `
       trainingId
       startedAt
       stoppedAt
+      multiAnswerIndexes
       responses {
         items {
           id
@@ -1887,6 +1901,7 @@ export const deletePoll = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -1967,6 +1982,7 @@ export const createPollResponse = /* GraphQL */ `
         trainingId
         startedAt
         stoppedAt
+        multiAnswerIndexes
         responses {
           items {
             id
@@ -2005,6 +2021,7 @@ export const updatePollResponse = /* GraphQL */ `
         trainingId
         startedAt
         stoppedAt
+        multiAnswerIndexes
         responses {
           items {
             id
@@ -2043,6 +2060,7 @@ export const deletePollResponse = /* GraphQL */ `
         trainingId
         startedAt
         stoppedAt
+        multiAnswerIndexes
         responses {
           items {
             id
@@ -2903,6 +2921,7 @@ export const createBreakoutRoom = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -3101,6 +3120,7 @@ export const updateBreakoutRoom = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -3299,6 +3319,7 @@ export const deleteBreakoutRoom = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }

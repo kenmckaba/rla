@@ -83,7 +83,7 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
                   )
                 } else {
                   return (
-                    // TODO: if (index === poll.correctAnswerIndex) show bold/checkmark or whatever
+                    // TODO: if (index === poll.correctAnswerIndex) show bold/checkmark
                     <Flex key={answer}>
                       {answer} {answerCount(answer)}
                       {poll.correctAnswerIndex === index && (
@@ -100,16 +100,26 @@ export const PollChoices = ({ pollId, onSubmit, pollMode }) => {
         ) : poll.type === 'MULTICHOICE' ? (
           <CheckboxGroup onChange={setAnswer} value={response}>
             <VStack alignItems="baseline">
-              {poll.answers.map((answer) => {
-                return pollMode === 'POLL' ? (
-                  <Checkbox key={answer} value={answer} isDisabled={disabled}>
-                    {answer}
-                  </Checkbox>
-                ) : (
-                  <Box key={answer}>
-                    {answer} {answerCount(answer)}
-                  </Box>
-                )
+              {poll.answers.map((answer, index) => {
+                if (pollMode === 'POLL') {
+                  return (
+                    <Checkbox key={answer} value={answer} isDisabled={disabled}>
+                      {answer}
+                    </Checkbox>
+                  )
+                } else {
+                  return (
+                    // TODO: if (index === poll.correctAnswerIndex) show bold/checkmark
+                    <Flex key={answer}>
+                      {answer} {answerCount(answer)}
+                      {poll.multiAnswerIndexes.includes(index) && (
+                        <Box marginLeft="10px" marginTop="3px">
+                          <CheckMark />
+                        </Box>
+                      )}
+                    </Flex>
+                  )
+                }
               })}
             </VStack>
           </CheckboxGroup>
