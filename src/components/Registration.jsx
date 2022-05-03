@@ -41,6 +41,7 @@ export const Registration = ({
   const [classPreference, setClassPreference] = useState('')
   const [isFull, setIsFull] = useState(false)
   const updatedStudent = useRef(false)
+  const [inPersonCount, setInPersonCount] = useState(0)
 
   const { isOpen: isModalOpen, onOpen: onModalOpen } = useDisclosure()
 
@@ -117,6 +118,10 @@ export const Registration = ({
     })
     const id = result.data.createAttendee.id
 
+    const counter= () => {
+      setInPersonCount(inPersonCount + 1)
+    }
+
     if (invitedStudentId) {
       updatedStudent.current = true
 
@@ -133,10 +138,13 @@ export const Registration = ({
         },
       })
     }
-
+    
     setAttendeeId(id)
     if (classPreference === 'online') {
       sendJoinEmail(id, attendeeName, attendeeEmail, training)
+    }
+    if (classPreference === 'inperson') {
+      counter()
     }
     onModalOpen()
   }
@@ -242,7 +250,11 @@ export const Registration = ({
                       <Radio value="inperson">In-Person</Radio>
                     </HStack>
                   </RadioGroup>
+                  <FormHelperText color="white">
+                    Required no. of students in-person is 2. Current no. of students registered is {inPersonCount}
+                  </FormHelperText>
                 </FormControl>
+                
                 <HStack w="100%" spacing="3" paddingTop="3">
                   <Button w="100%" size="md" variant="secondary-ghost-outline">
                     Cancel
