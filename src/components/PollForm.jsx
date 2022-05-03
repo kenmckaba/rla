@@ -76,8 +76,20 @@ export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
     setCorrectAnswerIndex(val)
   }
 
-  const setChecked = (val) => {
-    setMultiAnswerIndexes(val)
+  const setChecked = (index, val) => {
+    setMultiAnswerIndexes((prev) => {
+      const ans = [...prev]
+      
+      if (val) {
+        ans.push(index)
+      } else {
+        var i = ans.indexOf(index)
+        if (i > -1) {
+          ans.splice(i, 1)
+        }
+      }
+      return ans
+    }) 
   }
 
   return (
@@ -177,30 +189,30 @@ export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
               )}
 
               {pollType === 'MULTICHOICE' && (
-                <CheckboxGroup
-                  onChange={setChecked}
-                  name="correctAnswer"
-                  value={multiAnswerIndexes}
-                >
-                  {answers.map((answer, index) => {
-                    // TODO: add checkbox or radio to choose correct answer and set poll.correctAnswerIndex
-                    // should be able to choose none
-                    return (
-                      <HStack>
-                        <Input
-                          key={index}
-                          height="24px"
-                          marginBottom="2px"
-                          value={answer}
-                          onChange={(e) => {
-                            onChangeAnswer(index, e)
-                          }}
-                        />
-                        <Checkbox key={index} value={index} name="correctAnswer" />
-                      </HStack>
-                    )
-                  })}
-                </CheckboxGroup>
+                answers.map((answer, index) => {
+                  // TODO: add checkbox or radio to choose correct answer and set poll.correctAnswerIndex
+                  // should be able to choose none
+                  return (
+                    <HStack>
+                      <Input
+                        key={index}
+                        height="24px"
+                        marginBottom="2px"
+                        value={answer}
+                        onChange={(e) => {
+                          onChangeAnswer(index, e)
+                        }}
+                      />
+                      <Checkbox 
+                        key={index} 
+                        value={index} 
+                        name="correctAnswer" 
+                        isChecked={multiAnswerIndexes.includes(index)} //will return true if the array ncludes index
+                        onChange={(e) => setChecked(index, e.target.checked)}
+                      />
+                    </HStack>
+                  )
+                })
               )}
 
               <Button
