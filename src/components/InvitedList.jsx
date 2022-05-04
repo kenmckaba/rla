@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { Table, Tbody, Td, Th, Thead, Tr, Text, TableCaption } from '@chakra-ui/react'
 import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
 import { listInvitedStudents } from '../graphql/queries'
@@ -15,10 +15,19 @@ export const InvitedList = ({ training }) => {
     variables: { limit: 1000, filter: { trainingId: { eq: training?.id } } },
   })
   const [invited, setInvited] = useState([])
+  const [inPersonCount, setInPersonCount] = useState(0)
+  const [onlineCount, setOnlineCount] = useState(0)
 
   useEffect(() => {
     if (invitedData) {
       const students = [...invitedData.listInvitedStudents.items]
+
+      // if (students.attendee?.classPreference === 'online') {
+      //   setOnlineCount(onlineCount+1)
+      // }
+      // else if (students.attendee?.classPreference === 'inperson') {
+      //   setInPersonCount(inPersonCount+1)
+      // }
 
       students.sort((first, second) => {
         if (!second.attendee?.classPreference) {
@@ -51,14 +60,39 @@ export const InvitedList = ({ training }) => {
     return date ? new Date(date).toLocaleString() : '-'
   }
 
+  // const inPersonCounter= () => {
+  //   setInPersonCount(inPersonCount + 1)
+  // }
+  // const onlineCounter= () => {
+  //   setOnlineCount(onlineCount + 1)
+  // }
+
+  // const counter =(student) => {
+  //   if(student.attendee?.classPreference === 'online'){
+  //     setOnlineCount(onlineCount+1)
+  //   }
+  //   else if(student.attendee?.classPreference === 'inperson'){
+  //     setInPersonCount(inPersonCount+1)
+  //   }
+  // }
+
+  // if (invited.student?.attendee?.classPreference === 'online') {
+  //   setOnlineCount(onlineCount+1)
+  // }
+  // else if (invited.student?.attendee?.classPreference === 'inperson') {
+  //   setInPersonCount(inPersonCount+1)
+  // }
+  
+
+
   return (
     <Table size="sm" variant="striped">
       <Thead>
         <Tr>
           <Th>Name</Th>
           <Th>Email</Th>
-          <Th>Online</Th>
-          <Th>In-Person</Th>
+          <Th>Online ({onlineCount})</Th>
+          <Th>In-Person ({inPersonCount})</Th>
           <Th>Invited</Th>
           <Th>Registered</Th>
         </Tr>
@@ -70,12 +104,19 @@ export const InvitedList = ({ training }) => {
           </Tr>
         ) : (
           invited.map((student) => {
+            // if (student.attendee?.classPreference === 'online'){
+            //   onlineCounter()
+            // }
+            // else if (student.attendee?.classPreference === 'inperson') {
+            //   inPersonCounter()
+            // }
+            // counter(student)
             return (
               <Tr>
                 <Td>{student.name}</Td>
                 <Td>{student.email}</Td>
 
-                <Td>{student.attendee?.classPreference === 'online' ? <CheckMark /> : '' || ''}</Td>
+                <Td>{student.attendee?.classPreference === 'online' ?  <CheckMark /> : '' || ''}</Td>
                 <Td>
                   {student.attendee?.classPreference === 'inperson' ? <CheckMark /> : '' || ''}
                 </Td>
@@ -85,6 +126,7 @@ export const InvitedList = ({ training }) => {
             )
           })
         )}
+        <Text>*Required no. of students in-person is 2. Current no. of students registered in-person is {inPersonCount}</Text>
       </Tbody>
     </Table>
   )

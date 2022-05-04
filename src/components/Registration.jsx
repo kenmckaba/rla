@@ -247,11 +247,11 @@ export const Registration = ({
                   <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
                     <HStack direction="row">
                       <Radio value="online">Online</Radio>
-                      <Radio value="inperson">In-Person</Radio>
+                      <Radio value="inperson">In-Person*</Radio>
                     </HStack>
                   </RadioGroup>
                   <FormHelperText color="white">
-                    Required no. of students in-person is 2. Current no. of students registered is {inPersonCount}
+                    * Required no. of students in-person is 2. Current no. of students registered in-person is {inPersonCount}
                   </FormHelperText>
                 </FormControl>
                 

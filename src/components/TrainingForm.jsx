@@ -58,6 +58,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [sharedDocs, setSharedDocs] = useState([])
   const [whiteboardUrl, setWhiteboard] = useState('')
   const [maxAttendees, setMaxAttendees] = useState('25')
+  const [minInPersonAttendees, setMinInPersonAttendees] = useState('0')
   const [currentAttendee, setCurrentAttendee] = useState()
   const [selectedEmailGroup, setSelectedEmailGroup] = useState()
   const [selectedStudents, setSelectedStudents] = useState([])
@@ -145,6 +146,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         return `${hrs}:${mins} ${date.substr(-2, 2)}`
       })
       setMaxAttendees(tr.maxAttendees || 25)
+      setMinInPersonAttendees(tr.minInPersonAttendees || 0)
       setMeetingId((prev) => tr.meetingId || prev)
       setModeratorPasscode((prev) => tr.moderatorPasscode || prev)
       setParticipantPasscode((prev) => tr.participantPasscode || prev)
@@ -227,6 +229,10 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     setMaxAttendees(event.target.value)
   }
 
+  const onChangeMinInPersonAttendees = (event) => {
+    setMinInPersonAttendees(event.target.value)
+  }
+
   const mutationVars = () => {
     const time = fixDate()
     return {
@@ -241,6 +247,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           meetingId,
           scheduledTime: time.toISOString(),
           maxAttendees,
+          minInPersonAttendees,
           moderatorPasscode,
           participantPasscode,
           whiteboardUrl,
@@ -439,6 +446,16 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             />
           </FormControl>
         </HStack>
+        <FormControl>
+          <FormLabel>Minimum no. of in-person students</FormLabel>
+          <Input
+            fontSize="12"
+            value={minInPersonAttendees}
+            onChange={onChangeMinInPersonAttendees}
+            h="24px"
+            placeholder="optional"
+          />
+        </FormControl>
         <FormControl>
           <FormLabel>Whiteboard URL</FormLabel>
           <Input
