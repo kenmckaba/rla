@@ -22,14 +22,23 @@ export const InvitedList = ({ training }) => {
     if (invitedData) {
       const students = [...invitedData.listInvitedStudents.items]
 
-      // if (students.attendee?.classPreference === 'online') {
-      //   setOnlineCount(onlineCount+1)
-      // }
-      // else if (students.attendee?.classPreference === 'inperson') {
-      //   setInPersonCount(inPersonCount+1)
-      // }
+      students.map((student) => {
+        if (student.attendee?.classPreference === 'online') {
+          setOnlineCount(onlineCount+1)
+        }
+        else if (student.attendee?.classPreference === 'inperson') {
+          setInPersonCount(inPersonCount+1)
+        }
+      })
 
       students.sort((first, second) => {
+        // if (first.attendee?.classPreference === 'online') {
+        //   setOnlineCount(onlineCount+1)
+        // }
+        // else if (first.attendee?.classPreference === 'inperson') {
+        //   setInPersonCount(inPersonCount+1)
+        // }
+
         if (!second.attendee?.classPreference) {
           return -1 // first comes 1st
         }
@@ -38,7 +47,7 @@ export const InvitedList = ({ training }) => {
 
       setInvited(students)
     }
-  }, [invitedData])
+  }, [inPersonCount, invitedData, onlineCount])
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -104,29 +113,27 @@ export const InvitedList = ({ training }) => {
           </Tr>
         ) : (
           invited.map((student) => {
-            // if (student.attendee?.classPreference === 'online'){
+            // if (student.attendee?.classPreference === 'online') {
             //   onlineCounter()
             // }
             // else if (student.attendee?.classPreference === 'inperson') {
             //   inPersonCounter()
             // }
             // counter(student)
-            return (
+            return ( 
               <Tr>
                 <Td>{student.name}</Td>
                 <Td>{student.email}</Td>
-
                 <Td>{student.attendee?.classPreference === 'online' ?  <CheckMark /> : '' || ''}</Td>
-                <Td>
-                  {student.attendee?.classPreference === 'inperson' ? <CheckMark /> : '' || ''}
-                </Td>
+                <Td>{student.attendee?.classPreference === 'inperson' ? <CheckMark /> : '' || ''}</Td>
                 <Td>{toTime(student?.createdAt)}</Td>
                 <Td>{toTime(student?.attendee?.createdAt)}</Td>
               </Tr>
             )
+            
           })
         )}
-        <Text>*Required no. of students in-person is 2. Current no. of students registered in-person is {inPersonCount}</Text>
+        <Text>*Required no. of students in-person is {training.minInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}</Text>
       </Tbody>
     </Table>
   )

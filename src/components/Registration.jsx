@@ -57,6 +57,7 @@ export const Registration = ({
   })
   const [addNewAttendee] = useMutation(gql(createAttendee))
   const [updateStudent] = useMutation(gql(updateInvitedStudent))
+  // const [updateMinInPersonAttendees] = useMutation(gql(minInPersonAttendees))
 
   useEffect(() => {
     if (trainingData && (!training || trainingId === trainingData?.getTraining?.id)) {
@@ -251,7 +252,7 @@ export const Registration = ({
                     </HStack>
                   </RadioGroup>
                   <FormHelperText color="white">
-                    * Required no. of students in-person is 2. Current no. of students registered in-person is {inPersonCount}
+                    *Required no. of students in-person is {training.minInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
                   </FormHelperText>
                 </FormControl>
                 
