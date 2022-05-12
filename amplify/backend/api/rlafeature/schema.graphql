@@ -10,6 +10,12 @@ enum TrainingType {
   BREAKOUT
 }
 
+enum ClassPreference {
+  NONE
+  ONLINE
+  INPERSON
+}
+
 type Trainer @model {
   id: ID!
   name: String!
@@ -30,7 +36,6 @@ type Training
   trainerEmail: String
   registrationUrl: String
   maxAttendees: Int
-  minInPersonAttendees: Int
   meetingId: String!
   moderatorPasscode: String!
   participantPasscode: String!
@@ -61,7 +66,7 @@ type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
   id: ID!
   name: String!
   email: String!
-  classPreference: String
+  classPreference: ClassPreference
   bluejeansName: String
   handRaised: Boolean
   joinedTime: AWSDateTime
@@ -86,6 +91,16 @@ type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
   breakoutRoom: BreakoutRoom @connection(name: "BreakoutAttendees", keyField: "breakoutRoomId")
   breakoutRoomAttendeeId: ID
   mainTrainingAttendeeId: ID
+}
+
+type TrainingSeries {
+  id: ID!
+  trainings: [trainingId]
+  trainerId: ID!
+  title: String!
+  description: String
+  trainerName: String
+  trainerEmail: String
 }
 
 type SharedDoc

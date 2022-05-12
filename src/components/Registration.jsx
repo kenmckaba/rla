@@ -57,13 +57,21 @@ export const Registration = ({
   })
   const [addNewAttendee] = useMutation(gql(createAttendee))
   const [updateStudent] = useMutation(gql(updateInvitedStudent))
-  // const [updateMinInPersonAttendees] = useMutation(gql(minInPersonAttendees))
 
   useEffect(() => {
     if (trainingData && (!training || trainingId === trainingData?.getTraining?.id)) {
       const tr = trainingData.getTraining
       setTraining(tr)
       setIsFull(tr.attendees.items.length > tr.maxAttendees)
+
+      let inPerson = 0
+      training.attendees.forEach((attendee) => {
+        if(attendee.classPreference === 'INPERSON'){
+          inPerson++
+        }
+      })
+
+      setInPersonCount(inPerson)
     }
   }, [trainingData, training, trainingId])
 
@@ -119,9 +127,9 @@ export const Registration = ({
     })
     const id = result.data.createAttendee.id
 
-    const counter= () => {
-      setInPersonCount(inPersonCount + 1)
-    }
+    // const counter= () => {
+    //   setInPersonCount(inPersonCount + 1)
+    // }
 
     if (invitedStudentId) {
       updatedStudent.current = true
@@ -141,12 +149,12 @@ export const Registration = ({
     }
     
     setAttendeeId(id)
-    if (classPreference === 'online') {
+    if (classPreference === 'ONLINE') {
       sendJoinEmail(id, attendeeName, attendeeEmail, training)
     }
-    if (classPreference === 'inperson') {
-      counter()
-    }
+    // if (classPreference === 'inperson') {
+    //   counter()
+    // }
     onModalOpen()
   }
 
@@ -247,8 +255,8 @@ export const Registration = ({
                   </FormLabel>
                   <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
                     <HStack direction="row">
-                      <Radio value="online">Online</Radio>
-                      <Radio value="inperson">In-Person*</Radio>
+                      <Radio value="ONLINE">Online</Radio>
+                      <Radio value="INPERSON">In-Person*</Radio>
                     </HStack>
                   </RadioGroup>
                   <FormHelperText color="white">

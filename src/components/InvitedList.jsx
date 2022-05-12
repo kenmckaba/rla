@@ -22,32 +22,30 @@ export const InvitedList = ({ training }) => {
     if (invitedData) {
       const students = [...invitedData.listInvitedStudents.items]
 
-      students.map((student) => {
-        if (student.attendee?.classPreference === 'online') {
-          setOnlineCount(onlineCount+1)
-        }
-        else if (student.attendee?.classPreference === 'inperson') {
-          setInPersonCount(inPersonCount+1)
+      let online = 0
+      let inPerson = 0
+
+      students.forEach((student) => {
+        if (student.attendee?.classPreference === 'ONLINE') {
+          online++
+        } else if (student.attendee?.classPreference === 'INPERSON') {
+          inPerson++
         }
       })
 
-      students.sort((first, second) => {
-        // if (first.attendee?.classPreference === 'online') {
-        //   setOnlineCount(onlineCount+1)
-        // }
-        // else if (first.attendee?.classPreference === 'inperson') {
-        //   setInPersonCount(inPersonCount+1)
-        // }
+      setOnlineCount(online)
+      setInPersonCount(inPerson)
 
+      students.sort((first, second) => {
         if (!second.attendee?.classPreference) {
           return -1 // first comes 1st
         }
-        return first.attendee?.classPreference === 'online' ? -1 : 1 // if first == undefined or == 'inperson' then second comes 1st
+        return first.attendee?.classPreference === 'ONLINE' ? -1 : 1 // if first == undefined or == 'inperson' then second comes 1st
       })
 
       setInvited(students)
     }
-  }, [inPersonCount, invitedData, onlineCount])
+  }, [invitedData])
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -69,31 +67,6 @@ export const InvitedList = ({ training }) => {
     return date ? new Date(date).toLocaleString() : '-'
   }
 
-  // const inPersonCounter= () => {
-  //   setInPersonCount(inPersonCount + 1)
-  // }
-  // const onlineCounter= () => {
-  //   setOnlineCount(onlineCount + 1)
-  // }
-
-  // const counter =(student) => {
-  //   if(student.attendee?.classPreference === 'online'){
-  //     setOnlineCount(onlineCount+1)
-  //   }
-  //   else if(student.attendee?.classPreference === 'inperson'){
-  //     setInPersonCount(inPersonCount+1)
-  //   }
-  // }
-
-  // if (invited.student?.attendee?.classPreference === 'online') {
-  //   setOnlineCount(onlineCount+1)
-  // }
-  // else if (invited.student?.attendee?.classPreference === 'inperson') {
-  //   setInPersonCount(inPersonCount+1)
-  // }
-  
-
-
   return (
     <Table size="sm" variant="striped">
       <Thead>
@@ -113,19 +86,12 @@ export const InvitedList = ({ training }) => {
           </Tr>
         ) : (
           invited.map((student) => {
-            // if (student.attendee?.classPreference === 'online') {
-            //   onlineCounter()
-            // }
-            // else if (student.attendee?.classPreference === 'inperson') {
-            //   inPersonCounter()
-            // }
-            // counter(student)
             return ( 
               <Tr>
                 <Td>{student.name}</Td>
                 <Td>{student.email}</Td>
-                <Td>{student.attendee?.classPreference === 'online' ?  <CheckMark /> : '' || ''}</Td>
-                <Td>{student.attendee?.classPreference === 'inperson' ? <CheckMark /> : '' || ''}</Td>
+                <Td>{student.attendee?.classPreference === 'ONLINE' ?  <CheckMark /> : '' || ''}</Td>
+                <Td>{student.attendee?.classPreference === 'INPERSON' ? <CheckMark /> : '' || ''}</Td>
                 <Td>{toTime(student?.createdAt)}</Td>
                 <Td>{toTime(student?.attendee?.createdAt)}</Td>
               </Tr>
