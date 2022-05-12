@@ -93,16 +93,6 @@ type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
   mainTrainingAttendeeId: ID
 }
 
-type TrainingSeries {
-  id: ID!
-  trainings: [trainingId]
-  trainerId: ID!
-  title: String!
-  description: String
-  trainerName: String
-  trainerEmail: String
-}
-
 type SharedDoc
   @model
   @auth(
