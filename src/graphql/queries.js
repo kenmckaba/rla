@@ -42,6 +42,7 @@ export const getTraining = /* GraphQL */ `
       trainerEmail
       registrationUrl
       maxAttendees
+      minInPersonAttendees
       meetingId
       moderatorPasscode
       participantPasscode
@@ -88,6 +89,7 @@ export const getTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -174,6 +176,7 @@ export const getTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -218,6 +221,7 @@ export const getTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -264,6 +268,7 @@ export const listTrainings = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -402,6 +407,7 @@ export const getAttendee = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -551,6 +557,7 @@ export const getAttendee = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -632,6 +639,7 @@ export const listAttendees = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -686,6 +694,7 @@ export const listAttendees = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -736,6 +745,7 @@ export const getSharedDoc = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -867,6 +877,7 @@ export const listSharedDocs = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -1273,6 +1284,7 @@ export const getInvitedStudent = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -1327,6 +1339,7 @@ export const getInvitedStudent = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -1403,6 +1416,7 @@ export const listInvitedStudents = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -1521,6 +1535,7 @@ export const getBreakoutRoom = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -1569,6 +1584,7 @@ export const getBreakoutRoom = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -1730,6 +1746,7 @@ export const listBreakoutRooms = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
