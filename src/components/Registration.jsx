@@ -65,7 +65,7 @@ export const Registration = ({
       setIsFull(tr.attendees.items.length > tr.maxAttendees)
 
       let inPerson = 0
-      training.attendees.forEach((attendee) => {
+      trainingData.getTraining.attendees.items.forEach((attendee) => {
         if(attendee.classPreference === 'INPERSON'){
           inPerson++
         }
