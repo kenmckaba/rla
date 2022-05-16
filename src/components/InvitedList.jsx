@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { Table, Tbody, Td, Th, Thead, Tr, Text, TableCaption } from '@chakra-ui/react'
 import { buildSubscription } from 'aws-appsync'
 import { useEffect, useState } from 'react'
 import { listInvitedStudents } from '../graphql/queries'
@@ -15,16 +15,32 @@ export const InvitedList = ({ training }) => {
     variables: { limit: 1000, filter: { trainingId: { eq: training?.id } } },
   })
   const [invited, setInvited] = useState([])
+  const [inPersonCount, setInPersonCount] = useState(0)
+  const [onlineCount, setOnlineCount] = useState(0)
 
   useEffect(() => {
     if (invitedData) {
       const students = [...invitedData.listInvitedStudents.items]
 
+      let online = 0
+      let inPerson = 0
+
+      students.forEach((student) => {
+        if (student.attendee?.classPreference === 'ONLINE') {
+          online++
+        } else if (student.attendee?.classPreference === 'INPERSON') {
+          inPerson++
+        }
+      })
+
+      setOnlineCount(online)
+      setInPersonCount(inPerson)
+
       students.sort((first, second) => {
         if (!second.attendee?.classPreference) {
           return -1 // first comes 1st
         }
-        return first.attendee?.classPreference === 'online' ? -1 : 1 // if first == undefined or == 'inperson' then second comes 1st
+        return first.attendee?.classPreference === 'ONLINE' ? -1 : 1 // if first == undefined or == 'inperson' then second comes 1st
       })
 
       setInvited(students)
@@ -57,8 +73,8 @@ export const InvitedList = ({ training }) => {
         <Tr>
           <Th>Name</Th>
           <Th>Email</Th>
-          <Th>Online</Th>
-          <Th>In-Person</Th>
+          <Th>Online ({onlineCount})</Th>
+          <Th>In-Person ({inPersonCount})</Th>
           <Th>Invited</Th>
           <Th>Registered</Th>
         </Tr>
@@ -70,21 +86,20 @@ export const InvitedList = ({ training }) => {
           </Tr>
         ) : (
           invited.map((student) => {
-            return (
+            return ( 
               <Tr>
                 <Td>{student.name}</Td>
                 <Td>{student.email}</Td>
-
-                <Td>{student.attendee?.classPreference === 'online' ? <CheckMark /> : '' || ''}</Td>
-                <Td>
-                  {student.attendee?.classPreference === 'inperson' ? <CheckMark /> : '' || ''}
-                </Td>
+                <Td>{student.attendee?.classPreference === 'ONLINE' ?  <CheckMark /> : '' || ''}</Td>
+                <Td>{student.attendee?.classPreference === 'INPERSON' ? <CheckMark /> : '' || ''}</Td>
                 <Td>{toTime(student?.createdAt)}</Td>
                 <Td>{toTime(student?.attendee?.createdAt)}</Td>
               </Tr>
             )
+            
           })
         )}
+        <Text>*Required no. of students in-person is {training.minInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}</Text>
       </Tbody>
     </Table>
   )

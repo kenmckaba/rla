@@ -41,6 +41,7 @@ export const Registration = ({
   const [classPreference, setClassPreference] = useState('')
   const [isFull, setIsFull] = useState(false)
   const updatedStudent = useRef(false)
+  const [inPersonCount, setInPersonCount] = useState(0)
 
   const { isOpen: isModalOpen, onOpen: onModalOpen } = useDisclosure()
 
@@ -62,6 +63,15 @@ export const Registration = ({
       const tr = trainingData.getTraining
       setTraining(tr)
       setIsFull(tr.attendees.items.length > tr.maxAttendees)
+
+      let inPerson = 0
+      trainingData.getTraining.attendees.items.forEach((attendee) => {
+        if(attendee.classPreference === 'INPERSON'){
+          inPerson++
+        }
+      })
+
+      setInPersonCount(inPerson)
     }
   }, [trainingData, training, trainingId])
 
@@ -117,6 +127,10 @@ export const Registration = ({
     })
     const id = result.data.createAttendee.id
 
+    // const counter= () => {
+    //   setInPersonCount(inPersonCount + 1)
+    // }
+
     if (invitedStudentId) {
       updatedStudent.current = true
 
@@ -133,11 +147,14 @@ export const Registration = ({
         },
       })
     }
-
+    
     setAttendeeId(id)
-    if (classPreference === 'online') {
+    if (classPreference === 'ONLINE') {
       sendJoinEmail(id, attendeeName, attendeeEmail, training)
     }
+    // if (classPreference === 'inperson') {
+    //   counter()
+    // }
     onModalOpen()
   }
 
@@ -238,11 +255,15 @@ export const Registration = ({
                   </FormLabel>
                   <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
                     <HStack direction="row">
-                      <Radio value="online">Online</Radio>
-                      <Radio value="inperson">In-Person</Radio>
+                      <Radio value="ONLINE">Online</Radio>
+                      <Radio value="INPERSON">In-Person*</Radio>
                     </HStack>
                   </RadioGroup>
+                  <FormHelperText color="white">
+                    *Required no. of students in-person is {training.minInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
+                  </FormHelperText>
                 </FormControl>
+                
                 <HStack w="100%" spacing="3" paddingTop="3">
                   <Button w="100%" size="md" variant="secondary-ghost-outline">
                     Cancel

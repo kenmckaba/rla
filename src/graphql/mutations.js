@@ -58,6 +58,7 @@ export const createTraining = /* GraphQL */ `
       trainerEmail
       registrationUrl
       maxAttendees
+      minInPersonAttendees
       meetingId
       moderatorPasscode
       participantPasscode
@@ -104,6 +105,7 @@ export const createTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -191,6 +193,7 @@ export const createTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -235,6 +238,7 @@ export const createTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -279,6 +283,7 @@ export const updateTraining = /* GraphQL */ `
       trainerEmail
       registrationUrl
       maxAttendees
+      minInPersonAttendees
       meetingId
       moderatorPasscode
       participantPasscode
@@ -325,6 +330,7 @@ export const updateTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -412,6 +418,7 @@ export const updateTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -456,6 +463,7 @@ export const updateTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -500,6 +508,7 @@ export const deleteTraining = /* GraphQL */ `
       trainerEmail
       registrationUrl
       maxAttendees
+      minInPersonAttendees
       meetingId
       moderatorPasscode
       participantPasscode
@@ -546,6 +555,7 @@ export const deleteTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -633,6 +643,7 @@ export const deleteTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -677,6 +688,7 @@ export const deleteTraining = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -741,6 +753,7 @@ export const createAttendee = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -891,6 +904,7 @@ export const createAttendee = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -970,6 +984,7 @@ export const updateAttendee = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -1120,6 +1135,7 @@ export const updateAttendee = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -1199,6 +1215,7 @@ export const deleteAttendee = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -1349,6 +1366,7 @@ export const deleteAttendee = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -1415,6 +1433,7 @@ export const createSharedDoc = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -1545,6 +1564,7 @@ export const updateSharedDoc = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -1675,6 +1695,7 @@ export const deleteSharedDoc = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -2368,6 +2389,7 @@ export const createInvitedStudent = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -2422,6 +2444,7 @@ export const createInvitedStudent = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -2496,6 +2519,7 @@ export const updateInvitedStudent = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -2550,6 +2574,7 @@ export const updateInvitedStudent = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -2624,6 +2649,7 @@ export const deleteInvitedStudent = /* GraphQL */ `
           trainerEmail
           registrationUrl
           maxAttendees
+          minInPersonAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -2678,6 +2704,7 @@ export const deleteInvitedStudent = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -2806,6 +2833,7 @@ export const createBreakoutRoom = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -2854,6 +2882,7 @@ export const createBreakoutRoom = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -3005,6 +3034,7 @@ export const updateBreakoutRoom = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -3053,6 +3083,7 @@ export const updateBreakoutRoom = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -3204,6 +3235,7 @@ export const deleteBreakoutRoom = /* GraphQL */ `
             trainerEmail
             registrationUrl
             maxAttendees
+            minInPersonAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -3252,6 +3284,7 @@ export const deleteBreakoutRoom = /* GraphQL */ `
         trainerEmail
         registrationUrl
         maxAttendees
+        minInPersonAttendees
         meetingId
         moderatorPasscode
         participantPasscode
