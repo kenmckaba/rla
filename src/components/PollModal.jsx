@@ -13,7 +13,14 @@ export const PollModal = ({ poll, isOpen, trainingId, onClose }) => {
   const [addNewPoll] = useMutation(gql(createPoll))
   const [updateCurrentPoll] = useMutation(gql(updatePoll))
 
-  const onSave = async ({ pollId, question, type, answers, correctAnswerIndex }) => {
+  const onSave = async ({
+    pollId,
+    question,
+    type,
+    answers,
+    correctAnswerIndex,
+    multiAnswerIndexes,
+  }) => {
     // TODO: add correctAnswerIndex to input for both add and update
     if (pollId) {
       await updateCurrentPoll({
@@ -25,6 +32,7 @@ export const PollModal = ({ poll, isOpen, trainingId, onClose }) => {
             type,
             answers,
             correctAnswerIndex,
+            multiAnswerIndexes,
           },
         },
       })
@@ -37,6 +45,7 @@ export const PollModal = ({ poll, isOpen, trainingId, onClose }) => {
             type,
             answers,
             correctAnswerIndex,
+            multiAnswerIndexes,
           },
         },
       })

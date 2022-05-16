@@ -10,6 +10,8 @@ import {
   Radio,
   Flex,
   Textarea,
+  CheckboxGroup,
+  Checkbox,
 } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
 const SingleChoice = 'SINGLECHOICE'
@@ -22,6 +24,7 @@ export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
   const [answers, setAnswers] = useState(poll?.answers || ['', ''])
   const [pollType, setPollType] = useState(poll?.type || SingleChoice)
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(poll?.correctAnswerIndex)
+  const [multiAnswerIndexes, setMultiAnswerIndexes] = useState(poll?.multiAnswerIndexes || [])
 
   const onChangeQuestion = (event) => {
     setQuestion(event.target.value)
@@ -41,7 +44,15 @@ export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
     }, [])
 
     // TODO: add correctAnswerIndex (can be null)
-    onSave({ pollId: poll?.id, question, type: pollType, answers: ans, correctAnswerIndex, tags })
+    onSave({
+      pollId: poll?.id,
+      question,
+      type: pollType,
+      answers: ans,
+      correctAnswerIndex,
+      multiAnswerIndexes,
+      tags,
+    })
     onClose()
   }
 
@@ -61,8 +72,24 @@ export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
     onClose()
   }
 
-  const setChecked = (val) => {
+  const setSelected = (val) => {
     setCorrectAnswerIndex(val)
+  }
+
+  const setChecked = (index, val) => {
+    setMultiAnswerIndexes((prev) => {
+      const ans = [...prev]
+      
+      if (val) {
+        ans.push(index)
+      } else {
+        var i = ans.indexOf(index)
+        if (i > -1) {
+          ans.splice(i, 1)
+        }
+      }
+      return ans
+    }) 
   }
 
   return (
@@ -125,6 +152,11 @@ export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
                 Select the correct answer from the options below
               </FormLabel>
             )}
+            {pollType === 'MULTICHOICE' && (
+              <FormLabel fontWeight="bold">
+                Select one or more correct answers from the options below
+              </FormLabel>
+            )}
             <Box
               justifyContent="center"
               alignItems="center"
@@ -133,8 +165,31 @@ export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
               height="fit-content"
               padding="4px"
             >
-              <RadioGroup onChange={setChecked} name="correctAnswer" value={correctAnswerIndex}>
-                {answers.map((answer, index) => {
+              {pollType === 'SINGLECHOICE' && (
+                <RadioGroup onChange={setSelected} name="correctAnswer" value={correctAnswerIndex}>
+                  {answers.map((answer, index) => {
+                    // TODO: add checkbox or radio to choose correct answer and set poll.correctAnswerIndex
+                    // should be able to choose none
+                    return (
+                      <HStack>
+                        <Input
+                          key={index}
+                          height="24px"
+                          marginBottom="2px"
+                          value={answer}
+                          onChange={(e) => {
+                            onChangeAnswer(index, e)
+                          }}
+                        />
+                        <Radio value={index} name="correctAnswer" />
+                      </HStack>
+                    )
+                  })}
+                </RadioGroup>
+              )}
+
+              {pollType === 'MULTICHOICE' && (
+                answers.map((answer, index) => {
                   // TODO: add checkbox or radio to choose correct answer and set poll.correctAnswerIndex
                   // should be able to choose none
                   return (
@@ -148,11 +203,17 @@ export const PollForm = ({ poll, onClose, onSave, onShowCatalog }) => {
                           onChangeAnswer(index, e)
                         }}
                       />
-                      {pollType === 'SINGLECHOICE' && <Radio value={index} name="correctAnswer" />}
+                      <Checkbox 
+                        key={index} 
+                        value={index} 
+                        name="correctAnswer" 
+                        isChecked={multiAnswerIndexes.includes(index)} //will return true if the array ncludes index
+                        onChange={(e) => setChecked(index, e.target.checked)}
+                      />
                     </HStack>
                   )
-                })}
-              </RadioGroup>
+                })
+              )}
 
               <Button
                 minW="128px"
