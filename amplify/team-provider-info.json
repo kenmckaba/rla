@@ -15,7 +15,7 @@
       "function": {
         "attendeeimage": {
           "deploymentBucketName": "amplify-rlafeature-pooja-173536-deployment",
-          "s3Key": "amplify-builds/attendeeimage-4e73585479494d754b75-build.zip",
+          "s3Key": "amplify-builds/attendeeimage-62414f755052332b4b2b-build.zip",
           "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
         }
       },

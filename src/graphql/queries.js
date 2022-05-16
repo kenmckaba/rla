@@ -150,6 +150,7 @@ export const getTraining = /* GraphQL */ `
           trainingId
           startedAt
           stoppedAt
+          multiAnswerIndexes
           responses {
             nextToken
           }
@@ -336,6 +337,7 @@ export const listTrainings = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -475,6 +477,7 @@ export const getAttendee = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -813,6 +816,7 @@ export const getSharedDoc = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -929,6 +933,7 @@ export const getPoll = /* GraphQL */ `
       trainingId
       startedAt
       stoppedAt
+      multiAnswerIndexes
       responses {
         items {
           id
@@ -944,6 +949,7 @@ export const getPoll = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
@@ -973,6 +979,7 @@ export const listPolls = /* GraphQL */ `
         trainingId
         startedAt
         stoppedAt
+        multiAnswerIndexes
         responses {
           items {
             id
@@ -1040,6 +1047,7 @@ export const getPollResponse = /* GraphQL */ `
         trainingId
         startedAt
         stoppedAt
+        multiAnswerIndexes
         responses {
           items {
             id
@@ -1080,6 +1088,7 @@ export const listPollResponses = /* GraphQL */ `
           trainingId
           startedAt
           stoppedAt
+          multiAnswerIndexes
           responses {
             nextToken
           }
@@ -1652,6 +1661,7 @@ export const getBreakoutRoom = /* GraphQL */ `
             trainingId
             startedAt
             stoppedAt
+            multiAnswerIndexes
             createdAt
             updatedAt
           }
