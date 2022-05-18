@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react'
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
+import { SeriesForm } from './SeriesForm'
 import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
@@ -49,6 +50,8 @@ export const TrainingList = () => {
   const [currentTraining, setCurrentTraining] = useState()
   const { loading, error, data: trainingListData, subscribeToMore } = useQuery(gql(listTrainings))
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
+  const { isOpen: isSeriesModalOpen, onOpen: onSeriesModalOpen, onClose: onSeriesModalClose } = useDisclosure()
+  // const [seriesModal, setSeriesModal] = useState(false)
   const [addTraining] = useMutation(gql(createTraining))
   const [deleteTheTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
@@ -146,6 +149,29 @@ export const TrainingList = () => {
     })
     setCurrentTraining(result.data.createTraining)
     onModalOpen()
+  }
+
+  const onNewSeries = async () => {
+    setNewTraining(true)
+    const now = new Date()
+    const scheduledTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12, 0, 0) // noon tomorrow
+    const result = await addTraining({
+      variables: {
+        input: {
+          trainerName: '',
+          title: '',
+          type: 'TEMP',
+          meetingId: '',
+          scheduledTime,
+          moderatorPasscode: '',
+          participantPasscode: '',
+          audioStateKey: 1,
+          videoStateKey: 1,
+        },
+      },
+    })
+    setCurrentTraining(result.data.createTraining)
+    onSeriesModalOpen()
   }
 
   const confirmDelete = (training) => {
@@ -484,6 +510,19 @@ export const TrainingList = () => {
                   minW="174px"
                 >
                   New training
+                </Button> <Tab/>
+                <Button
+                  variant="light-blue"
+                  backgroundColor="rgba(13, 98, 197, 1)"
+                  color="white"
+                  size="md"
+                  leftIcon={<AddIcon />}
+                  onClick={onNewSeries}
+                  fontSize="10pt"
+                  fontWeight="bold"
+                  minW="174px"
+                >
+                  New series
                 </Button>
               </Flex>
               <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
@@ -532,6 +571,35 @@ export const TrainingList = () => {
                 </ModalBody>
               </ModalContent>
             </Modal>
+            <Modal isOpen={isSeriesModalOpen} scrollBehavior="inside">
+              <ModalOverlay />
+              <ModalContent color="darkKnight.700">
+                <ModalHeader>
+                  <Flex>
+                    <Box>{newTraining ? 'New Series' : 'Update Series'}</Box>
+                    <Spacer></Spacer>
+                    <Box>
+                      <HStack spacing={2}>
+                        <IconButton
+                          variant="icon-button"
+                          aria-label="Close form"
+                          icon={<CloseIcon boxSize={3} />}
+                          onClick={onSeriesModalClose}
+                        />
+                      </HStack>
+                    </Box>
+                  </Flex>
+                </ModalHeader>
+                <ModalBody>
+                  <SeriesForm
+                    onClose={onSeriesModalClose}
+                    trainingId={currentTraining?.id}
+                    onDelete={() => confirmDelete(currentTraining)}
+                  />
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+          
             <Modal size="xl" isOpen={showInvitedModal}>
               <ModalOverlay />
               <ModalContent maxWidth="unset" width="1000px" color="darkKnight.700">
