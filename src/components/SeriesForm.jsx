@@ -46,11 +46,14 @@ import { AccordionItemCustom } from './AccordionItemCustom'
 import OurModal from './OurModal'
 import { sendRegistrationEmails } from '../utils/sendRegistrationEmails'
 import { EmailSelection } from './EmailSelection'
+import { TrainingList } from './TrainingList'
+import { SeriesTrainingList } from './SeriesTrainingList'
 
 export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
   const [training, setTraining] = useState()
   const [emailGroupList, setEmailGroupList] = useState()
   const [title, setTitle] = useState('')
+  const [seriesTitle, setSeriesTitle] = useState('')
   const [description, setDescription] = useState('')
   const [trainerName, setTrainerName] = useState('')
   const [trainerEmail, setTrainerEmail] = useState('')
@@ -61,6 +64,7 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
   const [moderatorPasscode, setModeratorPasscode] = useState('1599')
   const [participantPasscode, setParticipantPasscode] = useState('2886')
   const [attendees, setAttendees] = useState([])
+  const [trainings, setTrainings] = useState([])
   const [polls, setPolls] = useState([])
   const [sharedDocs, setSharedDocs] = useState([])
   const [whiteboardUrl, setWhiteboard] = useState('')
@@ -205,6 +209,10 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
     setTitle(event.target.value)
   }
 
+  const onChangeSeriesTitle = (event) => {
+    setSeriesTitle(event.target.value)
+  }
+
   const onChangeDescription = (event) => {
     setDescription(event.target.value)
   }
@@ -342,6 +350,10 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
     onClose()
   }
 
+  const handleTrainingCancel = () => {
+    onSeriesTrainingModalClose()
+  }
+
   const handleOpenAttendee = async (attendee) => {
     setCurrentAttendee(attendee)
     onNewattendeeModalOpen()
@@ -418,7 +430,7 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
       <Box>
         <FormControl isRequired>
           <FormLabel mt="0">Series Title</FormLabel>
-          <Input fontSize="12" value={title} onChange={onChangeTitle} h="24px" />
+          <Input fontSize="12" value={seriesTitle} onChange={onChangeSeriesTitle} h="24px" />
         </FormControl>
         <FormControl>
           <FormLabel>Description</FormLabel>
@@ -574,8 +586,15 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
               </FormControl>
             </HStack>
           </AccordionItemCustom>
+          <AccordionItemCustom title="Trainings">
+            <SeriesTrainingList
+              trainings={trainings}
+              updateTraining={addSeriesTraining}
+              deleteTraining={handleDelete}
+            />
+          </AccordionItemCustom>
         </Accordion>
-        <HStack>
+        {/* <HStack>
           <Button
             position="relative"
             top="20px"
@@ -587,25 +606,9 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
           >
           Add a training
           </Button>
-        </HStack>
-        <Table size="sm">
-          <Thead>
-            <Tr>
-              <Th w="12rem" pb="0">
-                Trainings
-              </Th>
-              {/* <Th pb="0"></Th> */}
-              {/* <Th pn="0"></Th> */}
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td fontSize="12" paddingLeft="16px">TESTINGNVVNWEONV</Td> 
-            </Tr>
-          </Tbody>
-        </Table>
+        </HStack> */}
       </Box>
-      <Button
+      {/* <Button
         position="relative"
         top="20px"
         size="sm"
@@ -625,7 +628,7 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
         onClick={handleDelete}
       >
         Delete
-      </Button>
+      </Button> */}
 
       <HStack float="right" mt="3" mb="3">
         <Button size="md" onClick={handleSubmit} isDisabled={missingFields()}>
@@ -737,7 +740,7 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
             <Button size="md" onClick={handleTrainingSave} isDisabled={missingFields()}>
                 Save
             </Button>
-            <Button size="md" variant="outline" onClick={handleCancel}>
+            <Button size="md" variant="outline" onClick={handleTrainingCancel}>
                 Cancel
             </Button>
           </HStack>
