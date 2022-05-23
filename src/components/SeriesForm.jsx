@@ -15,7 +15,14 @@ import {
   Tooltip,
   useClipboard,
   Spinner,
+  Table, 
+  Tr, 
+  Th, 
+  Td, 
+  Tbody, 
+  Thead,
 } from '@chakra-ui/react'
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { getTraining, listStudentGroups } from '../graphql/queries'
 import { useMutation, gql, useQuery } from '@apollo/client'
 import { deleteAttendee, updateTraining, createInvitedStudent } from '../graphql/mutations'
@@ -581,6 +588,22 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
           Add a training
           </Button>
         </HStack>
+        <Table size="sm">
+          <Thead>
+            <Tr>
+              <Th w="12rem" pb="0">
+                Trainings
+              </Th>
+              {/* <Th pb="0"></Th> */}
+              {/* <Th pn="0"></Th> */}
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td fontSize="12" paddingLeft="16px">TESTINGNVVNWEONV</Td> 
+            </Tr>
+          </Tbody>
+        </Table>
       </Box>
       <Button
         position="relative"
