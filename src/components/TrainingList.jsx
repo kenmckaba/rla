@@ -20,6 +20,12 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuDivider,
+  MenuList,
+  MenuGroup,
 } from '@chakra-ui/react'
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
@@ -498,7 +504,7 @@ export const TrainingList = () => {
                     Clear Dates
                   </Button>
                 )}
-                <Button
+                {/* <Button
                   variant="light-blue"
                   backgroundColor="rgba(13, 98, 197, 1)"
                   color="white"
@@ -510,8 +516,8 @@ export const TrainingList = () => {
                   minW="174px"
                 >
                   New training
-                </Button> <Tab/>
-                <Button
+                </Button> <Tab/> */}
+                {/* <Button
                   variant="light-blue"
                   backgroundColor="rgba(13, 98, 197, 1)"
                   color="white"
@@ -523,7 +529,42 @@ export const TrainingList = () => {
                   minW="174px"
                 >
                   New series
-                </Button>
+                </Button> */}
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    aria-label="Add"
+                    title="Add"
+                    // icon={<AddIcon />}
+                    // bgGradient="linear-gradient(30deg, #283683 0%, #396AA1 100%, #283683 100%)"
+
+                    variant="light-blue"
+                    backgroundColor="rgba(13, 98, 197, 1)"
+                    color="white"
+                    size="md"
+                    leftIcon={<AddIcon />}
+                    fontSize="10pt"
+                    fontWeight="bold"
+                    minW="174px"
+                  > Add New </MenuButton>
+                  <MenuList bgGradient="linear-gradient(0deg, #283683 0%, #396AA1 100%, #283683 100%)">
+                    {/* <MenuList backgroundColor="rgba(13, 98, 197, 1)" > */}
+                    <MenuGroup>
+                      <MenuItem _focus={{ color: '#283683', bg: 'white' }} onClick={onNewTraining}>
+                        New Training
+                      </MenuItem>
+                      <MenuItem _focus={{ color: '#283683', bg: 'white' }} onClick={onNewSeries}>
+                        New Series
+                      </MenuItem>
+                    </MenuGroup>
+                    {/* <MenuDivider /> */}
+                    {/* <MenuGroup>
+                      <MenuItem _focus={{ bg: '#FF4E4E' }} onClick={logout}>
+                        Sign Out
+                      </MenuItem>
+                    </MenuGroup> */}
+                  </MenuList>
+                </Menu>
               </Flex>
               <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
                 <TabPanel p={0} m={0}>
