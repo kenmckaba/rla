@@ -8,6 +8,7 @@ enum TrainingType {
   TEMP
   TRAINING
   BREAKOUT
+  SERIES
 }
 
 enum ClassPreference {
