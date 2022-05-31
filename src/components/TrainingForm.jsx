@@ -364,6 +364,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
 
   const handleDelete = async () => {
     onDelete(trainingId)
+    onClose()
   }
 
   const startTraining = (e) => {
