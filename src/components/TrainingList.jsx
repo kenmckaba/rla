@@ -29,7 +29,7 @@ import {
 } from '@chakra-ui/react'
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
-import { SeriesForm } from './SeriesForm'
+// import { SeriesForm } from './SeriesForm'
 import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
@@ -166,7 +166,7 @@ export const TrainingList = () => {
         input: {
           trainerName: '',
           title: '',
-          type: 'TEMPSERIES',
+          type: 'SERIES',
           meetingId: '',
           scheduledTime,
           moderatorPasscode: '',
@@ -177,7 +177,7 @@ export const TrainingList = () => {
       },
     })
     setCurrentTraining(result.data.createTraining)
-    onSeriesModalOpen()
+    onModalOpen()
   }
 
   const confirmDelete = (training) => {
@@ -504,40 +504,11 @@ export const TrainingList = () => {
                     Clear Dates
                   </Button>
                 )}
-                {/* <Button
-                  variant="light-blue"
-                  backgroundColor="rgba(13, 98, 197, 1)"
-                  color="white"
-                  size="md"
-                  leftIcon={<AddIcon />}
-                  onClick={onNewTraining}
-                  fontSize="10pt"
-                  fontWeight="bold"
-                  minW="174px"
-                >
-                  New training
-                </Button> <Tab/> */}
-                {/* <Button
-                  variant="light-blue"
-                  backgroundColor="rgba(13, 98, 197, 1)"
-                  color="white"
-                  size="md"
-                  leftIcon={<AddIcon />}
-                  onClick={onNewSeries}
-                  fontSize="10pt"
-                  fontWeight="bold"
-                  minW="174px"
-                >
-                  New series
-                </Button> */}
                 <Menu>
                   <MenuButton
                     as={Button}
                     aria-label="Add"
                     title="Add"
-                    // icon={<AddIcon />}
-                    // bgGradient="linear-gradient(30deg, #283683 0%, #396AA1 100%, #283683 100%)"
-
                     variant="light-blue"
                     backgroundColor="rgba(13, 98, 197, 1)"
                     color="white"
@@ -548,7 +519,6 @@ export const TrainingList = () => {
                     minW="174px"
                   > Add New </MenuButton>
                   <MenuList bgGradient="linear-gradient(0deg, #283683 0%, #396AA1 100%, #283683 100%)">
-                    {/* <MenuList backgroundColor="rgba(13, 98, 197, 1)" > */}
                     <MenuGroup>
                       <MenuItem _focus={{ color: '#283683', bg: 'white' }} onClick={onNewTraining}>
                         New Training
@@ -557,12 +527,6 @@ export const TrainingList = () => {
                         New Series
                       </MenuItem>
                     </MenuGroup>
-                    {/* <MenuDivider /> */}
-                    {/* <MenuGroup>
-                      <MenuItem _focus={{ bg: '#FF4E4E' }} onClick={logout}>
-                        Sign Out
-                      </MenuItem>
-                    </MenuGroup> */}
                   </MenuList>
                 </Menu>
               </Flex>
@@ -589,7 +553,8 @@ export const TrainingList = () => {
               <ModalContent color="darkKnight.700">
                 <ModalHeader>
                   <Flex>
-                    <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
+                    {/* <Box>{newTraining ? 'New Training' : 'Update Training'}</Box> */}
+                    <Box>{newTraining ? (currentTraining.type === ('SERIES' || 'TEMPSERIES') ? 'New Series' : 'New Training') : 'Update Training'}</Box>
                     <Spacer></Spacer>
                     <Box>
                       <HStack spacing={2}>
@@ -612,35 +577,6 @@ export const TrainingList = () => {
                 </ModalBody>
               </ModalContent>
             </Modal>
-            <Modal isOpen={isSeriesModalOpen} scrollBehavior="inside">
-              <ModalOverlay />
-              <ModalContent color="darkKnight.700">
-                <ModalHeader>
-                  <Flex>
-                    <Box>{newTraining ? 'New Series' : 'Update Series'}</Box>
-                    <Spacer></Spacer>
-                    <Box>
-                      <HStack spacing={2}>
-                        <IconButton
-                          variant="icon-button"
-                          aria-label="Close form"
-                          icon={<CloseIcon boxSize={3} />}
-                          onClick={onSeriesModalClose}
-                        />
-                      </HStack>
-                    </Box>
-                  </Flex>
-                </ModalHeader>
-                <ModalBody>
-                  <SeriesForm
-                    onClose={onSeriesModalClose}
-                    trainingId={currentTraining?.id}
-                    onDelete={() => confirmDelete(currentTraining)}
-                  />
-                </ModalBody>
-              </ModalContent>
-            </Modal>
-          
             <Modal size="xl" isOpen={showInvitedModal}>
               <ModalOverlay />
               <ModalContent maxWidth="unset" width="1000px" color="darkKnight.700">

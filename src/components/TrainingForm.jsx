@@ -15,6 +15,7 @@ import {
   Tooltip,
   useClipboard,
   Spinner,
+  Text,
 } from '@chakra-ui/react'
 import { getTraining, listStudentGroups } from '../graphql/queries'
 import { useMutation, gql, useQuery } from '@apollo/client'
@@ -39,11 +40,14 @@ import { AccordionItemCustom } from './AccordionItemCustom'
 import OurModal from './OurModal'
 import { sendRegistrationEmails } from '../utils/sendRegistrationEmails'
 import { EmailSelection } from './EmailSelection'
+import { SeriesTrainingList } from './SeriesTrainingList'
 
 export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [training, setTraining] = useState()
   const [emailGroupList, setEmailGroupList] = useState()
   const [title, setTitle] = useState('')
+  const [seriesTitle, setSeriesTitle] = useState('')
+  const [seriesTrainings, setSeriesTrainings] = useState([])
   const [description, setDescription] = useState('')
   const [trainerName, setTrainerName] = useState('')
   const [trainerEmail, setTrainerEmail] = useState('')
@@ -94,6 +98,11 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     isOpen: isWaitModalOpen,
     onOpen: onWaitModalOpen,
     onClose: onWaitModalClose,
+  } = useDisclosure()
+  const {
+    isOpen: isSeriesTrainingModalOpen,
+    onOpen: onSeriesTrainingModalOpen,
+    onClose: onSeriesTrainingModalClose,
   } = useDisclosure()
   const { onCopy } = useClipboard(registrationUrl)
   const [addAttendeeInvitation] = useMutation(gql(createInvitedStudent))
@@ -191,6 +200,10 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
 
   const onChangeTitle = (event) => {
     setTitle(event.target.value)
+  }
+
+  const onChangeSeriesTitle = (event) => {
+    setSeriesTitle(event.target.value)
   }
 
   const onChangeDescription = (event) => {
@@ -325,6 +338,15 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     onClose()
   }
 
+  const handleTrainingSave = async () => {
+    await updateCurrentTraining(mutationVars())
+    onSeriesTrainingModalClose()
+  }
+
+  const handleTrainingCancel = () => {
+    onSeriesTrainingModalClose()
+  }
+
   const handleOpenAttendee = async (attendee) => {
     setCurrentAttendee(attendee)
     onNewattendeeModalOpen()
@@ -382,6 +404,10 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     setScheduledTime(e.target.value)
   }
 
+  const addSeriesTraining = () => {
+    onSeriesTrainingModalOpen()
+  }
+
   const missingFields = () => {
     return (
       !title ||
@@ -396,10 +422,18 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   return (
     <>
       <Box>
-        <FormControl isRequired>
-          <FormLabel mt="0">Title</FormLabel>
-          <Input fontSize="12" value={title} onChange={onChangeTitle} h="24px" />
-        </FormControl>
+        {trainingData.getTraining.type !== ('SERIES' || 'TEMPSERIES') ?
+          <FormControl isRequired>
+            <FormLabel mt="0">Title</FormLabel>
+            <Input fontSize="12" value={title} onChange={onChangeTitle} h="24px" />
+          </FormControl>
+          :
+          <FormControl isRequired>
+            <Text fontSize='xs'>Note: The following information will be copied over to all trainings in the series</Text>
+            <FormLabel mt="0">Series Title</FormLabel>
+            <Input fontSize="12" value={seriesTitle} onChange={onChangeSeriesTitle} h="24px" />
+          </FormControl>
+        }
         <FormControl>
           <FormLabel>Description</FormLabel>
           <Input
@@ -420,6 +454,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             <Input fontSize="12" value={trainerEmail} onChange={onChangeTrainerEmail} h="24px" />
           </FormControl>
         </HStack>
+        {trainingData.getTraining.type !== ('SERIES' || 'TEMPSERIES') &&
         <HStack>
           <FormControl isRequired>
             <FormLabel>Date</FormLabel>
@@ -437,6 +472,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             </Select>
           </FormControl>
         </HStack>
+        }
         <HStack>
           <FormControl>
             <FormLabel>Max attendees</FormLabel>
@@ -555,7 +591,20 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             </HStack>
           </AccordionItemCustom>
         </Accordion>
+        {trainingData.getTraining.type === ('SERIES' || 'TEMPSERIES') &&
+        <FormControl>
+          <FormLabel></FormLabel>
+          <SeriesTrainingList
+            trainings={seriesTrainings}
+            addTraining={addSeriesTraining}
+            startTraining={startTraining}
+            deleteTraining={handleDelete}
+          />
+        </FormControl>
+        }
       </Box>
+
+
       <Button
         position="relative"
         top="20px"
@@ -586,6 +635,8 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           Cancel
         </Button>
       </HStack>
+
+
       <OurModal
         header="Delete attendee?"
         isOpen={isDeleteAttendeeModalOpen}
@@ -646,6 +697,153 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         <Center>
           <Spinner />
         </Center>
+      </OurModal>
+
+      <OurModal
+        header={<Center>Create new training</Center>}
+        isOpen={isSeriesTrainingModalOpen}
+        onClose={onSeriesTrainingModalClose}
+      >
+        <Box>
+          <FormControl isRequired>
+            <FormLabel mt="0">Training Title</FormLabel>
+            <Input fontSize="12" value={title} onChange={onChangeTitle} h="24px" />
+          </FormControl>
+          <HStack>
+            <FormControl isRequired>
+              <FormLabel>Date</FormLabel>
+              <DatePicker
+                fontSize="12"
+                selected={scheduledDate}
+                onChange={onChangeScheduledFor}
+                dateFormat="MMM d, yyyy"
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Time</FormLabel>
+              <Select fontSize="12px" height="25px" onChange={onChangeTime} value={scheduledTime}>
+                {Times}
+              </Select>
+            </FormControl>
+          </HStack>
+          <Text fontSize='xs'>Add additional training information to the fields below</Text>
+          <FormControl>
+            <FormLabel>Description</FormLabel>
+            <Input
+              fontSize="12"
+              value={description}
+              onChange={onChangeDescription}
+              h="24px"
+              placeholder="optional"
+            />
+          </FormControl>
+          <HStack>
+            <FormControl isRequired>
+              <FormLabel>Trainer name</FormLabel>
+              <Input fontSize="12" value={trainerName} onChange={onChangeTrainerName} h="24px" />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Trainer email</FormLabel>
+              <Input fontSize="12" value={trainerEmail} onChange={onChangeTrainerEmail} h="24px" />
+            </FormControl>
+          </HStack>
+          <HStack>
+            <FormControl>
+              <FormLabel>Max attendees</FormLabel>
+              <Input
+                fontSize="12"
+                value={maxAttendees}
+                onChange={onChangeMaxAttendees}
+                h="24px"
+                placeholder="optional"
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Min in-person attendees</FormLabel>
+              <Input
+                fontSize="12"
+                value={minInPersonAttendees}
+                onChange={onChangeMinInPersonAttendees}
+                h="24px"
+                placeholder="optional"
+              />
+            </FormControl>
+          </HStack>
+          <FormControl>
+            <FormLabel>Whiteboard URL</FormLabel>
+            <Input
+              fontSize="12"
+              value={whiteboardUrl}
+              onChange={onChangeWhiteboard}
+              h="24px"
+              placeholder="optional"
+            />
+          </FormControl>
+          <Accordion width="100%" mt={2} allowToggle>
+            <AccordionItemCustom
+              title={
+                <Box flex="1" fontSize="12px" fontWeight="500" textAlign="left">
+                  Attendees
+                </Box>
+              }
+            >
+              <AttendeeList
+                attendees={attendees}
+                updateAttendee={handleOpenAttendee}
+                deleteAttendee={onDeleteAnAttendee}
+              />
+            </AccordionItemCustom>
+            <AccordionItemCustom title="Polls">
+              <Polls
+                trainingId={trainingId}
+                saveTraining={() => updateCurrentTraining(mutationVars())}
+                polls={polls}
+              />
+            </AccordionItemCustom>
+            <AccordionItemCustom title="Shared documents">
+              <SharedDocs
+                trainingId={trainingId}
+                sharedDocs={sharedDocs}
+                trainerMode={true}
+                saveTraining={() => updateCurrentTraining(mutationVars())}
+              />
+            </AccordionItemCustom>
+            <AccordionItemCustom title="BlueJeans meeting">
+              <HStack mt="3">
+                <FormControl isRequired>
+                  <FormLabel margin="0">BlueJeans meeting ID</FormLabel>
+                  <Input fontSize="12" value={meetingId} onChange={onChangeMeetingId} h="24px" />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel margin="0">Moderator passcode</FormLabel>
+                  <Input
+                    fontSize="12"
+                    value={moderatorPasscode}
+                    onChange={onChangeModeratorPasscode}
+                    h="24px"
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel margin="0">Participant passcode</FormLabel>
+                  <Input
+                    fontSize="12"
+                    value={participantPasscode}
+                    onChange={onChangeParticipantPasscode}
+                    h="24px"
+                  />
+                </FormControl>
+              </HStack>
+            </AccordionItemCustom>
+          </Accordion>
+        </Box>
+        <HStack float="right" mt="3" mb="3">
+          <Button size="md" onClick={handleTrainingSave} isDisabled={missingFields()}>
+              Save
+          </Button>
+          <Button size="md" variant="outline" onClick={handleTrainingCancel}>
+              Cancel
+          </Button>
+        </HStack>
       </OurModal>
     </>
   )
