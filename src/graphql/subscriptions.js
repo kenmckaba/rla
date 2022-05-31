@@ -25,6 +25,7 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -176,6 +177,7 @@ export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -280,6 +282,7 @@ export const onCreateTraining = /* GraphQL */ `
   subscription OnCreateTraining {
     onCreateTraining {
       id
+      seriesId
       type
       trainerId
       title
@@ -327,6 +330,7 @@ export const onCreateTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -415,6 +419,7 @@ export const onCreateTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -460,6 +465,7 @@ export const onCreateTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -502,6 +508,7 @@ export const onUpdateTraining = /* GraphQL */ `
   subscription OnUpdateTraining {
     onUpdateTraining {
       id
+      seriesId
       type
       trainerId
       title
@@ -549,6 +556,7 @@ export const onUpdateTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -637,6 +645,7 @@ export const onUpdateTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -682,6 +691,7 @@ export const onUpdateTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -724,6 +734,7 @@ export const onDeleteTraining = /* GraphQL */ `
   subscription OnDeleteTraining {
     onDeleteTraining {
       id
+      seriesId
       type
       trainerId
       title
@@ -771,6 +782,7 @@ export const onDeleteTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -859,6 +871,7 @@ export const onDeleteTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -904,6 +917,7 @@ export const onDeleteTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -966,6 +980,7 @@ export const onCreateAttendee = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -1117,6 +1132,7 @@ export const onCreateAttendee = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -1194,6 +1210,7 @@ export const onUpdateAttendee = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -1345,6 +1362,7 @@ export const onUpdateAttendee = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -1422,6 +1440,7 @@ export const onDeleteAttendee = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -1573,6 +1592,7 @@ export const onDeleteAttendee = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -1637,6 +1657,7 @@ export const onCreateSharedDoc = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -1765,6 +1786,7 @@ export const onUpdateSharedDoc = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -1893,6 +1915,7 @@ export const onDeleteSharedDoc = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -2530,6 +2553,7 @@ export const onCreateInvitedStudent = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -2585,6 +2609,7 @@ export const onCreateInvitedStudent = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -2657,6 +2682,7 @@ export const onUpdateInvitedStudent = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -2712,6 +2738,7 @@ export const onUpdateInvitedStudent = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -2784,6 +2811,7 @@ export const onDeleteInvitedStudent = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -2839,6 +2867,7 @@ export const onDeleteInvitedStudent = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -2956,6 +2985,7 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -3005,6 +3035,7 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -3154,6 +3185,7 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -3203,6 +3235,7 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -3352,6 +3385,7 @@ export const onDeleteBreakoutRoom = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -3401,6 +3435,7 @@ export const onDeleteBreakoutRoom = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title

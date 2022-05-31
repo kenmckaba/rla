@@ -23,7 +23,7 @@ import {
   Thead,
 } from '@chakra-ui/react'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
-import { getTraining, listStudentGroups } from '../graphql/queries'
+import { getTraining, listStudentGroups, listTrainings } from '../graphql/queries'
 import { useMutation, gql, useQuery } from '@apollo/client'
 import { deleteAttendee, updateTraining, createInvitedStudent } from '../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
@@ -52,6 +52,7 @@ import { SeriesTrainingList } from './SeriesTrainingList'
 export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
   const [training, setTraining] = useState()
   const [emailGroupList, setEmailGroupList] = useState()
+  const [seriesTrainings, setSeriesTrainings] = useState([])
   const [title, setTitle] = useState('')
   const [seriesTitle, setSeriesTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -85,6 +86,9 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
     variables: { id: trainingId },
   })
   const { data: groupListData } = useQuery(gql(listStudentGroups))
+  const { data: currentSeriesTrainings} = useQuery(gql(listTrainings), {
+    variables: { filter: { seriesId: { eq: training.id } } },
+  })
   const {
     isOpen: isDeleteAttendeeModalOpen,
     onOpen: onDeleteAttendeeModalOpen,
@@ -178,6 +182,12 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
       setEmailGroupList(groupListData.listStudentGroups.items)
     }
   }, [groupListData])
+
+  useEffect(() => {
+    if (currentSeriesTrainings) {
+      setSeriesTrainings(currentSeriesTrainings.listTrainings.items)
+    }
+  }, [currentSeriesTrainings])
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -452,23 +462,6 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
             <Input fontSize="12" value={trainerEmail} onChange={onChangeTrainerEmail} h="24px" />
           </FormControl>
         </HStack>
-        {/* <HStack>
-          <FormControl isRequired>
-            <FormLabel>Date</FormLabel>
-            <DatePicker
-              fontSize="12"
-              selected={scheduledDate}
-              onChange={onChangeScheduledFor}
-              dateFormat="MMM d, yyyy"
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Time</FormLabel>
-            <Select fontSize="12px" height="25px" onChange={onChangeTime} value={scheduledTime}>
-              {Times}
-            </Select>
-          </FormControl>
-        </HStack> */}
         <HStack>
           <FormControl>
             <FormLabel>Max attendees</FormLabel>
@@ -491,7 +484,15 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
             />
           </FormControl>
         </HStack>
-        
+        {/* <FormControl>
+          <FormLabel>Trainings</FormLabel>
+          <SeriesTrainingList
+            trainings={trainings}
+            addTraining={addSeriesTraining}
+            startTraining={startTraining}
+            deleteTraining={handleDelete}
+          />
+        </FormControl> */}
         <FormControl>
           <FormLabel>Whiteboard URL</FormLabel>
           <Input
@@ -586,49 +587,19 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
               </FormControl>
             </HStack>
           </AccordionItemCustom>
-          <AccordionItemCustom title="Trainings">
-            <SeriesTrainingList
-              trainings={trainings}
-              updateTraining={addSeriesTraining}
-              deleteTraining={handleDelete}
-            />
-          </AccordionItemCustom>
         </Accordion>
-        {/* <HStack>
-          <Button
-            position="relative"
-            top="20px"
-            size="sm"
-            as="a"
-            variant="outline"
-            onClick={addSeriesTraining}
-            isDisabled={missingFields}
-          >
-          Add a training
-          </Button>
-        </HStack> */}
+        
+        <FormControl>
+          <FormLabel></FormLabel>
+          <SeriesTrainingList
+            trainings={seriesTrainings}
+            addTraining={addSeriesTraining}
+            startTraining={startTraining}
+            deleteTraining={handleDelete}
+          />
+        </FormControl>
+
       </Box>
-      {/* <Button
-        position="relative"
-        top="20px"
-        size="sm"
-        as="a"
-        variant="outline"
-        onClick={startTraining}
-        isDisabled={missingFields}
-      >
-        Start
-      </Button>
-      <Button
-        position="relative"
-        top="20px"
-        variant="ghost"
-        ml="1"
-        size="sm"
-        onClick={handleDelete}
-      >
-        Delete
-      </Button> */}
 
       <HStack float="right" mt="3" mb="3">
         <Button size="md" onClick={handleSubmit} isDisabled={missingFields()}>
@@ -703,16 +674,6 @@ export const SeriesForm = ({ onClose, trainingId, onDelete }) => {
         header={<Center>Create new training</Center>}
         isOpen={isSeriesTrainingModalOpen}
         onClose={onSeriesTrainingModalClose}
-        // footer={
-        //   <Center marginTop="15px">
-        //     {/* <Button isDisabled={!selectedStudents.length} onClick={sendRegEmails}>
-        //       Send emails
-        //     </Button> */}
-        //     <Button marginLeft="10px" onClick={handleSave}>
-        //       Save
-        //     </Button>
-        //   </Center>
-        // }
       >
         <Box>
           <FormControl isRequired>

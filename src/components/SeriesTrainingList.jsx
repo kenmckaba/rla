@@ -1,12 +1,8 @@
 import React from 'react'
-import { Table, Tr, Th, Td, Tbody, Thead, Box, Button, Flex, IconButton } from '@chakra-ui/react'
+import { Table, Tr, Th, Td, Tbody, Thead, Box, Button, Flex, IconButton, Spacer } from '@chakra-ui/react'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 
-export const SeriesTrainingList = ({ trainings = [], updateTraining, deleteTraining }) => {
-  const startTraining = (e, training) => {
-    e.stopPropagation()
-    window.open(`/attendee/${training.id}`)
-  }
+export const SeriesTrainingList = ({ trainings = [], addTraining, startTraining, deleteTraining }) => {
 
   const deleteThisTraining = (e, training) => {
     e.stopPropagation()
@@ -14,18 +10,17 @@ export const SeriesTrainingList = ({ trainings = [], updateTraining, deleteTrain
   }
 
   return (
-    <Box borderRadius="6px" borderWidth="1px" borderColor="gray.200" mt="3">
-
-
-      <Flex marginLeft="12px" marginTop="3px" justifyContent="space-between" float="right">
+    <>
+      {/* <Box borderRadius="6px" borderWidth="1px" borderColor="gray.200" mt="3"> */}
+      <Flex marginLeft="2px" marginTop="3px" justifyContent="space-between" float="left">
         <Button
           size="xs"
-          marginRight="3px"
+          marginLeft="3px"
           rightIcon={<AddIcon />}
           variant="outline"
-          onClick={() => updateTraining()}
+          onClick={() => addTraining()}
         >
-          Add a training
+            Add a training
         </Button>
       </Flex>
 
@@ -33,9 +28,8 @@ export const SeriesTrainingList = ({ trainings = [], updateTraining, deleteTrain
         <Thead>
           <Tr>
             <Th w="12rem" pb="0">
-              Title
+                Trainings
             </Th>
-            {/* <Th pb="0">Attended</Th> */}
             <Th pn="0"></Th>
           </Tr>
         </Thead>
@@ -47,13 +41,10 @@ export const SeriesTrainingList = ({ trainings = [], updateTraining, deleteTrain
           ) : (
             trainings.map((training) => {
               return (
-                <Tr key={training.id} cursor="pointer" onClick={() => updateTraining(training)}>
+                <Tr key={training.id} cursor="pointer" onClick={() => addTraining(training)}>
                   <Td fontSize="12" paddingLeft="16px">
                     {training.title}
                   </Td>
-                  {/* <Td fontSize="12" paddingLeft="16px">
-                    {attendee.joinedTime ? '✅' : ''}
-                  </Td> */}
                   <Td fontSize="12" padding="0">
                     <IconButton
                       icon={<DeleteIcon />}
@@ -64,7 +55,7 @@ export const SeriesTrainingList = ({ trainings = [], updateTraining, deleteTrain
                       height="14px"
                       onClick={(e) => deleteThisTraining(e, training)}
                     >
-                      Join
+                        Delete
                     </IconButton>
                   </Td>
                   <Td fontSize="12" paddingLeft="16px">
@@ -74,9 +65,9 @@ export const SeriesTrainingList = ({ trainings = [], updateTraining, deleteTrain
                       color="lightslategray"
                       size="xs"
                       height="14px"
-                      onClick={(e) => startTraining(e, training)}
+                      onClick={(e) => startTraining(training)}
                     >
-                      Start
+                        Start
                     </Button>
                   </Td>
                 </Tr>
@@ -85,6 +76,7 @@ export const SeriesTrainingList = ({ trainings = [], updateTraining, deleteTrain
           )}
         </Tbody>
       </Table>
-    </Box>
+      {/* </Box> */}
+    </>
   )
 }

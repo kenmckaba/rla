@@ -166,7 +166,7 @@ export const TrainingList = () => {
         input: {
           trainerName: '',
           title: '',
-          type: 'TEMP',
+          type: 'TEMPSERIES',
           meetingId: '',
           scheduledTime,
           moderatorPasscode: '',

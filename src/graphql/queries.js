@@ -34,6 +34,7 @@ export const getTraining = /* GraphQL */ `
   query GetTraining($id: ID!) {
     getTraining(id: $id) {
       id
+      seriesId
       type
       trainerId
       title
@@ -81,6 +82,7 @@ export const getTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -169,6 +171,7 @@ export const getTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -214,6 +217,7 @@ export const getTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -261,6 +265,7 @@ export const listTrainings = /* GraphQL */ `
     listTrainings(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        seriesId
         type
         trainerId
         title
@@ -401,6 +406,7 @@ export const getAttendee = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -552,6 +558,7 @@ export const getAttendee = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -634,6 +641,7 @@ export const listAttendees = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -689,6 +697,7 @@ export const listAttendees = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -740,6 +749,7 @@ export const getSharedDoc = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -873,6 +883,7 @@ export const listSharedDocs = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -1285,6 +1296,7 @@ export const getInvitedStudent = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
@@ -1340,6 +1352,7 @@ export const getInvitedStudent = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -1417,6 +1430,7 @@ export const listInvitedStudents = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -1536,6 +1550,7 @@ export const getBreakoutRoom = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
@@ -1585,6 +1600,7 @@ export const getBreakoutRoom = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
@@ -1748,6 +1764,7 @@ export const listBreakoutRooms = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title

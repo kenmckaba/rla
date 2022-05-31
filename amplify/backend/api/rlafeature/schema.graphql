@@ -9,6 +9,7 @@ enum TrainingType {
   TRAINING
   BREAKOUT
   SERIES
+  TEMPSERIES
 }
 
 enum ClassPreference {
@@ -29,6 +30,7 @@ type Training
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
   ) {
   id: ID!
+  seriesId: ID
   type: TrainingType!
   trainerId: ID
   title: String!
