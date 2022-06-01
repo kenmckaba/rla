@@ -422,7 +422,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   return (
     <>
       <Box>
-        {trainingData.getTraining.type !== ('SERIES' || 'TEMPSERIES') ?
+        {trainingData.getTraining.type !== ('SERIES') ?
           <FormControl isRequired>
             <FormLabel mt="0">Title</FormLabel>
             <Input fontSize="12" value={title} onChange={onChangeTitle} h="24px" />
@@ -454,7 +454,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             <Input fontSize="12" value={trainerEmail} onChange={onChangeTrainerEmail} h="24px" />
           </FormControl>
         </HStack>
-        {trainingData.getTraining.type !== ('SERIES' || 'TEMPSERIES') &&
+        {trainingData.getTraining.type !== ('SERIES') &&
         <HStack>
           <FormControl isRequired>
             <FormLabel>Date</FormLabel>
@@ -591,7 +591,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             </HStack>
           </AccordionItemCustom>
         </Accordion>
-        {trainingData.getTraining.type === ('SERIES' || 'TEMPSERIES') &&
+        {trainingData.getTraining.type === ('SERIES') &&
         <FormControl>
           <FormLabel></FormLabel>
           <SeriesTrainingList
@@ -699,7 +699,10 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         </Center>
       </OurModal>
 
+
+      
       <OurModal
+        // REMOVE THIS CODE FOR MODAL AND SHORTEN BY CALLING TRAININGFORM
         header={<Center>Create new training</Center>}
         isOpen={isSeriesTrainingModalOpen}
         onClose={onSeriesTrainingModalClose}
