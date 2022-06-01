@@ -19,6 +19,7 @@ export const SeriesTrainingList = ({ trainings = [], addTraining, startTraining,
           rightIcon={<AddIcon />}
           variant="outline"
           onClick={() => addTraining()}
+        //   isDisabled={missingFields}
         >
             Add a training
         </Button>

@@ -252,6 +252,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
       variables: {
         input: {
           id: trainingId,
+          seriesId: training.id,
           type: 'TRAINING',
           description,
           trainerName,
@@ -415,14 +416,16 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
       !meetingId ||
       !participantPasscode ||
       !moderatorPasscode ||
-      !trainerEmail
+      !trainerEmail ||
+      !scheduledDate ||
+      !scheduledTime 
     )
   }
 
   return (
     <>
       <Box>
-        {trainingData.getTraining.type !== ('SERIES') ?
+        {training?.type !== ('SERIES') ?
           <FormControl isRequired>
             <FormLabel mt="0">Title</FormLabel>
             <Input fontSize="12" value={title} onChange={onChangeTitle} h="24px" />
@@ -454,7 +457,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             <Input fontSize="12" value={trainerEmail} onChange={onChangeTrainerEmail} h="24px" />
           </FormControl>
         </HStack>
-        {trainingData.getTraining.type !== ('SERIES') &&
+        {training?.type !== ('SERIES') &&
         <HStack>
           <FormControl isRequired>
             <FormLabel>Date</FormLabel>
@@ -543,11 +546,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 </Link>
               </Box>
             </FormControl>
-            <AttendeeList
-              attendees={attendees}
-              updateAttendee={handleOpenAttendee}
-              deleteAttendee={onDeleteAnAttendee}
-            />
           </AccordionItemCustom>
           <AccordionItemCustom title="Polls">
             <Polls
@@ -591,7 +589,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             </HStack>
           </AccordionItemCustom>
         </Accordion>
-        {trainingData.getTraining.type === ('SERIES') &&
+        {training?.type === ('SERIES') &&
         <FormControl>
           <FormLabel></FormLabel>
           <SeriesTrainingList
@@ -708,6 +706,10 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         onClose={onSeriesTrainingModalClose}
       >
         <Box>
+          <FormControl isRequired>
+            <FormLabel mt="0">Series Title</FormLabel>
+            <Input fontSize="12" value={seriesTitle} onChange={onChangeSeriesTitle} h="24px" />
+          </FormControl>
           <FormControl isRequired>
             <FormLabel mt="0">Training Title</FormLabel>
             <Input fontSize="12" value={title} onChange={onChangeTitle} h="24px" />

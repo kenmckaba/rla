@@ -145,6 +145,7 @@ export const TrainingList = () => {
           title: '',
           type: 'TEMP',
           meetingId: '',
+          // seriesId: currentTraining.id,
           scheduledTime,
           moderatorPasscode: '',
           participantPasscode: '',
