@@ -265,9 +265,9 @@ export const Registration = ({
                 </FormControl>
                 
                 <HStack w="100%" spacing="3" paddingTop="3">
-                  <Button w="100%" size="md" variant="secondary-ghost-outline">
+                  {/* <Button w="100%" size="md" variant="secondary-ghost-outline">
                     Cancel
-                  </Button>
+                  </Button> */}
                   <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
                     Save
                   </Button>
