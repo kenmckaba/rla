@@ -157,9 +157,9 @@ export const RegistrationUpdate = ({
             />
           </FormControl>
           <HStack w="100%" spacing="3" paddingTop="3">
-            <Button w="100%" size="md" variant="secondary-ghost-outline" onClick={handleCancel}>
+            {/* <Button w="100%" size="md" variant="secondary-ghost-outline" onClick={handleCancel}>
               Cancel your registration
-            </Button>
+            </Button> */}
             <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
               Save
             </Button>
