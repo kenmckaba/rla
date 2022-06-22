@@ -38,6 +38,7 @@ export const getTraining = /* GraphQL */ `
       type
       trainerId
       title
+      seriesTitle
       description
       trainerName
       trainerEmail
@@ -86,6 +87,7 @@ export const getTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -175,6 +177,7 @@ export const getTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -221,6 +224,7 @@ export const getTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -269,6 +273,7 @@ export const listTrainings = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -410,6 +415,7 @@ export const getAttendee = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -562,6 +568,7 @@ export const getAttendee = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
@@ -645,6 +652,7 @@ export const listAttendees = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
@@ -701,6 +709,7 @@ export const listAttendees = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -753,6 +762,7 @@ export const getSharedDoc = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -887,6 +897,7 @@ export const listSharedDocs = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
@@ -1300,6 +1311,7 @@ export const getInvitedStudent = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
@@ -1356,6 +1368,7 @@ export const getInvitedStudent = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -1434,6 +1447,7 @@ export const listInvitedStudents = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -1554,6 +1568,7 @@ export const getBreakoutRoom = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -1604,6 +1619,7 @@ export const getBreakoutRoom = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -1768,6 +1784,7 @@ export const listBreakoutRooms = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail

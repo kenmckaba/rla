@@ -34,6 +34,7 @@ type Training
   type: TrainingType!
   trainerId: ID
   title: String!
+  seriesTitle: String
   description: String
   trainerName: String
   trainerEmail: String

@@ -54,6 +54,7 @@ export const createTraining = /* GraphQL */ `
       type
       trainerId
       title
+      seriesTitle
       description
       trainerName
       trainerEmail
@@ -102,6 +103,7 @@ export const createTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -191,6 +193,7 @@ export const createTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -237,6 +240,7 @@ export const createTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -283,6 +287,7 @@ export const updateTraining = /* GraphQL */ `
       type
       trainerId
       title
+      seriesTitle
       description
       trainerName
       trainerEmail
@@ -331,6 +336,7 @@ export const updateTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -420,6 +426,7 @@ export const updateTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -466,6 +473,7 @@ export const updateTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -512,6 +520,7 @@ export const deleteTraining = /* GraphQL */ `
       type
       trainerId
       title
+      seriesTitle
       description
       trainerName
       trainerEmail
@@ -560,6 +569,7 @@ export const deleteTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -649,6 +659,7 @@ export const deleteTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -695,6 +706,7 @@ export const deleteTraining = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -761,6 +773,7 @@ export const createAttendee = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -913,6 +926,7 @@ export const createAttendee = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
@@ -994,6 +1008,7 @@ export const updateAttendee = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -1146,6 +1161,7 @@ export const updateAttendee = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
@@ -1227,6 +1243,7 @@ export const deleteAttendee = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -1379,6 +1396,7 @@ export const deleteAttendee = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
@@ -1447,6 +1465,7 @@ export const createSharedDoc = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -1579,6 +1598,7 @@ export const updateSharedDoc = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -1711,6 +1731,7 @@ export const deleteSharedDoc = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -2406,6 +2427,7 @@ export const createInvitedStudent = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
@@ -2462,6 +2484,7 @@ export const createInvitedStudent = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -2538,6 +2561,7 @@ export const updateInvitedStudent = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
@@ -2594,6 +2618,7 @@ export const updateInvitedStudent = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -2670,6 +2695,7 @@ export const deleteInvitedStudent = /* GraphQL */ `
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
@@ -2726,6 +2752,7 @@ export const deleteInvitedStudent = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -2856,6 +2883,7 @@ export const createBreakoutRoom = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -2906,6 +2934,7 @@ export const createBreakoutRoom = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -3059,6 +3088,7 @@ export const updateBreakoutRoom = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -3109,6 +3139,7 @@ export const updateBreakoutRoom = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
@@ -3262,6 +3293,7 @@ export const deleteBreakoutRoom = /* GraphQL */ `
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
@@ -3312,6 +3344,7 @@ export const deleteBreakoutRoom = /* GraphQL */ `
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail

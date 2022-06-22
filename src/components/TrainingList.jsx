@@ -143,6 +143,7 @@ export const TrainingList = () => {
         input: {
           trainerName: '',
           title: '',
+          seriesTitle: '',
           type: 'TEMP',
           meetingId: '',
           // seriesId: currentTraining.id,
@@ -167,6 +168,7 @@ export const TrainingList = () => {
         input: {
           trainerName: '',
           title: '',
+          seriesTitle: '',
           type: 'SERIES',
           meetingId: '',
           scheduledTime,
@@ -303,7 +305,7 @@ export const TrainingList = () => {
             <Flex justify="flex-start" minH="34px">
               <Stat marginTop="2">
                 <StatLabel whiteSpace="nowrap" fontSize="2em" textTransform="capitalize">
-                  {training.title}
+                  {training?.seriesTitle ? training.seriesTitle : training.title}
                 </StatLabel>
               </Stat>
 
