@@ -10,7 +10,7 @@ import { ConfirmationModal } from './ConfirmationModal'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
 // import { useEffect } from 'react'
 
-export const SeriesTrainingList = ({ seriesId, trainings = [], startTraining, deleteTraining }) => {
+export const SeriesTrainingList = ({ series, trainings = [], startTraining, deleteTraining }) => {
 
   const [addTraining] = useMutation(gql(createTraining))
   const [newTraining, setNewTraining] = useState(false)
@@ -24,26 +24,51 @@ export const SeriesTrainingList = ({ seriesId, trainings = [], startTraining, de
     setIsConfirmDeleteModalOpen(true)
   }
 
+  const eatEvent = (e, func) => {
+    e.preventDefault()
+    e.stopPropagation()
+    func()
+  }
+
+  const handleTrainingClick = async (training) => {
+    setCurrentTraining(training)
+    setNewTraining(false)
+    onModalOpen()
+  }
+
   const onNewTraining = async () => {
+    // const func =(e) => eatEvent(e, handleTrainingClick)
+    // func()
     setNewTraining(true)
     const now = new Date()
     const scheduledTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12, 0, 0) // noon tomorrow
     const result = await addTraining({
       variables: {
         input: {
-          trainerName: '',
+          trainerName: series.trainerName,
           title: '',
+          seriesTitle: series.title,
+          description: series.description,
+          email: series.email,
           type: 'TEMP',
-          meetingId: '',
-          seriesId: seriesId,
+          meetingId: series.meetingId,
+          seriesId: series.id,
           scheduledTime,
-          moderatorPasscode: '',
-          participantPasscode: '',
+          moderatorPasscode: series.moderatorPasscode,
+          participantPasscode: series.participantPasscode,
           audioStateKey: 1,
           videoStateKey: 1,
+          whiteboardUrl: series.whiteboardUrl,
         },
       },
     })
+
+    // retrieve polls for the series
+    // for each poll create a new poll with the training id
+    //  const { data: seriesPolls, subscribeToMore } = useQuery(gql(listPolls), {
+    //  variables: { filter: { trainingId: { eq: series.id } } },
+    // })
+
     setCurrentTraining(result.data.createTraining)
     onModalOpen()
   }
@@ -58,6 +83,7 @@ export const SeriesTrainingList = ({ seriesId, trainings = [], startTraining, de
           rightIcon={<AddIcon />}
           variant="outline"
           onClick={onNewTraining}
+        //   onClick={(e) => eatEvent(e, handleTrainingClick)}
         //   isDisabled={isDisabled}
         >
             Add a training

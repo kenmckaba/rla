@@ -407,10 +407,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     setScheduledTime(e.target.value)
   }
 
-  // const addSeriesTraining = () => {
-  //   onSeriesTrainingModalOpen()
-  // }
-
   const missingFields = () => {
     return training?.type === ('SERIES') ?  
       (
@@ -606,7 +602,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         <FormControl>
           <FormLabel></FormLabel>
           <SeriesTrainingList
-            seriesId = {training.id}
+            series = {training}
             // isDisabled={missingFields}
             trainings={seriesTrainings}
             startTraining={startTraining}
