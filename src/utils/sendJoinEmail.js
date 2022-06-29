@@ -3,7 +3,7 @@ import { timestampToPrettyTime } from './pretty-time'
 
 import { sesParams } from './ses-params'
 
-const ses = new aws.SES(sesParams)
+const ses = new aws.SES()
 
 export const sendJoinEmail = async (attendeeId, name, email, training) => {
   const template = {
@@ -41,6 +41,7 @@ export const sendJoinEmail = async (attendeeId, name, email, training) => {
   }
   console.log(JSON.stringify(params))
   try {
+    // const result = await ses.sendBulkTemplatedEmail(params).promise()
     const result = await ses.sendBulkTemplatedEmail(params).promise()
     console.log('send join email result', result)
   } catch (err) {

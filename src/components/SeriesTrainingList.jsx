@@ -10,7 +10,7 @@ import { ConfirmationModal } from './ConfirmationModal'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
 // import { useEffect } from 'react'
 
-export const SeriesTrainingList = ({ series, trainings = [], startTraining, deleteTraining }) => {
+export const SeriesTrainingList = ({ trainerName,  trainerEmail, description, seriesTitle, seriesId, whiteboardUrl, meetingId, moderatorPasscode, participantPasscode, startTraining, deleteTraining }) => {
 
   const [addTraining] = useMutation(gql(createTraining))
   const [newTraining, setNewTraining] = useState(false)
@@ -18,6 +18,7 @@ export const SeriesTrainingList = ({ series, trainings = [], startTraining, dele
   //   const [deleteTheTraining] = useMutation(gql(deleteTraining))
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
+  const trainingList = []
 
   const confirmDelete = (training) => {
     setCurrentTraining(training)
@@ -45,20 +46,20 @@ export const SeriesTrainingList = ({ series, trainings = [], startTraining, dele
     const result = await addTraining({
       variables: {
         input: {
-          trainerName: series.trainerName,
+          trainerName,
           title: '',
-          seriesTitle: series.title,
-          description: series.description,
-          email: series.email,
+          seriesTitle,
+          description,
+          trainerEmail,
           type: 'TEMP',
-          meetingId: series.meetingId,
-          seriesId: series.id,
+          meetingId,
+          seriesId,
           scheduledTime,
-          moderatorPasscode: series.moderatorPasscode,
-          participantPasscode: series.participantPasscode,
+          moderatorPasscode,
+          participantPasscode,
           audioStateKey: 1,
           videoStateKey: 1,
-          whiteboardUrl: series.whiteboardUrl,
+          whiteboardUrl,
         },
       },
     })
@@ -71,6 +72,7 @@ export const SeriesTrainingList = ({ series, trainings = [], startTraining, dele
 
     setCurrentTraining(result.data.createTraining)
     onModalOpen()
+    trainingList.push(setCurrentTraining(result.data.createTraining))
   }
 
   return (
@@ -100,12 +102,12 @@ export const SeriesTrainingList = ({ series, trainings = [], startTraining, dele
           </Tr>
         </Thead>
         <Tbody>
-          {trainings.length === 0 ? (
+          {trainingList.length === 0 ? (
             <Tr>
               <Td>*None*</Td>
             </Tr>
           ) : (
-            trainings.map((training) => {
+            trainingList.map((training) => {
               return (
                 <Tr key={training.id} cursor="pointer" onClick={() => addTraining(training)}>
                   <Td fontSize="12" paddingLeft="16px">
