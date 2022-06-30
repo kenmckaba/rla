@@ -3,7 +3,7 @@ import { timestampToPrettyTime } from './pretty-time'
 
 import { sesParams } from './ses-params'
 
-const ses = new aws.SES()
+const ses = new aws.SES(sesParams)
 
 export const sendJoinEmail = async (attendeeId, name, email, training) => {
   const template = {

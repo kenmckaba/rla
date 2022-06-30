@@ -2,7 +2,7 @@ import aws from 'aws-sdk'
 import { timestampToPrettyTime } from './pretty-time'
 import { sesParams } from './ses-params'
 
-const ses = new aws.SES()
+const ses = new aws.SES(sesParams)
 
 // if want to use smtp api:
 // ses-smtp-user.20211101-165231

@@ -526,6 +526,12 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
               </Box>
             }
           >
+            {training?.type !== ('SERIES') && 
+            <AttendeeList
+              attendees={attendees}
+              updateAttendee={handleOpenAttendee}
+              deleteAttendee={onDeleteAnAttendee}
+            /> }
             <FormControl padding="0" mt="10px" mb="2px">
               <FormLabel>
                 Attendee registration page
