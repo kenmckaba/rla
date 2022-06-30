@@ -565,7 +565,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           <AccordionItemCustom title="Polls">
             <Polls
               trainingId={trainingId}
-              saveTraining={() => updateCurrentTraining(mutationVars())}
+              // saveTraining={() => updateCurrentTraining(mutationVars())}
               polls={polls}
             />
           </AccordionItemCustom>
