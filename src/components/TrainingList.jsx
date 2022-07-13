@@ -267,6 +267,26 @@ export const TrainingList = () => {
                     >
                       Create a new training
                     </Button>
+                    <Button
+                      // variant="light-blue"
+                      bg="white"
+                      border="solid 2px"
+                      borderColor="blue.6oh no, yea, 00"
+                      color="blue.600"
+                      size="lg"
+                      leftIcon={<AddIcon />}
+                      onClick={onNewSeries}
+                      fontSize="10pt"
+                      fontWeight="bold"
+                      minW="174px"
+                      mt="3em"
+                      _hover={{
+                        backgroundColor: 'rgba(255,255,255, 0.9)',
+                        color: 'blue.600',
+                      }}
+                    >
+                      Create a new series
+                    </Button>
                   </StatHelpText>
                 </Stat>
               </Flex>
