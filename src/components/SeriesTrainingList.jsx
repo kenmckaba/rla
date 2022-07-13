@@ -4,13 +4,15 @@ import { Table, Tr, Th, Td, Tbody, Thead, Box, Button, Flex, IconButton, Spacer,
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { HStack} from '@chakra-ui/layout'
 import { CloseIcon } from '@chakra-ui/icons'
-import { createTraining, deleteTraining } from '../graphql/mutations'
+import { createSharedDoc, createTraining, deleteTraining } from '../graphql/mutations'
 import { TrainingForm } from './TrainingForm'
 import { ConfirmationModal } from './ConfirmationModal'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
-// import { useEffect } from 'react'
+import { listPolls, listSharedDocs} from '../graphql/queries'
+import { useMemo, useEffect } from 'react'
+import { createPoll, updatePoll, updateTraining } from '../graphql/mutations'
 
-export const SeriesTrainingList = ({ trainerName,  trainerEmail, description, seriesTitle, seriesId, whiteboardUrl, meetingId, moderatorPasscode, participantPasscode, startTraining, deleteTraining }) => {
+export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, description, seriesTitle, seriesId, whiteboardUrl, polls, sharedDocs, meetingId, moderatorPasscode, participantPasscode, startTraining, deleteTraining }) => {
 
   const [addTraining] = useMutation(gql(createTraining))
   const [newTraining, setNewTraining] = useState(false)
@@ -18,7 +20,11 @@ export const SeriesTrainingList = ({ trainerName,  trainerEmail, description, se
   //   const [deleteTheTraining] = useMutation(gql(deleteTraining))
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
-  const trainingList = []
+  const [trainingList, setTrainingList] = useState([])
+  const [addNewPoll] = useMutation(gql(createPoll))
+  const [addNewSharedDoc] = useMutation(gql(createSharedDoc))
+  const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
+
 
   const confirmDelete = (training) => {
     setCurrentTraining(training)
@@ -37,9 +43,8 @@ export const SeriesTrainingList = ({ trainerName,  trainerEmail, description, se
     onModalOpen()
   }
 
+
   const onNewTraining = async () => {
-    // const func =(e) => eatEvent(e, handleTrainingClick)
-    // func()
     setNewTraining(true)
     const now = new Date()
     const scheduledTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12, 0, 0) // noon tomorrow
@@ -63,16 +68,44 @@ export const SeriesTrainingList = ({ trainerName,  trainerEmail, description, se
         },
       },
     })
+    const newTraining = result.data.createTraining
+    setCurrentTraining(newTraining)
 
-    // retrieve polls for the series
-    // for each poll create a new poll with the training id
-    //  const { data: seriesPolls, subscribeToMore } = useQuery(gql(listPolls), {
-    //  variables: { filter: { trainingId: { eq: series.id } } },
-    // })
 
-    setCurrentTraining(result.data.createTraining)
+    polls.map(async (poll) =>  {
+    //   addNewPoll(poll)
+      await addNewPoll({
+        variables: {
+          input: {
+            question: poll.question,
+            trainingId: newTraining.id,
+            type: poll.type,
+            answers: poll.answers,
+            correctAnswerIndex: poll.correctAnswerIndex,
+            multiAnswerIndexes: poll.multiAnswerIndexes,
+          },
+        },
+      })
+    })
+
+    sharedDocs.map(async (sharedDoc) =>  {
+      await addNewSharedDoc({
+        variables: {
+          input: {
+            // id:sharedDoc.id,
+            trainingId: newTraining.id,
+            title: sharedDoc.title,
+            type: sharedDoc.type,
+            url: sharedDoc.url,
+            // shared:sharedDoc.shared
+          },
+        },
+      })
+    })
+    
     onModalOpen()
-    trainingList.push(setCurrentTraining(result.data.createTraining))
+    setTrainingList((prev) => [...prev, newTraining])
+    // trainingList.push(newTraining)
   }
 
   return (

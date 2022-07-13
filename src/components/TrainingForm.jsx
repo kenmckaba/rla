@@ -608,14 +608,15 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         <FormControl>
           <FormLabel></FormLabel>
           <SeriesTrainingList
+            trainingId = {trainingId}
             trainerName = {trainerName}
             trainerEmail = {trainerEmail}
             description = {description}
             seriesTitle = {seriesTitle}
             seriesId = {training.id}
             whiteboardUrl = {whiteboardUrl}
-            // polls = {polls}
-            // sharedDocs = {sharedDocs}
+            polls = {polls}
+            sharedDocs = {sharedDocs}
             meetingId = {meetingId}
             moderatorPasscode = {moderatorPasscode}
             participantPasscode = {participantPasscode}
