@@ -68,12 +68,11 @@ export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, des
         },
       },
     })
-    const newTraining = result.data.createTraining
-    setCurrentTraining(newTraining)
 
+    let newTraining = result.data.createTraining
+    // setCurrentTraining(newTraining)
 
     polls.map(async (poll) =>  {
-    //   addNewPoll(poll)
       await addNewPoll({
         variables: {
           input: {
@@ -103,10 +102,11 @@ export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, des
       })
     })
     
+    setCurrentTraining(newTraining)
     onModalOpen()
-    setTrainingList((prev) => [...prev, newTraining])
-    // trainingList.push(newTraining)
+    // setTrainingList((prev) => [...prev, newTraining])
   }
+
 
   return (
     <>
@@ -141,7 +141,7 @@ export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, des
             </Tr>
           ) : (
             trainingList.map((training) => {
-              return (
+              return training?.type === 'TRAINING' && (
                 <Tr key={training.id} cursor="pointer" onClick={() => addTraining(training)}>
                   <Td fontSize="12" paddingLeft="16px">
                     {training.title}
