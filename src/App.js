@@ -10,6 +10,7 @@ import { Registration } from './components/Registration'
 import { RegistrationUpdate } from './components/RegistrationUpdate'
 import { Authenticate } from './components/Authenticate'
 import { WithAuthentication } from './utils/withAuthentication'
+import { SeriesRegistration } from './components/SeriesRegistration'
 
 function App() {
   return (

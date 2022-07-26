@@ -100,9 +100,9 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     onOpen: onWaitModalOpen,
     onClose: onWaitModalClose,
   } = useDisclosure()
-  const { onCopy } = useClipboard(registrationUrl)
   const [addAttendeeInvitation] = useMutation(gql(createInvitedStudent))
   const [isSeries, setIsSeries] = useState(false)
+  const { onCopy } = useClipboard(isSeries ? seriesRegistrationUrl : registrationUrl)
   const Times = useMemo(() => {
     const ampm = ['AM', 'PM']
     const result = []
@@ -258,7 +258,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           moderatorPasscode,
           participantPasscode,
           whiteboardUrl,
-          registrationUrl,
+          registrationUrl: isSeries ? seriesRegistrationUrl : registrationUrl,
         },
       },
     }
@@ -540,10 +540,17 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 overflow="hidden"
                 textOverflow="ellipsis"
               >
-                <Link href={registrationUrl} isExternal cursor="pointer" color="blue">
-                  {registrationUrl}
-                  <ExternalLinkIcon m="2px" />
-                </Link>
+                {isSeries ? 
+                  <Link href={seriesRegistrationUrl} isExternal cursor="pointer" color="blue">
+                    {seriesRegistrationUrl}
+                    <ExternalLinkIcon m="2px" />
+                  </Link>
+                  :
+                  <Link href={registrationUrl} isExternal cursor="pointer" color="blue">
+                    {registrationUrl}
+                    <ExternalLinkIcon m="2px" />
+                  </Link>
+                } 
               </Box>
             </FormControl>
           </AccordionItemCustom>
