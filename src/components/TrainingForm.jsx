@@ -46,8 +46,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [training, setTraining] = useState()
   const [emailGroupList, setEmailGroupList] = useState()
   const [title, setTitle] = useState('')
-  const [seriesTitle, setSeriesTitle] = useState('')
-  const [seriesTrainings, setSeriesTrainings] = useState([])
   const [description, setDescription] = useState('')
   const [trainerName, setTrainerName] = useState('')
   const [trainerEmail, setTrainerEmail] = useState('')
@@ -99,14 +97,9 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     onOpen: onWaitModalOpen,
     onClose: onWaitModalClose,
   } = useDisclosure()
-  const {
-    isOpen: isSeriesTrainingModalOpen,
-    onOpen: onSeriesTrainingModalOpen,
-    onClose: onSeriesTrainingModalClose,
-  } = useDisclosure()
   const { onCopy } = useClipboard(registrationUrl)
   const [addAttendeeInvitation] = useMutation(gql(createInvitedStudent))
-
+  const [isSeries, setIsSeries] = useState(false)
   const Times = useMemo(() => {
     const ampm = ['AM', 'PM']
     const result = []
@@ -143,7 +136,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
       const tr = trainingData.getTraining
       setTraining(tr)
       setTitle(tr.type === 'TEMP' ? '' : tr.title)
-      setSeriesTitle(tr.type === 'TEMP' ? '' : tr.seriesTitle)
+      setIsSeries(tr.type === 'SERIES')
       setDescription((prev) => tr.description || prev)
       setTrainerName(tr.trainerName || '')
       setTrainerEmail(tr.trainerEmail)
@@ -203,10 +196,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     setTitle(event.target.value)
   }
 
-  const onChangeSeriesTitle = (event) => {
-    setSeriesTitle(event.target.value)
-  }
-
   const onChangeDescription = (event) => {
     setDescription(event.target.value)
   }
@@ -249,18 +238,16 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
 
   const mutationVars = () => {
     const time = fixDate()
-    // const newTrainingType =
     return {
       variables: {
         input: {
           id: trainingId,
-          seriesId: training.id,
-          type: training?.type !== 'SERIES' && 'TRAINING',
+          seriesId: isSeries ? training.id : null,
+          type: isSeries ? 'SERIES' : 'TRAINING',
           description,
           trainerName,
           trainerEmail,
           title,
-          seriesTitle,
           meetingId,
           scheduledTime: time.toISOString(),
           maxAttendees,
@@ -342,15 +329,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     onClose()
   }
 
-  // const handleTrainingSave = async () => {
-  //   await updateCurrentTraining(mutationVars())
-  //   onSeriesTrainingModalClose()
-  // }
-
-  const handleTrainingCancel = () => {
-    onSeriesTrainingModalClose()
-  }
-
   const handleOpenAttendee = async (attendee) => {
     setCurrentAttendee(attendee)
     onNewattendeeModalOpen()
@@ -409,44 +387,40 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   }
 
   const missingFields = () => {
-    return training?.type === ('SERIES') ?  
-      (
-        !title ||
-        !trainerName ||
-        !meetingId ||
-        !participantPasscode ||
-        !moderatorPasscode ||
-        !trainerEmail
-      ) 
-      :
-      (
-        !title ||
-        !trainerName ||
-        !meetingId ||
-        !participantPasscode ||
-        !moderatorPasscode ||
-        !trainerEmail ||
-        !scheduledDate ||
-        !scheduledTime 
-      )
+    return isSeries
+      ? !title ||
+          !trainerName ||
+          !meetingId ||
+          !participantPasscode ||
+          !moderatorPasscode ||
+          !trainerEmail
+      : !title ||
+          !trainerName ||
+          !meetingId ||
+          !participantPasscode ||
+          !moderatorPasscode ||
+          !trainerEmail ||
+          !scheduledDate ||
+          !scheduledTime
   }
-
 
   return (
     <>
       <Box>
-        {training?.type !== ('SERIES') ?
+        {!isSeries ? (
           <FormControl isRequired>
             <FormLabel mt="0">Title</FormLabel>
             <Input fontSize="12" value={title} onChange={onChangeTitle} h="24px" />
           </FormControl>
-          :
+        ) : (
           <FormControl isRequired>
-            <Text fontSize='xs'>Note: The following information will be copied over to all trainings in the series</Text>
+            <Text fontSize="xs">
+              Note: The following information will be copied over to all trainings in the series
+            </Text>
             <FormLabel mt="0">Series Title</FormLabel>
-            <Input fontSize="12" value={seriesTitle} onChange={onChangeSeriesTitle} h="24px" />
+            <Input fontSize="12" value={title} h="24px" onChange={onChangeTitle} />
           </FormControl>
-        }
+        )}
         <FormControl>
           <FormLabel>Description</FormLabel>
           <Input
@@ -467,25 +441,25 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             <Input fontSize="12" value={trainerEmail} onChange={onChangeTrainerEmail} h="24px" />
           </FormControl>
         </HStack>
-        {training?.type !== ('SERIES') &&
-        <HStack>
-          <FormControl isRequired>
-            <FormLabel>Date</FormLabel>
-            <DatePicker
-              fontSize="12"
-              selected={scheduledDate}
-              onChange={onChangeScheduledFor}
-              dateFormat="MMM d, yyyy"
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Time</FormLabel>
-            <Select fontSize="12px" height="25px" onChange={onChangeTime} value={scheduledTime}>
-              {Times}
-            </Select>
-          </FormControl>
-        </HStack>
-        }
+        {!isSeries && (
+          <HStack>
+            <FormControl isRequired>
+              <FormLabel>Date</FormLabel>
+              <DatePicker
+                fontSize="12"
+                selected={scheduledDate}
+                onChange={onChangeScheduledFor}
+                dateFormat="MMM d, yyyy"
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Time</FormLabel>
+              <Select fontSize="12px" height="25px" onChange={onChangeTime} value={scheduledTime}>
+                {Times}
+              </Select>
+            </FormControl>
+          </HStack>
+        )}
         <HStack>
           <FormControl>
             <FormLabel>Max attendees</FormLabel>
@@ -508,7 +482,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             />
           </FormControl>
         </HStack>
-        
+
         <FormControl>
           <FormLabel>Whiteboard URL</FormLabel>
           <Input
@@ -527,12 +501,13 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
               </Box>
             }
           >
-            {training?.type !== ('SERIES') && 
-            <AttendeeList
-              attendees={attendees}
-              updateAttendee={handleOpenAttendee}
-              deleteAttendee={onDeleteAnAttendee}
-            /> }
+            {!isSeries && (
+              <AttendeeList
+                attendees={attendees}
+                updateAttendee={handleOpenAttendee}
+                deleteAttendee={onDeleteAnAttendee}
+              />
+            )}
             <FormControl padding="0" mt="10px" mb="2px">
               <FormLabel>
                 Attendee registration page
@@ -605,32 +580,17 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             </HStack>
           </AccordionItemCustom>
         </Accordion>
-        {training?.type === ('SERIES') &&
-        <FormControl>
-          <FormLabel></FormLabel>
-          <SeriesTrainingList
-            trainingId = {trainingId}
-            trainerName = {trainerName}
-            trainerEmail = {trainerEmail}
-            description = {description}
-            seriesTitle = {seriesTitle}
-            seriesId = {training.id}
-            whiteboardUrl = {whiteboardUrl}
-            polls = {polls}
-            sharedDocs = {sharedDocs}
-            meetingId = {meetingId}
-            moderatorPasscode = {moderatorPasscode}
-            participantPasscode = {participantPasscode}
-
-            // isDisabled={missingFields}
-            trainings={seriesTrainings}
-            startTraining={startTraining}
-            deleteTraining={handleDelete}
-          />
-        </FormControl>
-        }
+        {isSeries && (
+          <FormControl>
+            <FormLabel></FormLabel>
+            <SeriesTrainingList
+              saveTraining={() => updateCurrentTraining(mutationVars())}
+              series={training}
+              deleteTraining={handleDelete}
+            />
+          </FormControl>
+        )}
       </Box>
-
 
       <Button
         position="relative"
@@ -662,7 +622,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           Cancel
         </Button>
       </HStack>
-
 
       <OurModal
         header="Delete attendee?"

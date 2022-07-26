@@ -23,13 +23,11 @@ import {
   Menu,
   MenuButton,
   MenuItem,
-  MenuDivider,
   MenuList,
   MenuGroup,
 } from '@chakra-ui/react'
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
-// import { SeriesForm } from './SeriesForm'
 import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
@@ -55,9 +53,11 @@ export const TrainingList = () => {
   const [newTraining, setNewTraining] = useState(false)
   const [currentTraining, setCurrentTraining] = useState()
   const { loading, error, data: trainingListData, subscribeToMore } = useQuery(gql(listTrainings))
-  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
-  const { isOpen: isSeriesModalOpen, onOpen: onSeriesModalOpen, onClose: onSeriesModalClose } = useDisclosure()
-  // const [seriesModal, setSeriesModal] = useState(false)
+  const {
+    isOpen: isTrainingModalOpen,
+    onOpen: onTrainingModalOpen,
+    onClose: onTrainingModalClose,
+  } = useDisclosure()
   const [addTraining] = useMutation(gql(createTraining))
   const [deleteTheTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
@@ -131,7 +131,7 @@ export const TrainingList = () => {
   const handleTrainingClick = async (training) => {
     setCurrentTraining(training)
     setNewTraining(false)
-    onModalOpen()
+    onTrainingModalOpen()
   }
 
   const onNewTraining = async () => {
@@ -143,10 +143,8 @@ export const TrainingList = () => {
         input: {
           trainerName: '',
           title: '',
-          seriesTitle: '',
           type: 'TEMP',
           meetingId: '',
-          // seriesId: currentTraining.id,
           scheduledTime,
           moderatorPasscode: '',
           participantPasscode: '',
@@ -156,7 +154,7 @@ export const TrainingList = () => {
       },
     })
     setCurrentTraining(result.data.createTraining)
-    onModalOpen()
+    onTrainingModalOpen()
   }
 
   const onNewSeries = async () => {
@@ -168,7 +166,6 @@ export const TrainingList = () => {
         input: {
           trainerName: '',
           title: '',
-          seriesTitle: '',
           type: 'SERIES',
           meetingId: '',
           scheduledTime,
@@ -180,7 +177,7 @@ export const TrainingList = () => {
       },
     })
     setCurrentTraining(result.data.createTraining)
-    onModalOpen()
+    onTrainingModalOpen()
   }
 
   const confirmDelete = (training) => {
@@ -216,7 +213,7 @@ export const TrainingList = () => {
     setIsConfirmDuplicateModalOpen(false)
     const result = await duplicateTraining(training)
     setCurrentTraining(result.data.createTraining)
-    onModalOpen()
+    onTrainingModalOpen()
   }
 
   const clearDates = () => {
@@ -227,7 +224,7 @@ export const TrainingList = () => {
   const renderTrainings = () => {
     if (selectedTrainings?.length === 0) {
       return (
-        <Tr height="224px" width="1028px" cursor="pointer" onClick={onNewTraining}>
+        <Tr height="224px" width="1028px" cursor="pointer">
           <Flex
             borderRadius="20px"
             backgroundColor="#396AA1"
@@ -325,12 +322,10 @@ export const TrainingList = () => {
             <Flex justify="flex-start" minH="34px">
               <Stat marginTop="2">
                 <StatLabel whiteSpace="nowrap" fontSize="2em" textTransform="capitalize">
-                  {training?.seriesTitle ? training.seriesTitle : training.title}
+                  {training.title}
                 </StatLabel>
               </Stat>
-
               <Spacer />
-
               {trainingHovered === training.id && (
                 <TrainingToolbar
                   editTraining={() => handleTrainingClick(training)}
@@ -540,7 +535,10 @@ export const TrainingList = () => {
                     fontSize="10pt"
                     fontWeight="bold"
                     minW="174px"
-                  > Add New </MenuButton>
+                  >
+                    {' '}
+                    Add New{' '}
+                  </MenuButton>
                   <MenuList bgGradient="linear-gradient(0deg, #283683 0%, #396AA1 100%, #283683 100%)">
                     <MenuGroup>
                       <MenuItem _focus={{ color: '#283683', bg: 'white' }} onClick={onNewTraining}>
@@ -571,13 +569,19 @@ export const TrainingList = () => {
               onClose={() => setShowParticipantsModal(false)}
             />
 
-            <Modal isOpen={isModalOpen} scrollBehavior="inside">
+            <Modal isOpen={isTrainingModalOpen} scrollBehavior="inside">
               <ModalOverlay />
               <ModalContent color="darkKnight.700">
                 <ModalHeader>
                   <Flex>
                     {/* <Box>{newTraining ? 'New Training' : 'Update Training'}</Box> */}
-                    <Box>{newTraining ? (currentTraining?.type === ('SERIES') ? 'New Series' : 'New Training') : 'Update Training'}</Box>
+                    <Box>
+                      {newTraining
+                        ? currentTraining?.type === 'SERIES'
+                          ? 'New Series'
+                          : 'New Training'
+                        : 'Update Training'}
+                    </Box>
                     <Spacer></Spacer>
                     <Box>
                       <HStack spacing={2}>
@@ -585,7 +589,7 @@ export const TrainingList = () => {
                           variant="icon-button"
                           aria-label="Close form"
                           icon={<CloseIcon boxSize={3} />}
-                          onClick={onModalClose}
+                          onClick={onTrainingModalClose}
                         />
                       </HStack>
                     </Box>
@@ -593,7 +597,7 @@ export const TrainingList = () => {
                 </ModalHeader>
                 <ModalBody>
                   <TrainingForm
-                    onClose={onModalClose}
+                    onClose={onTrainingModalClose}
                     trainingId={currentTraining?.id}
                     onDelete={() => confirmDelete(currentTraining)}
                   />

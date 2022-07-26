@@ -1,19 +1,37 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useQuery, gql, useMutation } from '@apollo/client'
-import { Table, Tr, Th, Td, Tbody, Thead, Box, Button, Flex, IconButton, Spacer, useDisclosure, Modal, ModalOverlay,ModalHeader,ModalContent,ModalBody,ModalFooter, } from '@chakra-ui/react'
+import {
+  Table,
+  Tr,
+  Th,
+  Td,
+  Tbody,
+  Thead,
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  Spacer,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalHeader,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
+} from '@chakra-ui/react'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
-import { HStack} from '@chakra-ui/layout'
+import { HStack } from '@chakra-ui/layout'
 import { CloseIcon } from '@chakra-ui/icons'
 import { createSharedDoc, createTraining, deleteTraining } from '../graphql/mutations'
 import { TrainingForm } from './TrainingForm'
 import { ConfirmationModal } from './ConfirmationModal'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
-import { listPolls, listSharedDocs} from '../graphql/queries'
+import { listPolls, listSharedDocs, listTrainings } from '../graphql/queries'
 import { useMemo, useEffect } from 'react'
 import { createPoll, updatePoll, updateTraining } from '../graphql/mutations'
 
-export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, description, seriesTitle, seriesId, whiteboardUrl, polls, sharedDocs, meetingId, moderatorPasscode, participantPasscode, startTraining, deleteTraining }) => {
-
+export const SeriesTrainingList = ({ series, deleteTraining, saveTraining }) => {
   const [addTraining] = useMutation(gql(createTraining))
   const [newTraining, setNewTraining] = useState(false)
   const [currentTraining, setCurrentTraining] = useState()
@@ -24,7 +42,23 @@ export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, des
   const [addNewPoll] = useMutation(gql(createPoll))
   const [addNewSharedDoc] = useMutation(gql(createSharedDoc))
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
+  const { data: seriesListData } = useQuery(gql(listTrainings), {
+    variables: { seriesId: series.id },
+  })
+  const waitingForSave = useRef(false)
 
+  useEffect(() => {
+    if (seriesListData) {
+      setTrainingList(seriesListData.trainings)
+    }
+  }, [seriesListData])
+
+  useEffect(() => {
+    if (waitingForSave.current) {
+      waitingForSave.current = false
+      openTrainingModal()
+    }
+  }, [series])
 
   const confirmDelete = (training) => {
     setCurrentTraining(training)
@@ -43,41 +77,44 @@ export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, des
     onModalOpen()
   }
 
-
   const onNewTraining = async () => {
+    saveTraining()
+    waitingForSave.current = true
+  }
+
+  const openTrainingModal = async () => {
     setNewTraining(true)
     const now = new Date()
     const scheduledTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12, 0, 0) // noon tomorrow
     const result = await addTraining({
       variables: {
         input: {
-          trainerName,
-          title: '',
-          seriesTitle,
-          description,
-          trainerEmail,
+          trainerName: series.trainerName,
+          title: series.title,
+          description: series.description,
+          trainerEmail: series.trainerEmail,
           type: 'TEMP',
-          meetingId,
-          seriesId,
+          meetingId: series.meetingId,
+          seriesId: series.id,
           scheduledTime,
-          moderatorPasscode,
-          participantPasscode,
+          moderatorPasscode: series.moderatorPasscode,
+          participantPasscode: series.participantPasscode,
           audioStateKey: 1,
           videoStateKey: 1,
-          whiteboardUrl,
+          whiteboardUrl: series.whiteboardUrl,
         },
       },
     })
 
-    let newTraining = result.data.createTraining
-    // setCurrentTraining(newTraining)
+    const theTraining = result.data.createTraining
+    // setCurrentTraining(theTraining)
 
-    polls.map(async (poll) =>  {
+    series.polls.items.map(async (poll) => {
       await addNewPoll({
         variables: {
           input: {
             question: poll.question,
-            trainingId: newTraining.id,
+            trainingId: theTraining.id,
             type: poll.type,
             answers: poll.answers,
             correctAnswerIndex: poll.correctAnswerIndex,
@@ -87,26 +124,23 @@ export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, des
       })
     })
 
-    sharedDocs.map(async (sharedDoc) =>  {
+    series.sharedDocs.items.map(async (sharedDoc) => {
       await addNewSharedDoc({
         variables: {
           input: {
-            // id:sharedDoc.id,
-            trainingId: newTraining.id,
+            trainingId: theTraining.id,
             title: sharedDoc.title,
             type: sharedDoc.type,
             url: sharedDoc.url,
-            // shared:sharedDoc.shared
           },
         },
       })
     })
-    
-    setCurrentTraining(newTraining)
-    onModalOpen()
-    // setTrainingList((prev) => [...prev, newTraining])
-  }
 
+    setCurrentTraining(theTraining)
+    onModalOpen()
+    // setTrainingList((prev) => [...prev, theTraining])
+  }
 
   return (
     <>
@@ -118,10 +152,8 @@ export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, des
           rightIcon={<AddIcon />}
           variant="outline"
           onClick={onNewTraining}
-        //   onClick={(e) => eatEvent(e, handleTrainingClick)}
-        //   isDisabled={isDisabled}
         >
-            Add a training
+          Add a training
         </Button>
       </Flex>
 
@@ -129,49 +161,51 @@ export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, des
         <Thead>
           <Tr>
             <Th w="12rem" pb="0">
-                Trainings
+              Trainings
             </Th>
             <Th pn="0"></Th>
           </Tr>
         </Thead>
         <Tbody>
-          {trainingList.length === 0 ? (
+          {!trainingList ? (
             <Tr>
               <Td>*None*</Td>
             </Tr>
           ) : (
             trainingList.map((training) => {
-              return training?.type === 'TRAINING' && (
-                <Tr key={training.id} cursor="pointer" onClick={() => addTraining(training)}>
-                  <Td fontSize="12" paddingLeft="16px">
-                    {training.title}
-                  </Td>
-                  <Td fontSize="12" padding="0">
-                    <IconButton
-                      icon={<DeleteIcon />}
-                      color="lightslategray"
-                      background="white"
-                      float="right"
-                      size="xs"
-                      height="14px"
-                      onClick={deleteTraining}
-                    >
+              return (
+                training?.type === 'TRAINING' && (
+                  <Tr key={training.id} cursor="pointer" onClick={() => addTraining(training)}>
+                    <Td fontSize="12" paddingLeft="16px">
+                      {training.title}
+                    </Td>
+                    <Td fontSize="12" padding="0">
+                      <IconButton
+                        icon={<DeleteIcon />}
+                        color="lightslategray"
+                        background="white"
+                        float="right"
+                        size="xs"
+                        height="14px"
+                        onClick={deleteTraining}
+                      >
                         Delete
-                    </IconButton>
-                  </Td>
-                  <Td fontSize="12" paddingLeft="16px">
-                    <Button
-                      variant="outline"
-                      float="right"
-                      color="lightslategray"
-                      size="xs"
-                      height="14px"
-                      onClick={startTraining}
-                    >
+                      </IconButton>
+                    </Td>
+                    {/* <Td fontSize="12" paddingLeft="16px">
+                      <Button
+                        variant="outline"
+                        float="right"
+                        color="lightslategray"
+                        size="xs"
+                        height="14px"
+                        onClick={startTraining}
+                      >
                         Start
-                    </Button>
-                  </Td>
-                </Tr>
+                      </Button>
+                    </Td> */}
+                  </Tr>
+                )
               )
             })
           )}
@@ -208,9 +242,7 @@ export const SeriesTrainingList = ({ trainingId, trainerName,  trainerEmail, des
         </ModalContent>
       </Modal>
 
-   
       {/* </Box> */}
     </>
-    
   )
 }
