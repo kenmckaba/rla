@@ -36,7 +36,6 @@ export const SeriesTrainingList = ({ series, deleteTraining }) => {
   const [addTraining] = useMutation(gql(createTraining))
   const [newTraining, setNewTraining] = useState(false)
   const [currentTraining, setCurrentTraining] = useState()
-  //   const [deleteTheTraining] = useMutation(gql(deleteTraining))
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false)
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const [trainingList, setTrainingList] = useState([])
@@ -62,18 +61,6 @@ export const SeriesTrainingList = ({ series, deleteTraining }) => {
   const confirmDelete = (training) => {
     setCurrentTraining(training)
     setIsConfirmDeleteModalOpen(true)
-  }
-
-  const eatEvent = (e, func) => {
-    e.preventDefault()
-    e.stopPropagation()
-    func()
-  }
-
-  const handleTrainingClick = async (training) => {
-    setCurrentTraining(training)
-    setNewTraining(false)
-    onModalOpen()
   }
 
   const openTrainingModal = async () => {
@@ -134,12 +121,10 @@ export const SeriesTrainingList = ({ series, deleteTraining }) => {
 
     setCurrentTraining(theTraining)
     onModalOpen()
-    // setTrainingList((prev) => [...prev, theTraining])
   }
 
   return (
     <>
-      {/* <Box borderRadius="6px" borderWidth="1px" borderColor="gray.200" mt="3"> */}
       <Flex marginLeft="2px" marginTop="3px" justifyContent="space-between" float="left">
         <Button
           size="xs"
@@ -187,18 +172,6 @@ export const SeriesTrainingList = ({ series, deleteTraining }) => {
                         Delete
                       </IconButton>
                     </Td>
-                    {/* <Td fontSize="12" paddingLeft="16px">
-                      <Button
-                        variant="outline"
-                        float="right"
-                        color="lightslategray"
-                        size="xs"
-                        height="14px"
-                        onClick={startTraining}
-                      >
-                        Start
-                      </Button>
-                    </Td> */}
                   </Tr>
                 )
               )
@@ -213,7 +186,6 @@ export const SeriesTrainingList = ({ series, deleteTraining }) => {
           <ModalHeader>
             <Flex>
               <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
-              {/* <Box>{newTraining ? (currentTraining.type === ('SERIES' || 'TEMPSERIES') ? 'New Series' : 'New Training') : 'Update Training'}</Box> */}
               <Spacer></Spacer>
               <Box>
                 <HStack spacing={2}>
@@ -236,8 +208,6 @@ export const SeriesTrainingList = ({ series, deleteTraining }) => {
           </ModalBody>
         </ModalContent>
       </Modal>
-
-      {/* </Box> */}
     </>
   )
 }

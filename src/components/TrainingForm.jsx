@@ -318,12 +318,8 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   }
 
   const handleSubmit = async () => {
-    if (isSeries) {
-      handleSave()
-      return
-    }
     await updateCurrentTraining(mutationVars())
-    onEmailsModalOpen()
+    onEmailsModalOpen() // if training is part of a series, we do not want the email modal to open
   }
 
   const handleSave = async () => {
@@ -620,7 +616,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
       </Box>
  
       {!isSeries && 
-      <React.Fragment>
+      <>
         <Button
           position="relative"
           top="20px"
@@ -642,7 +638,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         >
           Delete
         </Button>
-      </React.Fragment>
+      </>
       }
 
       <HStack float="right" mt="3" mb="3">
