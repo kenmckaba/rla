@@ -52,6 +52,9 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [scheduledDate, setScheduledDate] = useState()
   const [scheduledTime, setScheduledTime] = useState()
   const [registrationUrl] = useState(`${window.location.origin}/registration/${trainingId}`)
+  const [seriesRegistrationUrl] = useState(
+    `${window.location.origin}/series-registration/${trainingId}`,
+  )
   const [meetingId, setMeetingId] = useState('794560429')
   const [moderatorPasscode, setModeratorPasscode] = useState('1599')
   const [participantPasscode, setParticipantPasscode] = useState('2886')
@@ -315,6 +318,10 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   }
 
   const handleSubmit = async () => {
+    if (isSeries) {
+      handleSave()
+      return
+    }
     await updateCurrentTraining(mutationVars())
     onEmailsModalOpen()
   }
@@ -368,7 +375,9 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
 
   const handleDelete = async () => {
     onDelete(trainingId)
-    onClose()
+    if (!isSeries) {
+      onClose()
+    }
   }
 
   const startTraining = (e) => {
@@ -584,8 +593,19 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           <FormControl>
             <FormLabel></FormLabel>
             <SeriesTrainingList
-              saveTraining={() => updateCurrentTraining(mutationVars())}
-              series={training}
+              series={{
+                id: training.id,
+                title,
+                description,
+                trainerName,
+                trainerEmail,
+                meetingId,
+                moderatorPasscode,
+                participantPasscode,
+                whiteboardUrl,
+                polls,
+                sharedDocs,
+              }}
               deleteTraining={handleDelete}
             />
           </FormControl>

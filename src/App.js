@@ -27,7 +27,8 @@ function App() {
             />
             <Route path="/registration-update/:attendeeId" component={RegistrationUpdate} />
             <Route path="/registration/:trainingId/:invitedStudentId?" component={Registration} />
-            <Route path="/" component={WithAuthentication(TrainingList)} />
+            <Route path="/series-registration/:trainingId" component={SeriesRegistration} />
+            <Route path="/" component={WithAuthentication(TrainingList)} /> {/* has to be last */}
           </Switch>
         </BrowserRouter>
       </ChakraProvider>

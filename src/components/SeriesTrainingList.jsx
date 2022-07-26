@@ -30,8 +30,9 @@ import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql
 import { listPolls, listSharedDocs, listTrainings } from '../graphql/queries'
 import { useMemo, useEffect } from 'react'
 import { createPoll, updatePoll, updateTraining } from '../graphql/mutations'
+import { buildSubscription } from 'aws-appsync'
 
-export const SeriesTrainingList = ({ series, deleteTraining, saveTraining }) => {
+export const SeriesTrainingList = ({ series, deleteTraining }) => {
   const [addTraining] = useMutation(gql(createTraining))
   const [newTraining, setNewTraining] = useState(false)
   const [currentTraining, setCurrentTraining] = useState()
@@ -42,23 +43,21 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveTraining }) => 
   const [addNewPoll] = useMutation(gql(createPoll))
   const [addNewSharedDoc] = useMutation(gql(createSharedDoc))
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
-  const { data: seriesListData } = useQuery(gql(listTrainings), {
-    variables: { seriesId: series.id },
+  const { data: seriesListData, subscribeToMore } = useQuery(gql(listTrainings), {
+    variables: { filter: { seriesId: { eq: series.id } } },
   })
-  const waitingForSave = useRef(false)
 
   useEffect(() => {
     if (seriesListData) {
-      setTrainingList(seriesListData.trainings)
+      setTrainingList(seriesListData.listTrainings.items)
     }
   }, [seriesListData])
 
   useEffect(() => {
-    if (waitingForSave.current) {
-      waitingForSave.current = false
-      openTrainingModal()
+    if (subscribeToMore) {
+      return subscribeToMore(buildSubscription(gql(onCreateTraining), gql(listTrainings)))
     }
-  }, [series])
+  }, [subscribeToMore])
 
   const confirmDelete = (training) => {
     setCurrentTraining(training)
@@ -77,11 +76,6 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveTraining }) => 
     onModalOpen()
   }
 
-  const onNewTraining = async () => {
-    saveTraining()
-    waitingForSave.current = true
-  }
-
   const openTrainingModal = async () => {
     setNewTraining(true)
     const now = new Date()
@@ -90,7 +84,8 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveTraining }) => 
       variables: {
         input: {
           trainerName: series.trainerName,
-          title: series.title,
+          title: '',
+          seriesTitle: series.title,
           description: series.description,
           trainerEmail: series.trainerEmail,
           type: 'TEMP',
@@ -109,7 +104,7 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveTraining }) => 
     const theTraining = result.data.createTraining
     // setCurrentTraining(theTraining)
 
-    series.polls.items.map(async (poll) => {
+    series.polls.items?.map(async (poll) => {
       await addNewPoll({
         variables: {
           input: {
@@ -124,7 +119,7 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveTraining }) => 
       })
     })
 
-    series.sharedDocs.items.map(async (sharedDoc) => {
+    series.sharedDocs.items?.map(async (sharedDoc) => {
       await addNewSharedDoc({
         variables: {
           input: {
@@ -151,7 +146,7 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveTraining }) => 
           marginLeft="3px"
           rightIcon={<AddIcon />}
           variant="outline"
-          onClick={onNewTraining}
+          onClick={openTrainingModal}
         >
           Add a training
         </Button>
@@ -175,7 +170,7 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveTraining }) => 
             trainingList.map((training) => {
               return (
                 training?.type === 'TRAINING' && (
-                  <Tr key={training.id} cursor="pointer" onClick={() => addTraining(training)}>
+                  <Tr key={training.id} cursor="pointer">
                     <Td fontSize="12" paddingLeft="16px">
                       {training.title}
                     </Td>
