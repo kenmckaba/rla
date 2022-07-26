@@ -618,28 +618,32 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           </FormControl>
         )}
       </Box>
-
-      <Button
-        position="relative"
-        top="20px"
-        size="sm"
-        as="a"
-        variant="outline"
-        onClick={startTraining}
-        isDisabled={missingFields}
-      >
-        Start
-      </Button>
-      <Button
-        position="relative"
-        top="20px"
-        variant="ghost"
-        ml="1"
-        size="sm"
-        onClick={handleDelete}
-      >
-        Delete
-      </Button>
+ 
+      {!isSeries && 
+      <React.Fragment>
+        <Button
+          position="relative"
+          top="20px"
+          size="sm"
+          as="a"
+          variant="outline"
+          onClick={startTraining}
+          isDisabled={missingFields}
+        >
+          Start
+        </Button>
+        <Button
+          position="relative"
+          top="20px"
+          variant="ghost"
+          ml="1"
+          size="sm"
+          onClick={handleDelete}
+        >
+          Delete
+        </Button>
+      </React.Fragment>
+      }
 
       <HStack float="right" mt="3" mb="3">
         <Button size="md" onClick={handleSubmit} isDisabled={missingFields()}>
