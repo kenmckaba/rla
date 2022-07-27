@@ -21,7 +21,7 @@ import {
   FormHelperText,
   RadioGroup,
   Radio,
-  Tr, 
+  Tr,
   Table,
   Tbody,
   Td,
@@ -44,7 +44,6 @@ export const SeriesRegistration = ({
   const updatedStudent = useRef(false)
   const [trainingList, setTrainingList] = useState([])
 
-
   const {
     data: trainingData,
     error,
@@ -53,19 +52,19 @@ export const SeriesRegistration = ({
     variables: { id: trainingId },
   })
 
-  const { data: invitedStudentData } = useQuery(gql(getInvitedStudent), {
-    variables: { id: invitedStudentId },
-  })
+  // const { data: invitedStudentData } = useQuery(gql(getInvitedStudent), {
+  //   variables: { id: invitedStudentId },
+  // })
 
-  const { data: seriesListData, subscribeToMore } = useQuery(gql(listTrainings), {
+  const { data: seriesListData } = useQuery(gql(listTrainings), {
     variables: { filter: { seriesId: { eq: trainingId } } },
   })
-  
+
   useEffect(() => {
     if (trainingData && (!training || trainingId === trainingData?.getTraining?.id)) {
       const tr = trainingData.getTraining
       setTraining(tr)
-      setIsFull(tr.attendees.items.length > tr.maxAttendees)
+      // setIsFull(tr.attendees.items.length > tr.maxAttendees)
     }
   }, [trainingData, training, trainingId])
 
@@ -75,11 +74,11 @@ export const SeriesRegistration = ({
     }
   }, [seriesListData])
 
-  useEffect(() => {
-    if (subscribeToMore) {
-      return subscribeToMore(buildSubscription(gql(onCreateTraining), gql(listTrainings)))
-    }
-  }, [subscribeToMore])
+  // useEffect(() => {
+  //   if (subscribeToMore) {
+  //     return subscribeToMore(buildSubscription(gql(onCreateTraining), gql(listTrainings)))
+  //   }
+  // }, [subscribeToMore])
 
   if (error) {
     console.error('rla-log: error', error)
@@ -89,7 +88,6 @@ export const SeriesRegistration = ({
   if (loading || !training) {
     return <p>Please wait...</p>
   }
-
 
   const alreadyRegistered = () => {
     if (!invitedStudent?.attendeeId) {
@@ -134,23 +132,25 @@ export const SeriesRegistration = ({
             <Box width="100%">
               <Box fontSize="20px">Please register for only ONE of the following trainings: </Box>
               {/* display list of each training in the series */}
-              {!trainingList ? (
-                <Tr>
-                  <Td>*None*</Td>
-                </Tr>
-              ) : (
-                trainingList.map((training) => {
-                  return (
-                    training?.type === 'TRAINING' && (
-                      <Tr key={training.id} cursor="pointer">
-                        <Td fontSize="12" paddingLeft="16px">
-                          {training.title}
-                        </Td>
-                      </Tr>
+              <Table size="sm">
+                {!trainingList ? (
+                  <Tr>
+                    <Td>*None*</Td>
+                  </Tr>
+                ) : (
+                  trainingList.map((training) => {
+                    return (
+                      training?.type === 'TRAINING' && (
+                        <Tr key={training.id} cursor="pointer">
+                          <Td fontSize="12" paddingLeft="16px">
+                            {training.title}
+                          </Td>
+                        </Tr>
+                      )
                     )
-                  )
-                })
-              )}
+                  })
+                )}
+              </Table>
             </Box>
           </VStack>
         </Flex>

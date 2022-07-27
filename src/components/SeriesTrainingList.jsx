@@ -32,7 +32,7 @@ import { useMemo, useEffect } from 'react'
 import { createPoll, updatePoll, updateTraining } from '../graphql/mutations'
 import { buildSubscription } from 'aws-appsync'
 
-export const SeriesTrainingList = ({ series, deleteTraining }) => {
+export const SeriesTrainingList = ({ series, deleteTraining, saveSeries }) => {
   const [addTraining] = useMutation(gql(createTraining))
   const [newTraining, setNewTraining] = useState(false)
   const [currentTraining, setCurrentTraining] = useState()
@@ -64,6 +64,8 @@ export const SeriesTrainingList = ({ series, deleteTraining }) => {
   }
 
   const openTrainingModal = async () => {
+    saveSeries()
+
     setNewTraining(true)
     const now = new Date()
     const scheduledTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12, 0, 0) // noon tomorrow

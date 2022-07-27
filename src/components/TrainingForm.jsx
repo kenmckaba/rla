@@ -245,7 +245,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
       variables: {
         input: {
           id: trainingId,
-          seriesId: isSeries ? training.id : null,
+          seriesId: training.seriesId,
           type: isSeries ? 'SERIES' : 'TRAINING',
           description,
           trainerName,
@@ -536,17 +536,17 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 overflow="hidden"
                 textOverflow="ellipsis"
               >
-                {isSeries ? 
+                {isSeries ? (
                   <Link href={seriesRegistrationUrl} isExternal cursor="pointer" color="blue">
                     {seriesRegistrationUrl}
                     <ExternalLinkIcon m="2px" />
                   </Link>
-                  :
+                ) : (
                   <Link href={registrationUrl} isExternal cursor="pointer" color="blue">
                     {registrationUrl}
                     <ExternalLinkIcon m="2px" />
                   </Link>
-                } 
+                )}
               </Box>
             </FormControl>
           </AccordionItemCustom>
@@ -610,36 +610,37 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 sharedDocs,
               }}
               deleteTraining={handleDelete}
+              saveSeries={() => updateCurrentTraining(mutationVars())}
             />
           </FormControl>
         )}
       </Box>
- 
-      {!isSeries && 
-      <>
-        <Button
-          position="relative"
-          top="20px"
-          size="sm"
-          as="a"
-          variant="outline"
-          onClick={startTraining}
-          isDisabled={missingFields}
-        >
-          Start
-        </Button>
-        <Button
-          position="relative"
-          top="20px"
-          variant="ghost"
-          ml="1"
-          size="sm"
-          onClick={handleDelete}
-        >
-          Delete
-        </Button>
-      </>
-      }
+
+      {!isSeries && (
+        <>
+          <Button
+            position="relative"
+            top="20px"
+            size="sm"
+            as="a"
+            variant="outline"
+            onClick={startTraining}
+            isDisabled={missingFields}
+          >
+            Start
+          </Button>
+          <Button
+            position="relative"
+            top="20px"
+            variant="ghost"
+            ml="1"
+            size="sm"
+            onClick={handleDelete}
+          >
+            Delete
+          </Button>
+        </>
+      )}
 
       <HStack float="right" mt="3" mb="3">
         <Button size="md" onClick={handleSubmit} isDisabled={missingFields()}>
