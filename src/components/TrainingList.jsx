@@ -81,7 +81,9 @@ export const TrainingList = () => {
 
   useEffect(() => {
     if (trainingListData) {
-      const tr = trainingListData.listTrainings.items.filter((t) => t.type === 'TRAINING')
+      const tr = trainingListData.listTrainings.items.filter(
+        (t) => t.type === 'TRAINING' || t.type === 'SERIES',
+      )
       setTrainings(tr)
     }
   }, [trainingListData])
