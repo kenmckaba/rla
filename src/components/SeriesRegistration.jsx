@@ -164,49 +164,6 @@ export const SeriesRegistration = ({
                 )}
               </Table>
             </Box>
-            {/* <FormControl>
-              <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
-                Your name
-              </FormLabel>
-              <Input
-                variant="filled"
-                fontSize="0.75em"
-                placeholder="Type your name here"
-                color={'blue.900'}
-                _focus={{ backgroundColor: 'white' }}
-                _placeholder={{ color: 'blue.700' }}
-                value={attendeeName}
-                onChange={onChangeAttendeeName}
-                h="8"
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
-                Email address
-              </FormLabel>
-              <Input
-                variant="filled"
-                fontSize="0.75em"
-                placeholder="Type your email here"
-                color={'blue.900'}
-                _focus={{ backgroundColor: 'white' }}
-                _placeholder={{ color: 'blue.700' }}
-                // value={attendeeEmail}
-                // onChange={onChangeAttendeeEmail}
-                h="8"
-              />
-              <FormHelperText color="white">
-                We'll send your join link to this email address.
-              </FormHelperText>
-            </FormControl>
-            <HStack w="100%" spacing="3" paddingTop="3">
-              <Button w="100%" size="md" variant="secondary-ghost-outline">
-                Cancel
-              </Button>
-              <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
-                Save
-              </Button>
-            </HStack> */}
             <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
               Register
             </Button>
