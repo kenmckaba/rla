@@ -310,7 +310,7 @@ export const TrainingList = () => {
       >
         <Flex
           borderRadius="5px"
-          backgroundColor= {training.type === 'SERIES' ? '#86a5c2' : '#396AA1'}
+          backgroundColor= {training.type === 'SERIES' ? '#5e8bb5' : '#396AA1'}
           color=  'rgba(255,255,255, 0.9)'
           direction="column"
           justify="center"
