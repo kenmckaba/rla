@@ -343,6 +343,7 @@ export const TrainingList = () => {
           </Td>
           <Td paddingBottom="10">
             <HStack display="flex" justifyContent="space-between">
+              {training.type !== 'SERIES' &&
               <Flex w="25%" direction="column">
                 <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
@@ -355,6 +356,7 @@ export const TrainingList = () => {
                   </StatHelpText>
                 </StatLabel>
               </Flex>
+              }
               <Flex w="20%" direction="column">
                 <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
@@ -365,6 +367,7 @@ export const TrainingList = () => {
                   <StatHelpText fontSize="0.90em">{training.trainerName}</StatHelpText>
                 </StatLabel>
               </Flex>
+              {training.type !== 'SERIES' &&
               <Flex w="25%" direction="column">
                 <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
@@ -382,6 +385,8 @@ export const TrainingList = () => {
                   </HStack>
                 </Flex>
               </Flex>
+              }
+              {training.type !== 'SERIES' &&
               <Flex w="30%" direction="column">
                 <StatLabel>
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
@@ -394,6 +399,7 @@ export const TrainingList = () => {
                   </StatHelpText>
                 </StatLabel>
               </Flex>
+              }
             </HStack>
           </Td>
         </Flex>

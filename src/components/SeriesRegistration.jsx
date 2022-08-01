@@ -208,7 +208,7 @@ export const SeriesRegistration = ({
               </Button>
             </HStack> */}
             <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
-              Save
+              Register
             </Button>
           </VStack>
         </Flex>
