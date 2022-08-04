@@ -125,6 +125,12 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveSeries }) => {
     onModalOpen()
   }
 
+  const handleTrainingClick = async (training) => {
+    setCurrentTraining(training)
+    setNewTraining(false)
+    onModalOpen()
+  }
+
   return (
     <>
       <Flex marginLeft="2px" marginTop="3px" justifyContent="space-between" float="left">
@@ -158,7 +164,7 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveSeries }) => {
               return (
                 training?.type === 'TRAINING' && (
                   <Tr key={training.id} cursor="pointer">
-                    <Td fontSize="12" paddingLeft="16px">
+                    <Td fontSize="12" paddingLeft="16px" onClick={() => handleTrainingClick(training)}> 
                       {training.title}
                     </Td>
                     <Td fontSize="12" padding="0">
