@@ -17,8 +17,8 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react'
-import { getTraining, listStudentGroups } from '../graphql/queries'
-import { useMutation, gql, useQuery } from '@apollo/client'
+import { getTraining, listStudentGroups, listTrainings } from '../graphql/queries'
+import { useMutation, gql, useQuery, useLazyQuery } from '@apollo/client'
 import { deleteAttendee, updateTraining, createInvitedStudent } from '../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
 import { AttendeeForm } from './AttendeeForm'
@@ -79,6 +79,11 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     variables: { id: trainingId },
   })
   const { data: groupListData } = useQuery(gql(listStudentGroups))
+
+  // const [getSeriesTrainings, { data: trainingListData }] = useLazyQuery(gql(listTrainings), {
+  //   variables: { filter: { seriesId: { eq: trainingId } } },
+  // })
+
   const {
     isOpen: isDeleteAttendeeModalOpen,
     onOpen: onDeleteAttendeeModalOpen,
@@ -133,6 +138,46 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     }
     return result
   }, [])
+
+  // useEffect(() => {
+  //   if (trainingListData) {
+  //     const trainings = trainingListData.listTrainings.items
+  //     trainings.forEach((training) => {
+  //       updateCurrentTraining({
+  //         variables: {
+  //           input: {
+  //             id: training.id,
+  //             description,
+  //             seriesTitle: title,
+  //             trainerName,
+  //             trainerEmail,
+  //             title,
+  //             meetingId,
+  //             maxAttendees,
+  //             minInPersonAttendees,
+  //             moderatorPasscode,
+  //             participantPasscode,
+  //             whiteboardUrl,
+  //           },
+  //         },
+  //       })
+  //     })
+  //     // copy polls, sharedDocs
+  //   }
+  // }, [
+  //   description,
+  //   maxAttendees,
+  //   meetingId,
+  //   minInPersonAttendees,
+  //   moderatorPasscode,
+  //   participantPasscode,
+  //   title,
+  //   trainerEmail,
+  //   trainerName,
+  //   trainingListData,
+  //   updateCurrentTraining,
+  //   whiteboardUrl,
+  // ])
 
   useEffect(() => {
     if (trainingData) {
@@ -319,7 +364,15 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
 
   const handleSubmit = async () => {
     await updateCurrentTraining(mutationVars())
-    onEmailsModalOpen() // if training is part of a series, we do not want the email modal to open
+    // if (isSeries) {
+    //   getSeriesTrainings()
+    // } else {
+    if (training.seriesId) {
+      onClose()
+    } else {
+      onEmailsModalOpen()
+    }
+    // }
   }
 
   const handleSave = async () => {

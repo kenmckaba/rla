@@ -93,7 +93,7 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveSeries }) => {
     const theTraining = result.data.createTraining
     // setCurrentTraining(theTraining)
 
-    series.polls.items?.map(async (poll) => {
+    series.polls?.map(async (poll) => {
       await addNewPoll({
         variables: {
           input: {

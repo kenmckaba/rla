@@ -43,7 +43,7 @@ export const SeriesRegistration = ({
   const [invitedStudent, setInvitedStudent] = useState()
   const updatedStudent = useRef(false)
   const [trainingList, setTrainingList] = useState([])
-  const [chosenTraining, setChosenTraining] = useState()
+  const [chosenTrainingId, setChosenTrainingId] = useState()
 
   const {
     data: trainingData,
@@ -53,13 +53,19 @@ export const SeriesRegistration = ({
     variables: { id: trainingId },
   })
 
-  // const { data: invitedStudentData } = useQuery(gql(getInvitedStudent), {
-  //   variables: { id: invitedStudentId },
-  // })
+  const { data: invitedStudentData } = useQuery(gql(getInvitedStudent), {
+    variables: { id: invitedStudentId },
+  })
 
   const { data: seriesListData } = useQuery(gql(listTrainings), {
     variables: { filter: { seriesId: { eq: trainingId } } },
   })
+
+  useEffect(() => {
+    if (invitedStudentData) {
+      setInvitedStudent(invitedStudentData.getInvitedStudent)
+    }
+  }, [invitedStudentData])
 
   useEffect(() => {
     if (trainingData && (!training || trainingId === trainingData?.getTraining?.id)) {
@@ -91,7 +97,7 @@ export const SeriesRegistration = ({
   }
 
   const handleSubmit = async () => {
-    window.location.href = `${window.location.origin}/registration/${trainingId}`
+    window.location.href = `${window.location.origin}/registration/${chosenTrainingId}`
   }
 
   const alreadyRegistered = () => {
@@ -143,7 +149,7 @@ export const SeriesRegistration = ({
                     <Td>*None*</Td>
                   </Tr>
                 ) : (
-                  <RadioGroup onChange={setChosenTraining} value={chosenTraining}>
+                  <RadioGroup onChange={setChosenTrainingId} value={chosenTrainingId}>
                     {trainingList.map((training) => {
                       return (
                         training?.type === 'TRAINING' && (
