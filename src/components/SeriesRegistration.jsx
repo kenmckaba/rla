@@ -150,7 +150,7 @@ export const SeriesRegistration = ({
                   </Tr>
                 ) : (
                   <RadioGroup onChange={setChosenTrainingId} value={chosenTrainingId}>
-                    {trainingList.map((training) => {
+                    {trainingList.slice(0).reverse().map((training) => {
                       return (
                         training?.type === 'TRAINING' && (
                           <Tr key={training.id} cursor="pointer">
