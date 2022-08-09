@@ -42,6 +42,8 @@ export const Registration = ({
   const [isFull, setIsFull] = useState(false)
   const updatedStudent = useRef(false)
   const [inPersonCount, setInPersonCount] = useState(0)
+  const [onlineCount, setOnlineCount] = useState(0)
+
 
   const { isOpen: isModalOpen, onOpen: onModalOpen } = useDisclosure()
 
@@ -65,13 +67,17 @@ export const Registration = ({
       setIsFull(tr.attendees.items.length > tr.maxAttendees)
 
       let inPerson = 0
+      let online = 0
       trainingData.getTraining.attendees.items.forEach((attendee) => {
         if(attendee.classPreference === 'INPERSON'){
           inPerson++
+        } else if (attendee.classPreference === 'ONLINE'){
+          online++
         }
       })
 
       setInPersonCount(inPerson)
+      setOnlineCount(online)
     }
   }, [trainingData, training, trainingId])
 
@@ -127,10 +133,6 @@ export const Registration = ({
     })
     const id = result.data.createAttendee.id
 
-    // const counter= () => {
-    //   setInPersonCount(inPersonCount + 1)
-    // }
-
     if (invitedStudentId) {
       updatedStudent.current = true
 
@@ -152,9 +154,6 @@ export const Registration = ({
     if (classPreference === 'ONLINE') {
       sendJoinEmail(id, attendeeName, attendeeEmail, training)
     }
-    // if (classPreference === 'inperson') {
-    //   counter()
-    // }
     onModalOpen()
   }
 
@@ -259,8 +258,14 @@ export const Registration = ({
                       <Radio value="INPERSON">In-Person*</Radio>
                     </HStack>
                   </RadioGroup>
-                  <FormHelperText color="white">
+                  {/* <FormHelperText color="white">
                     *Required no. of students in-person is {training.minInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
+                  </FormHelperText> */}
+                  <FormHelperText color="white">
+                    *Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
+                  </FormHelperText>
+                  <FormHelperText color="white">
+                    *Max no. of students online is {training.maxOnlineAttendees}. Current no. of students registered online is {onlineCount}
                   </FormHelperText>
                 </FormControl>
                 

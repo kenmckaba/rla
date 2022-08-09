@@ -64,6 +64,8 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [whiteboardUrl, setWhiteboard] = useState('')
   const [maxAttendees, setMaxAttendees] = useState('25')
   const [minInPersonAttendees, setMinInPersonAttendees] = useState('2')
+  const [maxInPersonAttendees, setMaxInPersonAttendees] = useState('4')
+  const [maxOnlineAttendees, setMaxOnlineAttendees] = useState('4')
   const [currentAttendee, setCurrentAttendee] = useState()
   const [selectedEmailGroup, setSelectedEmailGroup] = useState()
   const [selectedStudents, setSelectedStudents] = useState([])
@@ -139,46 +141,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     return result
   }, [])
 
-  // useEffect(() => {
-  //   if (trainingListData) {
-  //     const trainings = trainingListData.listTrainings.items
-  //     trainings.forEach((training) => {
-  //       updateCurrentTraining({
-  //         variables: {
-  //           input: {
-  //             id: training.id,
-  //             description,
-  //             seriesTitle: title,
-  //             trainerName,
-  //             trainerEmail,
-  //             title,
-  //             meetingId,
-  //             maxAttendees,
-  //             minInPersonAttendees,
-  //             moderatorPasscode,
-  //             participantPasscode,
-  //             whiteboardUrl,
-  //           },
-  //         },
-  //       })
-  //     })
-  //     // copy polls, sharedDocs
-  //   }
-  // }, [
-  //   description,
-  //   maxAttendees,
-  //   meetingId,
-  //   minInPersonAttendees,
-  //   moderatorPasscode,
-  //   participantPasscode,
-  //   title,
-  //   trainerEmail,
-  //   trainerName,
-  //   trainingListData,
-  //   updateCurrentTraining,
-  //   whiteboardUrl,
-  // ])
-
   useEffect(() => {
     if (trainingData) {
       const tr = trainingData.getTraining
@@ -198,6 +160,8 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
       })
       setMaxAttendees(tr.maxAttendees || 25)
       setMinInPersonAttendees(tr.minInPersonAttendees || 2)
+      setMaxInPersonAttendees(tr.maxInPersonAttendees)
+      setMaxOnlineAttendees(tr.maxOnlineAttendees)
       setMeetingId((prev) => tr.meetingId || prev)
       setModeratorPasscode((prev) => tr.moderatorPasscode || prev)
       setParticipantPasscode((prev) => tr.participantPasscode || prev)
@@ -284,6 +248,14 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     setMinInPersonAttendees(event.target.value)
   }
 
+  const onChangeMaxInPersonAttendees = (event) => {
+    setMaxInPersonAttendees(event.target.value)
+  }
+
+  const onChangeMaxOnlineAttendees = (event) => {
+    setMaxOnlineAttendees(event.target.value)
+  }
+
   const mutationVars = () => {
     const time = fixDate()
     return {
@@ -300,6 +272,8 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           scheduledTime: time.toISOString(),
           maxAttendees,
           minInPersonAttendees,
+          maxInPersonAttendees,
+          maxOnlineAttendees,
           moderatorPasscode,
           participantPasscode,
           whiteboardUrl,
@@ -535,6 +509,26 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
               fontSize="12"
               value={minInPersonAttendees}
               onChange={onChangeMinInPersonAttendees}
+              h="24px"
+              placeholder="optional"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Max in-person attendees</FormLabel>
+            <Input
+              fontSize="12"
+              value={maxInPersonAttendees}
+              onChange={onChangeMaxInPersonAttendees}
+              h="24px"
+              placeholder="optional"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Max online attendees</FormLabel>
+            <Input
+              fontSize="12"
+              value={maxOnlineAttendees}
+              onChange={onChangeMaxOnlineAttendees}
               h="24px"
               placeholder="optional"
             />

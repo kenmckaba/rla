@@ -41,6 +41,8 @@ type Training
   registrationUrl: String
   maxAttendees: Int
   minInPersonAttendees: Int
+  maxInPersonAttendees: Int
+  maxOnlineAttendees: Int
   meetingId: String!
   moderatorPasscode: String!
   participantPasscode: String!
