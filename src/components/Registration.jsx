@@ -40,6 +40,8 @@ export const Registration = ({
   const [attendeeEmail, setAttendeeEmail] = useState('')
   const [classPreference, setClassPreference] = useState('')
   const [isFull, setIsFull] = useState(false)
+  const [isInPersonFull, setIsInPersonFull] = useState(false)
+  const [isOnlineFull, setIsOnlineFull] = useState(false)
   const updatedStudent = useRef(false)
   const [inPersonCount, setInPersonCount] = useState(0)
   const [onlineCount, setOnlineCount] = useState(0)
@@ -78,8 +80,14 @@ export const Registration = ({
 
       setInPersonCount(inPerson)
       setOnlineCount(online)
+
+      setIsInPersonFull(inPersonCount >= tr.maxInPersonAttendees)
+      setIsOnlineFull(onlineCount >= tr.maxOnlineAttendees)
     }
   }, [trainingData, training, trainingId])
+
+  // setIsInPersonFull(inPersonCount > training.maxInPersonAttendees)
+  // setIsOnlineFull(onlineCount > training.maxOnlineAttendees)
 
   useEffect(() => {
     if (invitedStudentData) {
@@ -254,19 +262,28 @@ export const Registration = ({
                   </FormLabel>
                   <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
                     <HStack direction="row">
-                      <Radio value="ONLINE">Online</Radio>
-                      <Radio value="INPERSON">In-Person*</Radio>
+                      {isOnlineFull ? <Radio value="ONLINE" isDisabled>Online</Radio> : <Radio value="ONLINE">Online</Radio>}
+                      {isInPersonFull ? <Radio value="INPERSON" isDisabled>In Person</Radio> : <Radio value="INPERSON">In-Person</Radio>}
                     </HStack>
                   </RadioGroup>
-                  {/* <FormHelperText color="white">
-                    *Required no. of students in-person is {training.minInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
-                  </FormHelperText> */}
-                  <FormHelperText color="white">
-                    *Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
-                  </FormHelperText>
-                  <FormHelperText color="white">
-                    *Max no. of students online is {training.maxOnlineAttendees}. Current no. of students registered online is {onlineCount}
-                  </FormHelperText>
+                  {isInPersonFull ? 
+                    <FormHelperText color="white">
+                      *In-person registration limit reached
+                    </FormHelperText>
+                    : 
+                    <FormHelperText color="white">
+                      *Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
+                    </FormHelperText>
+                  }
+                  {isOnlineFull ? 
+                    <FormHelperText color="white">
+                      *Online registration limit reached
+                    </FormHelperText>
+                    : 
+                    <FormHelperText color="white">
+                      *Max no. of students in-person is {training.maxOnlineAttendees}. Current no. of students registered online is {onlineCount}
+                    </FormHelperText>
+                  }
                 </FormControl>
                 
                 <HStack w="100%" spacing="3" paddingTop="3">

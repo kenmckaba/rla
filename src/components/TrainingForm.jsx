@@ -159,9 +159,9 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         return `${hrs}:${mins} ${date.substr(-2, 2)}`
       })
       setMaxAttendees(tr.maxAttendees || 25)
-      setMinInPersonAttendees(tr.minInPersonAttendees || 2)
-      setMaxInPersonAttendees(tr.maxInPersonAttendees)
-      setMaxOnlineAttendees(tr.maxOnlineAttendees)
+      // setMinInPersonAttendees(tr.minInPersonAttendees || 2)
+      setMaxInPersonAttendees(tr.maxInPersonAttendees || 4)
+      setMaxOnlineAttendees(tr.maxOnlineAttendees || 4)
       setMeetingId((prev) => tr.meetingId || prev)
       setModeratorPasscode((prev) => tr.moderatorPasscode || prev)
       setParticipantPasscode((prev) => tr.participantPasscode || prev)
@@ -244,9 +244,9 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     setMaxAttendees(event.target.value)
   }
 
-  const onChangeMinInPersonAttendees = (event) => {
-    setMinInPersonAttendees(event.target.value)
-  }
+  // const onChangeMinInPersonAttendees = (event) => {
+  //   setMinInPersonAttendees(event.target.value)
+  // }
 
   const onChangeMaxInPersonAttendees = (event) => {
     setMaxInPersonAttendees(event.target.value)
@@ -271,7 +271,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
           meetingId,
           scheduledTime: time.toISOString(),
           maxAttendees,
-          minInPersonAttendees,
+          // minInPersonAttendees,
           maxInPersonAttendees,
           maxOnlineAttendees,
           moderatorPasscode,
@@ -492,48 +492,41 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             </FormControl>
           </HStack>
         )}
-        <HStack>
-          <FormControl>
-            <FormLabel>Max attendees</FormLabel>
-            <Input
-              fontSize="12"
-              value={maxAttendees}
-              onChange={onChangeMaxAttendees}
-              h="24px"
-              placeholder="optional"
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Min in-person attendees</FormLabel>
-            <Input
-              fontSize="12"
-              value={minInPersonAttendees}
-              onChange={onChangeMinInPersonAttendees}
-              h="24px"
-              placeholder="optional"
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Max in-person attendees</FormLabel>
-            <Input
-              fontSize="12"
-              value={maxInPersonAttendees}
-              onChange={onChangeMaxInPersonAttendees}
-              h="24px"
-              placeholder="optional"
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Max online attendees</FormLabel>
-            <Input
-              fontSize="12"
-              value={maxOnlineAttendees}
-              onChange={onChangeMaxOnlineAttendees}
-              h="24px"
-              placeholder="optional"
-            />
-          </FormControl>
-        </HStack>
+        <FormControl>
+          <FormLabel>Max Attendees:</FormLabel>
+          <HStack>
+            <FormControl>
+              <FormLabel>Total</FormLabel>
+              <Input
+                fontSize="12"
+                value={maxAttendees}
+                onChange={onChangeMaxAttendees}
+                h="24px"
+                placeholder="optional"
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>In-person</FormLabel>
+              <Input
+                fontSize="12"
+                value={maxInPersonAttendees}
+                onChange={onChangeMaxInPersonAttendees}
+                h="24px"
+                placeholder="optional"
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Online</FormLabel>
+              <Input
+                fontSize="12"
+                value={maxOnlineAttendees}
+                onChange={onChangeMaxOnlineAttendees}
+                h="24px"
+                placeholder="optional"
+              />
+            </FormControl>
+          </HStack>
+        </FormControl>
 
         <FormControl>
           <FormLabel>Whiteboard URL</FormLabel>
