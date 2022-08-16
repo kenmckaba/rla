@@ -76,7 +76,7 @@ export const TrainingList = () => {
     setCurrentTraining(training)
     setShowParticipantsModal(true)
   }
-
+  const [isSeries, setIsSeries] = useState(false)
   const MAX_ATTENDEE_ICONS = 5
 
   useEffect(() => {
@@ -85,7 +85,9 @@ export const TrainingList = () => {
         (t) => t.type === 'TRAINING' || t.type === 'SERIES',
       )
       setTrainings(tr)
+      
     }
+    
   }, [trainingListData])
 
   useEffect(() => {
@@ -331,6 +333,7 @@ export const TrainingList = () => {
               <Spacer />
               {trainingHovered === training.id && (
                 <TrainingToolbar
+                  training={training}
                   editTraining={() => handleTrainingClick(training)}
                   startTraining={() => openRegPage(training.id)}
                   deleteTraining={() => confirmDelete(training)}

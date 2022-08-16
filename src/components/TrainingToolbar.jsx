@@ -15,6 +15,7 @@ import { EditButton } from './shared/Buttons'
 import { DeleteIcon, HamburgerIcon } from '@chakra-ui/icons'
 
 export const TrainingToolbar = ({
+  training,
   startTraining,
   editTraining,
   deleteTraining,
@@ -31,22 +32,24 @@ export const TrainingToolbar = ({
   return (
     <>
       <Box>
-        <Menu>
-          <MenuButton
-            as={IconButton}
-            aria-label="Options"
-            title="Options"
-            icon={<HamburgerIcon />}
-            variant="outline"
-            border="none"
-          />
-          <MenuList>
-            <MenuItem onClick={trainingReport}>Training report</MenuItem>
-            <MenuItem onClick={invitedReport}>Invited students</MenuItem>
-            <MenuItem onClick={duplicateTraining}>Duplicate training</MenuItem>
-            <MenuItem onClick={deleteTraining}>Delete training</MenuItem>
-          </MenuList>
-        </Menu>
+        {training.type !== 'SERIES' &&
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              title="Options"
+              icon={<HamburgerIcon />}
+              variant="outline"
+              border="none"
+            />
+            <MenuList>
+              <MenuItem onClick={trainingReport}>Training report</MenuItem>
+              <MenuItem onClick={invitedReport}>Invited students</MenuItem>
+              <MenuItem onClick={duplicateTraining}>Duplicate training</MenuItem>
+              <MenuItem onClick={deleteTraining}>Delete training</MenuItem>
+            </MenuList>
+          </Menu>
+        }
         <EditButton
           margin="5px"
           width="100px"
@@ -56,17 +59,19 @@ export const TrainingToolbar = ({
         >
           Edit
         </EditButton>
-        <Button
-          margin="5px"
-          width="100px"
-          borderRadius="full"
-          onClick={(e) => eatEvent(e, startTraining)}
-          variant="primary-trueblue"
-          size="xs"
-          leftIcon={<Icon as={IoPlay} />}
-        >
-          Start
-        </Button>
+        {training.type !== 'SERIES' &&
+          <Button
+            margin="5px"
+            width="100px"
+            borderRadius="full"
+            onClick={(e) => eatEvent(e, startTraining)}
+            variant="primary-trueblue"
+            size="xs"
+            leftIcon={<Icon as={IoPlay} />}
+          >
+            Start
+          </Button>
+        }
       </Box>
     </>
   )

@@ -266,22 +266,28 @@ export const Registration = ({
                       {isInPersonFull ? <Radio value="INPERSON" isDisabled>In Person</Radio> : <Radio value="INPERSON">In-Person</Radio>}
                     </HStack>
                   </RadioGroup>
-                  {isInPersonFull ? 
-                    <FormHelperText color="white">
-                      *In-person registration limit reached
-                    </FormHelperText>
-                    : 
-                    <FormHelperText color="white">
-                      *Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
-                    </FormHelperText>
-                  }
                   {isOnlineFull ? 
                     <FormHelperText color="white">
                       *Online registration limit reached
                     </FormHelperText>
                     : 
+                    // <FormHelperText color="white">
+                    //   *Max no. of students online is {training.maxOnlineAttendees}. Current no. of students registered online is {onlineCount}
+                    // </FormHelperText>
                     <FormHelperText color="white">
-                      *Max no. of students in-person is {training.maxOnlineAttendees}. Current no. of students registered online is {onlineCount}
+                      *Online | Registered: {onlineCount}  Max Limit: {training.maxOnlineAttendees}
+                    </FormHelperText>
+                  }
+                  {isInPersonFull ? 
+                    <FormHelperText color="white">
+                      *In-person registration limit reached
+                    </FormHelperText>
+                    : 
+                    // <FormHelperText color="white">
+                    //   *Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
+                    // </FormHelperText>
+                    <FormHelperText color="white">
+                      *In-person | Registered: {inPersonCount}  Max Limit: {training.maxInPersonAttendees}
                     </FormHelperText>
                   }
                 </FormControl>
