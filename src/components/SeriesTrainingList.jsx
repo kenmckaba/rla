@@ -108,7 +108,7 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveSeries }) => {
       })
     })
 
-    series.sharedDocs.items?.map(async (sharedDoc) => {
+    series.sharedDocs?.map(async (sharedDoc) => {
       await addNewSharedDoc({
         variables: {
           input: {
