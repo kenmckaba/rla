@@ -49,6 +49,17 @@ export const TrainingToolbar = ({
               <MenuItem onClick={deleteTraining}>Delete training</MenuItem>
             </MenuList>
           </Menu>
+        } 
+        {training.type === 'SERIES' &&
+          <Button
+            margin="5px"
+            width="100px"
+            borderRadius="full"
+            size="xs"
+            onClick={(e) => eatEvent(e, deleteTraining)}
+          >
+            Delete
+          </Button>
         }
         <EditButton
           margin="5px"
