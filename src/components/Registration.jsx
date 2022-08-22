@@ -267,7 +267,7 @@ export const Registration = ({
                     </HStack>
                   </RadioGroup>
                   {isOnlineFull ? 
-                    <FormHelperText color="white">
+                    <FormHelperText color="#FF4A4A">
                       *Online registration limit reached
                     </FormHelperText>
                     : 
@@ -279,7 +279,7 @@ export const Registration = ({
                     </FormHelperText>
                   }
                   {isInPersonFull ? 
-                    <FormHelperText color="white">
+                    <FormHelperText color="#FF4A4A">
                       *In-person registration limit reached
                     </FormHelperText>
                     : 
