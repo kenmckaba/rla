@@ -1,5 +1,5 @@
 export const sesParams = {
   region: 'us-east-1',
-  accessKeyId: 'AKIATZDAET4G5MQCWIH6',
-  secretAccessKey: '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',
+  accessKeyId: 'AKIATZDAET4G2KZSXI2N',
+  secretAccessKey: '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',
 }

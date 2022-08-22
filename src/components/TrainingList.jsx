@@ -80,11 +80,13 @@ export const TrainingList = () => {
   }
   const [isSeries, setIsSeries] = useState(false)
   const MAX_ATTENDEE_ICONS = 5
+  const showUpcomingTrainings = tabIndex === 1
+  const showPastTrainings = tabIndex === 0
 
   useEffect(() => {
     if (trainingListData) {
       const tr = trainingListData.listTrainings.items.filter(
-        (t) => t.type === 'TRAINING' || t.type === 'SERIES',
+        (t) => t.type === 'TRAINING'
       )
       setTrainings(tr)
       
@@ -127,9 +129,12 @@ export const TrainingList = () => {
       setSelectedTraining(
         trainings
           .filter((training) => {
-            return !!tabIndex === !!training.startedAt
+            // return !!tabIndex === !!training.startedAt
+            return (showUpcomingTrainings && training.startedAt || showPastTrainings && !training.startedAt)
           })
-          .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1)),
+          .sort((first, second) => {
+            return (first.scheduledTime < second.scheduledTime ? -1 : 1)
+          }),
       )
     }
   }, [trainings, tabIndex, startDate, endDate])
@@ -172,7 +177,7 @@ export const TrainingList = () => {
         input: {
           trainerName: '',
           title: '',
-          type: 'SERIES',
+          type: 'TEMPSERIES',
           meetingId: '',
           scheduledTime,
           moderatorPasscode: '',

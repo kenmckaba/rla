@@ -146,7 +146,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
       const tr = trainingData.getTraining
       setTraining(tr)
       setTitle(tr.type === 'TEMP' ? '' : tr.title)
-      setIsSeries(tr.type === 'SERIES')
+      setIsSeries(tr.type === 'SERIES' || tr.type === 'TEMPSERIES')
       setDescription((prev) => tr.description || prev)
       setTrainerName(tr.trainerName || '')
       setTrainerEmail(tr.trainerEmail)
@@ -649,7 +649,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 polls,
                 sharedDocs,
                 maxOnlineAttendees,
-                maxInPersonAttendees,
+                maxInPersonAttendees
               }}
               deleteTraining={handleDelete}
               saveSeries={() => updateCurrentTraining(mutationVars())}
