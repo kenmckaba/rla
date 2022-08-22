@@ -648,6 +648,8 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 whiteboardUrl,
                 polls,
                 sharedDocs,
+                maxOnlineAttendees,
+                maxInPersonAttendees,
               }}
               deleteTraining={handleDelete}
               saveSeries={() => updateCurrentTraining(mutationVars())}

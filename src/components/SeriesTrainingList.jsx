@@ -86,6 +86,8 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveSeries }) => {
           audioStateKey: 1,
           videoStateKey: 1,
           whiteboardUrl: series.whiteboardUrl,
+          maxInPersonAttendees: series.maxInPersonAttendees,
+          maxOnlineAttendees: series.maxOnlineAttendees,
         },
       },
     })
