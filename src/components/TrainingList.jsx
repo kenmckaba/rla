@@ -52,7 +52,9 @@ export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
   const [newTraining, setNewTraining] = useState(false)
   const [currentTraining, setCurrentTraining] = useState()
-  const { loading, error, data: trainingListData, subscribeToMore } = useQuery(gql(listTrainings))
+  const { loading, error, data: trainingListData, subscribeToMore } = useQuery(gql(listTrainings), {
+    variables: { limit: 300 },
+  })
   const {
     isOpen: isTrainingModalOpen,
     onOpen: onTrainingModalOpen,
