@@ -126,6 +126,11 @@ export const Registration = ({
     return !updatedStudent.current
   }
 
+  const missingFields = () => {
+    return !attendeeName || !attendeeEmail
+
+  }
+
   const handleSubmit = async () => {
     const result = await addNewAttendee({
       variables: {
@@ -225,7 +230,7 @@ export const Registration = ({
                   </>
                 ) : (
                   <Box width="100%">
-                    <FormControl>
+                    <FormControl isRequired>
                       <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
                     Your name
                       </FormLabel>
@@ -241,7 +246,7 @@ export const Registration = ({
                         h="8"
                       />
                     </FormControl>
-                    <FormControl>
+                    <FormControl isRequired>
                       <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
                     Email address
                       </FormLabel>
@@ -300,7 +305,7 @@ export const Registration = ({
                       <Button w="100%" size="md" variant="secondary-ghost-outline">
                     Cancel
                       </Button>
-                      <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
+                      <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit} isDisabled={missingFields()}>
                     Save
                       </Button>
                     </HStack>
