@@ -203,105 +203,109 @@ export const Registration = ({
             </HStack>
             {isFull ? (
               <Box fontSize="2em">Sorry, the training is full!</Box>
-            ) : alreadyRegistered() ? (
-              <>
-                <Box fontSize="32px">You have already registered for this training!</Box>
-                <Box padding="10px">
+            ) : 
+              (isOnlineFull && isInPersonFull) ? (
+                <Box fontSize="2em">Sorry, the registration limit has been reached!</Box>
+              ): 
+                alreadyRegistered() ? (
+                  <>
+                    <Box fontSize="32px">You have already registered for this training!</Box>
+                    <Box padding="10px">
                   Use{' '}
-                  <Link
-                    href={`${window.location.origin}/registration-update/${invitedStudent.attendeeId}`}
-                    isExternal
-                    cursor="pointer"
-                    color="blue"
-                  >
+                      <Link
+                        href={`${window.location.origin}/registration-update/${invitedStudent.attendeeId}`}
+                        isExternal
+                        cursor="pointer"
+                        color="blue"
+                      >
                     this link
-                  </Link>{' '}
+                      </Link>{' '}
                   to change or delete your registration.
-                </Box>
-              </>
-            ) : (
-              <Box width="100%">
-                <FormControl>
-                  <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                    </Box>
+                  </>
+                ) : (
+                  <Box width="100%">
+                    <FormControl>
+                      <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
                     Your name
-                  </FormLabel>
-                  <Input
-                    variant="filled"
-                    fontSize="0.75em"
-                    placeholder="Type your name here"
-                    color={'blue.900'}
-                    _focus={{ backgroundColor: 'white' }}
-                    _placeholder={{ color: 'blue.700' }}
-                    value={attendeeName}
-                    onChange={onChangeAttendeeName}
-                    h="8"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                      </FormLabel>
+                      <Input
+                        variant="filled"
+                        fontSize="0.75em"
+                        placeholder="Type your name here"
+                        color={'blue.900'}
+                        _focus={{ backgroundColor: 'white' }}
+                        _placeholder={{ color: 'blue.700' }}
+                        value={attendeeName}
+                        onChange={onChangeAttendeeName}
+                        h="8"
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
                     Email address
-                  </FormLabel>
-                  <Input
-                    variant="filled"
-                    fontSize="0.75em"
-                    placeholder="Type your email here"
-                    color={'blue.900'}
-                    _focus={{ backgroundColor: 'white' }}
-                    _placeholder={{ color: 'blue.700' }}
-                    value={attendeeEmail}
-                    onChange={onChangeAttendeeEmail}
-                    h="8"
-                  />
-                  <FormHelperText color="white">
+                      </FormLabel>
+                      <Input
+                        variant="filled"
+                        fontSize="0.75em"
+                        placeholder="Type your email here"
+                        color={'blue.900'}
+                        _focus={{ backgroundColor: 'white' }}
+                        _placeholder={{ color: 'blue.700' }}
+                        value={attendeeEmail}
+                        onChange={onChangeAttendeeEmail}
+                        h="8"
+                      />
+                      <FormHelperText color="white">
                     We'll send your join link to this email address.
-                  </FormHelperText>
-                </FormControl>
-                <FormControl>
-                  <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                      </FormHelperText>
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
                     Class Preference
-                  </FormLabel>
-                  <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
-                    <HStack direction="row">
-                      {isOnlineFull ? <Radio value="ONLINE" isDisabled>Online</Radio> : <Radio value="ONLINE">Online</Radio>}
-                      {isInPersonFull ? <Radio value="INPERSON" isDisabled>In Person</Radio> : <Radio value="INPERSON">In-Person</Radio>}
-                    </HStack>
-                  </RadioGroup>
-                  {isOnlineFull ? 
-                    <FormHelperText color="#FF4A4A">
+                      </FormLabel>
+                      <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
+                        <HStack direction="row">
+                          {isOnlineFull ? <Radio value="ONLINE" isDisabled>Online</Radio> : <Radio value="ONLINE">Online</Radio>}
+                          {isInPersonFull ? <Radio value="INPERSON" isDisabled>In Person</Radio> : <Radio value="INPERSON">In-Person</Radio>}
+                        </HStack>
+                      </RadioGroup>
+                      {isOnlineFull ? 
+                        <FormHelperText color="#FF4A4A">
                       *Online registration limit reached
-                    </FormHelperText>
-                    : 
-                    // <FormHelperText color="white">
-                    //   *Max no. of students online is {training.maxOnlineAttendees}. Current no. of students registered online is {onlineCount}
-                    // </FormHelperText>
-                    <FormHelperText color="white">
+                        </FormHelperText>
+                        : 
+                      // <FormHelperText color="white">
+                      //   *Max no. of students online is {training.maxOnlineAttendees}. Current no. of students registered online is {onlineCount}
+                      // </FormHelperText>
+                        <FormHelperText color="white">
                       *Online | Registered: {onlineCount}  Max Limit: {training.maxOnlineAttendees}
-                    </FormHelperText>
-                  }
-                  {isInPersonFull ? 
-                    <FormHelperText color="#FF4A4A">
+                        </FormHelperText>
+                      }
+                      {isInPersonFull ? 
+                        <FormHelperText color="#FF4A4A">
                       *In-person registration limit reached
-                    </FormHelperText>
-                    : 
-                    // <FormHelperText color="white">
-                    //   *Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
-                    // </FormHelperText>
-                    <FormHelperText color="white">
+                        </FormHelperText>
+                        : 
+                      // <FormHelperText color="white">
+                      //   *Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
+                      // </FormHelperText>
+                        <FormHelperText color="white">
                       *In-person | Registered: {inPersonCount}  Max Limit: {training.maxInPersonAttendees}
-                    </FormHelperText>
-                  }
-                </FormControl>
+                        </FormHelperText>
+                      }
+                    </FormControl>
                 
-                <HStack w="100%" spacing="3" paddingTop="3">
-                  <Button w="100%" size="md" variant="secondary-ghost-outline">
+                    <HStack w="100%" spacing="3" paddingTop="3">
+                      <Button w="100%" size="md" variant="secondary-ghost-outline">
                     Cancel
-                  </Button>
-                  <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
+                      </Button>
+                      <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
                     Save
-                  </Button>
-                </HStack>
-              </Box>
-            )}
+                      </Button>
+                    </HStack>
+                  </Box>
+                )}
           </VStack>
 
           <Modal isOpen={isModalOpen} scrollBehavior="inside">
