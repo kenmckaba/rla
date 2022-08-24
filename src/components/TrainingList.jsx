@@ -80,8 +80,8 @@ export const TrainingList = () => {
   }
   const [isSeries, setIsSeries] = useState(false)
   const MAX_ATTENDEE_ICONS = 5
-  const showUpcomingTrainings = tabIndex === 1
-  const showPastTrainings = tabIndex === 0
+  const showUpcomingTrainings = tabIndex === 0
+  const showPastTrainings = tabIndex === 1
 
   useEffect(() => {
     if (trainingListData) {
@@ -129,8 +129,9 @@ export const TrainingList = () => {
       setSelectedTraining(
         trainings
           .filter((training) => {
-            // return !!tabIndex === !!training.startedAt
-            return (showUpcomingTrainings && training.startedAt || showPastTrainings && !training.startedAt)
+            const now = new Date().toISOString()
+            const hasStarted = !!training.startedAt
+            return (training.scheduledTime >= now) ? showUpcomingTrainings : showPastTrainings
           })
           .sort((first, second) => {
             return (first.scheduledTime < second.scheduledTime ? -1 : 1)
