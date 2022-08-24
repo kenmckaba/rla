@@ -194,8 +194,7 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveSeries }) => {
         <ModalContent color="darkKnight.700">
           <ModalHeader>
             <Flex>
-              {/* <Box>{newTraining ? 'New Training' : 'Update Training'}</Box> */}
-              {/* <Box>{newTraining ? (currentTraining?.type === 'SERIES' ? 'New Series' : 'New Training') : (currentTraining?.type ==='SERIES' ? 'Update Series' : 'Update Training')}</Box> */}
+              <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
               <Spacer></Spacer>
               <Box>
                 <HStack spacing={2}>
