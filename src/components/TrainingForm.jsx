@@ -42,6 +42,32 @@ import { sendRegistrationEmails } from '../utils/sendRegistrationEmails'
 import { EmailSelection } from './EmailSelection'
 import { SeriesTrainingList } from './SeriesTrainingList'
 
+const listStudentGroupsX = /* GraphQL */ `
+  query ListStudentGroups($filter: ModelStudentGroupFilterInput, $limit: Int, $nextToken: String) {
+    listStudentGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        students(limit: 300) {
+          items {
+            id
+            groupId
+            firstName
+            lastName
+            email
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`
+
 export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [training, setTraining] = useState()
   const [emailGroupList, setEmailGroupList] = useState()
@@ -80,7 +106,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   } = useQuery(gql(getTraining), {
     variables: { id: trainingId },
   })
-  const { data: groupListData } = useQuery(gql(listStudentGroups))
+  const { data: groupListData } = useQuery(gql(listStudentGroupsX))
 
   // const [getSeriesTrainings, { data: trainingListData }] = useLazyQuery(gql(listTrainings), {
   //   variables: { filter: { seriesId: { eq: trainingId } } },
@@ -649,7 +675,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 polls,
                 sharedDocs,
                 maxOnlineAttendees,
-                maxInPersonAttendees
+                maxInPersonAttendees,
               }}
               deleteTraining={handleDelete}
               saveSeries={() => updateCurrentTraining(mutationVars())}
