@@ -333,7 +333,7 @@ export const TrainingList = () => {
             <Flex justify="flex-start" minH="34px">
               <Stat marginTop="2">
                 <StatLabel whiteSpace="nowrap" fontSize="2em" textTransform="capitalize">
-                  {training.seriesTitle && `${training.seriesTitle} - `}
+                  {/* {training.seriesTitle && `${training.seriesTitle} - `} */}
                   {training.title}
                 </StatLabel>
               </Stat>

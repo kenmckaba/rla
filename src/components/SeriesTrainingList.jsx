@@ -72,9 +72,8 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveSeries }) => {
     const result = await addTraining({
       variables: {
         input: {
+          title: series.title,
           trainerName: series.trainerName,
-          title: '',
-          seriesTitle: series.title,
           description: series.description,
           trainerEmail: series.trainerEmail,
           type: 'TEMP',

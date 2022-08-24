@@ -145,7 +145,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     if (trainingData) {
       const tr = trainingData.getTraining
       setTraining(tr)
-      setTitle(tr.type === 'TEMP' ? '' : tr.title)
+      setTitle(tr.title)
       setIsSeries(tr.type === 'SERIES' || tr.type === 'TEMPSERIES')
       setDescription((prev) => tr.description || prev)
       setTrainerName(tr.trainerName || '')
@@ -449,7 +449,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             <Text fontSize="xs">
               Note: The following information will be copied over to all trainings in the series
             </Text>
-            <FormLabel mt="0">Series Title</FormLabel>
+            <FormLabel mt="0">Title</FormLabel>
             <Input fontSize="12" value={title} h="24px" onChange={onChangeTitle} />
           </FormControl>
         )}
