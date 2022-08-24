@@ -594,7 +594,7 @@ export const TrainingList = () => {
                 <ModalHeader>
                   <Flex>
                     <Box>
-                      {newTraining ? (currentTraining?.type === 'SERIES' ? 'New Series' : 'New Training') : (currentTraining?.type ==='SERIES' ? 'Update Series' : 'Update Training')}
+                      {newTraining ? ((currentTraining?.type === 'SERIES' || currentTraining?.type === 'TEMPSERIES') ? 'New Series' : 'New Training') : (currentTraining?.type ==='SERIES' ? 'Update Series' : 'Update Training')}
                     </Box>
                     <Spacer></Spacer>
                     <Box>
