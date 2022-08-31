@@ -6,7 +6,7 @@ import { listStudents } from '../graphql/queries'
 export const EmailSelection = ({ groupId, onSelectedStudents }) => {
   const [itemsChecked, setItemsChecked] = useState([])
   const { data: studentsData } = useQuery(gql(listStudents), {
-    variables: { id: groupId },
+    variables: { id: groupId, limit: 1000 },
   })
 
   const students = useMemo(() => {
