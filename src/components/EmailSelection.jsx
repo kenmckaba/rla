@@ -1,14 +1,19 @@
+import { gql, useQuery } from '@apollo/client'
 import { Box, HStack, Button, Table, Thead, Tr, Td, Th, Tbody, Checkbox } from '@chakra-ui/react'
 import { useEffect, useMemo, useState } from 'react'
+import { listStudents } from '../graphql/queries'
 
-export const EmailSelection = ({ students: studentsIn, onSelectedStudents }) => {
+export const EmailSelection = ({ groupId, onSelectedStudents }) => {
   const [itemsChecked, setItemsChecked] = useState([])
+  const { data: studentsData } = useQuery(gql(listStudents), {
+    variables: { id: groupId },
+  })
 
   const students = useMemo(() => {
-    const sorted = [...studentsIn]
+    const sorted = [...studentsData]
     sorted.sort((first, second) => (first.firstName > second.firstName ? 1 : -1))
     return sorted
-  }, [studentsIn])
+  }, [studentsData])
 
   const onCheckbox = (e, index) => {
     console.log(itemsChecked)

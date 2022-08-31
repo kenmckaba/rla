@@ -17,7 +17,7 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react'
-import { getTraining, listStudentGroups, listTrainings } from '../graphql/queries'
+import { getTraining, listStudentGroups, listStudents, listTrainings } from '../graphql/queries'
 import { useMutation, gql, useQuery, useLazyQuery } from '@apollo/client'
 import { deleteAttendee, updateTraining, createInvitedStudent } from '../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
@@ -72,6 +72,8 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [deleteCurrentAttendee] = useMutation(gql(deleteAttendee))
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
   const [attendeeToDelete, setAttendeeToDelete] = useState()
+  const [groupLengths, setGroupLengths] = useState({})
+
   const {
     data: trainingData,
     error,
@@ -82,9 +84,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   })
   const { data: groupListData } = useQuery(gql(listStudentGroups))
 
-  // const [getSeriesTrainings, { data: trainingListData }] = useLazyQuery(gql(listTrainings), {
-  //   variables: { filter: { seriesId: { eq: trainingId } } },
-  // })
+  const [getGroupStudents, { data: studentData }] = useLazyQuery(gql(listStudents))
 
   const {
     isOpen: isDeleteAttendeeModalOpen,
@@ -174,9 +174,25 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
 
   useEffect(() => {
     if (groupListData) {
-      setEmailGroupList(groupListData.listStudentGroups.items)
+      const groups = groupListData.listStudentGroups.items
+      setEmailGroupList(groups)
+      groups.forEach((group) => {
+        getGroupStudents(group.id)
+      })
     }
-  }, [groupListData])
+  }, [getGroupStudents, groupListData])
+
+  useEffect(() => {
+    if (studentData) {
+      const students = studentData.listStudents.items
+      const groupId = studentData[0]?.id
+      if (studentData[0] !== undefined) {
+        setGroupLengths((prev) => {
+          return { ...prev, [groupId]: students.length }
+        })
+      }
+    }
+  }, [studentData])
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -649,7 +665,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 polls,
                 sharedDocs,
                 maxOnlineAttendees,
-                maxInPersonAttendees
+                maxInPersonAttendees,
               }}
               deleteTraining={handleDelete}
               saveSeries={() => updateCurrentTraining(mutationVars())}
@@ -733,7 +749,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 <option key={group.id} value={group.id}>
                   {group.name}
                   {' ('}
-                  {group.students.items.length}
+                  {groupLengths[group.id] || '0'}
                   {' students)'}
                 </option>
               )
