@@ -11,6 +11,7 @@ import { RegistrationUpdate } from './components/RegistrationUpdate'
 import { Authenticate } from './components/Authenticate'
 import { WithAuthentication } from './utils/withAuthentication'
 import { SeriesRegistration } from './components/SeriesRegistration'
+import { Fix } from './components/Fix'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Fonts />
         <BrowserRouter>
           <Switch>
+            <Route path="/fix" component={Fix} />
             <Route path="/auth" component={Authenticate} />
             <Route path="/attendee/:attendeeId" component={AttendeeLanding} />
             <Route

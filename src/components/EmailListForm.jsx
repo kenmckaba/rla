@@ -79,7 +79,7 @@ export const EmailListForm = ({ onClose }) => {
           }
         }),
       )
-      updateGroup({
+      await updateGroup({
         variables: {
           input: {
             id: groupId,
