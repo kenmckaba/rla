@@ -54,7 +54,7 @@ export const EmailListForm = ({ onClose }) => {
 
     const fileReader = new FileReader()
     fileReader.onload = async (e) => {
-      let studentCount = 0
+      let numStudents = 0
       const lines = e.target.result.split(/\r?\n/)
       await Promise.all(
         lines.map(async (line) => {
@@ -72,7 +72,7 @@ export const EmailListForm = ({ onClose }) => {
                 },
               },
             })
-            studentCount += 1
+            numStudents += 1
             return addStudentResult
           } else {
             return Promise.resolve()
@@ -83,7 +83,7 @@ export const EmailListForm = ({ onClose }) => {
         variables: {
           input: {
             id: groupId,
-            studentCount,
+            numStudents,
           },
         },
       })

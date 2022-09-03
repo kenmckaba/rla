@@ -169,7 +169,7 @@ type ChatMessage
 type StudentGroup @model @auth(rules: [{ allow: private, provider: iam }]) {
   id: ID!
   name: String!
-  numStudents: int
+  numStudents: Int
   students: [Students] @connection(keyName: "byGroup", fields: ["id"])
 }
 
