@@ -17,8 +17,8 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react'
-import { getTraining, listStudentGroups, listStudents, listTrainings } from '../graphql/queries'
-import { useMutation, gql, useQuery, useLazyQuery } from '@apollo/client'
+import { getTraining, listStudentGroups } from '../graphql/queries'
+import { useMutation, gql, useQuery } from '@apollo/client'
 import { deleteAttendee, updateTraining, createInvitedStudent } from '../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
 import { AttendeeForm } from './AttendeeForm'
@@ -63,7 +63,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [sharedDocs, setSharedDocs] = useState([])
   const [whiteboardUrl, setWhiteboard] = useState('')
   const [maxAttendees, setMaxAttendees] = useState('25')
-  const [minInPersonAttendees, setMinInPersonAttendees] = useState('2')
   const [maxInPersonAttendees, setMaxInPersonAttendees] = useState('4')
   const [maxOnlineAttendees, setMaxOnlineAttendees] = useState('4')
   const [currentAttendee, setCurrentAttendee] = useState()
@@ -72,7 +71,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [deleteCurrentAttendee] = useMutation(gql(deleteAttendee))
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
   const [attendeeToDelete, setAttendeeToDelete] = useState()
-  const [groupLengths, setGroupLengths] = useState({})
 
   const {
     data: trainingData,
@@ -83,8 +81,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     variables: { id: trainingId },
   })
   const { data: groupListData } = useQuery(gql(listStudentGroups))
-
-  const [getGroupStudents, { data: studentData }] = useLazyQuery(gql(listStudents))
 
   const {
     isOpen: isDeleteAttendeeModalOpen,
@@ -174,25 +170,9 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
 
   useEffect(() => {
     if (groupListData) {
-      const groups = groupListData.listStudentGroups.items
-      setEmailGroupList(groups)
-      groups.forEach((group) => {
-        getGroupStudents(group.id)
-      })
+      setEmailGroupList(groupListData.listStudentGroups.items)
     }
-  }, [getGroupStudents, groupListData])
-
-  useEffect(() => {
-    if (studentData) {
-      const students = studentData.listStudents.items
-      const groupId = studentData[0]?.id
-      if (studentData[0] !== undefined) {
-        setGroupLengths((prev) => {
-          return { ...prev, [groupId]: students.length }
-        })
-      }
-    }
-  }, [studentData])
+  }, [groupListData])
 
   useEffect(() => {
     if (subscribeToMore) {
@@ -747,10 +727,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             {emailGroupList.map((group) => {
               return (
                 <option key={group.id} value={group.id}>
-                  {group.name}
-                  {' ('}
-                  {groupLengths[group.id] || '0'}
-                  {' students)'}
+                  {`${group.name} (${group.numStudents || '0'} students)`}
                 </option>
               )
             })}

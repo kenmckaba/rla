@@ -5,7 +5,7 @@ import { Button } from '@chakra-ui/button'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { listStudentGroups } from '../graphql/queries'
 import { FormControl } from '@chakra-ui/form-control'
-import { createStudentGroup, createStudents } from '../graphql/mutations'
+import { createStudentGroup, createStudents, updateStudentGroup } from '../graphql/mutations'
 import OurModal from './OurModal'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { buildSubscription } from 'aws-appsync'
@@ -18,6 +18,7 @@ export const EmailListForm = ({ onClose }) => {
   const [fileInputKey, setFileInputKey] = useState(Date.now())
   const [addNewStudent] = useMutation(gql(createStudents))
   const [addNewGroup] = useMutation(gql(createStudentGroup))
+  const [updateGroup] = useMutation(gql(updateStudentGroup))
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const { data: groupListData, subscribeToMore } = useQuery(gql(listStudentGroups))
 
@@ -53,24 +54,38 @@ export const EmailListForm = ({ onClose }) => {
 
     const fileReader = new FileReader()
     fileReader.onload = async (e) => {
+      let studentCount = 0
       const lines = e.target.result.split(/\r?\n/)
-      lines.forEach(async (line) => {
-        const vals = line.split(',')
-        const [fname, lname, email] = vals
-        console.log('vals', fname, lname, email)
-        if (fname && lname && email) {
-          const addStudentResult = await addNewStudent({
-            variables: {
-              input: {
-                firstName: fname.trim(),
-                lastName: lname.trim(),
-                email: email.trim(),
-                groupId,
+      await Promise.all(
+        lines.map(async (line) => {
+          const vals = line.split(',')
+          const [fname, lname, email] = vals
+          console.log('vals', fname, lname, email)
+          if (fname && lname && email) {
+            const addStudentResult = await addNewStudent({
+              variables: {
+                input: {
+                  firstName: fname.trim(),
+                  lastName: lname.trim(),
+                  email: email.trim(),
+                  groupId,
+                },
               },
-            },
-          })
-          console.log(addStudentResult)
-        }
+            })
+            studentCount += 1
+            return addStudentResult
+          } else {
+            return Promise.resolve()
+          }
+        }),
+      )
+      updateGroup({
+        variables: {
+          input: {
+            id: groupId,
+            studentCount,
+          },
+        },
       })
       setGroupName('')
       setFileInputKey(Date.now())
@@ -92,10 +107,7 @@ export const EmailListForm = ({ onClose }) => {
       {groups?.length
         ? groups.map((group) => (
           <Box key={group.id} marginLeft="10px">
-            {group.name}
-            {' ('}
-            {group.students.items.length}
-            {' students)'}
+            {`${group.name} (${group.numStudents || '0'} students)`}
           </Box>
         ))
         : '*No email lists*'}

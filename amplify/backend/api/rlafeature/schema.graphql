@@ -130,7 +130,7 @@ type Poll
   question: String!
   type: PollType!
   answers: [String]
-  correctAnswerIndex: Int 
+  correctAnswerIndex: Int
   trainingId: ID!
   startedAt: AWSDateTime
   stoppedAt: AWSDateTime
@@ -169,6 +169,7 @@ type ChatMessage
 type StudentGroup @model @auth(rules: [{ allow: private, provider: iam }]) {
   id: ID!
   name: String!
+  numStudents: int
   students: [Students] @connection(keyName: "byGroup", fields: ["id"])
 }
 
