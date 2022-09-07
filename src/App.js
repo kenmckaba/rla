@@ -21,8 +21,8 @@ function App() {
         <Fonts />
         <BrowserRouter>
           <Switch>
-            <Route path="/fix" component={Fix} />
             <Route path="/auth" component={Authenticate} />
+            <Route path="/fix" component={WithAuthentication(Fix)} />
             <Route path="/attendee/:attendeeId" component={AttendeeLanding} />
             <Route
               path="/trainerInSession/:trainingId"
