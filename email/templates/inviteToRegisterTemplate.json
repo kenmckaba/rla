@@ -6,3 +6,5 @@
     "TextPart": "Hello {{fname}}, You've been invited to register for the following remote training session {{trainingTitle}} {{trainingDescription}}, Bbeing held on {{trainingDateAndTime}}. If you have questions, please contact {{trainerName}} at {{trainerEmail}}. Click here to register: {{trainingRegistrationUrl}}"
   }
 }
+
+
