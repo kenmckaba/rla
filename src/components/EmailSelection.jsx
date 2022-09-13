@@ -10,9 +10,12 @@ export const EmailSelection = ({ groupId, onSelectedStudents }) => {
   })
 
   const students = useMemo(() => {
-    const sorted = [...studentsData]
-    sorted.sort((first, second) => (first.firstName > second.firstName ? 1 : -1))
-    return sorted
+    if (studentsData) {
+      const sorted = [...studentsData.listStudents.items]
+      sorted.sort((first, second) => (first.firstName > second.firstName ? 1 : -1))
+      return sorted
+    }
+   
   }, [studentsData])
 
   const onCheckbox = (e, index) => {
@@ -38,10 +41,12 @@ export const EmailSelection = ({ groupId, onSelectedStudents }) => {
 
   const selectAll = () => {
     const newItems = []
-    for (let index = 0; index < students.length; index++) {
-      newItems.push(index)
+    if (students) {
+      for (let index = 0; index < students.length; index++) {
+        newItems.push(index)
+      }
+      setItemsChecked(newItems)
     }
-    setItemsChecked(newItems)
   }
 
   const selectNone = () => {
@@ -68,7 +73,7 @@ export const EmailSelection = ({ groupId, onSelectedStudents }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {students.map((attendee, index) => {
+          {students && students.map((attendee, index) => {
             return (
               <Tr key={index}>
                 <Td onClick={(e) => onCheckbox(e, index)}>
