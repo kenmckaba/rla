@@ -1,5 +1,5 @@
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
-import { Center, Button, VStack, Text } from '@chakra-ui/react'
+import { Center, Button, VStack, Text, Box } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import { updateStudentGroup } from '../graphql/mutations'
 
@@ -11,6 +11,7 @@ const listStudentGroups = /* GraphQL */ `
     listStudentGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        name
       }
       nextToken
     }
@@ -27,28 +28,31 @@ const listStudents = /* GraphQL */ `
     }
   }
 `
+
 export const Fix = () => {
   const [queryGroups, { data: groupListData }] = useLazyQuery(gql(listStudentGroups))
   const [getGroupStudents, { data: studentData }] = useLazyQuery(gql(listStudents))
   const [updateGroup] = useMutation(gql(updateStudentGroup))
   const [count, setCount] = useState(0)
+  const [groups, setGroups] = useState([])
   const [inProgress, setInProgress] = useState(false)
   const [isDone, setIsDone] = useState(false)
   const groupPromise = useRef()
-  const groupIdInProgress = useRef()
+  const groupInProgress = useRef()
 
   useEffect(() => {
     const processGroup = async (students) => {
       const numStudents = students?.length || 0
-      const groupId = groupIdInProgress.current
+      const group = groupInProgress.current
       await updateGroup({
         variables: {
           input: {
-            id: groupId,
+            id: group.id,
             numStudents,
           },
         },
       })
+      setGroups((prev) => [...prev, { name: group.name, numStudents }])
       setCount((prev) => prev + 1)
       groupPromise.current()
     }
@@ -62,12 +66,13 @@ export const Fix = () => {
   useEffect(() => {
     const fixGroups = async (groups) => {
       for await (const group of groups) {
-        groupIdInProgress.current = group.id
+        groupInProgress.current = group
         const promise = new Promise((resolve) => {
           groupPromise.current = resolve
         })
         getGroupStudents({
           variables: {
+            // groupId: group.id,
             limit: 1000,
             filter: { groupId: { eq: group.id } },
           },
@@ -97,6 +102,13 @@ export const Fix = () => {
           Go
         </Button>
         {inProgress && <Text>Procesing group {count}</Text>}
+        {groups.map((group) => {
+          return (
+            <Box>
+              {group.name} ({group.numStudents})
+            </Box>
+          )
+        })}
         {isDone && <Text>Done</Text>}
       </VStack>
     </Center>

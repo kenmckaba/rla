@@ -15,7 +15,6 @@ export const EmailSelection = ({ groupId, onSelectedStudents }) => {
       sorted.sort((first, second) => (first.firstName > second.firstName ? 1 : -1))
       return sorted
     }
-   
   }, [studentsData])
 
   const onCheckbox = (e, index) => {
@@ -73,22 +72,23 @@ export const EmailSelection = ({ groupId, onSelectedStudents }) => {
           </Tr>
         </Thead>
         <Tbody>
-          {students && students.map((attendee, index) => {
-            return (
-              <Tr key={index}>
-                <Td onClick={(e) => onCheckbox(e, index)}>
-                  <Checkbox
-                    onClick={(e) => onCheckbox(e, index)}
-                    isChecked={itemsChecked.includes(index)}
-                  />
-                </Td>
-                <Td>
-                  {attendee.firstName} {attendee.lastName}
-                </Td>
-                <Td>{attendee.email}</Td>
-              </Tr>
-            )
-          })}
+          {students &&
+            students.map((attendee, index) => {
+              return (
+                <Tr key={index}>
+                  <Td onClick={(e) => onCheckbox(e, index)}>
+                    <Checkbox
+                      onClick={(e) => onCheckbox(e, index)}
+                      isChecked={itemsChecked.includes(index)}
+                    />
+                  </Td>
+                  <Td>
+                    {attendee.firstName} {attendee.lastName}
+                  </Td>
+                  <Td>{attendee.email}</Td>
+                </Tr>
+              )
+            })}
         </Tbody>
       </Table>
     </>
