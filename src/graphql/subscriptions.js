@@ -2419,6 +2419,7 @@ export const onCreateStudentGroup = /* GraphQL */ `
     onCreateStudentGroup {
       id
       name
+      numStudents
       students {
         items {
           id
@@ -2426,6 +2427,7 @@ export const onCreateStudentGroup = /* GraphQL */ `
           group {
             id
             name
+            numStudents
             createdAt
             updatedAt
           }
@@ -2447,6 +2449,7 @@ export const onUpdateStudentGroup = /* GraphQL */ `
     onUpdateStudentGroup {
       id
       name
+      numStudents
       students {
         items {
           id
@@ -2454,6 +2457,7 @@ export const onUpdateStudentGroup = /* GraphQL */ `
           group {
             id
             name
+            numStudents
             createdAt
             updatedAt
           }
@@ -2475,6 +2479,7 @@ export const onDeleteStudentGroup = /* GraphQL */ `
     onDeleteStudentGroup {
       id
       name
+      numStudents
       students {
         items {
           id
@@ -2482,6 +2487,7 @@ export const onDeleteStudentGroup = /* GraphQL */ `
           group {
             id
             name
+            numStudents
             createdAt
             updatedAt
           }
@@ -2506,6 +2512,7 @@ export const onCreateStudents = /* GraphQL */ `
       group {
         id
         name
+        numStudents
         students {
           items {
             id
@@ -2537,6 +2544,7 @@ export const onUpdateStudents = /* GraphQL */ `
       group {
         id
         name
+        numStudents
         students {
           items {
             id
@@ -2568,6 +2576,7 @@ export const onDeleteStudents = /* GraphQL */ `
       group {
         id
         name
+        numStudents
         students {
           items {
             id

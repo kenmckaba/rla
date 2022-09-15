@@ -17,8 +17,8 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react'
-import { getTraining, listStudentGroups, listTrainings } from '../graphql/queries'
-import { useMutation, gql, useQuery, useLazyQuery } from '@apollo/client'
+import { getTraining, listStudentGroups } from '../graphql/queries'
+import { useMutation, gql, useQuery } from '@apollo/client'
 import { deleteAttendee, updateTraining, createInvitedStudent } from '../graphql/mutations'
 import { AttendeeList } from './AttendeeList'
 import { AttendeeForm } from './AttendeeForm'
@@ -63,7 +63,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [sharedDocs, setSharedDocs] = useState([])
   const [whiteboardUrl, setWhiteboard] = useState('')
   const [maxAttendees, setMaxAttendees] = useState('25')
-  const [minInPersonAttendees, setMinInPersonAttendees] = useState('2')
   const [maxInPersonAttendees, setMaxInPersonAttendees] = useState('4')
   const [maxOnlineAttendees, setMaxOnlineAttendees] = useState('4')
   const [currentAttendee, setCurrentAttendee] = useState()
@@ -72,6 +71,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   const [deleteCurrentAttendee] = useMutation(gql(deleteAttendee))
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
   const [attendeeToDelete, setAttendeeToDelete] = useState()
+
   const {
     data: trainingData,
     error,
@@ -81,10 +81,6 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
     variables: { id: trainingId },
   })
   const { data: groupListData } = useQuery(gql(listStudentGroups))
-
-  // const [getSeriesTrainings, { data: trainingListData }] = useLazyQuery(gql(listTrainings), {
-  //   variables: { filter: { seriesId: { eq: trainingId } } },
-  // })
 
   const {
     isOpen: isDeleteAttendeeModalOpen,
@@ -649,7 +645,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
                 polls,
                 sharedDocs,
                 maxOnlineAttendees,
-                maxInPersonAttendees
+                maxInPersonAttendees,
               }}
               deleteTraining={handleDelete}
               saveSeries={() => updateCurrentTraining(mutationVars())}
@@ -731,10 +727,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
             {emailGroupList.map((group) => {
               return (
                 <option key={group.id} value={group.id}>
-                  {group.name}
-                  {' ('}
-                  {group.students.items.length}
-                  {' students)'}
+                  {`${group.name} (${group.numStudents || '0'} students)`}
                 </option>
               )
             })}
@@ -744,7 +737,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         )}
         {selectedEmailGroup && (
           <EmailSelection
-            students={selectedEmailGroup.students.items}
+            groupId={selectedEmailGroup.id}
             onSelectedStudents={setSelectedStudents}
           />
         )}

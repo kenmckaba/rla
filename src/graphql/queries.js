@@ -1186,6 +1186,7 @@ export const getStudentGroup = /* GraphQL */ `
     getStudentGroup(id: $id) {
       id
       name
+      numStudents
       students {
         items {
           id
@@ -1193,6 +1194,7 @@ export const getStudentGroup = /* GraphQL */ `
           group {
             id
             name
+            numStudents
             createdAt
             updatedAt
           }
@@ -1219,6 +1221,7 @@ export const listStudentGroups = /* GraphQL */ `
       items {
         id
         name
+        numStudents
         students {
           items {
             id
@@ -1246,6 +1249,7 @@ export const getStudents = /* GraphQL */ `
       group {
         id
         name
+        numStudents
         students {
           items {
             id
@@ -1282,6 +1286,7 @@ export const listStudents = /* GraphQL */ `
         group {
           id
           name
+          numStudents
           students {
             nextToken
           }
