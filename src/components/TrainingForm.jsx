@@ -737,7 +737,7 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
         )}
         {selectedEmailGroup && (
           <EmailSelection
-            students={selectedEmailGroup.students.items}
+            groupId={selectedEmailGroup.id}
             onSelectedStudents={setSelectedStudents}
           />
         )}
