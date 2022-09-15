@@ -53,6 +53,7 @@ export const sendRegistrationEmails = async (training, allAttendees) => {
       Destinations: templates,
       Source: 'ccer@umb.edu',
       Template: training.type === 'SERIES' ? 'SeriesInviteToRegister' : 'RLAInviteToRegister',
+
       DefaultTemplateData,
     }
     try {

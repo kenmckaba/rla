@@ -126,16 +126,25 @@ export const TrainingList = () => {
           }),
       )
     } else {
+    //   setSelectedTraining(
+    //     trainings
+    //       .filter((training) => {
+    //         const now = new Date().toISOString()
+    //         const hasStarted = !!training.startedAt
+    //         return (training.scheduledTime >= now) ? showUpcomingTrainings : showPastTrainings
+    //       })
+    //       .sort((first, second) => {
+    //         return (first.scheduledTime < second.scheduledTime ? -1 : 1)
+    //       }),
+    //   )
+    // }
+
       setSelectedTraining(
         trainings
           .filter((training) => {
-            const now = new Date().toISOString()
-            const hasStarted = !!training.startedAt
-            return (training.scheduledTime >= now) ? showUpcomingTrainings : showPastTrainings
+            return !!tabIndex === !!training.startedAt
           })
-          .sort((first, second) => {
-            return (first.scheduledTime < second.scheduledTime ? -1 : 1)
-          }),
+          .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1)),
       )
     }
   }, [trainings, tabIndex, startDate, endDate])
