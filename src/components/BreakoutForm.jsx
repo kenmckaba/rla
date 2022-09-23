@@ -28,7 +28,7 @@ export const BreakoutForm = ({ onClose, training }) => {
     loading,
     subscribeToMore,
   } = useQuery(gql(listBreakoutRooms), {
-    variables: { filter: { trainingId: { eq: training.id } } },
+    variables: { limit: 1000, filter: { trainingId: { eq: training.id } } },
   })
   const [updateCurrentTraining] = useMutation(gql(updateTraining))
 

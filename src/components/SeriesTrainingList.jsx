@@ -43,7 +43,7 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveSeries }) => {
   const [addNewSharedDoc] = useMutation(gql(createSharedDoc))
   const [updateCurrentTraining, { error: updateError }] = useMutation(gql(updateTraining))
   const { data: seriesListData, subscribeToMore } = useQuery(gql(listTrainings), {
-    variables: { filter: { seriesId: { eq: series.id } } },
+    variables: { limit: 1000, filter: { seriesId: { eq: series.id } } },
   })
 
   useEffect(() => {
@@ -165,7 +165,11 @@ export const SeriesTrainingList = ({ series, deleteTraining, saveSeries }) => {
               return (
                 training?.type === 'TRAINING' && (
                   <Tr key={training.id} cursor="pointer">
-                    <Td fontSize="12" paddingLeft="16px" onClick={() => handleTrainingClick(training)}> 
+                    <Td
+                      fontSize="12"
+                      paddingLeft="16px"
+                      onClick={() => handleTrainingClick(training)}
+                    >
                       {training.title}
                     </Td>
                     <Td fontSize="12" padding="0">
