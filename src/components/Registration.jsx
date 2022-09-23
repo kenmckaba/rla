@@ -265,41 +265,62 @@ export const Registration = ({
                     We'll send your join link to this email address.
                       </FormHelperText>
                     </FormControl>
-                    <FormControl>
-                      <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
-                    Class Preference
-                      </FormLabel>
-                      <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
-                        <HStack direction="row">
-                          {isOnlineFull ? <Radio value="ONLINE" isDisabled>Online</Radio> : <Radio value="ONLINE">Online</Radio>}
-                          {isInPersonFull ? <Radio value="INPERSON" isDisabled>In Person</Radio> : <Radio value="INPERSON">In-Person</Radio>}
-                        </HStack>
-                      </RadioGroup>
-                      {isOnlineFull ? 
-                        <FormHelperText color="#FF4A4A">
-                      *Online registration limit reached
-                        </FormHelperText>
-                        : 
-                      // <FormHelperText color="white">
-                      //   *Max no. of students online is {training.maxOnlineAttendees}. Current no. of students registered online is {onlineCount}
-                      // </FormHelperText>
+                    <Box paddingTop="4">
+                      <FormControl>
+                        <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                      Class Preference
+                        </FormLabel>
+                        <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
+                          <HStack direction="row">
+                            {isOnlineFull ? <Radio value="ONLINE" isDisabled>Online</Radio> : <Radio value="ONLINE">Online</Radio>}
+                            {isInPersonFull ? <Radio value="INPERSON" isDisabled>In Person</Radio> : <Radio value="INPERSON">In-Person</Radio>}
+                          </HStack>
+                        </RadioGroup>
+                        {isOnlineFull ? 
+                          <FormHelperText color="#FF4A4A">
+                        *Online registration limit reached
+                          </FormHelperText>
+                          : 
+                        // <FormHelperText color="white">
+                        //   *Max no. of students online is {training.maxOnlineAttendees}. Current no. of students registered online is {onlineCount}
+                        // </FormHelperText>
+                          <FormHelperText color="white">
+                        *Online | Registered: {onlineCount}  Max Limit: {training.maxOnlineAttendees}
+                          </FormHelperText>
+                        }
+                        {isInPersonFull ? 
+                          <FormHelperText color="#FF4A4A">
+                        *In-person registration limit reached
+                          </FormHelperText>
+                          : 
+                        // <FormHelperText color="white">
+                        //   *Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
+                        // </FormHelperText>
+                          <FormHelperText color="white">
+                        *In-person | Registered: {inPersonCount}  Max Limit: {training.maxInPersonAttendees}
+                          </FormHelperText>
+                        }
+                      </FormControl>
+                    </Box>
+                    <Box paddingTop="4">
+                      <FormControl>
+                        <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                          System Requirements: 
+                        </FormLabel>
                         <FormHelperText color="white">
-                      *Online | Registered: {onlineCount}  Max Limit: {training.maxOnlineAttendees}
+                          1. Join the training using a laptop
                         </FormHelperText>
-                      }
-                      {isInPersonFull ? 
-                        <FormHelperText color="#FF4A4A">
-                      *In-person registration limit reached
-                        </FormHelperText>
-                        : 
-                      // <FormHelperText color="white">
-                      //   *Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
-                      // </FormHelperText>
                         <FormHelperText color="white">
-                      *In-person | Registered: {inPersonCount}  Max Limit: {training.maxInPersonAttendees}
+                          2. DO NOT join using a tablet, iPad or cell phone
                         </FormHelperText>
-                      }
-                    </FormControl>
+                        <FormHelperText color="white">
+                          3. Ensure the right camera and microphone are selected when you join the training
+                        </FormHelperText>
+                        <FormHelperText color="white">
+                          4. Please use Google Chrome as your browser
+                        </FormHelperText>
+                      </FormControl>
+                    </Box>
                 
                     <HStack w="100%" spacing="3" paddingTop="3">
                       {/* <Button w="100%" size="md" variant="secondary-ghost-outline">
