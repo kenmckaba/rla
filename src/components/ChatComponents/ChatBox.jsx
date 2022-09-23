@@ -14,7 +14,7 @@ const allMsgId = '1'
 export default function ChatBox({ attendees, training, myAttendeeId, maxWidth = '100%', ht }) {
   // appears to have less lost msgs if we query here, rather than pass msgs as prop
   const { data: messagesData, subscribeToMore } = useQuery(gql(listChatMessages), {
-    variables: { filter: { trainingId: { eq: training.id } } },
+    variables: { limit: 1000, filter: { trainingId: { eq: training.id } } },
   })
 
   const [destination, setDestination] = useState(allMsgId)
