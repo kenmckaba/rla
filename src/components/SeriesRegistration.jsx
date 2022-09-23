@@ -58,7 +58,7 @@ export const SeriesRegistration = ({
   })
 
   const { data: seriesListData } = useQuery(gql(listTrainings), {
-    variables: { filter: { seriesId: { eq: trainingId } } },
+    variables: { limit: 1000, filter: { seriesId: { eq: trainingId } } },
   })
 
   useEffect(() => {
@@ -150,22 +150,25 @@ export const SeriesRegistration = ({
                   </Tr>
                 ) : (
                   <RadioGroup onChange={setChosenTrainingId} value={chosenTrainingId}>
-                    {trainingList.slice(0).reverse().map((training) => {
-                      return (
-                        training?.type === 'TRAINING' && (
-                          <Tr key={training.id} cursor="pointer">
-                            <Radio value={training.id}>
-                              <Td fontSize="12" paddingLeft="16px">
-                                {training.title}
-                              </Td>
-                              <Td fontSize="12" paddingLeft="16px">
-                                {timestampToPrettyTime(training.scheduledTime)}
-                              </Td>
-                            </Radio>
-                          </Tr>
+                    {trainingList
+                      .slice(0)
+                      .reverse()
+                      .map((training) => {
+                        return (
+                          training?.type === 'TRAINING' && (
+                            <Tr key={training.id} cursor="pointer">
+                              <Radio value={training.id}>
+                                <Td fontSize="12" paddingLeft="16px">
+                                  {training.title}
+                                </Td>
+                                <Td fontSize="12" paddingLeft="16px">
+                                  {timestampToPrettyTime(training.scheduledTime)}
+                                </Td>
+                              </Radio>
+                            </Tr>
+                          )
                         )
-                      )
-                    })}
+                      })}
                   </RadioGroup>
                 )}
               </Table>
