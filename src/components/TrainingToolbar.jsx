@@ -10,9 +10,12 @@ import {
   MenuGroup,
   IconButton,
 } from '@chakra-ui/react'
+import React, { useState } from 'react'
 import { IoPlay } from 'react-icons/io5'
 import { EditButton } from './shared/Buttons'
 import { DeleteIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { ConfirmationModal } from './ConfirmationModal'
+import { timestampToPrettyTime } from '../utils/pretty-time'
 
 export const TrainingToolbar = ({
   training,
@@ -28,6 +31,8 @@ export const TrainingToolbar = ({
     e.stopPropagation()
     func()
   }
+
+  const [isConfirmStartModalOpen, setIsConfirmStartModalOpen] = useState(false)
 
   return (
     <>
@@ -75,7 +80,10 @@ export const TrainingToolbar = ({
             margin="5px"
             width="100px"
             borderRadius="full"
-            onClick={(e) => eatEvent(e, startTraining)}
+            onClick={(e) => {
+              setIsConfirmStartModalOpen(true)
+              // eatEvent(e, startTraining)
+            }}
             variant="primary-trueblue"
             size="xs"
             leftIcon={<Icon as={IoPlay} />}
@@ -85,6 +93,14 @@ export const TrainingToolbar = ({
           </Button>
         }
       </Box>
+      <ConfirmationModal
+        headerMsg="Confirm Start Training"
+        okLabel="Start"
+        msg={`Training: ${training?.title} is set to be scheduled at ${timestampToPrettyTime(training?.scheduledTime)}, would you still like to proceed?`}
+        isOpen={isConfirmStartModalOpen}
+        onCancel={() => setIsConfirmStartModalOpen(false)}
+        onOk={() => startTraining}
+      />
     </>
   )
 }
