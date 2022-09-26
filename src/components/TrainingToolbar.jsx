@@ -79,6 +79,7 @@ export const TrainingToolbar = ({
             variant="primary-trueblue"
             size="xs"
             leftIcon={<Icon as={IoPlay} />}
+            isDisabled={new Date().toISOString().substr(0, 10) !== training.scheduledTime.substr(0, 10)}
           >
             Start
           </Button>
