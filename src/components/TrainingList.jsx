@@ -142,9 +142,10 @@ export const TrainingList = () => {
       setSelectedTraining(
         trainings
           .filter((training) => {
-            return !!tabIndex === !!training.startedAt
+            // return !!tabIndex === !!training.startedAt
+            return (showUpcomingTrainings && !training.startedAt || showPastTrainings && training.startedAt)
           })
-          .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1)),
+          .sort((first, second) => showUpcomingTrainings? (first.scheduledTime < second.scheduledTime ? -1 : 1): (first.scheduledTime < second.scheduledTime ? 1 : -1)),
       )
     }
   }, [trainings, tabIndex, startDate, endDate])
