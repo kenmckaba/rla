@@ -10,7 +10,7 @@ import { timestampToPrettyTime } from './pretty-time'
 export const sendJoinEmail = async (attendeeId, name, email, training) => {
 
   // Load the AWS SDK for Node.js
-  var AWS = require('aws-sdk')
+  const AWS = require('aws-sdk')
   // Set the region 
   AWS.config.update({region: 'us-east-1'}) // need to add region
 
@@ -74,25 +74,25 @@ export const sendJoinEmail = async (attendeeId, name, email, training) => {
     DefaultTemplateData,
   }
   // console.log(JSON.stringify(params))
-  // try {
-  //   // const result = await ses.sendBulkTemplatedEmail(params).promise()
-  //   const result = await ses.sendBulkTemplatedEmail(params).promise()
-  //   console.log('send join email result', result)
-  // } catch (err) {
-  //   console.error('send join email result', err)
-  // }
+  try {
+    // const result = await ses.sendBulkTemplatedEmail(params).promise()
+    const result = await aws.SES({apiVersion: '2010-12-01'}).sendBulkTemplatedEmail(params).promise()
+    console.log('send join email result', result)
+  } catch (err) {
+    console.error('send join email result', err)
+  }
 
 
 
   // Create the promise and SES service object
-  var sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendBulkTemplatedEmail(params).promise()
+  // const sendPromise = new aws.SES({apiVersion: '2010-12-01'}).sendBulkTemplatedEmail(params).promise()
 
   // Handle promise's fulfilled/rejected states
-  sendPromise.then(
-    function(data) {
-      console.log(data.MessageId)
-    }).catch(
-    function(err) {
-      console.error(err, err.stack)
-    })
+  // sendPromise.then(
+  //   function(data) {
+  //     console.log(data.MessageId)
+  //   }).catch(
+  //   function(err) {
+  //     console.error(err, err.stack)
+  //   })
 }
