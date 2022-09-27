@@ -99,7 +99,7 @@ export const TrainingToolbar = ({
         msg={`Training: ${training?.title} is set to be scheduled at ${timestampToPrettyTime(training?.scheduledTime)}, would you still like to proceed?`}
         isOpen={isConfirmStartModalOpen}
         onCancel={() => setIsConfirmStartModalOpen(false)}
-        onOk={() => startTraining}
+        onOk={(e) => { eatEvent(e,startTraining)}}
       />
     </>
   )
