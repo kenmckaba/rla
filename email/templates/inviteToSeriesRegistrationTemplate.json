@@ -1,0 +1,9 @@
+{
+    "Template": {
+      "TemplateName": "SeriesInviteToRegister",
+      "SubjectPart": "Training registration for {{trainingTitle}}",
+      "HtmlPart": "<h1>Hello {{fname}},</h1><p>You've been invited to register for the following remote training series session:</p><p><h2>{{trainingTitle}}</h2><b>{{trainingDescription}}</b></p><p>If you have questions, please contact {{trainerName}} at {{trainerEmail}}</p><h2><a href={{trainingRegistrationUrl}}>Click here to register.</a></h2><p><b>System Requirements:</b></p><p>1. Join the training using a laptop</p><p>2. DO NOT join using a tablet, iPad or cell phone</p><p>3. Ensure the right camera and microphone are selected when you join the training</p><p>4. Please use Google Chrome as your browser</p>",
+      "TextPart": "Hello {{fname}}, You've been invited to register for the following remote training session {{trainingTitle}} {{trainingDescription}}. If you have questions, please contact {{trainerName}} at {{trainerEmail}}. Click here to register: {{trainingRegistrationUrl}}"
+    }
+  }
+

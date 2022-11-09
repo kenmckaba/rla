@@ -52,7 +52,9 @@ export default function TrainingListHeader({ trainings }) {
 
   const timestampAsDate = (dt) => new Date(dt)
   const timestampToTime = (dt) =>
-    timestampAsDate(dt).getHours() + ':' + timestampAsDate(dt).getMinutes()
+    timestampAsDate(dt).getHours() +
+    ':' +
+    ((timestampAsDate(dt).getMinutes() < 10 ? '0' : '') + timestampAsDate(dt).getMinutes())
 
   const isToday = (training) => {
     const date = timestampAsDate(training.scheduledTime)

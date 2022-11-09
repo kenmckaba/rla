@@ -1,14 +1,21 @@
+import { gql, useQuery } from '@apollo/client'
 import { Box, HStack, Button, Table, Thead, Tr, Td, Th, Tbody, Checkbox } from '@chakra-ui/react'
 import { useEffect, useMemo, useState } from 'react'
+import { listStudents } from '../graphql/queries'
 
-export const EmailSelection = ({ students: studentsIn, onSelectedStudents }) => {
+export const EmailSelection = ({ groupId, onSelectedStudents }) => {
   const [itemsChecked, setItemsChecked] = useState([])
+  const { data: studentsData } = useQuery(gql(listStudents), {
+    variables: { limit: 1000, filter: { groupId: { eq: groupId } } },
+  })
 
   const students = useMemo(() => {
-    const sorted = [...studentsIn]
-    sorted.sort((first, second) => (first.firstName > second.firstName ? 1 : -1))
-    return sorted
-  }, [studentsIn])
+    if (studentsData) {
+      const sorted = [...studentsData.listStudents.items]
+      sorted.sort((first, second) => (first.firstName > second.firstName ? 1 : -1))
+      return sorted
+    }
+  }, [studentsData])
 
   const onCheckbox = (e, index) => {
     console.log(itemsChecked)
@@ -33,10 +40,12 @@ export const EmailSelection = ({ students: studentsIn, onSelectedStudents }) => 
 
   const selectAll = () => {
     const newItems = []
-    for (let index = 0; index < students.length; index++) {
-      newItems.push(index)
+    if (students) {
+      for (let index = 0; index < students.length; index++) {
+        newItems.push(index)
+      }
+      setItemsChecked(newItems)
     }
-    setItemsChecked(newItems)
   }
 
   const selectNone = () => {
@@ -63,22 +72,23 @@ export const EmailSelection = ({ students: studentsIn, onSelectedStudents }) => 
           </Tr>
         </Thead>
         <Tbody>
-          {students.map((attendee, index) => {
-            return (
-              <Tr key={index}>
-                <Td onClick={(e) => onCheckbox(e, index)}>
-                  <Checkbox
-                    onClick={(e) => onCheckbox(e, index)}
-                    isChecked={itemsChecked.includes(index)}
-                  />
-                </Td>
-                <Td>
-                  {attendee.firstName} {attendee.lastName}
-                </Td>
-                <Td>{attendee.email}</Td>
-              </Tr>
-            )
-          })}
+          {students &&
+            students.map((attendee, index) => {
+              return (
+                <Tr key={index}>
+                  <Td onClick={(e) => onCheckbox(e, index)}>
+                    <Checkbox
+                      onClick={(e) => onCheckbox(e, index)}
+                      isChecked={itemsChecked.includes(index)}
+                    />
+                  </Td>
+                  <Td>
+                    {attendee.firstName} {attendee.lastName}
+                  </Td>
+                  <Td>{attendee.email}</Td>
+                </Tr>
+              )
+            })}
         </Tbody>
       </Table>
     </>

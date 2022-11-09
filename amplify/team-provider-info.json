@@ -15,7 +15,7 @@
       "function": {
         "attendeeimage": {
           "deploymentBucketName": "amplify-rlafeature-pooja-173536-deployment",
-          "s3Key": "amplify-builds/attendeeimage-62414f755052332b4b2b-build.zip",
+          "s3Key": "amplify-builds/attendeeimage-755567624a74427a6652-build.zip",
           "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
         }
       },
@@ -133,7 +133,7 @@
       "function": {
         "attendeeimage": {
           "deploymentBucketName": "amplify-rlafeature-ken-173819-deployment",
-          "s3Key": "amplify-builds/attendeeimage-46513941494433455462-build.zip",
+          "s3Key": "amplify-builds/attendeeimage-755567624a74427a6652-build.zip",
           "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
         }
       },
@@ -350,7 +350,7 @@
       "function": {
         "attendeeimage": {
           "deploymentBucketName": "amplify-rlafeature-feb-224643-deployment",
-          "s3Key": "amplify-builds/attendeeimage-2f57492f6a4153515a48-build.zip",
+          "s3Key": "amplify-builds/attendeeimage-72664f49614c7a6e7150-build.zip",
           "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
         }
       },

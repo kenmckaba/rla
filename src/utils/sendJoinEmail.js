@@ -41,6 +41,7 @@ export const sendJoinEmail = async (attendeeId, name, email, training) => {
   }
   console.log(JSON.stringify(params))
   try {
+    // const result = await ses.sendBulkTemplatedEmail(params).promise()
     const result = await ses.sendBulkTemplatedEmail(params).promise()
     console.log('send join email result', result)
   } catch (err) {

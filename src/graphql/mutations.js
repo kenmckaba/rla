@@ -50,15 +50,19 @@ export const createTraining = /* GraphQL */ `
   ) {
     createTraining(input: $input, condition: $condition) {
       id
+      seriesId
       type
       trainerId
       title
+      seriesTitle
       description
       trainerName
       trainerEmail
       registrationUrl
       maxAttendees
       minInPersonAttendees
+      maxInPersonAttendees
+      maxOnlineAttendees
       meetingId
       moderatorPasscode
       participantPasscode
@@ -97,15 +101,19 @@ export const createTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -185,15 +193,19 @@ export const createTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -230,15 +242,19 @@ export const createTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -275,15 +291,19 @@ export const updateTraining = /* GraphQL */ `
   ) {
     updateTraining(input: $input, condition: $condition) {
       id
+      seriesId
       type
       trainerId
       title
+      seriesTitle
       description
       trainerName
       trainerEmail
       registrationUrl
       maxAttendees
       minInPersonAttendees
+      maxInPersonAttendees
+      maxOnlineAttendees
       meetingId
       moderatorPasscode
       participantPasscode
@@ -322,15 +342,19 @@ export const updateTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -410,15 +434,19 @@ export const updateTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -455,15 +483,19 @@ export const updateTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -500,15 +532,19 @@ export const deleteTraining = /* GraphQL */ `
   ) {
     deleteTraining(input: $input, condition: $condition) {
       id
+      seriesId
       type
       trainerId
       title
+      seriesTitle
       description
       trainerName
       trainerEmail
       registrationUrl
       maxAttendees
       minInPersonAttendees
+      maxInPersonAttendees
+      maxOnlineAttendees
       meetingId
       moderatorPasscode
       participantPasscode
@@ -547,15 +583,19 @@ export const deleteTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -635,15 +675,19 @@ export const deleteTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -680,15 +724,19 @@ export const deleteTraining = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -745,15 +793,19 @@ export const createAttendee = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
         registrationUrl
         maxAttendees
         minInPersonAttendees
+        maxInPersonAttendees
+        maxOnlineAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -896,15 +948,19 @@ export const createAttendee = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
           registrationUrl
           maxAttendees
           minInPersonAttendees
+          maxInPersonAttendees
+          maxOnlineAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -976,15 +1032,19 @@ export const updateAttendee = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
         registrationUrl
         maxAttendees
         minInPersonAttendees
+        maxInPersonAttendees
+        maxOnlineAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -1127,15 +1187,19 @@ export const updateAttendee = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
           registrationUrl
           maxAttendees
           minInPersonAttendees
+          maxInPersonAttendees
+          maxOnlineAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -1207,15 +1271,19 @@ export const deleteAttendee = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
         registrationUrl
         maxAttendees
         minInPersonAttendees
+        maxInPersonAttendees
+        maxOnlineAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -1358,15 +1426,19 @@ export const deleteAttendee = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
           registrationUrl
           maxAttendees
           minInPersonAttendees
+          maxInPersonAttendees
+          maxOnlineAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -1425,15 +1497,19 @@ export const createSharedDoc = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
         registrationUrl
         maxAttendees
         minInPersonAttendees
+        maxInPersonAttendees
+        maxOnlineAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -1556,15 +1632,19 @@ export const updateSharedDoc = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
         registrationUrl
         maxAttendees
         minInPersonAttendees
+        maxInPersonAttendees
+        maxOnlineAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -1687,15 +1767,19 @@ export const deleteSharedDoc = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
         registrationUrl
         maxAttendees
         minInPersonAttendees
+        maxInPersonAttendees
+        maxOnlineAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -2160,6 +2244,7 @@ export const createStudentGroup = /* GraphQL */ `
     createStudentGroup(input: $input, condition: $condition) {
       id
       name
+      numStudents
       students {
         items {
           id
@@ -2167,6 +2252,7 @@ export const createStudentGroup = /* GraphQL */ `
           group {
             id
             name
+            numStudents
             createdAt
             updatedAt
           }
@@ -2191,6 +2277,7 @@ export const updateStudentGroup = /* GraphQL */ `
     updateStudentGroup(input: $input, condition: $condition) {
       id
       name
+      numStudents
       students {
         items {
           id
@@ -2198,6 +2285,7 @@ export const updateStudentGroup = /* GraphQL */ `
           group {
             id
             name
+            numStudents
             createdAt
             updatedAt
           }
@@ -2222,6 +2310,7 @@ export const deleteStudentGroup = /* GraphQL */ `
     deleteStudentGroup(input: $input, condition: $condition) {
       id
       name
+      numStudents
       students {
         items {
           id
@@ -2229,6 +2318,7 @@ export const deleteStudentGroup = /* GraphQL */ `
           group {
             id
             name
+            numStudents
             createdAt
             updatedAt
           }
@@ -2256,6 +2346,7 @@ export const createStudents = /* GraphQL */ `
       group {
         id
         name
+        numStudents
         students {
           items {
             id
@@ -2290,6 +2381,7 @@ export const updateStudents = /* GraphQL */ `
       group {
         id
         name
+        numStudents
         students {
           items {
             id
@@ -2324,6 +2416,7 @@ export const deleteStudents = /* GraphQL */ `
       group {
         id
         name
+        numStudents
         students {
           items {
             id
@@ -2381,15 +2474,19 @@ export const createInvitedStudent = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
           registrationUrl
           maxAttendees
           minInPersonAttendees
+          maxInPersonAttendees
+          maxOnlineAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -2436,15 +2533,19 @@ export const createInvitedStudent = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -2511,15 +2612,19 @@ export const updateInvitedStudent = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
           registrationUrl
           maxAttendees
           minInPersonAttendees
+          maxInPersonAttendees
+          maxOnlineAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -2566,15 +2671,19 @@ export const updateInvitedStudent = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -2641,15 +2750,19 @@ export const deleteInvitedStudent = /* GraphQL */ `
         trainingId
         training {
           id
+          seriesId
           type
           trainerId
           title
+          seriesTitle
           description
           trainerName
           trainerEmail
           registrationUrl
           maxAttendees
           minInPersonAttendees
+          maxInPersonAttendees
+          maxOnlineAttendees
           meetingId
           moderatorPasscode
           participantPasscode
@@ -2696,15 +2809,19 @@ export const deleteInvitedStudent = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -2825,15 +2942,19 @@ export const createBreakoutRoom = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -2874,15 +2995,19 @@ export const createBreakoutRoom = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
         registrationUrl
         maxAttendees
         minInPersonAttendees
+        maxInPersonAttendees
+        maxOnlineAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -3026,15 +3151,19 @@ export const updateBreakoutRoom = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -3075,15 +3204,19 @@ export const updateBreakoutRoom = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
         registrationUrl
         maxAttendees
         minInPersonAttendees
+        maxInPersonAttendees
+        maxOnlineAttendees
         meetingId
         moderatorPasscode
         participantPasscode
@@ -3227,15 +3360,19 @@ export const deleteBreakoutRoom = /* GraphQL */ `
           trainingId
           training {
             id
+            seriesId
             type
             trainerId
             title
+            seriesTitle
             description
             trainerName
             trainerEmail
             registrationUrl
             maxAttendees
             minInPersonAttendees
+            maxInPersonAttendees
+            maxOnlineAttendees
             meetingId
             moderatorPasscode
             participantPasscode
@@ -3276,15 +3413,19 @@ export const deleteBreakoutRoom = /* GraphQL */ `
       trainingId
       training {
         id
+        seriesId
         type
         trainerId
         title
+        seriesTitle
         description
         trainerName
         trainerEmail
         registrationUrl
         maxAttendees
         minInPersonAttendees
+        maxInPersonAttendees
+        maxOnlineAttendees
         meetingId
         moderatorPasscode
         participantPasscode

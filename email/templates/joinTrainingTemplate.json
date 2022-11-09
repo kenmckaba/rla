@@ -2,7 +2,7 @@
   "Template": {
     "TemplateName": "RLAJoinTraining",
     "SubjectPart": "You are registered for {{trainingTitle}}",
-    "HtmlPart": "<h1>Hello {{name}},</h1><p>You are registered for the following remote training session:</p><p><h2>{{trainingTitle}}</h2><b>{{trainingDescription}}</b></p><p>Being held on <b>{{trainingDateAndTime}}</b></p><p>If you have questions, please contact {{trainerName}} at {{trainerEmail}}</p><h2><a href={{trainingJoinUrl}}>At the time of the training, click here to join.</a></h2><p>If you need to change or cancel your registration, <a href={{registrationUpdateUrl}}>click here</a></p>",
+    "HtmlPart": "<h1>Hello {{name}},</h1><p>You are registered for the following remote training session:</p><p><h2>{{trainingTitle}}</h2><b>{{trainingDescription}}</b></p><p>Being held on <b>{{trainingDateAndTime}}</b></p><p>If you have questions, please contact {{trainerName}} at {{trainerEmail}}</p><h2><a href={{trainingJoinUrl}}>At the time of the training, click here to join.</a></h2><p>If you need to change your registration, <a href={{registrationUpdateUrl}}>click here</a></p><p><b>System Requirements:</b></p><p>1. Join the training using a laptop</p><p>2. DO NOT join using a tablet, iPad or cell phone</p><p>3. Ensure the right camera and microphone are selected when you join the training</p><p>4. Please use Google Chrome as your browser</p>",
     "TextPart": "Hello {{name}}, You are registered for the following remote training session {{trainingTitle}} {{trainingDescription}}, Bbeing held on {{trainingDateAndTime}}. If you have questions, please contact {{trainerName}} at {{trainerEmail}}. At the time of the training, click here to join: {{trainingJoinUrl}}. To change or cancel your registration: {{registrationUpdateUrl}}"
   }
 }

@@ -20,6 +20,11 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  MenuGroup,
 } from '@chakra-ui/react'
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
@@ -47,8 +52,14 @@ export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
   const [newTraining, setNewTraining] = useState(false)
   const [currentTraining, setCurrentTraining] = useState()
-  const { loading, error, data: trainingListData, subscribeToMore } = useQuery(gql(listTrainings))
-  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
+  const { loading, error, data: trainingListData, subscribeToMore } = useQuery(gql(listTrainings), {
+    variables: { limit: 300 },
+  })
+  const {
+    isOpen: isTrainingModalOpen,
+    onOpen: onTrainingModalOpen,
+    onClose: onTrainingModalClose,
+  } = useDisclosure()
   const [addTraining] = useMutation(gql(createTraining))
   const [deleteTheTraining] = useMutation(gql(deleteTraining))
   const [trainingHovered, setTrainingHovered] = useState(-1)
@@ -67,14 +78,20 @@ export const TrainingList = () => {
     setCurrentTraining(training)
     setShowParticipantsModal(true)
   }
-
+  const [isSeries, setIsSeries] = useState(false)
   const MAX_ATTENDEE_ICONS = 5
+  const showUpcomingTrainings = tabIndex === 0
+  const showPastTrainings = tabIndex === 1
 
   useEffect(() => {
     if (trainingListData) {
-      const tr = trainingListData.listTrainings.items.filter((t) => t.type === 'TRAINING')
+      const tr = trainingListData.listTrainings.items.filter(
+        (t) => t.type === 'TRAINING'
+      )
       setTrainings(tr)
+      
     }
+    
   }, [trainingListData])
 
   useEffect(() => {
@@ -109,12 +126,26 @@ export const TrainingList = () => {
           }),
       )
     } else {
+    //   setSelectedTraining(
+    //     trainings
+    //       .filter((training) => {
+    //         const now = new Date().toISOString()
+    //         const hasStarted = !!training.startedAt
+    //         return (training.scheduledTime >= now) ? showUpcomingTrainings : showPastTrainings
+    //       })
+    //       .sort((first, second) => {
+    //         return (first.scheduledTime < second.scheduledTime ? -1 : 1)
+    //       }),
+    //   )
+    // }
+
       setSelectedTraining(
         trainings
           .filter((training) => {
-            return !!tabIndex === !!training.startedAt
+            // return !!tabIndex === !!training.startedAt
+            return (showUpcomingTrainings && !training.startedAt || showPastTrainings && training.startedAt)
           })
-          .sort((first, second) => (first.scheduledTime < second.scheduledTime ? -1 : 1)),
+          .sort((first, second) => showUpcomingTrainings? (first.scheduledTime < second.scheduledTime ? -1 : 1): (first.scheduledTime < second.scheduledTime ? 1 : -1)),
       )
     }
   }, [trainings, tabIndex, startDate, endDate])
@@ -122,7 +153,7 @@ export const TrainingList = () => {
   const handleTrainingClick = async (training) => {
     setCurrentTraining(training)
     setNewTraining(false)
-    onModalOpen()
+    onTrainingModalOpen()
   }
 
   const onNewTraining = async () => {
@@ -145,7 +176,30 @@ export const TrainingList = () => {
       },
     })
     setCurrentTraining(result.data.createTraining)
-    onModalOpen()
+    onTrainingModalOpen()
+  }
+
+  const onNewSeries = async () => {
+    setNewTraining(true)
+    const now = new Date()
+    const scheduledTime = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 12, 0, 0) // noon tomorrow
+    const result = await addTraining({
+      variables: {
+        input: {
+          trainerName: '',
+          title: '',
+          type: 'TEMPSERIES',
+          meetingId: '',
+          scheduledTime,
+          moderatorPasscode: '',
+          participantPasscode: '',
+          audioStateKey: 1,
+          videoStateKey: 1,
+        },
+      },
+    })
+    setCurrentTraining(result.data.createTraining)
+    onTrainingModalOpen()
   }
 
   const confirmDelete = (training) => {
@@ -181,7 +235,7 @@ export const TrainingList = () => {
     setIsConfirmDuplicateModalOpen(false)
     const result = await duplicateTraining(training)
     setCurrentTraining(result.data.createTraining)
-    onModalOpen()
+    onTrainingModalOpen()
   }
 
   const clearDates = () => {
@@ -192,7 +246,7 @@ export const TrainingList = () => {
   const renderTrainings = () => {
     if (selectedTrainings?.length === 0) {
       return (
-        <Tr height="224px" width="1028px" cursor="pointer" onClick={onNewTraining}>
+        <Tr height="224px" width="1028px" cursor="pointer">
           <Flex
             borderRadius="20px"
             backgroundColor="#396AA1"
@@ -232,6 +286,26 @@ export const TrainingList = () => {
                     >
                       Create a new training
                     </Button>
+                    <Button
+                      // variant="light-blue"
+                      bg="white"
+                      border="solid 2px"
+                      borderColor="blue.6oh no, yea, 00"
+                      color="blue.600"
+                      size="lg"
+                      leftIcon={<AddIcon />}
+                      onClick={onNewSeries}
+                      fontSize="10pt"
+                      fontWeight="bold"
+                      minW="174px"
+                      mt="3em"
+                      _hover={{
+                        backgroundColor: 'rgba(255,255,255, 0.9)',
+                        color: 'blue.600',
+                      }}
+                    >
+                      Create a new series
+                    </Button>
                   </StatHelpText>
                 </Stat>
               </Flex>
@@ -256,8 +330,8 @@ export const TrainingList = () => {
       >
         <Flex
           borderRadius="5px"
-          backgroundColor="#396AA1"
-          color="rgba(255,255,255, 0.9)"
+          backgroundColor= {training.type === 'SERIES' ? '#5e8bb5' : '#396AA1'}
+          color=  'rgba(255,255,255, 0.9)'
           direction="column"
           justify="center"
           transition="all 0.3s ease"
@@ -270,14 +344,14 @@ export const TrainingList = () => {
             <Flex justify="flex-start" minH="34px">
               <Stat marginTop="2">
                 <StatLabel whiteSpace="nowrap" fontSize="2em" textTransform="capitalize">
+                  {/* {training.seriesTitle && `${training.seriesTitle} - `} */}
                   {training.title}
                 </StatLabel>
               </Stat>
-
               <Spacer />
-
               {trainingHovered === training.id && (
                 <TrainingToolbar
+                  training={training}
                   editTraining={() => handleTrainingClick(training)}
                   startTraining={() => openRegPage(training.id)}
                   deleteTraining={() => confirmDelete(training)}
@@ -290,6 +364,7 @@ export const TrainingList = () => {
           </Td>
           <Td paddingBottom="10">
             <HStack display="flex" justifyContent="space-between">
+              {training.type !== 'SERIES' &&
               <Flex w="25%" direction="column">
                 <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
@@ -302,6 +377,7 @@ export const TrainingList = () => {
                   </StatHelpText>
                 </StatLabel>
               </Flex>
+              }
               <Flex w="20%" direction="column">
                 <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
@@ -312,6 +388,7 @@ export const TrainingList = () => {
                   <StatHelpText fontSize="0.90em">{training.trainerName}</StatHelpText>
                 </StatLabel>
               </Flex>
+              {training.type !== 'SERIES' &&
               <Flex w="25%" direction="column">
                 <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
@@ -329,6 +406,8 @@ export const TrainingList = () => {
                   </HStack>
                 </Flex>
               </Flex>
+              }
+              {training.type !== 'SERIES' &&
               <Flex w="30%" direction="column">
                 <StatLabel>
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
@@ -341,6 +420,7 @@ export const TrainingList = () => {
                   </StatHelpText>
                 </StatLabel>
               </Flex>
+              }
             </HStack>
           </Td>
         </Flex>
@@ -472,19 +552,34 @@ export const TrainingList = () => {
                     Clear Dates
                   </Button>
                 )}
-                <Button
-                  variant="light-blue"
-                  backgroundColor="rgba(13, 98, 197, 1)"
-                  color="white"
-                  size="md"
-                  leftIcon={<AddIcon />}
-                  onClick={onNewTraining}
-                  fontSize="10pt"
-                  fontWeight="bold"
-                  minW="174px"
-                >
-                  New training
-                </Button>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    aria-label="Add"
+                    title="Add"
+                    variant="light-blue"
+                    backgroundColor="rgba(13, 98, 197, 1)"
+                    color="white"
+                    size="md"
+                    leftIcon={<AddIcon />}
+                    fontSize="10pt"
+                    fontWeight="bold"
+                    minW="174px"
+                  >
+                    {' '}
+                    Add New{' '}
+                  </MenuButton>
+                  <MenuList bgGradient="linear-gradient(0deg, #283683 0%, #396AA1 100%, #283683 100%)">
+                    <MenuGroup>
+                      <MenuItem _focus={{ color: '#283683', bg: 'white' }} onClick={onNewTraining}>
+                        New Training
+                      </MenuItem>
+                      <MenuItem _focus={{ color: '#283683', bg: 'white' }} onClick={onNewSeries}>
+                        New Series
+                      </MenuItem>
+                    </MenuGroup>
+                  </MenuList>
+                </Menu>
               </Flex>
               <TabPanels width="100%" color="white" borderRadius="5px" mt="4">
                 <TabPanel p={0} m={0}>
@@ -504,12 +599,14 @@ export const TrainingList = () => {
               onClose={() => setShowParticipantsModal(false)}
             />
 
-            <Modal isOpen={isModalOpen} scrollBehavior="inside">
+            <Modal isOpen={isTrainingModalOpen} scrollBehavior="inside">
               <ModalOverlay />
               <ModalContent color="darkKnight.700">
                 <ModalHeader>
                   <Flex>
-                    <Box>{newTraining ? 'New Training' : 'Update Training'}</Box>
+                    <Box>
+                      {newTraining ? ((currentTraining?.type === 'SERIES' || currentTraining?.type === 'TEMPSERIES') ? 'New Series' : 'New Training') : (currentTraining?.type ==='SERIES' ? 'Update Series' : 'Update Training')}
+                    </Box>
                     <Spacer></Spacer>
                     <Box>
                       <HStack spacing={2}>
@@ -517,7 +614,7 @@ export const TrainingList = () => {
                           variant="icon-button"
                           aria-label="Close form"
                           icon={<CloseIcon boxSize={3} />}
-                          onClick={onModalClose}
+                          onClick={onTrainingModalClose}
                         />
                       </HStack>
                     </Box>
@@ -525,7 +622,7 @@ export const TrainingList = () => {
                 </ModalHeader>
                 <ModalBody>
                   <TrainingForm
-                    onClose={onModalClose}
+                    onClose={onTrainingModalClose}
                     trainingId={currentTraining?.id}
                     onDelete={() => confirmDelete(currentTraining)}
                   />

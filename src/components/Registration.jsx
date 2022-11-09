@@ -40,8 +40,12 @@ export const Registration = ({
   const [attendeeEmail, setAttendeeEmail] = useState('')
   const [classPreference, setClassPreference] = useState('')
   const [isFull, setIsFull] = useState(false)
+  const [isInPersonFull, setIsInPersonFull] = useState(false)
+  const [isOnlineFull, setIsOnlineFull] = useState(false)
   const updatedStudent = useRef(false)
   const [inPersonCount, setInPersonCount] = useState(0)
+  const [onlineCount, setOnlineCount] = useState(0)
+
 
   const { isOpen: isModalOpen, onOpen: onModalOpen } = useDisclosure()
 
@@ -65,15 +69,25 @@ export const Registration = ({
       setIsFull(tr.attendees.items.length > tr.maxAttendees)
 
       let inPerson = 0
+      let online = 0
       trainingData.getTraining.attendees.items.forEach((attendee) => {
         if(attendee.classPreference === 'INPERSON'){
           inPerson++
+        } else if (attendee.classPreference === 'ONLINE'){
+          online++
         }
       })
 
       setInPersonCount(inPerson)
+      setOnlineCount(online)
+
+      setIsInPersonFull(inPersonCount >= tr.maxInPersonAttendees)
+      setIsOnlineFull(onlineCount >= tr.maxOnlineAttendees)
     }
   }, [trainingData, training, trainingId])
+
+  // setIsInPersonFull(inPersonCount > training.maxInPersonAttendees)
+  // setIsOnlineFull(onlineCount > training.maxOnlineAttendees)
 
   useEffect(() => {
     if (invitedStudentData) {
@@ -112,6 +126,11 @@ export const Registration = ({
     return !updatedStudent.current
   }
 
+  const missingFields = () => {
+    return !attendeeName || !attendeeEmail
+
+  }
+
   const handleSubmit = async () => {
     const result = await addNewAttendee({
       variables: {
@@ -126,10 +145,6 @@ export const Registration = ({
       },
     })
     const id = result.data.createAttendee.id
-
-    // const counter= () => {
-    //   setInPersonCount(inPersonCount + 1)
-    // }
 
     if (invitedStudentId) {
       updatedStudent.current = true
@@ -152,9 +167,6 @@ export const Registration = ({
     if (classPreference === 'ONLINE') {
       sendJoinEmail(id, attendeeName, attendeeEmail, training)
     }
-    // if (classPreference === 'inperson') {
-    //   counter()
-    // }
     onModalOpen()
   }
 
@@ -196,84 +208,130 @@ export const Registration = ({
             </HStack>
             {isFull ? (
               <Box fontSize="2em">Sorry, the training is full!</Box>
-            ) : alreadyRegistered() ? (
-              <>
-                <Box fontSize="32px">You have already registered for this training!</Box>
-                <Box padding="10px">
+            ) : 
+              (isOnlineFull && isInPersonFull) ? (
+                <Box fontSize="2em">Sorry, the registration limit has been reached!</Box>
+              ): 
+                alreadyRegistered() ? (
+                  <>
+                    <Box fontSize="32px">You have already registered for this training!</Box>
+                    <Box padding="10px">
                   Use{' '}
-                  <Link
-                    href={`${window.location.origin}/registration-update/${invitedStudent.attendeeId}`}
-                    isExternal
-                    cursor="pointer"
-                    color="blue"
-                  >
+                      <Link
+                        href={`${window.location.origin}/registration-update/${invitedStudent.attendeeId}`}
+                        isExternal
+                        cursor="pointer"
+                        color="blue"
+                      >
                     this link
-                  </Link>{' '}
+                      </Link>{' '}
                   to change or delete your registration.
-                </Box>
-              </>
-            ) : (
-              <Box width="100%">
-                <FormControl>
-                  <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                    </Box>
+                  </>
+                ) : (
+                  <Box width="100%">
+                    <FormControl isRequired>
+                      <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
                     Your name
-                  </FormLabel>
-                  <Input
-                    variant="filled"
-                    fontSize="0.75em"
-                    placeholder="Type your name here"
-                    color={'blue.900'}
-                    _focus={{ backgroundColor: 'white' }}
-                    _placeholder={{ color: 'blue.700' }}
-                    value={attendeeName}
-                    onChange={onChangeAttendeeName}
-                    h="8"
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                      </FormLabel>
+                      <Input
+                        variant="filled"
+                        fontSize="0.75em"
+                        placeholder="Type your name here"
+                        color={'blue.900'}
+                        _focus={{ backgroundColor: 'white' }}
+                        _placeholder={{ color: 'blue.700' }}
+                        value={attendeeName}
+                        onChange={onChangeAttendeeName}
+                        h="8"
+                      />
+                    </FormControl>
+                    <FormControl isRequired>
+                      <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
                     Email address
-                  </FormLabel>
-                  <Input
-                    variant="filled"
-                    fontSize="0.75em"
-                    placeholder="Type your email here"
-                    color={'blue.900'}
-                    _focus={{ backgroundColor: 'white' }}
-                    _placeholder={{ color: 'blue.700' }}
-                    value={attendeeEmail}
-                    onChange={onChangeAttendeeEmail}
-                    h="8"
-                  />
-                  <FormHelperText color="white">
+                      </FormLabel>
+                      <Input
+                        variant="filled"
+                        fontSize="0.75em"
+                        placeholder="Type your email here"
+                        color={'blue.900'}
+                        _focus={{ backgroundColor: 'white' }}
+                        _placeholder={{ color: 'blue.700' }}
+                        value={attendeeEmail}
+                        onChange={onChangeAttendeeEmail}
+                        h="8"
+                      />
+                      <FormHelperText color="white">
                     We'll send your join link to this email address.
-                  </FormHelperText>
-                </FormControl>
-                <FormControl>
-                  <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
-                    Class Preference
-                  </FormLabel>
-                  <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
-                    <HStack direction="row">
-                      <Radio value="ONLINE">Online</Radio>
-                      <Radio value="INPERSON">In-Person*</Radio>
-                    </HStack>
-                  </RadioGroup>
-                  <FormHelperText color="white">
-                    *Required no. of students in-person is {training.minInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
-                  </FormHelperText>
-                </FormControl>
+                      </FormHelperText>
+                    </FormControl>
+                    <Box paddingTop="4">
+                      <FormControl>
+                        <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                      Class Preference
+                        </FormLabel>
+                        <RadioGroup onChange={onChangeClassPreference} value={classPreference}>
+                          <HStack direction="row">
+                            {isOnlineFull ? <Radio value="ONLINE" isDisabled>Online</Radio> : <Radio value="ONLINE">Online</Radio>}
+                            {isInPersonFull ? <Radio value="INPERSON" isDisabled>In Person</Radio> : <Radio value="INPERSON">In-Person</Radio>}
+                          </HStack>
+                        </RadioGroup>
+                        {isOnlineFull ? 
+                          <FormHelperText color="#FF4A4A">
+                        *Online registration limit reached
+                          </FormHelperText>
+                          : 
+                        // <FormHelperText color="white">
+                        //   *Max no. of students online is {training.maxOnlineAttendees}. Current no. of students registered online is {onlineCount}
+                        // </FormHelperText>
+                          <FormHelperText color="white">
+                        *Online | Registered: {onlineCount}  Max Limit: {training.maxOnlineAttendees}
+                          </FormHelperText>
+                        }
+                        {isInPersonFull ? 
+                          <FormHelperText color="#FF4A4A">
+                        *In-person registration limit reached
+                          </FormHelperText>
+                          : 
+                        // <FormHelperText color="white">
+                        //   *Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}
+                        // </FormHelperText>
+                          <FormHelperText color="white">
+                        *In-person | Registered: {inPersonCount}  Max Limit: {training.maxInPersonAttendees}
+                          </FormHelperText>
+                        }
+                      </FormControl>
+                    </Box>
+                    <Box paddingTop="4">
+                      <FormControl>
+                        <FormLabel textTransform="uppercase" fontWeight="semibold" paddingBottom="1">
+                          System Requirements: 
+                        </FormLabel>
+                        <FormHelperText color="white">
+                          1. Join the training using a laptop
+                        </FormHelperText>
+                        <FormHelperText color="white">
+                          2. DO NOT join using a tablet, iPad or cell phone
+                        </FormHelperText>
+                        <FormHelperText color="white">
+                          3. Ensure the right camera and microphone are selected when you join the training
+                        </FormHelperText>
+                        <FormHelperText color="white">
+                          4. Please use Google Chrome as your browser
+                        </FormHelperText>
+                      </FormControl>
+                    </Box>
                 
-                <HStack w="100%" spacing="3" paddingTop="3">
-                  <Button w="100%" size="md" variant="secondary-ghost-outline">
+                    <HStack w="100%" spacing="3" paddingTop="3">
+                      {/* <Button w="100%" size="md" variant="secondary-ghost-outline">
                     Cancel
-                  </Button>
-                  <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit}>
+                      </Button> */}
+                      <Button w="100%" size="md" variant="primary-trueblue" onClick={handleSubmit} isDisabled={missingFields()}>
                     Save
-                  </Button>
-                </HStack>
-              </Box>
-            )}
+                      </Button>
+                    </HStack>
+                  </Box>
+                )}
           </VStack>
 
           <Modal isOpen={isModalOpen} scrollBehavior="inside">

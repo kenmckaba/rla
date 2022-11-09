@@ -1,5 +1,11 @@
+const sesParams = {
+  region: 'us-east-1',
+  accessKeyId: 'AKIATZDAET4G2KZSXI2N',
+  secretAccessKey: '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',
+}
 const AWS = require('aws-sdk')
-const ses = new AWS.SES({ region: 'us-east-1' })
+
+const ses = new AWS.SES(sesParams)
 
 // didn't work...
 // const operations = {

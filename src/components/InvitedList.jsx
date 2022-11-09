@@ -99,7 +99,8 @@ export const InvitedList = ({ training }) => {
             
           })
         )}
-        <Text>*Required no. of students in-person is {training.minInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}</Text>
+        <Text>*Max no. of students in-person is {training.maxInPersonAttendees}. Current no. of students registered in-person is {inPersonCount}</Text>
+        <Text>*Max no. of students online is {training.maxOnlineAttendees}. Current no. of students registered in-person is {onlineCount}</Text>
       </Tbody>
     </Table>
   )

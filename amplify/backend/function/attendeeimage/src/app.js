@@ -256,8 +256,13 @@ app.get('/trainings', async function (req, res) {
       // ?next
       trainings = trainings.reduce((acc, tr) => {
         const last = acc[0]
+        const now = new Date().toISOString()
         console.log('reduce', tr.startedAt, tr.scheduledTime, acc)
-        if (!tr.startedAt && tr.type === 'TRAINING' && (!last || tr.scheduledTime < last.scheduledTime)) {
+        if (
+          !tr.startedAt &&
+          tr.type === 'TRAINING' &&
+          (!last || tr.scheduledTime < last.scheduledTime)
+        ) {
           return [tr]
         }
         return acc

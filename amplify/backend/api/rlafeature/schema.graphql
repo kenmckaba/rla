@@ -8,6 +8,8 @@ enum TrainingType {
   TEMP
   TRAINING
   BREAKOUT
+  SERIES
+  TEMPSERIES
 }
 
 enum ClassPreference {
@@ -28,15 +30,19 @@ type Training
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
   ) {
   id: ID!
+  seriesId: ID
   type: TrainingType!
   trainerId: ID
   title: String!
+  seriesTitle: String
   description: String
   trainerName: String
   trainerEmail: String
   registrationUrl: String
   maxAttendees: Int
   minInPersonAttendees: Int
+  maxInPersonAttendees: Int
+  maxOnlineAttendees: Int
   meetingId: String!
   moderatorPasscode: String!
   participantPasscode: String!
@@ -124,7 +130,7 @@ type Poll
   question: String!
   type: PollType!
   answers: [String]
-  correctAnswerIndex: Int 
+  correctAnswerIndex: Int
   trainingId: ID!
   startedAt: AWSDateTime
   stoppedAt: AWSDateTime
@@ -163,6 +169,7 @@ type ChatMessage
 type StudentGroup @model @auth(rules: [{ allow: private, provider: iam }]) {
   id: ID!
   name: String!
+  numStudents: Int
   students: [Students] @connection(keyName: "byGroup", fields: ["id"])
 }
 
