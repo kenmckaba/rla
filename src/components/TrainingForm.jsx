@@ -377,17 +377,18 @@ export const TrainingForm = ({ onClose, trainingId, onDelete }) => {
   }
 
   const onAttendeeClose = (attendee) => {
-    if (attendee) {
-      const attendeePos = attendees.findIndex((att) => {
-        return att.id === attendee.id
-      })
-      if (attendeePos === -1) {
-        setAttendees((prev) => [...prev, attendee])
-      } else {
-        const newAttendees = attendees.slice(attendeePos, attendeePos)
-        setAttendees([...newAttendees, attendee])
-      }
-    }
+    // no need- attendeelist will be updated from subscription
+    // if (attendee) {
+    //   const attendeePos = attendees.findIndex((att) => {
+    //     return att.id === attendee.id
+    //   })
+    //   if (attendeePos === -1) {
+    //     setAttendees((prev) => [...prev, attendee])
+    //   } else {
+    //     const newAttendees = attendees.slice(attendeePos, attendeePos)
+    //     setAttendees([...newAttendees, attendee])
+    //   }
+    // }
     onNewattendeeModalClose()
     updateCurrentTraining(mutationVars()) // save in case they try to join
   }
