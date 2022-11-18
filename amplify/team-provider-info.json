@@ -133,7 +133,7 @@
       "function": {
         "attendeeimage": {
           "deploymentBucketName": "amplify-rlafeature-ken-173819-deployment",
-          "s3Key": "amplify-builds/attendeeimage-755567624a74427a6652-build.zip",
+          "s3Key": "amplify-builds/attendeeimage-45554d34625339367731-build.zip",
           "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
         }
       },
@@ -145,6 +145,10 @@
       },
       "auth": {
         "rlafeaturead7537a2": {}
+      },
+      "api": {
+        "rlafeature": {},
+        "rlaapi": {}
       }
     }
   },

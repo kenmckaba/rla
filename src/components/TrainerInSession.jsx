@@ -256,9 +256,9 @@ export const TrainerInSession = ({
         unreadChatMsgCount={unreadChatMsgCount}
       />
       <SettingsModal isOpen={showSettingsModal} onClose={() => setShowSettingsModal(false)} />
-      <OurModal header="Manage breakout" isOpen={showBreakoutModal}>
+      {/* <OurModal header="Manage breakout" isOpen={showBreakoutModal}>
         <BreakoutForm training={training} onClose={() => setShowBreakoutModal(false)} />
-      </OurModal>
+      </OurModal> */}
       <EndTrainingModal isOpen={showEndTrainingModal} onClose={() => history.push('/')} />
       <ShareDocumentsModal
         docs={sharedDocs}

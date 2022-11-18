@@ -201,24 +201,24 @@ export const AttendeeLanding = ({
     }
   }, [training, attendeeId, onEndedModalOpen, updateCurrentAttendee])
 
-  const joinTraining = useCallback(async (breakoutTrainingId) => {
-    bjnApi.leave(false) // sometimes doesn't ever resolve
-    window.location.href = `${window.location.origin}/attendee/${breakoutTrainingId}`
-  }, [])
+  // const joinTraining = useCallback(async (breakoutTrainingId) => {
+  //   bjnApi.leave(false) // sometimes doesn't ever resolve
+  //   window.location.href = `${window.location.origin}/attendee/${breakoutTrainingId}`
+  // }, [])
 
   useEffect(() => {
     if (attendee) {
       const tr = attendee.training
       setTraining(tr)
-      if (tr.breakoutInProgress) {
-        joinTraining(attendee.breakoutRoomAttendeeId)
-        return
-      }
+      // if (tr.breakoutInProgress) {
+      //   joinTraining(attendee.breakoutRoomAttendeeId)
+      //   return
+      // }
 
-      if (tr.type === 'BREAKOUT' && !attendee.breakoutRoom.training.breakoutInProgress) {
-        joinTraining(attendee.mainTrainingAttendeeId)
-        return
-      }
+      // if (tr.type === 'BREAKOUT' && !attendee.breakoutRoom.training.breakoutInProgress) {
+      //   joinTraining(attendee.mainTrainingAttendeeId)
+      //   return
+      // }
 
       setTrainingStarted(!!tr.startedAt)
 
@@ -252,7 +252,7 @@ export const AttendeeLanding = ({
         setPollMode('NONE')
       }
     }
-  }, [attendee, answeredPolls, joinTraining])
+  }, [attendee, answeredPolls /*, joinTraining*/])
 
   useEffect(() => {
     if (attendee && training && training.audioStateKey !== trainingAudioStateKey) {

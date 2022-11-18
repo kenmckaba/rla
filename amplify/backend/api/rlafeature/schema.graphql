@@ -61,15 +61,18 @@ type Training
   whiteboardUrl: String
   whiteboardShared: Boolean
   breakoutInProgress: Boolean
-  attendees: [Attendee]
-    @connection(name: "TrainingAttendees", keyField: "trainingId", sortField: "name")
+  attendees: [Attendee] @connection(keyName: "TrainingAttendees", fields: ["id"])
   chatMessages: [ChatMessage] @connection(keyName: "chatMessageByTrainingId", fields: ["id"])
   polls: [Poll] @connection(keyName: "byTraining", fields: ["id"])
-  sharedDocs: [SharedDoc] @connection(name: "TrainingDocs", keyField: "trainingId")
-  breakoutRooms: [BreakoutRoom] @connection(name: "TrainingBreakoutRooms", keyField: "trainingId")
+  sharedDocs: [SharedDoc] @connection(keyName: "TrainingDocs", fields: ["id"])
+  breakoutRooms: [BreakoutRoom] @connection(keyName: "TrainingBreakoutRooms", fields: ["id"])
 }
 
-type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
+type Attendee
+  @model
+  @auth(rules: [{ allow: public, provider: iam }])
+  @key(name: "TrainingAttendees", fields: ["trainingId"])
+  @key(name: "BreakoutAttendees", fields: ["breakoutRoomId"]) {
   id: ID!
   name: String!
   email: String!
@@ -91,11 +94,11 @@ type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
   audioHardMuted: Boolean
   videoHardMuted: Boolean
   trainingId: ID!
-  training: Training @connection(name: "TrainingAttendees", keyField: "trainingId")
+  training: Training
   # mainTrainingId: ID
   # mainTraining: Training @connection(name: "TrainingAttendees", keyField: "mainTrainingId")
   breakoutRoomId: ID
-  breakoutRoom: BreakoutRoom @connection(name: "BreakoutAttendees", keyField: "breakoutRoomId")
+  breakoutRoom: BreakoutRoom @connection(fields: ["breakoutRoomId"])
   breakoutRoomAttendeeId: ID
   mainTrainingAttendeeId: ID
 }
@@ -104,14 +107,15 @@ type SharedDoc
   @model
   @auth(
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
-  ) {
+  )
+  @key(name: "TrainingDocs", fields: ["trainingId", "title"]) {
   id: ID!
   title: String!
   type: String
   url: String!
   shared: Boolean
   trainingId: ID!
-  training: Training @connection(name: "TrainingDocs", keyField: "trainingId")
+  training: Training
 }
 
 enum PollType {
@@ -135,7 +139,7 @@ type Poll
   startedAt: AWSDateTime
   stoppedAt: AWSDateTime
   multiAnswerIndexes: [Int]
-  responses: [PollResponse] @connection(name: "pollPollResponses", keyField: "pollId")
+  responses: [PollResponse] @connection(keyName: "pollPollResponses", fields: ["id"])
 }
 
 type StoredPoll @model @auth(rules: [{ allow: private, provider: iam }]) {
@@ -146,18 +150,21 @@ type StoredPoll @model @auth(rules: [{ allow: private, provider: iam }]) {
   answers: [String]
 }
 
-type PollResponse @model @auth(rules: [{ allow: public, provider: iam }]) {
+type PollResponse
+  @model
+  @auth(rules: [{ allow: public, provider: iam }])
+  @key(name: "pollPollResponses", fields: ["pollId"]) {
   id: ID!
   attendeeId: ID!
   pollId: ID!
   response: [String]!
-  poll: Poll @connection(name: "pollPollResponses", keyField: "pollId")
+  poll: Poll
 }
 
 type ChatMessage
   @model
   @auth(rules: [{ allow: public, provider: iam }])
-  @key(name: "chatMessageByTrainingId", fields: ["trainingId"]) {
+  @key(name: "chatMessageByTrainingId", fields: ["trainingId", "timeSent"]) {
   id: ID!
   content: String!
   timeSent: AWSDateTime!
@@ -209,21 +216,22 @@ type BreakoutRoom
   @model
   @auth(
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
-  ) {
+  )
+  @key(name: "TrainingBreakoutRooms", fields: ["trainingId"]) {
   id: ID!
   name: String
   bluejeansMeetingId: String!
   bluejeansModeratorPasscode: String!
   bluejeansParticipantPasscode: String!
-  attendees: [Attendee] @connection(name: "BreakoutAttendees", keyField: "breakoutRoomId")
+  attendees: [Attendee] @connection(keyName: "BreakoutAttendees", fields: ["id"])
   trainingId: ID!
-  training: Training @connection(name: "TrainingBreakoutRooms", keyField: "trainingId")
+  training: Training @connection(fields: ["trainingId"])
   breakoutTrainingId: ID
 }
 
-type Subscription {
-  onUpdateAttendeeByTrainingId(trainingId: ID!): Attendee
-    @aws_subscribe(mutations: ["updateAttendee"])
-  onCreateChatMessageByTrainingId(trainingId: ID!): ChatMessage
-    @aws_subscribe(mutations: ["createChatMessage"])
-}
+# type Subscription {
+#   onUpdateAttendeeByTrainingId(trainingId: ID!): Attendee
+#     @aws_subscribe(mutations: ["updateAttendee"])
+#   onCreateChatMessageByTrainingId(trainingId: ID!): ChatMessage
+#     @aws_subscribe(mutations: ["createChatMessage"])
+# }
