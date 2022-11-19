@@ -1,259 +1,9 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onUpdateAttendeeByTrainingId = /* GraphQL */ `
-  subscription OnUpdateAttendeeByTrainingId($trainingId: ID!) {
-    onUpdateAttendeeByTrainingId(trainingId: $trainingId) {
-      id
-      name
-      email
-      classPreference
-      bluejeansName
-      handRaised
-      joinedTime
-      leftTime
-      currentMood
-      posePitch
-      poseYaw
-      poseRole
-      audioUnmuted
-      videoUnmuted
-      audioStateKey
-      videoStateKey
-      audioHardMuted
-      videoHardMuted
-      trainingId
-      training {
-        id
-        seriesId
-        type
-        trainerId
-        title
-        seriesTitle
-        description
-        trainerName
-        trainerEmail
-        registrationUrl
-        maxAttendees
-        minInPersonAttendees
-        maxInPersonAttendees
-        maxOnlineAttendees
-        meetingId
-        moderatorPasscode
-        participantPasscode
-        scheduledTime
-        startedAt
-        endedAt
-        audioHardMuted
-        videoHardMuted
-        audioStateKey
-        videoStateKey
-        pollMode
-        currentPollId
-        whiteboardUrl
-        whiteboardShared
-        breakoutInProgress
-        attendees {
-          items {
-            id
-            name
-            email
-            classPreference
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            audioUnmuted
-            videoUnmuted
-            audioStateKey
-            videoStateKey
-            audioHardMuted
-            videoHardMuted
-            trainingId
-            breakoutRoomId
-            breakoutRoomAttendeeId
-            mainTrainingAttendeeId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        chatMessages {
-          items {
-            id
-            content
-            timeSent
-            fromId
-            toId
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        polls {
-          items {
-            id
-            question
-            type
-            answers
-            correctAnswerIndex
-            trainingId
-            startedAt
-            stoppedAt
-            multiAnswerIndexes
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        sharedDocs {
-          items {
-            id
-            title
-            type
-            url
-            shared
-            trainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        breakoutRooms {
-          items {
-            id
-            name
-            bluejeansMeetingId
-            bluejeansModeratorPasscode
-            bluejeansParticipantPasscode
-            trainingId
-            breakoutTrainingId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      breakoutRoomId
-      breakoutRoom {
-        id
-        name
-        bluejeansMeetingId
-        bluejeansModeratorPasscode
-        bluejeansParticipantPasscode
-        attendees {
-          items {
-            id
-            name
-            email
-            classPreference
-            bluejeansName
-            handRaised
-            joinedTime
-            leftTime
-            currentMood
-            posePitch
-            poseYaw
-            poseRole
-            audioUnmuted
-            videoUnmuted
-            audioStateKey
-            videoStateKey
-            audioHardMuted
-            videoHardMuted
-            trainingId
-            breakoutRoomId
-            breakoutRoomAttendeeId
-            mainTrainingAttendeeId
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-        trainingId
-        training {
-          id
-          seriesId
-          type
-          trainerId
-          title
-          seriesTitle
-          description
-          trainerName
-          trainerEmail
-          registrationUrl
-          maxAttendees
-          minInPersonAttendees
-          maxInPersonAttendees
-          maxOnlineAttendees
-          meetingId
-          moderatorPasscode
-          participantPasscode
-          scheduledTime
-          startedAt
-          endedAt
-          audioHardMuted
-          videoHardMuted
-          audioStateKey
-          videoStateKey
-          pollMode
-          currentPollId
-          whiteboardUrl
-          whiteboardShared
-          breakoutInProgress
-          attendees {
-            nextToken
-          }
-          chatMessages {
-            nextToken
-          }
-          polls {
-            nextToken
-          }
-          sharedDocs {
-            nextToken
-          }
-          breakoutRooms {
-            nextToken
-          }
-          createdAt
-          updatedAt
-        }
-        breakoutTrainingId
-        createdAt
-        updatedAt
-      }
-      breakoutRoomAttendeeId
-      mainTrainingAttendeeId
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateChatMessageByTrainingId = /* GraphQL */ `
-  subscription OnCreateChatMessageByTrainingId($trainingId: ID!) {
-    onCreateChatMessageByTrainingId(trainingId: $trainingId) {
-      id
-      content
-      timeSent
-      fromId
-      toId
-      trainingId
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateTrainer = /* GraphQL */ `
-  subscription OnCreateTrainer {
-    onCreateTrainer {
+  subscription OnCreateTrainer($filter: ModelSubscriptionTrainerFilterInput) {
+    onCreateTrainer(filter: $filter) {
       id
       name
       email
@@ -263,8 +13,8 @@ export const onCreateTrainer = /* GraphQL */ `
   }
 `;
 export const onUpdateTrainer = /* GraphQL */ `
-  subscription OnUpdateTrainer {
-    onUpdateTrainer {
+  subscription OnUpdateTrainer($filter: ModelSubscriptionTrainerFilterInput) {
+    onUpdateTrainer(filter: $filter) {
       id
       name
       email
@@ -274,8 +24,8 @@ export const onUpdateTrainer = /* GraphQL */ `
   }
 `;
 export const onDeleteTrainer = /* GraphQL */ `
-  subscription OnDeleteTrainer {
-    onDeleteTrainer {
+  subscription OnDeleteTrainer($filter: ModelSubscriptionTrainerFilterInput) {
+    onDeleteTrainer(filter: $filter) {
       id
       name
       email
@@ -285,8 +35,8 @@ export const onDeleteTrainer = /* GraphQL */ `
   }
 `;
 export const onCreateTraining = /* GraphQL */ `
-  subscription OnCreateTraining {
-    onCreateTraining {
+  subscription OnCreateTraining($filter: ModelSubscriptionTrainingFilterInput) {
+    onCreateTraining(filter: $filter) {
       id
       seriesId
       type
@@ -523,8 +273,8 @@ export const onCreateTraining = /* GraphQL */ `
   }
 `;
 export const onUpdateTraining = /* GraphQL */ `
-  subscription OnUpdateTraining {
-    onUpdateTraining {
+  subscription OnUpdateTraining($filter: ModelSubscriptionTrainingFilterInput) {
+    onUpdateTraining(filter: $filter) {
       id
       seriesId
       type
@@ -761,8 +511,8 @@ export const onUpdateTraining = /* GraphQL */ `
   }
 `;
 export const onDeleteTraining = /* GraphQL */ `
-  subscription OnDeleteTraining {
-    onDeleteTraining {
+  subscription OnDeleteTraining($filter: ModelSubscriptionTrainingFilterInput) {
+    onDeleteTraining(filter: $filter) {
       id
       seriesId
       type
@@ -999,8 +749,8 @@ export const onDeleteTraining = /* GraphQL */ `
   }
 `;
 export const onCreateAttendee = /* GraphQL */ `
-  subscription OnCreateAttendee {
-    onCreateAttendee {
+  subscription OnCreateAttendee($filter: ModelSubscriptionAttendeeFilterInput) {
+    onCreateAttendee(filter: $filter) {
       id
       name
       email
@@ -1235,8 +985,8 @@ export const onCreateAttendee = /* GraphQL */ `
   }
 `;
 export const onUpdateAttendee = /* GraphQL */ `
-  subscription OnUpdateAttendee {
-    onUpdateAttendee {
+  subscription OnUpdateAttendee($filter: ModelSubscriptionAttendeeFilterInput) {
+    onUpdateAttendee(filter: $filter) {
       id
       name
       email
@@ -1471,8 +1221,8 @@ export const onUpdateAttendee = /* GraphQL */ `
   }
 `;
 export const onDeleteAttendee = /* GraphQL */ `
-  subscription OnDeleteAttendee {
-    onDeleteAttendee {
+  subscription OnDeleteAttendee($filter: ModelSubscriptionAttendeeFilterInput) {
+    onDeleteAttendee(filter: $filter) {
       id
       name
       email
@@ -1707,8 +1457,10 @@ export const onDeleteAttendee = /* GraphQL */ `
   }
 `;
 export const onCreateSharedDoc = /* GraphQL */ `
-  subscription OnCreateSharedDoc {
-    onCreateSharedDoc {
+  subscription OnCreateSharedDoc(
+    $filter: ModelSubscriptionSharedDocFilterInput
+  ) {
+    onCreateSharedDoc(filter: $filter) {
       id
       title
       type
@@ -1839,8 +1591,10 @@ export const onCreateSharedDoc = /* GraphQL */ `
   }
 `;
 export const onUpdateSharedDoc = /* GraphQL */ `
-  subscription OnUpdateSharedDoc {
-    onUpdateSharedDoc {
+  subscription OnUpdateSharedDoc(
+    $filter: ModelSubscriptionSharedDocFilterInput
+  ) {
+    onUpdateSharedDoc(filter: $filter) {
       id
       title
       type
@@ -1971,8 +1725,10 @@ export const onUpdateSharedDoc = /* GraphQL */ `
   }
 `;
 export const onDeleteSharedDoc = /* GraphQL */ `
-  subscription OnDeleteSharedDoc {
-    onDeleteSharedDoc {
+  subscription OnDeleteSharedDoc(
+    $filter: ModelSubscriptionSharedDocFilterInput
+  ) {
+    onDeleteSharedDoc(filter: $filter) {
       id
       title
       type
@@ -2103,8 +1859,8 @@ export const onDeleteSharedDoc = /* GraphQL */ `
   }
 `;
 export const onCreatePoll = /* GraphQL */ `
-  subscription OnCreatePoll {
-    onCreatePoll {
+  subscription OnCreatePoll($filter: ModelSubscriptionPollFilterInput) {
+    onCreatePoll(filter: $filter) {
       id
       question
       type
@@ -2144,8 +1900,8 @@ export const onCreatePoll = /* GraphQL */ `
   }
 `;
 export const onUpdatePoll = /* GraphQL */ `
-  subscription OnUpdatePoll {
-    onUpdatePoll {
+  subscription OnUpdatePoll($filter: ModelSubscriptionPollFilterInput) {
+    onUpdatePoll(filter: $filter) {
       id
       question
       type
@@ -2185,8 +1941,8 @@ export const onUpdatePoll = /* GraphQL */ `
   }
 `;
 export const onDeletePoll = /* GraphQL */ `
-  subscription OnDeletePoll {
-    onDeletePoll {
+  subscription OnDeletePoll($filter: ModelSubscriptionPollFilterInput) {
+    onDeletePoll(filter: $filter) {
       id
       question
       type
@@ -2226,8 +1982,10 @@ export const onDeletePoll = /* GraphQL */ `
   }
 `;
 export const onCreateStoredPoll = /* GraphQL */ `
-  subscription OnCreateStoredPoll {
-    onCreateStoredPoll {
+  subscription OnCreateStoredPoll(
+    $filter: ModelSubscriptionStoredPollFilterInput
+  ) {
+    onCreateStoredPoll(filter: $filter) {
       id
       tags
       question
@@ -2239,8 +1997,10 @@ export const onCreateStoredPoll = /* GraphQL */ `
   }
 `;
 export const onUpdateStoredPoll = /* GraphQL */ `
-  subscription OnUpdateStoredPoll {
-    onUpdateStoredPoll {
+  subscription OnUpdateStoredPoll(
+    $filter: ModelSubscriptionStoredPollFilterInput
+  ) {
+    onUpdateStoredPoll(filter: $filter) {
       id
       tags
       question
@@ -2252,8 +2012,10 @@ export const onUpdateStoredPoll = /* GraphQL */ `
   }
 `;
 export const onDeleteStoredPoll = /* GraphQL */ `
-  subscription OnDeleteStoredPoll {
-    onDeleteStoredPoll {
+  subscription OnDeleteStoredPoll(
+    $filter: ModelSubscriptionStoredPollFilterInput
+  ) {
+    onDeleteStoredPoll(filter: $filter) {
       id
       tags
       question
@@ -2265,8 +2027,10 @@ export const onDeleteStoredPoll = /* GraphQL */ `
   }
 `;
 export const onCreatePollResponse = /* GraphQL */ `
-  subscription OnCreatePollResponse {
-    onCreatePollResponse {
+  subscription OnCreatePollResponse(
+    $filter: ModelSubscriptionPollResponseFilterInput
+  ) {
+    onCreatePollResponse(filter: $filter) {
       id
       attendeeId
       pollId
@@ -2301,8 +2065,10 @@ export const onCreatePollResponse = /* GraphQL */ `
   }
 `;
 export const onUpdatePollResponse = /* GraphQL */ `
-  subscription OnUpdatePollResponse {
-    onUpdatePollResponse {
+  subscription OnUpdatePollResponse(
+    $filter: ModelSubscriptionPollResponseFilterInput
+  ) {
+    onUpdatePollResponse(filter: $filter) {
       id
       attendeeId
       pollId
@@ -2337,8 +2103,10 @@ export const onUpdatePollResponse = /* GraphQL */ `
   }
 `;
 export const onDeletePollResponse = /* GraphQL */ `
-  subscription OnDeletePollResponse {
-    onDeletePollResponse {
+  subscription OnDeletePollResponse(
+    $filter: ModelSubscriptionPollResponseFilterInput
+  ) {
+    onDeletePollResponse(filter: $filter) {
       id
       attendeeId
       pollId
@@ -2373,8 +2141,10 @@ export const onDeletePollResponse = /* GraphQL */ `
   }
 `;
 export const onCreateChatMessage = /* GraphQL */ `
-  subscription OnCreateChatMessage {
-    onCreateChatMessage {
+  subscription OnCreateChatMessage(
+    $filter: ModelSubscriptionChatMessageFilterInput
+  ) {
+    onCreateChatMessage(filter: $filter) {
       id
       content
       timeSent
@@ -2387,8 +2157,10 @@ export const onCreateChatMessage = /* GraphQL */ `
   }
 `;
 export const onUpdateChatMessage = /* GraphQL */ `
-  subscription OnUpdateChatMessage {
-    onUpdateChatMessage {
+  subscription OnUpdateChatMessage(
+    $filter: ModelSubscriptionChatMessageFilterInput
+  ) {
+    onUpdateChatMessage(filter: $filter) {
       id
       content
       timeSent
@@ -2401,8 +2173,10 @@ export const onUpdateChatMessage = /* GraphQL */ `
   }
 `;
 export const onDeleteChatMessage = /* GraphQL */ `
-  subscription OnDeleteChatMessage {
-    onDeleteChatMessage {
+  subscription OnDeleteChatMessage(
+    $filter: ModelSubscriptionChatMessageFilterInput
+  ) {
+    onDeleteChatMessage(filter: $filter) {
       id
       content
       timeSent
@@ -2415,8 +2189,10 @@ export const onDeleteChatMessage = /* GraphQL */ `
   }
 `;
 export const onCreateStudentGroup = /* GraphQL */ `
-  subscription OnCreateStudentGroup {
-    onCreateStudentGroup {
+  subscription OnCreateStudentGroup(
+    $filter: ModelSubscriptionStudentGroupFilterInput
+  ) {
+    onCreateStudentGroup(filter: $filter) {
       id
       name
       numStudents
@@ -2445,8 +2221,10 @@ export const onCreateStudentGroup = /* GraphQL */ `
   }
 `;
 export const onUpdateStudentGroup = /* GraphQL */ `
-  subscription OnUpdateStudentGroup {
-    onUpdateStudentGroup {
+  subscription OnUpdateStudentGroup(
+    $filter: ModelSubscriptionStudentGroupFilterInput
+  ) {
+    onUpdateStudentGroup(filter: $filter) {
       id
       name
       numStudents
@@ -2475,8 +2253,10 @@ export const onUpdateStudentGroup = /* GraphQL */ `
   }
 `;
 export const onDeleteStudentGroup = /* GraphQL */ `
-  subscription OnDeleteStudentGroup {
-    onDeleteStudentGroup {
+  subscription OnDeleteStudentGroup(
+    $filter: ModelSubscriptionStudentGroupFilterInput
+  ) {
+    onDeleteStudentGroup(filter: $filter) {
       id
       name
       numStudents
@@ -2505,8 +2285,8 @@ export const onDeleteStudentGroup = /* GraphQL */ `
   }
 `;
 export const onCreateStudents = /* GraphQL */ `
-  subscription OnCreateStudents {
-    onCreateStudents {
+  subscription OnCreateStudents($filter: ModelSubscriptionStudentsFilterInput) {
+    onCreateStudents(filter: $filter) {
       id
       groupId
       group {
@@ -2537,8 +2317,8 @@ export const onCreateStudents = /* GraphQL */ `
   }
 `;
 export const onUpdateStudents = /* GraphQL */ `
-  subscription OnUpdateStudents {
-    onUpdateStudents {
+  subscription OnUpdateStudents($filter: ModelSubscriptionStudentsFilterInput) {
+    onUpdateStudents(filter: $filter) {
       id
       groupId
       group {
@@ -2569,8 +2349,8 @@ export const onUpdateStudents = /* GraphQL */ `
   }
 `;
 export const onDeleteStudents = /* GraphQL */ `
-  subscription OnDeleteStudents {
-    onDeleteStudents {
+  subscription OnDeleteStudents($filter: ModelSubscriptionStudentsFilterInput) {
+    onDeleteStudents(filter: $filter) {
       id
       groupId
       group {
@@ -2601,8 +2381,10 @@ export const onDeleteStudents = /* GraphQL */ `
   }
 `;
 export const onCreateInvitedStudent = /* GraphQL */ `
-  subscription OnCreateInvitedStudent {
-    onCreateInvitedStudent {
+  subscription OnCreateInvitedStudent(
+    $filter: ModelSubscriptionInvitedStudentFilterInput
+  ) {
+    onCreateInvitedStudent(filter: $filter) {
       id
       trainingId
       timeSent
@@ -2736,8 +2518,10 @@ export const onCreateInvitedStudent = /* GraphQL */ `
   }
 `;
 export const onUpdateInvitedStudent = /* GraphQL */ `
-  subscription OnUpdateInvitedStudent {
-    onUpdateInvitedStudent {
+  subscription OnUpdateInvitedStudent(
+    $filter: ModelSubscriptionInvitedStudentFilterInput
+  ) {
+    onUpdateInvitedStudent(filter: $filter) {
       id
       trainingId
       timeSent
@@ -2871,8 +2655,10 @@ export const onUpdateInvitedStudent = /* GraphQL */ `
   }
 `;
 export const onDeleteInvitedStudent = /* GraphQL */ `
-  subscription OnDeleteInvitedStudent {
-    onDeleteInvitedStudent {
+  subscription OnDeleteInvitedStudent(
+    $filter: ModelSubscriptionInvitedStudentFilterInput
+  ) {
+    onDeleteInvitedStudent(filter: $filter) {
       id
       trainingId
       timeSent
@@ -3006,8 +2792,10 @@ export const onDeleteInvitedStudent = /* GraphQL */ `
   }
 `;
 export const onCreateEmailContent = /* GraphQL */ `
-  subscription OnCreateEmailContent {
-    onCreateEmailContent {
+  subscription OnCreateEmailContent(
+    $filter: ModelSubscriptionEmailContentFilterInput
+  ) {
+    onCreateEmailContent(filter: $filter) {
       id
       registrationBody
       registrationSubject
@@ -3021,8 +2809,10 @@ export const onCreateEmailContent = /* GraphQL */ `
   }
 `;
 export const onUpdateEmailContent = /* GraphQL */ `
-  subscription OnUpdateEmailContent {
-    onUpdateEmailContent {
+  subscription OnUpdateEmailContent(
+    $filter: ModelSubscriptionEmailContentFilterInput
+  ) {
+    onUpdateEmailContent(filter: $filter) {
       id
       registrationBody
       registrationSubject
@@ -3036,8 +2826,10 @@ export const onUpdateEmailContent = /* GraphQL */ `
   }
 `;
 export const onDeleteEmailContent = /* GraphQL */ `
-  subscription OnDeleteEmailContent {
-    onDeleteEmailContent {
+  subscription OnDeleteEmailContent(
+    $filter: ModelSubscriptionEmailContentFilterInput
+  ) {
+    onDeleteEmailContent(filter: $filter) {
       id
       registrationBody
       registrationSubject
@@ -3051,8 +2843,10 @@ export const onDeleteEmailContent = /* GraphQL */ `
   }
 `;
 export const onCreateBreakoutRoom = /* GraphQL */ `
-  subscription OnCreateBreakoutRoom {
-    onCreateBreakoutRoom {
+  subscription OnCreateBreakoutRoom(
+    $filter: ModelSubscriptionBreakoutRoomFilterInput
+  ) {
+    onCreateBreakoutRoom(filter: $filter) {
       id
       name
       bluejeansMeetingId
@@ -3257,8 +3051,10 @@ export const onCreateBreakoutRoom = /* GraphQL */ `
   }
 `;
 export const onUpdateBreakoutRoom = /* GraphQL */ `
-  subscription OnUpdateBreakoutRoom {
-    onUpdateBreakoutRoom {
+  subscription OnUpdateBreakoutRoom(
+    $filter: ModelSubscriptionBreakoutRoomFilterInput
+  ) {
+    onUpdateBreakoutRoom(filter: $filter) {
       id
       name
       bluejeansMeetingId
@@ -3463,8 +3259,10 @@ export const onUpdateBreakoutRoom = /* GraphQL */ `
   }
 `;
 export const onDeleteBreakoutRoom = /* GraphQL */ `
-  subscription OnDeleteBreakoutRoom {
-    onDeleteBreakoutRoom {
+  subscription OnDeleteBreakoutRoom(
+    $filter: ModelSubscriptionBreakoutRoomFilterInput
+  ) {
+    onDeleteBreakoutRoom(filter: $filter) {
       id
       name
       bluejeansMeetingId

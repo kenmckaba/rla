@@ -135,7 +135,8 @@
           "deploymentBucketName": "amplify-rlafeature-ken-173819-deployment",
           "s3Key": "amplify-builds/attendeeimage-45554d34625339367731-build.zip",
           "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
-        }
+        },
+        "rlafeature": {}
       },
       "hosting": {
         "amplifyhosting": {
@@ -401,6 +402,42 @@
       },
       "auth": {
         "rlafeaturead7537a2": {}
+      }
+    }
+  },
+  "kens": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rlafeature-kens-160336-authRole",
+      "UnauthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-kens-160336-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::260047150861:role/amplify-rlafeature-kens-160336-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-rlafeature-kens-160336-deployment",
+      "UnauthRoleName": "amplify-rlafeature-kens-160336-unauthRole",
+      "StackName": "amplify-rlafeature-kens-160336",
+      "StackId": "arn:aws:cloudformation:us-east-1:260047150861:stack/amplify-rlafeature-kens-160336/a46bad80-679d-11ed-8fb9-0e7e8992ea91",
+      "AmplifyAppId": "d1rh5ydrl7drpe"
+    },
+    "categories": {
+      "auth": {
+        "rlafeaturead7537a2": {}
+      },
+      "function": {
+        "attendeeimage": {
+          "deploymentBucketName": "amplify-rlafeature-kens-160336-deployment",
+          "s3Key": "amplify-builds/attendeeimage-45554d34625339367731-build.zip",
+          "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
+        },
+        "rlafeature": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1rh5ydrl7drpe",
+          "type": "manual"
+        }
+      },
+      "api": {
+        "rlafeature": {},
+        "rlaapi": {}
       }
     }
   }

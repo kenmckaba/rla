@@ -24,7 +24,11 @@ type Trainer @model {
   email: String!
 }
 
-type Training @model @auth(rules: [{allow: private, provider: iam}, {allow: public, provider: iam, operations: [read]}]) {
+type Training
+  @model
+  @auth(
+    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
+  ) {
   id: ID!
   seriesId: ID
   type: TrainingType!
@@ -61,7 +65,7 @@ type Training @model @auth(rules: [{allow: private, provider: iam}, {allow: publ
   breakoutRooms: [BreakoutRoom] @hasMany(indexName: "TrainingBreakoutRooms", fields: ["id"])
 }
 
-type Attendee @model @auth(rules: [{allow: public, provider: iam}]) {
+type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
   id: ID!
   name: String!
   email: String!
@@ -88,7 +92,11 @@ type Attendee @model @auth(rules: [{allow: public, provider: iam}]) {
   mainTrainingAttendeeId: ID
 }
 
-type SharedDoc @model @auth(rules: [{allow: private, provider: iam}, {allow: public, provider: iam, operations: [read]}]) {
+type SharedDoc
+  @model
+  @auth(
+    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
+  ) {
   id: ID!
   title: String!
   type: String
@@ -104,7 +112,11 @@ enum PollType {
   TEXT
 }
 
-type Poll @model @auth(rules: [{allow: private, provider: iam}, {allow: public, provider: iam, operations: [read]}]) {
+type Poll
+  @model
+  @auth(
+    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
+  ) {
   id: ID!
   question: String!
   type: PollType!
@@ -117,7 +129,7 @@ type Poll @model @auth(rules: [{allow: private, provider: iam}, {allow: public, 
   responses: [PollResponse] @hasMany(indexName: "pollPollResponses", fields: ["id"])
 }
 
-type StoredPoll @model @auth(rules: [{allow: private, provider: iam}]) {
+type StoredPoll @model @auth(rules: [{ allow: private, provider: iam }]) {
   id: ID!
   tags: String
   question: String!
@@ -125,7 +137,7 @@ type StoredPoll @model @auth(rules: [{allow: private, provider: iam}]) {
   answers: [String]
 }
 
-type PollResponse @model @auth(rules: [{allow: public, provider: iam}]) {
+type PollResponse @model @auth(rules: [{ allow: public, provider: iam }]) {
   id: ID!
   attendeeId: ID!
   pollId: ID! @index(name: "pollPollResponses")
@@ -133,7 +145,7 @@ type PollResponse @model @auth(rules: [{allow: public, provider: iam}]) {
   poll: Poll
 }
 
-type ChatMessage @model @auth(rules: [{allow: public, provider: iam}]) {
+type ChatMessage @model @auth(rules: [{ allow: public, provider: iam }]) {
   id: ID!
   content: String!
   timeSent: AWSDateTime!
@@ -142,14 +154,14 @@ type ChatMessage @model @auth(rules: [{allow: public, provider: iam}]) {
   trainingId: ID! @index(name: "chatMessageByTrainingId", sortKeyFields: ["timeSent"])
 }
 
-type StudentGroup @model @auth(rules: [{allow: private, provider: iam}]) {
+type StudentGroup @model @auth(rules: [{ allow: private, provider: iam }]) {
   id: ID!
   name: String!
   numStudents: Int
   students: [Students] @hasMany(indexName: "byGroup", fields: ["id"])
 }
 
-type Students @model @auth(rules: [{allow: private, provider: iam}]) {
+type Students @model @auth(rules: [{ allow: private, provider: iam }]) {
   id: ID!
   groupId: ID! @index(name: "byGroup")
   group: StudentGroup @belongsTo(fields: ["groupId"])
@@ -158,7 +170,7 @@ type Students @model @auth(rules: [{allow: private, provider: iam}]) {
   email: String!
 }
 
-type InvitedStudent @model @auth(rules: [{allow: public, provider: iam}]) {
+type InvitedStudent @model @auth(rules: [{ allow: public, provider: iam }]) {
   id: ID!
   trainingId: ID!
   timeSent: AWSDateTime
@@ -168,7 +180,7 @@ type InvitedStudent @model @auth(rules: [{allow: public, provider: iam}]) {
   attendee: Attendee @hasOne(fields: ["attendeeId"])
 }
 
-type EmailContent @model @auth(rules: [{allow: private, provider: iam}]) {
+type EmailContent @model @auth(rules: [{ allow: private, provider: iam }]) {
   id: ID!
   registrationBody: String!
   registrationSubject: String!
@@ -178,7 +190,11 @@ type EmailContent @model @auth(rules: [{allow: private, provider: iam}]) {
   cancelSubject: String!
 }
 
-type BreakoutRoom @model @auth(rules: [{allow: private, provider: iam}, {allow: public, provider: iam, operations: [read]}]) {
+type BreakoutRoom
+  @model
+  @auth(
+    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
+  ) {
   id: ID!
   name: String
   bluejeansMeetingId: String!
