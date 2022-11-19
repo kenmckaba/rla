@@ -171,7 +171,7 @@
       "function": {
         "attendeeimage": {
           "deploymentBucketName": "amplify-rlafeature-kentwo-133441-deployment",
-          "s3Key": "amplify-builds/attendeeimage-744961447770624f687a-build.zip",
+          "s3Key": "amplify-builds/attendeeimage-45554d34625339367731-build.zip",
           "graphqlapiidoutput": "GRAPHQLAPIIDOUTPUT"
         }
       },
@@ -180,6 +180,10 @@
           "appId": "d1rh5ydrl7drpe",
           "type": "manual"
         }
+      },
+      "api": {
+        "rlafeature": {},
+        "rlaapi": {}
       }
     }
   },

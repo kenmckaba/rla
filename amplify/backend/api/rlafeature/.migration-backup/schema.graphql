@@ -1,0 +1,237 @@
+enum PollMode {
+  NONE
+  POLL
+  SHOWRESULTS
+}
+
+enum TrainingType {
+  TEMP
+  TRAINING
+  BREAKOUT
+  SERIES
+  TEMPSERIES
+}
+
+enum ClassPreference {
+  NONE
+  ONLINE
+  INPERSON
+}
+
+type Trainer @model {
+  id: ID!
+  name: String!
+  email: String!
+}
+
+type Training
+  @model
+  @auth(
+    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
+  ) {
+  id: ID!
+  seriesId: ID
+  type: TrainingType!
+  trainerId: ID
+  title: String!
+  seriesTitle: String
+  description: String
+  trainerName: String
+  trainerEmail: String
+  registrationUrl: String
+  maxAttendees: Int
+  minInPersonAttendees: Int
+  maxInPersonAttendees: Int
+  maxOnlineAttendees: Int
+  meetingId: String!
+  moderatorPasscode: String!
+  participantPasscode: String!
+  scheduledTime: AWSDateTime!
+  startedAt: AWSDateTime
+  endedAt: AWSDateTime
+  # trainer can set these and all attendees will update themselves to that state.
+  # trainer can then set individuals to a new state.
+  audioHardMuted: Boolean
+  videoHardMuted: Boolean
+  # trainer increments these to indicate he changed muted state
+  audioStateKey: Int
+  videoStateKey: Int
+  pollMode: PollMode
+  currentPollId: ID
+  whiteboardUrl: String
+  whiteboardShared: Boolean
+  breakoutInProgress: Boolean
+  attendees: [Attendee] @connection(keyName: "TrainingAttendees", fields: ["id"])
+  chatMessages: [ChatMessage] @connection(keyName: "chatMessageByTrainingId", fields: ["id"])
+  polls: [Poll] @connection(keyName: "byTraining", fields: ["id"])
+  sharedDocs: [SharedDoc] @connection(keyName: "TrainingDocs", fields: ["id"])
+  breakoutRooms: [BreakoutRoom] @connection(keyName: "TrainingBreakoutRooms", fields: ["id"])
+}
+
+type Attendee
+  @model
+  @auth(rules: [{ allow: public, provider: iam }])
+  @key(name: "TrainingAttendees", fields: ["trainingId"])
+  @key(name: "BreakoutAttendees", fields: ["breakoutRoomId"]) {
+  id: ID!
+  name: String!
+  email: String!
+  classPreference: ClassPreference
+  bluejeansName: String
+  handRaised: Boolean
+  joinedTime: AWSDateTime
+  leftTime: AWSDateTime
+  currentMood: String
+  posePitch: Int
+  poseYaw: Int
+  poseRole: Int
+  # set by attendee, if undefined they are muted, the default for bjn meetings
+  audioUnmuted: Boolean
+  videoUnmuted: Boolean
+  # trainer increments these to indicate he changed muted state
+  audioStateKey: Int
+  videoStateKey: Int
+  audioHardMuted: Boolean
+  videoHardMuted: Boolean
+  trainingId: ID!
+  training: Training
+  # mainTrainingId: ID
+  # mainTraining: Training @connection(name: "TrainingAttendees", keyField: "mainTrainingId")
+  breakoutRoomId: ID
+  breakoutRoom: BreakoutRoom @connection(fields: ["breakoutRoomId"])
+  breakoutRoomAttendeeId: ID
+  mainTrainingAttendeeId: ID
+}
+
+type SharedDoc
+  @model
+  @auth(
+    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
+  )
+  @key(name: "TrainingDocs", fields: ["trainingId", "title"]) {
+  id: ID!
+  title: String!
+  type: String
+  url: String!
+  shared: Boolean
+  trainingId: ID!
+  training: Training
+}
+
+enum PollType {
+  SINGLECHOICE
+  MULTICHOICE
+  TEXT
+}
+
+type Poll
+  @model
+  @auth(
+    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
+  )
+  @key(name: "byTraining", fields: ["trainingId"]) {
+  id: ID!
+  question: String!
+  type: PollType!
+  answers: [String]
+  correctAnswerIndex: Int
+  trainingId: ID!
+  startedAt: AWSDateTime
+  stoppedAt: AWSDateTime
+  multiAnswerIndexes: [Int]
+  responses: [PollResponse] @connection(keyName: "pollPollResponses", fields: ["id"])
+}
+
+type StoredPoll @model @auth(rules: [{ allow: private, provider: iam }]) {
+  id: ID!
+  tags: String
+  question: String!
+  type: PollType!
+  answers: [String]
+}
+
+type PollResponse
+  @model
+  @auth(rules: [{ allow: public, provider: iam }])
+  @key(name: "pollPollResponses", fields: ["pollId"]) {
+  id: ID!
+  attendeeId: ID!
+  pollId: ID!
+  response: [String]!
+  poll: Poll
+}
+
+type ChatMessage
+  @model
+  @auth(rules: [{ allow: public, provider: iam }])
+  @key(name: "chatMessageByTrainingId", fields: ["trainingId", "timeSent"]) {
+  id: ID!
+  content: String!
+  timeSent: AWSDateTime!
+  fromId: ID!
+  toId: ID!
+  trainingId: ID!
+}
+
+type StudentGroup @model @auth(rules: [{ allow: private, provider: iam }]) {
+  id: ID!
+  name: String!
+  numStudents: Int
+  students: [Students] @connection(keyName: "byGroup", fields: ["id"])
+}
+
+type Students
+  @model
+  @auth(rules: [{ allow: private, provider: iam }])
+  @key(name: "byGroup", fields: ["groupId"]) {
+  id: ID!
+  groupId: ID!
+  group: StudentGroup @connection(fields: ["groupId"])
+  firstName: String!
+  lastName: String!
+  email: String!
+}
+
+type InvitedStudent @model @auth(rules: [{ allow: public, provider: iam }]) {
+  id: ID!
+  trainingId: ID!
+  timeSent: AWSDateTime
+  name: String
+  email: String
+  attendeeId: ID
+  attendee: Attendee @connection(fields: ["attendeeId"])
+}
+
+type EmailContent @model @auth(rules: [{ allow: private, provider: iam }]) {
+  id: ID!
+  registrationBody: String!
+  registrationSubject: String!
+  joinBody: String!
+  joinSubject: String!
+  cancelBody: String!
+  cancelSubject: String!
+}
+
+type BreakoutRoom
+  @model
+  @auth(
+    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
+  )
+  @key(name: "TrainingBreakoutRooms", fields: ["trainingId"]) {
+  id: ID!
+  name: String
+  bluejeansMeetingId: String!
+  bluejeansModeratorPasscode: String!
+  bluejeansParticipantPasscode: String!
+  attendees: [Attendee] @connection(keyName: "BreakoutAttendees", fields: ["id"])
+  trainingId: ID!
+  training: Training @connection(fields: ["trainingId"])
+  breakoutTrainingId: ID
+}
+
+# type Subscription {
+#   onUpdateAttendeeByTrainingId(trainingId: ID!): Attendee
+#     @aws_subscribe(mutations: ["updateAttendee"])
+#   onCreateChatMessageByTrainingId(trainingId: ID!): ChatMessage
+#     @aws_subscribe(mutations: ["createChatMessage"])
+# }
