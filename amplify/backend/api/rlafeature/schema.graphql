@@ -64,8 +64,8 @@ type Training
   attendees: [Attendee] @connection(keyName: "TrainingAttendees", fields: ["id"])
   chatMessages: [ChatMessage] @connection(keyName: "chatMessageByTrainingId", fields: ["id"])
   polls: [Poll] @connection(keyName: "byTraining", fields: ["id"])
-  sharedDocs: [SharedDoc] @connection(name: "TrainingDocs", keyField: "trainingId")
-  breakoutRooms: [BreakoutRoom] @connection(name: "TrainingBreakoutRooms", keyField: "trainingId")
+  sharedDocs: [SharedDoc] @connection(keyName: "TrainingDocs", fields: ["id"])
+  breakoutRooms: [BreakoutRoom] @connection(keyName: "TrainingBreakoutRooms", fields: ["id"])
 }
 
 type Attendee
@@ -106,14 +106,15 @@ type SharedDoc
   @model
   @auth(
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
-  ) {
+  )
+  @key(name: "TrainingDocs", fields: ["trainingId"]) {
   id: ID!
   title: String!
   type: String
   url: String!
   shared: Boolean
   trainingId: ID!
-  training: Training @connection(name: "TrainingDocs", keyField: "trainingId")
+  training: Training
 }
 
 enum PollType {
@@ -211,7 +212,8 @@ type BreakoutRoom
   @model
   @auth(
     rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
-  ) {
+  )
+  @key(name: "TrainingBreakoutRooms", fields: ["trainingId"]) {
   id: ID!
   name: String
   bluejeansMeetingId: String!
@@ -219,7 +221,7 @@ type BreakoutRoom
   bluejeansParticipantPasscode: String!
   attendees: [Attendee] @connection(name: "BreakoutAttendees", keyField: "breakoutRoomId")
   trainingId: ID!
-  training: Training @connection(name: "TrainingBreakoutRooms", keyField: "trainingId")
+  training: Training
   breakoutTrainingId: ID
 }
 
