@@ -61,15 +61,17 @@ type Training
   whiteboardUrl: String
   whiteboardShared: Boolean
   breakoutInProgress: Boolean
-  attendees: [Attendee]
-    @connection(name: "TrainingAttendees", keyField: "trainingId", sortField: "name")
+  attendees: [Attendee] @connection(keyName: "TrainingAttendees", fields: ["id"])
   chatMessages: [ChatMessage] @connection(keyName: "chatMessageByTrainingId", fields: ["id"])
   polls: [Poll] @connection(keyName: "byTraining", fields: ["id"])
   sharedDocs: [SharedDoc] @connection(name: "TrainingDocs", keyField: "trainingId")
   breakoutRooms: [BreakoutRoom] @connection(name: "TrainingBreakoutRooms", keyField: "trainingId")
 }
 
-type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
+type Attendee
+  @model
+  @auth(rules: [{ allow: public, provider: iam }])
+  @key(name: "TrainingAttendees", fields: ["trainingId"]) {
   id: ID!
   name: String!
   email: String!
@@ -91,7 +93,7 @@ type Attendee @model @auth(rules: [{ allow: public, provider: iam }]) {
   audioHardMuted: Boolean
   videoHardMuted: Boolean
   trainingId: ID!
-  training: Training @connection(name: "TrainingAttendees", keyField: "trainingId")
+  training: Training
   # mainTrainingId: ID
   # mainTraining: Training @connection(name: "TrainingAttendees", keyField: "mainTrainingId")
   breakoutRoomId: ID
