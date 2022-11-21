@@ -71,7 +71,8 @@ type Training
 type Attendee
   @model
   @auth(rules: [{ allow: public, provider: iam }])
-  @key(name: "TrainingAttendees", fields: ["trainingId"]) {
+  @key(name: "TrainingAttendees", fields: ["trainingId"])
+  @key(name: "BreakoutAttendees", fields: ["breakoutRoomId"]) {
   id: ID!
   name: String!
   email: String!
@@ -97,7 +98,7 @@ type Attendee
   # mainTrainingId: ID
   # mainTraining: Training @connection(name: "TrainingAttendees", keyField: "mainTrainingId")
   breakoutRoomId: ID
-  breakoutRoom: BreakoutRoom @connection(name: "BreakoutAttendees", keyField: "breakoutRoomId")
+  breakoutRoom: BreakoutRoom @connection(fields: ["breakoutRoomId"])
   breakoutRoomAttendeeId: ID
   mainTrainingAttendeeId: ID
 }
@@ -219,7 +220,7 @@ type BreakoutRoom
   bluejeansMeetingId: String!
   bluejeansModeratorPasscode: String!
   bluejeansParticipantPasscode: String!
-  attendees: [Attendee] @connection(name: "BreakoutAttendees", keyField: "breakoutRoomId")
+  attendees: [Attendee] @connection(keyName: "BreakoutAttendees", keyField: "id")
   trainingId: ID!
   training: Training
   breakoutTrainingId: ID
