@@ -139,7 +139,7 @@ type Poll
   startedAt: AWSDateTime
   stoppedAt: AWSDateTime
   multiAnswerIndexes: [Int]
-  responses: [PollResponse] @connection(name: "pollPollResponses", keyField: "pollId")
+  responses: [PollResponse] @connection(keyName: "pollPollResponses", keyField: "id")
 }
 
 type StoredPoll @model @auth(rules: [{ allow: private, provider: iam }]) {
@@ -150,12 +150,15 @@ type StoredPoll @model @auth(rules: [{ allow: private, provider: iam }]) {
   answers: [String]
 }
 
-type PollResponse @model @auth(rules: [{ allow: public, provider: iam }]) {
+type PollResponse
+  @model
+  @auth(rules: [{ allow: public, provider: iam }])
+  @key(name: "pollPollResponses", fields: ["pollId"]) {
   id: ID!
   attendeeId: ID!
   pollId: ID!
   response: [String]!
-  poll: Poll @connection(name: "pollPollResponses", keyField: "pollId")
+  poll: Poll @connection(keyField: "pollId")
 }
 
 type ChatMessage
