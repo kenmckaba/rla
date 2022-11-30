@@ -139,7 +139,7 @@ type Poll
   startedAt: AWSDateTime
   stoppedAt: AWSDateTime
   multiAnswerIndexes: [Int]
-  responses: [PollResponse] @connection(keyName: "pollPollResponses", keyField: "id")
+  responses: [PollResponse] @connection(keyName: "pollPollResponses", fields: ["id"])
 }
 
 type StoredPoll @model @auth(rules: [{ allow: private, provider: iam }]) {
@@ -158,7 +158,7 @@ type PollResponse
   attendeeId: ID!
   pollId: ID!
   response: [String]!
-  poll: Poll @connection(keyField: "pollId")
+  poll: Poll @connection(fields: ["pollId"])
 }
 
 type ChatMessage
@@ -223,7 +223,7 @@ type BreakoutRoom
   bluejeansMeetingId: String!
   bluejeansModeratorPasscode: String!
   bluejeansParticipantPasscode: String!
-  attendees: [Attendee] @connection(keyName: "BreakoutAttendees", keyField: "id")
+  attendees: [Attendee] @connection(keyName: "BreakoutAttendees", fields: ["id"])
   trainingId: ID!
   training: Training
   breakoutTrainingId: ID
