@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "serviceName": "AppSync",
+    "defaultAuthType": {
+      "mode": "AWS_IAM"
+    },
+    "conflictResolution": {},
+    "apiName": "rlafeature"
+  }
+}

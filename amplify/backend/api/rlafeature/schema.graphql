@@ -24,11 +24,7 @@ type Trainer @model {
   email: String!
 }
 
-type Training
-  @model
-  @auth(
-    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
-  ) {
+type Training @model @auth(rules: [{allow: private, provider: iam}, {allow: public, provider: iam, operations: [read]}]) {
   id: ID!
   seriesId: ID
   type: TrainingType!
@@ -49,11 +45,8 @@ type Training
   scheduledTime: AWSDateTime!
   startedAt: AWSDateTime
   endedAt: AWSDateTime
-  # trainer can set these and all attendees will update themselves to that state.
-  # trainer can then set individuals to a new state.
   audioHardMuted: Boolean
   videoHardMuted: Boolean
-  # trainer increments these to indicate he changed muted state
   audioStateKey: Int
   videoStateKey: Int
   pollMode: PollMode
@@ -61,18 +54,14 @@ type Training
   whiteboardUrl: String
   whiteboardShared: Boolean
   breakoutInProgress: Boolean
-  attendees: [Attendee] @connection(keyName: "TrainingAttendees", fields: ["id"])
-  chatMessages: [ChatMessage] @connection(keyName: "chatMessageByTrainingId", fields: ["id"])
-  polls: [Poll] @connection(keyName: "byTraining", fields: ["id"])
-  sharedDocs: [SharedDoc] @connection(keyName: "TrainingDocs", fields: ["id"])
-  breakoutRooms: [BreakoutRoom] @connection(keyName: "TrainingBreakoutRooms", fields: ["id"])
+  attendees: [Attendee] @hasMany(indexName: "TrainingAttendees", fields: ["id"])
+  chatMessages: [ChatMessage] @hasMany(indexName: "chatMessageByTrainingId", fields: ["id"])
+  polls: [Poll] @hasMany(indexName: "byTraining", fields: ["id"])
+  sharedDocs: [SharedDoc] @hasMany(indexName: "TrainingDocs", fields: ["id"])
+  breakoutRooms: [BreakoutRoom] @hasMany(indexName: "TrainingBreakoutRooms", fields: ["id"])
 }
 
-type Attendee
-  @model
-  @auth(rules: [{ allow: public, provider: iam }])
-  @key(name: "TrainingAttendees", fields: ["trainingId"])
-  @key(name: "BreakoutAttendees", fields: ["breakoutRoomId"]) {
+type Attendee @model @auth(rules: [{allow: public, provider: iam}]) {
   id: ID!
   name: String!
   email: String!
@@ -85,36 +74,27 @@ type Attendee
   posePitch: Int
   poseYaw: Int
   poseRole: Int
-  # set by attendee, if undefined they are muted, the default for bjn meetings
   audioUnmuted: Boolean
   videoUnmuted: Boolean
-  # trainer increments these to indicate he changed muted state
   audioStateKey: Int
   videoStateKey: Int
   audioHardMuted: Boolean
   videoHardMuted: Boolean
-  trainingId: ID!
+  trainingId: ID! @index(name: "TrainingAttendees")
   training: Training
-  # mainTrainingId: ID
-  # mainTraining: Training @connection(name: "TrainingAttendees", keyField: "mainTrainingId")
-  breakoutRoomId: ID
-  breakoutRoom: BreakoutRoom @connection(fields: ["breakoutRoomId"])
+  breakoutRoomId: ID @index(name: "BreakoutAttendees")
+  breakoutRoom: BreakoutRoom @belongsTo(fields: ["breakoutRoomId"])
   breakoutRoomAttendeeId: ID
   mainTrainingAttendeeId: ID
 }
 
-type SharedDoc
-  @model
-  @auth(
-    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
-  )
-  @key(name: "TrainingDocs", fields: ["trainingId"]) {
+type SharedDoc @model @auth(rules: [{allow: private, provider: iam}, {allow: public, provider: iam, operations: [read]}]) {
   id: ID!
   title: String!
   type: String
   url: String!
   shared: Boolean
-  trainingId: ID!
+  trainingId: ID! @index(name: "TrainingDocs")
   training: Training
 }
 
@@ -124,25 +104,20 @@ enum PollType {
   TEXT
 }
 
-type Poll
-  @model
-  @auth(
-    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
-  )
-  @key(name: "byTraining", fields: ["trainingId"]) {
+type Poll @model @auth(rules: [{allow: private, provider: iam}, {allow: public, provider: iam, operations: [read]}]) {
   id: ID!
   question: String!
   type: PollType!
   answers: [String]
   correctAnswerIndex: Int
-  trainingId: ID!
+  trainingId: ID! @index(name: "byTraining")
   startedAt: AWSDateTime
   stoppedAt: AWSDateTime
   multiAnswerIndexes: [Int]
-  responses: [PollResponse] @connection(keyName: "pollPollResponses", fields: ["id"])
+  responses: [PollResponse] @hasMany(indexName: "pollPollResponses", fields: ["id"])
 }
 
-type StoredPoll @model @auth(rules: [{ allow: private, provider: iam }]) {
+type StoredPoll @model @auth(rules: [{allow: private, provider: iam}]) {
   id: ID!
   tags: String
   question: String!
@@ -150,59 +125,50 @@ type StoredPoll @model @auth(rules: [{ allow: private, provider: iam }]) {
   answers: [String]
 }
 
-type PollResponse
-  @model
-  @auth(rules: [{ allow: public, provider: iam }])
-  @key(name: "pollPollResponses", fields: ["pollId"]) {
+type PollResponse @model @auth(rules: [{allow: public, provider: iam}]) {
   id: ID!
   attendeeId: ID!
-  pollId: ID!
+  pollId: ID! @index(name: "pollPollResponses")
   response: [String]!
-  poll: Poll @connection(fields: ["pollId"])
+  poll: Poll @belongsTo(fields: ["pollId"])
 }
 
-type ChatMessage
-  @model
-  @auth(rules: [{ allow: public, provider: iam }])
-  @key(name: "chatMessageByTrainingId", fields: ["trainingId"]) {
+type ChatMessage @model @auth(rules: [{allow: public, provider: iam}]) {
   id: ID!
   content: String!
   timeSent: AWSDateTime!
   fromId: ID!
   toId: ID!
-  trainingId: ID!
+  trainingId: ID! @index(name: "chatMessageByTrainingId")
 }
 
-type StudentGroup @model @auth(rules: [{ allow: private, provider: iam }]) {
+type StudentGroup @model @auth(rules: [{allow: private, provider: iam}]) {
   id: ID!
   name: String!
   numStudents: Int
-  students: [Students] @connection(keyName: "byGroup", fields: ["id"])
+  students: [Students] @hasMany(indexName: "byGroup", fields: ["id"])
 }
 
-type Students
-  @model
-  @auth(rules: [{ allow: private, provider: iam }])
-  @key(name: "byGroup", fields: ["groupId"]) {
+type Students @model @auth(rules: [{allow: private, provider: iam}]) {
   id: ID!
-  groupId: ID!
-  group: StudentGroup @connection(fields: ["groupId"])
+  groupId: ID! @index(name: "byGroup")
+  group: StudentGroup @belongsTo(fields: ["groupId"])
   firstName: String!
   lastName: String!
   email: String!
 }
 
-type InvitedStudent @model @auth(rules: [{ allow: public, provider: iam }]) {
+type InvitedStudent @model @auth(rules: [{allow: public, provider: iam}]) {
   id: ID!
   trainingId: ID!
   timeSent: AWSDateTime
   name: String
   email: String
   attendeeId: ID
-  attendee: Attendee @connection(fields: ["attendeeId"])
+  attendee: Attendee @hasOne(fields: ["attendeeId"])
 }
 
-type EmailContent @model @auth(rules: [{ allow: private, provider: iam }]) {
+type EmailContent @model @auth(rules: [{allow: private, provider: iam}]) {
   id: ID!
   registrationBody: String!
   registrationSubject: String!
@@ -212,26 +178,19 @@ type EmailContent @model @auth(rules: [{ allow: private, provider: iam }]) {
   cancelSubject: String!
 }
 
-type BreakoutRoom
-  @model
-  @auth(
-    rules: [{ allow: private, provider: iam }, { allow: public, provider: iam, operations: [read] }]
-  )
-  @key(name: "TrainingBreakoutRooms", fields: ["trainingId"]) {
+type BreakoutRoom @model @auth(rules: [{allow: private, provider: iam}, {allow: public, provider: iam, operations: [read]}]) {
   id: ID!
   name: String
   bluejeansMeetingId: String!
   bluejeansModeratorPasscode: String!
   bluejeansParticipantPasscode: String!
-  attendees: [Attendee] @connection(keyName: "BreakoutAttendees", fields: ["id"])
-  trainingId: ID!
+  attendees: [Attendee] @hasMany(indexName: "BreakoutAttendees", fields: ["id"])
+  trainingId: ID! @index(name: "TrainingBreakoutRooms")
   training: Training
   breakoutTrainingId: ID
 }
 
 type Subscription {
-  onUpdateAttendeeByTrainingId(trainingId: ID!): Attendee
-    @aws_subscribe(mutations: ["updateAttendee"])
-  onCreateChatMessageByTrainingId(trainingId: ID!): ChatMessage
-    @aws_subscribe(mutations: ["createChatMessage"])
+  onUpdateAttendeeByTrainingId(trainingId: ID!): Attendee @aws_subscribe(mutations: ["updateAttendee"])
+  onCreateChatMessageByTrainingId(trainingId: ID!): ChatMessage @aws_subscribe(mutations: ["createChatMessage"])
 }
