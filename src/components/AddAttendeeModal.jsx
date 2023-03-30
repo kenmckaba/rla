@@ -1,4 +1,4 @@
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal'
+import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react'
 import { AttendeeForm } from './AttendeeForm'
 
 export default function AddAttendeeModal({ isOpen, currentAttendee, trainingId, onAttendeeClose }) {

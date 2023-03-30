@@ -1,6 +1,5 @@
 import { Flex, Text, VStack } from '@chakra-ui/layout'
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal'
-import { Button } from '@chakra-ui/button'
+import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, Button } from '@chakra-ui/react'
 
 export default function EndTrainingModal({ isOpen, onClose }) {
   return (

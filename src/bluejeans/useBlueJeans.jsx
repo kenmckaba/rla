@@ -133,11 +133,13 @@ const useBlueJeansImpl = () => {
       webrtcSDK.meetingService.observe('connectionState', () => {
         bjnLog('connectionState', webrtcSDK.meetingService.connectionState)
         setBjnConnectionState(webrtcSDK.meetingService.connectionState)
-        setBjnIsConnected(webrtcSDK.meetingService.connectionState === 'CONNECTED')
+        const isConnected = webrtcSDK.meetingService.connectionState === 'CONNECTED'
+        setBjnIsConnected(isConnected)
+        if (isConnected) {
+          onConnected()
+        }
       })
 
-      observe(webrtcSDK.meetingService.participantService, 'participants', setBjnParticipants)
-      observe(webrtcSDK.meetingService.participantService, 'selfParticipant', setBjnSelfParticipant)
       observe(webrtcSDK.audioDeviceService, 'availableMicrophones', setBjnAvailableMicrophones)
       observe(webrtcSDK.audioDeviceService, 'selectedMicrophone', setBjnSelectedMicrophone)
       observe(webrtcSDK.audioDeviceService, 'selectedSpeaker', setBjnSelectedSpeaker)
@@ -155,21 +157,32 @@ const useBlueJeansImpl = () => {
       observe(webrtcSDK.meetingService, 'videoState', setBjnVideoState)
       observe(webrtcSDK.meetingService, 'selfVideoPreviewEnabled', setBjnSelfVideoPreviewEnabled)
       // observe('meetingHasEnded', setBjnMeetingHasEnded)
-      observe(
-        webrtcSDK.meetingService.contentService,
-        'receivingContentShare',
-        setBjnReceivingScreenShare,
-      )
-      observe(
-        webrtcSDK.meetingService.contentService,
-        'isContentShareSupported',
-        setBjnIsScreenShareSupported,
-      )
 
-      webrtcSDK.meetingService.contentService.observe('contentShareState', () => {
-        bjnLog('contentShareState', webrtcSDK.meetingService.contentService.contentShareState)
-        setBjnSharingScreen(webrtcSDK.meetingService.contentService.contentShareState === 'started')
-      })
+      const onConnected = () => {
+        observe(
+          webrtcSDK.meetingService.contentService,
+          'receivingContentShare',
+          setBjnReceivingScreenShare,
+        )
+        observe(
+          webrtcSDK.meetingService.contentService,
+          'isContentShareSupported',
+          setBjnIsScreenShareSupported,
+        )
+        observe(webrtcSDK.meetingService.participantService, 'participants', setBjnParticipants)
+        observe(
+          webrtcSDK.meetingService.participantService,
+          'selfParticipant',
+          setBjnSelfParticipant,
+        )
+
+        webrtcSDK.meetingService.contentService.observe('contentShareState', () => {
+          bjnLog('contentShareState', webrtcSDK.meetingService.contentService.contentShareState)
+          setBjnSharingScreen(
+            webrtcSDK.meetingService.contentService.contentShareState === 'started',
+          )
+        })
+      }
     }
   }, [bjnIsInitialized])
 

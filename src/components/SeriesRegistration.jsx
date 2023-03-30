@@ -26,7 +26,7 @@ import {
   Tbody,
   Td,
 } from '@chakra-ui/react'
-import { IconButton } from '@chakra-ui/button'
+import { IconButton } from '@chakra-ui/react'
 import { getInvitedStudent, getTraining, listTrainings } from '../graphql/queries'
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { updateInvitedStudent } from '../graphql/mutations'

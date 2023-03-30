@@ -12,6 +12,7 @@ import { Authenticate } from './components/Authenticate'
 import { WithAuthentication } from './utils/withAuthentication'
 import { SeriesRegistration } from './components/SeriesRegistration'
 import { Fix } from './components/Fix'
+import { Fix2 } from './components/Fix2'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Switch>
             <Route path="/auth" component={Authenticate} />
             <Route path="/fix" component={WithAuthentication(Fix)} />
+            <Route path="/fix2" component={WithAuthentication(Fix2)} />
             <Route path="/attendee/:attendeeId" component={AttendeeLanding} />
             <Route
               path="/trainerInSession/:trainingId"

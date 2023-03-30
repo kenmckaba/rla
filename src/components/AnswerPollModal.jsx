@@ -1,19 +1,27 @@
-import { Box, Center, Flex, HStack, Spacer, Text, VStack } from '@chakra-ui/layout'
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal'
-import { Button, IconButton } from '@chakra-ui/button'
+import {
+  Box,
+  Center,
+  Flex,
+  HStack,
+  Spacer,
+  Text,
+  VStack,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Button,
+  IconButton,
+  useRadio,
+  useRadioGroup,
+} from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
-import { useRadio, useRadioGroup } from '@chakra-ui/radio'
 import { dummyPoll } from '../../dummyData/dummyPolls'
 import StudentCompletePollModal from './StudentCompletePollModal'
 import { useState } from 'react'
 
-const Divider = () => (
-  <Box
-    width="100%"
-    height="0"
-    border="1px solid #CBD2D2"
-  />
-)
+const Divider = () => <Box width="100%" height="0" border="1px solid #CBD2D2" />
 
 const RadioChoice = ({ children, ...props }) => {
   const { getInputProps, getCheckboxProps } = useRadio(props)
@@ -47,8 +55,7 @@ const RadioChoice = ({ children, ...props }) => {
             borderRadius="full"
             height="8px"
             width="8px"
-          >
-          </Box>
+          ></Box>
         </Center>
       </HStack>
     </>
@@ -59,7 +66,7 @@ export default function AnswerPollModal({ isOpen, onClose, onAnswer }) {
   const [showStudentCompletePollModal, setShowStudentCompletePollModal] = useState(false)
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'poll',
-    defaultValue: '1'
+    defaultValue: '1',
   })
   const poll = dummyPoll
   const group = getRootProps()
@@ -83,7 +90,9 @@ export default function AnswerPollModal({ isOpen, onClose, onAnswer }) {
           >
             <Flex justifyContent="flex-start">
               <Center>
-                <Text fontSize="xs" color="white">Questions</Text>
+                <Text fontSize="xs" color="white">
+                  Questions
+                </Text>
               </Center>
 
               <Spacer />
@@ -97,15 +106,13 @@ export default function AnswerPollModal({ isOpen, onClose, onAnswer }) {
               />
             </Flex>
           </ModalHeader>
-          <ModalBody paddingX="0" paddingTop="0" bgGradient="linear(to-b, rgba(40,74,131,0.9) 0%, rgba(57,106,161, 0.9) 100%)">
+          <ModalBody
+            paddingX="0"
+            paddingTop="0"
+            bgGradient="linear(to-b, rgba(40,74,131,0.9) 0%, rgba(57,106,161, 0.9) 100%)"
+          >
             <VStack align="start" spacing="4" paddingBottom="2">
-              <Text
-                paddingX="4"
-                paddingTop="5"
-                fontSize="12"
-                color="white"
-                marginBottom="17"
-              >
+              <Text paddingX="4" paddingTop="5" fontSize="12" color="white" marginBottom="17">
                 {poll.question}
               </Text>
 
@@ -113,15 +120,11 @@ export default function AnswerPollModal({ isOpen, onClose, onAnswer }) {
                 {poll.options.map((option) => {
                   const radio = getRadioProps({ value: option.description })
                   return (
-                    <RadioChoice
-                      key={option.description}
-                      {...radio}
-                    >
+                    <RadioChoice key={option.description} {...radio}>
                       {option.description}
                     </RadioChoice>
                   )
-                })
-                }
+                })}
               </VStack>
 
               <Center width="100%">
@@ -134,10 +137,11 @@ export default function AnswerPollModal({ isOpen, onClose, onAnswer }) {
                     onAnswer()
                   }}
                 >
-                  <Text textTransform="capitalize" marginY="4">Submit</Text>
+                  <Text textTransform="capitalize" marginY="4">
+                    Submit
+                  </Text>
                 </Button>
               </Center>
-
             </VStack>
           </ModalBody>
         </ModalContent>

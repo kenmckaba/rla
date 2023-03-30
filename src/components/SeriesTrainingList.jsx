@@ -20,9 +20,8 @@ import {
   ModalBody,
   ModalFooter,
 } from '@chakra-ui/react'
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
+import { AddIcon, DeleteIcon, CloseIcon } from '@chakra-ui/icons'
 import { HStack } from '@chakra-ui/layout'
-import { CloseIcon } from '@chakra-ui/icons'
 import { createSharedDoc, createTraining, deleteTraining } from '../graphql/mutations'
 import { TrainingForm } from './TrainingForm'
 import { ConfirmationModal } from './ConfirmationModal'

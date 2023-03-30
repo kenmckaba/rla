@@ -1,6 +1,16 @@
-import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/layout'
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal'
-import { Button } from '@chakra-ui/button'
+import {
+  Box,
+  Flex,
+  HStack,
+  Text,
+  VStack,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+} from '@chakra-ui/react'
 import { Selections } from './Selections'
 import { useBlueJeans, bjnApi } from '../bluejeans/useBlueJeans'
 

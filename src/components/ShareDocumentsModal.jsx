@@ -1,6 +1,13 @@
-import { Flex, Text } from '@chakra-ui/layout'
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal'
-import { Button } from '@chakra-ui/button'
+import {
+  Flex,
+  Text,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+} from '@chakra-ui/react'
 import { SharedDocs } from './SharedDocs'
 
 export default function ShareDocumentsModal({ docs, trainingId, isOpen, onClose }) {

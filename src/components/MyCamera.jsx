@@ -1,5 +1,4 @@
-import { Box, Flex, Text } from '@chakra-ui/layout'
-import { Collapse } from '@chakra-ui/transition'
+import { Box, Flex, Text, Collapse } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import { ReactComponent as DoubleArrowRightIcon } from '../assets/icons/double-arrow-right.svg'
 import { ReactComponent as DoubleArrowLeftIcon } from '../assets/icons/double-arrow-left.svg'

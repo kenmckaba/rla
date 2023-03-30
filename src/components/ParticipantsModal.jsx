@@ -1,7 +1,15 @@
-import { Avatar } from '@chakra-ui/avatar'
-import { Button } from '@chakra-ui/button'
-import { HStack, Text, VStack } from '@chakra-ui/layout'
-import { Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal'
+import {
+  Avatar,
+  Button,
+  HStack,
+  Text,
+  VStack,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+} from '@chakra-ui/react'
 import { useState } from 'react'
 import AddAttendeeModal from './AddAttendeeModal'
 

@@ -84,6 +84,7 @@ export const Fix = () => {
     }
 
     if (groupListData) {
+      // query returns all groups
       const groups = groupListData.listStudentGroups.items
       fixGroups(groups)
     }
@@ -91,7 +92,7 @@ export const Fix = () => {
 
   const go = async () => {
     setInProgress(true)
-    await queryGroups()
+    await queryGroups() // graphql call, groupListData will be updated
   }
 
   return (

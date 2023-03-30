@@ -1,5 +1,4 @@
-import { Avatar } from '@chakra-ui/avatar'
-import { background, Tooltip } from '@chakra-ui/react'
+import { Avatar, background, Tooltip } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
 export default function AttendeeAvatar({ attendee }) {

@@ -25,6 +25,13 @@ import {
   MenuItem,
   MenuList,
   MenuGroup,
+  Flex,
+  HStack,
+  Spacer,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  IconButton,
 } from '@chakra-ui/react'
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
 import { TrainingForm } from './TrainingForm'
@@ -32,15 +39,11 @@ import { useEffect } from 'react'
 import { onCreateTraining, onDeleteTraining, onUpdateTraining } from '../graphql/subscriptions'
 import { buildSubscription } from 'aws-appsync'
 import { createTraining, deleteTraining } from '../graphql/mutations'
-import { Flex, HStack, Spacer } from '@chakra-ui/layout'
-import { Stat, StatHelpText } from '@chakra-ui/stat'
-import { StatLabel } from '@chakra-ui/stat'
 import { TrainingToolbar } from './TrainingToolbar'
 import { timestampToPrettyTime } from '../utils/pretty-time'
 import AttendeeAvatar from './AttendeeAvatar'
 import TrainingListHeader from './TrainingListHeader'
 import ParticipantsModal from './ParticipantsModal'
-import { IconButton } from '@chakra-ui/button'
 import { InvitedList } from './InvitedList'
 import FilteredDatePicker from './FilteredDatePicker'
 import Header from './Header'
@@ -52,7 +55,12 @@ export const TrainingList = () => {
   const [trainings, setTrainings] = useState([])
   const [newTraining, setNewTraining] = useState(false)
   const [currentTraining, setCurrentTraining] = useState()
-  const { loading, error, data: trainingListData, subscribeToMore } = useQuery(gql(listTrainings), {
+  const {
+    loading,
+    error,
+    data: trainingListData,
+    subscribeToMore,
+  } = useQuery(gql(listTrainings), {
     variables: { limit: 300 },
   })
   const {
@@ -85,13 +93,9 @@ export const TrainingList = () => {
 
   useEffect(() => {
     if (trainingListData) {
-      const tr = trainingListData.listTrainings.items.filter(
-        (t) => t.type === 'TRAINING'
-      )
+      const tr = trainingListData.listTrainings.items.filter((t) => t.type === 'TRAINING')
       setTrainings(tr)
-      
     }
-    
   }, [trainingListData])
 
   useEffect(() => {
@@ -126,26 +130,37 @@ export const TrainingList = () => {
           }),
       )
     } else {
-    //   setSelectedTraining(
-    //     trainings
-    //       .filter((training) => {
-    //         const now = new Date().toISOString()
-    //         const hasStarted = !!training.startedAt
-    //         return (training.scheduledTime >= now) ? showUpcomingTrainings : showPastTrainings
-    //       })
-    //       .sort((first, second) => {
-    //         return (first.scheduledTime < second.scheduledTime ? -1 : 1)
-    //       }),
-    //   )
-    // }
+      //   setSelectedTraining(
+      //     trainings
+      //       .filter((training) => {
+      //         const now = new Date().toISOString()
+      //         const hasStarted = !!training.startedAt
+      //         return (training.scheduledTime >= now) ? showUpcomingTrainings : showPastTrainings
+      //       })
+      //       .sort((first, second) => {
+      //         return (first.scheduledTime < second.scheduledTime ? -1 : 1)
+      //       }),
+      //   )
+      // }
 
       setSelectedTraining(
         trainings
           .filter((training) => {
             // return !!tabIndex === !!training.startedAt
-            return (showUpcomingTrainings && !training.startedAt || showPastTrainings && training.startedAt)
+            return (
+              (showUpcomingTrainings && !training.startedAt) ||
+              (showPastTrainings && training.startedAt)
+            )
           })
-          .sort((first, second) => showUpcomingTrainings? (first.scheduledTime < second.scheduledTime ? -1 : 1): (first.scheduledTime < second.scheduledTime ? 1 : -1)),
+          .sort((first, second) =>
+            showUpcomingTrainings
+              ? first.scheduledTime < second.scheduledTime
+                ? -1
+                : 1
+              : first.scheduledTime < second.scheduledTime
+                ? 1
+                : -1,
+          ),
       )
     }
   }, [trainings, tabIndex, startDate, endDate])
@@ -330,8 +345,8 @@ export const TrainingList = () => {
       >
         <Flex
           borderRadius="5px"
-          backgroundColor= {training.type === 'SERIES' ? '#5e8bb5' : '#396AA1'}
-          color=  'rgba(255,255,255, 0.9)'
+          backgroundColor={training.type === 'SERIES' ? '#5e8bb5' : '#396AA1'}
+          color="rgba(255,255,255, 0.9)"
           direction="column"
           justify="center"
           transition="all 0.3s ease"
@@ -364,20 +379,20 @@ export const TrainingList = () => {
           </Td>
           <Td paddingBottom="10">
             <HStack display="flex" justifyContent="space-between">
-              {training.type !== 'SERIES' &&
-              <Flex w="25%" direction="column">
-                <StatLabel mb="1">
-                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
-                    DATE/TIME
-                  </StatHelpText>
-                </StatLabel>
-                <StatLabel>
-                  <StatHelpText fontSize="0.90em" textTransform="uppercase">
-                    {timestampToPrettyTime(training.scheduledTime)}
-                  </StatHelpText>
-                </StatLabel>
-              </Flex>
-              }
+              {training.type !== 'SERIES' && (
+                <Flex w="25%" direction="column">
+                  <StatLabel mb="1">
+                    <StatHelpText fontSize="0.75em" textTransform="uppercase">
+                      DATE/TIME
+                    </StatHelpText>
+                  </StatLabel>
+                  <StatLabel>
+                    <StatHelpText fontSize="0.90em" textTransform="uppercase">
+                      {timestampToPrettyTime(training.scheduledTime)}
+                    </StatHelpText>
+                  </StatLabel>
+                </Flex>
+              )}
               <Flex w="20%" direction="column">
                 <StatLabel mb="1">
                   <StatHelpText fontSize="0.75em" textTransform="uppercase">
@@ -388,39 +403,39 @@ export const TrainingList = () => {
                   <StatHelpText fontSize="0.90em">{training.trainerName}</StatHelpText>
                 </StatLabel>
               </Flex>
-              {training.type !== 'SERIES' &&
-              <Flex w="25%" direction="column">
-                <StatLabel mb="1">
-                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
-                    ATTENDEES
-                  </StatHelpText>
-                </StatLabel>
-                <Flex
-                  height="24px"
-                  onClick={() => handleShowParticipantsModal(training, training.attendees)}
-                >
-                  <HStack spacing={2}>
-                    {training?.attendees?.items?.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
-                      <AttendeeAvatar key={attendee.id} attendee={attendee} />
-                    ))}
-                  </HStack>
+              {training.type !== 'SERIES' && (
+                <Flex w="25%" direction="column">
+                  <StatLabel mb="1">
+                    <StatHelpText fontSize="0.75em" textTransform="uppercase">
+                      ATTENDEES
+                    </StatHelpText>
+                  </StatLabel>
+                  <Flex
+                    height="24px"
+                    onClick={() => handleShowParticipantsModal(training, training.attendees)}
+                  >
+                    <HStack spacing={2}>
+                      {training?.attendees?.items?.slice(0, MAX_ATTENDEE_ICONS).map((attendee) => (
+                        <AttendeeAvatar key={attendee.id} attendee={attendee} />
+                      ))}
+                    </HStack>
+                  </Flex>
                 </Flex>
-              </Flex>
-              }
-              {training.type !== 'SERIES' &&
-              <Flex w="30%" direction="column">
-                <StatLabel>
-                  <StatHelpText fontSize="0.75em" textTransform="uppercase">
-                    BLUEJEANS MEETING
-                  </StatHelpText>
-                </StatLabel>
-                <StatLabel>
-                  <StatHelpText fontSize="0.90em" fontWeight="normal" textTransform="uppercase">
-                    {`ID: ${training.meetingId}  moderator: ${training.moderatorPasscode}  participant: ${training.participantPasscode}`}
-                  </StatHelpText>
-                </StatLabel>
-              </Flex>
-              }
+              )}
+              {training.type !== 'SERIES' && (
+                <Flex w="30%" direction="column">
+                  <StatLabel>
+                    <StatHelpText fontSize="0.75em" textTransform="uppercase">
+                      BLUEJEANS MEETING
+                    </StatHelpText>
+                  </StatLabel>
+                  <StatLabel>
+                    <StatHelpText fontSize="0.90em" fontWeight="normal" textTransform="uppercase">
+                      {`ID: ${training.meetingId}  moderator: ${training.moderatorPasscode}  participant: ${training.participantPasscode}`}
+                    </StatHelpText>
+                  </StatLabel>
+                </Flex>
+              )}
             </HStack>
           </Td>
         </Flex>
@@ -605,7 +620,14 @@ export const TrainingList = () => {
                 <ModalHeader>
                   <Flex>
                     <Box>
-                      {newTraining ? ((currentTraining?.type === 'SERIES' || currentTraining?.type === 'TEMPSERIES') ? 'New Series' : 'New Training') : (currentTraining?.type ==='SERIES' ? 'Update Series' : 'Update Training')}
+                      {newTraining
+                        ? currentTraining?.type === 'SERIES' ||
+                          currentTraining?.type === 'TEMPSERIES'
+                          ? 'New Series'
+                          : 'New Training'
+                        : currentTraining?.type === 'SERIES'
+                          ? 'Update Series'
+                          : 'Update Training'}
                     </Box>
                     <Spacer></Spacer>
                     <Box>

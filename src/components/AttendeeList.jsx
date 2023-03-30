@@ -1,6 +1,18 @@
 import React from 'react'
-import { Table, Tr, Th, Td, Tbody, Thead, Box, Button, Flex, IconButton } from '@chakra-ui/react'
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
+import {
+  Table,
+  Tr,
+  Th,
+  Td,
+  Tbody,
+  Thead,
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  Tooltip,
+} from '@chakra-ui/react'
+import { AddIcon, DeleteIcon, CopyIcon } from '@chakra-ui/icons'
 
 export const AttendeeList = ({ attendees = [], updateAttendee, deleteAttendee }) => {
   const joinAttendee = (e, attendee) => {
@@ -11,6 +23,11 @@ export const AttendeeList = ({ attendees = [], updateAttendee, deleteAttendee })
   const deleteThisAttendee = (e, attendee) => {
     e.stopPropagation()
     deleteAttendee(attendee.id)
+  }
+
+  const copyJoinLink = (e, attendee) => {
+    e.stopPropagation()
+    navigator.clipboard.writeText(`${window.location.origin}/attendee/${attendee.id}`)
   }
 
   return (
@@ -63,9 +80,20 @@ export const AttendeeList = ({ attendees = [], updateAttendee, deleteAttendee })
                       size="xs"
                       height="14px"
                       onClick={(e) => deleteThisAttendee(e, attendee)}
-                    >
-                      Join
-                    </IconButton>
+                    />
+                  </Td>
+                  <Td fontSize="12" padding="0">
+                    <Tooltip label="Copy student's join link">
+                      <IconButton
+                        icon={<CopyIcon />}
+                        color="lightslategray"
+                        background="white"
+                        float="right"
+                        size="xs"
+                        height="14px"
+                        onClick={(e) => copyJoinLink(e, attendee)}
+                      />
+                    </Tooltip>
                   </Td>
                   <Td fontSize="12" paddingLeft="16px">
                     <Button

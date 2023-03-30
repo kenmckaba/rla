@@ -1,13 +1,18 @@
-import { Box, Flex, HStack, Text } from '@chakra-ui/layout'
-import { Input } from '@chakra-ui/input'
+import {
+  Button,
+  Box,
+  Flex,
+  HStack,
+  Text,
+  Input,
+  FormControl,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { Button } from '@chakra-ui/button'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { listStudentGroups } from '../graphql/queries'
-import { FormControl } from '@chakra-ui/form-control'
 import { createStudentGroup, createStudents, updateStudentGroup } from '../graphql/mutations'
 import OurModal from './OurModal'
-import { useDisclosure } from '@chakra-ui/hooks'
 import { buildSubscription } from 'aws-appsync'
 import { onCreateStudentGroup } from '../graphql/subscriptions'
 

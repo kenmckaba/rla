@@ -17,7 +17,7 @@ import { HamburgerIcon } from '@chakra-ui/icons'
 import SunBackground from './SunBackground'
 import useTodayDate from '../hooks/useTodayDate'
 import OurModal from './OurModal'
-import { useDisclosure } from '@chakra-ui/hooks'
+import { useDisclosure } from '@chakra-ui/react'
 import { EmailListForm } from './EmailListForm'
 import { PollsCatalog } from './PollsCatalog'
 

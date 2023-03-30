@@ -1,4 +1,4 @@
-import { useToast } from '@chakra-ui/toast'
+import { useToast } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import { useBlueJeans } from '../bluejeans/useBlueJeans'
 
